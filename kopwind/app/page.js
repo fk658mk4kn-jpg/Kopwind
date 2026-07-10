@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import StopsEditor from "@/components/StopsEditor";
 import LegCard from "@/components/LegCard";
@@ -8,7 +8,7 @@ import DagBanner from "@/components/DagBanner";
 import SettingsPanel from "@/components/SettingsPanel";
 import MeldingenPanel from "@/components/MeldingenPanel";
 import NotificationManager from "@/components/NotificationManager";
-import { berekenPlan } from "@/lib/planner";
+import { haalRuweEtappes, stelPlanSamen } from "@/lib/planner";
 import { DEFAULT_THRESHOLDS } from "@/lib/advice";
 import { DEFAULT_MELDINGEN } from "@/lib/notify";
 import { afrondOpKwartier, toLocalInput } from "@/lib/format";
@@ -29,13 +29,29 @@ export default function Page() {
   const [presets, setPresets] = useState([]);
   const [thresholds, setThresholds] = useState({ ...DEFAULT_THRESHOLDS });
   const [meldingen, setMeldingen] = useState({ ...DEFAULT_MELDINGEN });
-  const [plan, setPlan] = useState(null);
+
+  // Resultaatstaat: ruwe etappes uit het netwerk plus de routekeuze per etappe.
+  const [legsRaw, setLegsRaw] = useState(null);
+  const [selection, setSelection] = useState([]);
+  const [planStops, setPlanStops] = useState(null);
+  const [planLegOptions, setPlanLegOptions] = useState(null);
   const [actieveLeg, setActieveLeg] = useState(0);
   const [bezig, setBezig] = useState(false);
   const [fout, setFout] = useState(null);
   const [instellingenOpen, setInstellingenOpen] = useState(false);
   const [meldingenOpen, setMeldingenOpen] = useState(false);
   const [isDemo, setIsDemo] = useState(false);
+
+  // Het plan wordt puur afgeleid: routewissel herrekent direct, zonder fetch.
+  const plan = useMemo(() => {
+    if (!legsRaw) return null;
+    return stelPlanSamen({
+      legsRaw,
+      legOptions: planLegOptions ?? [],
+      selection,
+      thresholds,
+    });
+  }, [legsRaw, planLegOptions, selection, thresholds]);
 
   // Opgeslagen staat laden (hydration-safe: pas na mount).
   useEffect(() => {
@@ -55,11 +71,24 @@ export default function Page() {
     } catch {
       // Kapotte localStorage negeren; schone start.
     }
-    // Default vertrektijd voor de eerste etappe: eerstvolgend kwartier.
     setLegOptions([
       { mode: "vertrek", tijd: toLocalInput(afrondOpKwartier(new Date())) },
     ]);
   }, []);
+
+  // Laatste keten bewaren voor de meldingen: stops, tijden, reistijden, keuze.
+  useEffect(() => {
+    if (!plan || isDemo || !planStops) return;
+    localStorage.setItem(
+      LS.lastChain,
+      JSON.stringify({
+        stops: planStops,
+        legOptions: planLegOptions,
+        durations: plan.legs.map((l) => l.duration),
+        selection,
+      })
+    );
+  }, [plan, isDemo, planStops, planLegOptions, selection]);
 
   const bewaarPreset = (preset) => {
     const next = [...presets.filter((p) => p.naam !== preset.naam), preset];
@@ -91,23 +120,23 @@ export default function Page() {
       return;
     }
     setBezig(true);
-    setIsDemo(false);
     try {
-      const resultaat = await berekenPlan({ stops: gekozen, legOptions, thresholds });
-      setPlan(resultaat);
-      setActieveLeg(resultaat.dag?.worstIdx ?? 0);
-      // Reistijden mee opslaan: daarmee kan de meldingenplanner de
-      // vertrektijden van de keten offline uitrekenen.
-      localStorage.setItem(
-        LS.lastChain,
-        JSON.stringify({
-          stops: gekozen,
-          legOptions,
-          durations: resultaat.legs.map((l) => l.duration),
-        })
-      );
+      const raw = await haalRuweEtappes({ stops: gekozen });
+      const zeros = raw.map(() => 0);
+      const plan0 = stelPlanSamen({
+        legsRaw: raw,
+        legOptions,
+        selection: zeros,
+        thresholds,
+      });
+      setIsDemo(false);
+      setPlanStops(gekozen);
+      setPlanLegOptions(legOptions);
+      setLegsRaw(raw);
+      setSelection(zeros);
+      setActieveLeg(plan0.dag?.worstIdx ?? 0);
     } catch (e) {
-      setPlan(null);
+      setLegsRaw(null);
       setFout(e.message ?? String(e));
     } finally {
       setBezig(false);
@@ -119,16 +148,16 @@ export default function Page() {
     setBezig(true);
     try {
       const nu = new Date();
-      const resultaat = await berekenPlan({
-        stops: DEMO_STOPS,
-        legOptions: demoLegOptions(nu),
-        thresholds,
-        fetchImpl: demoFetch(nu),
-        nu,
-      });
-      setPlan(resultaat);
-      setActieveLeg(resultaat.dag?.worstIdx ?? 0);
+      const opties = demoLegOptions(nu);
+      const raw = await haalRuweEtappes({ stops: DEMO_STOPS, fetchImpl: demoFetch(nu) });
+      const zeros = raw.map(() => 0);
+      const plan0 = stelPlanSamen({ legsRaw: raw, legOptions: opties, selection: zeros, thresholds });
       setIsDemo(true);
+      setPlanStops(DEMO_STOPS);
+      setPlanLegOptions(opties);
+      setLegsRaw(raw);
+      setSelection(zeros);
+      setActieveLeg(plan0.dag?.worstIdx ?? 0);
     } catch (e) {
       setFout(e.message ?? String(e));
     } finally {
@@ -136,75 +165,103 @@ export default function Page() {
     }
   };
 
+  const kiesRoute = (legIdx, routeIdx) => {
+    setSelection((prev) => {
+      const next = prev.slice();
+      next[legIdx] = routeIdx;
+      return next;
+    });
+    setActieveLeg(legIdx);
+  };
+
+  const meldingenActief = meldingen.ochtend || meldingen.vertrek;
+
   return (
     <div className="container">
       <header className="kop">
-        <h1>kopwind</h1>
+        <div className="merk">
+          <span className="merk-mark" aria-hidden="true" />
+          <h1>kopwind</h1>
+        </div>
         <span className="tagline">fiets of scooter? je keten, je wind, je keuze.</span>
         <span className="spacer" />
         <button className="knop" onClick={draaiDemo} disabled={bezig}>
           Demo
         </button>
         <button className="knop" onClick={() => setMeldingenOpen(true)}>
-          Meldingen{meldingen.ochtend || meldingen.vertrek ? " ●" : ""}
+          Meldingen{meldingenActief ? " ●" : ""}
         </button>
         <button className="knop" onClick={() => setInstellingenOpen(true)}>
           Instellingen
         </button>
       </header>
 
-      <section className="paneel">
-        <StopsEditor
-          stops={stops}
-          setStops={setStops}
-          legOptions={legOptions}
-          setLegOptions={setLegOptions}
-          presets={presets}
-          onSavePreset={bewaarPreset}
-        />
-        <div style={{ marginTop: 14 }}>
-          <button className="knop primair" onClick={bereken} disabled={bezig}>
-            {bezig ? "Bezig..." : "Bereken fiets of scooter"}
-          </button>
+      <div className="werkblad">
+        <div className="blok-planner">
+          <section className="paneel">
+            <h2 className="paneel-titel">Jouw dag</h2>
+            <StopsEditor
+              stops={stops}
+              setStops={setStops}
+              legOptions={legOptions}
+              setLegOptions={setLegOptions}
+              presets={presets}
+              onSavePreset={bewaarPreset}
+            />
+            <div style={{ marginTop: 14 }}>
+              <button className="knop primair" onClick={bereken} disabled={bezig}>
+                {bezig ? "Bezig..." : "Bereken fiets of scooter"}
+              </button>
+            </div>
+          </section>
+          {fout && <div className="fout">{fout}</div>}
         </div>
-      </section>
 
-      {fout && <div className="fout">{fout}</div>}
-
-      {plan && (
-        <>
-          <DagBanner dag={plan.dag} />
-          {isDemo && (
-            <p className="uitleg" style={{ marginTop: -8 }}>
-              Dit is de demoketen door Rotterdam met kunstmatige zuidwestenwind, zodat
-              je ziet hoe de app werkt. Klik op een etappe om hem op de kaart te zien.
-            </p>
-          )}
-          <div className="resultaat">
-            <div className="legs">
-              {plan.legs.map((leg, i) => (
-                <LegCard
-                  key={i}
-                  leg={leg}
-                  index={i}
-                  actief={i === actieveLeg}
-                  onClick={() => setActieveLeg(i)}
-                />
-              ))}
-            </div>
-            <div className="kaartwrap">
-              <MapView legs={plan.legs} actieveLeg={actieveLeg} />
-            </div>
+        <div className="blok-map">
+          <div className="kaartpaneel">
+            <MapView
+              legs={plan?.legs}
+              actieveLeg={actieveLeg}
+              onKiesRoute={kiesRoute}
+              presets={presets}
+            />
           </div>
-        </>
-      )}
+        </div>
 
-      {!plan && !fout && (
-        <p className="leeg">
-          Stel je keten samen (bv. Thuis → Sportschool → Thuis → Werk), of klik op
-          Demo om te zien wat de app doet.
-        </p>
-      )}
+        <div className="blok-results">
+          {plan ? (
+            <>
+              <DagBanner dag={plan.dag} />
+              {isDemo && (
+                <p className="uitleg demo-noot">
+                  Demoketen door Rotterdam met kunstmatige zuidwestenwind. Etappe 1
+                  heeft twee routes; klik op de chips of op de gestippelde lijn op de
+                  kaart om te wisselen en het windverschil te zien.
+                </p>
+              )}
+              <div className="legs">
+                {plan.legs.map((leg, i) => (
+                  <LegCard
+                    key={i}
+                    leg={leg}
+                    index={i}
+                    actief={i === actieveLeg}
+                    onClick={() => setActieveLeg(i)}
+                    onKiesRoute={kiesRoute}
+                  />
+                ))}
+              </div>
+            </>
+          ) : (
+            !fout && (
+              <p className="leeg">
+                Stel je keten samen (bv. Thuis → Sportschool → Thuis → Werk), of klik
+                op Demo om te zien wat de app doet.
+              </p>
+            )
+          )}
+        </div>
+      </div>
 
       <SettingsPanel
         open={instellingenOpen}

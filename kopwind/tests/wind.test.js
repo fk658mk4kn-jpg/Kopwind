@@ -7,6 +7,7 @@ import {
   segmentizeRoute,
   hourKey,
   summarizeLegNL,
+  legWindSummary,
 } from "../lib/wind.js";
 import { DEFAULT_THRESHOLDS } from "../lib/advice.js";
 
@@ -82,4 +83,18 @@ test("summarizeLegNL: benoemt lengte, zwaarte en plek", () => {
   assert.ok(s.includes("2,5 km"), `lengte in tekst, kreeg: ${s}`);
   assert.ok(s.includes("merkbare tegenwind"), `zwaarte in tekst, kreeg: ${s}`);
   assert.ok(s.includes("halverwege"), `plek in tekst, kreeg: ${s}`);
+});
+
+test("legWindSummary: gemiddelde richting en snelheid over segmenten", () => {
+  const segs = [
+    { distance: 500, weer: { windFrom: 220, windSpeed: 24 } },
+    { distance: 500, weer: { windFrom: 230, windSpeed: 26 } },
+    { distance: 500, weer: { windFrom: 225, windSpeed: 25 } },
+  ];
+  const w = legWindSummary(segs);
+  assert.ok(Math.abs(w.from - 225) < 3, `richting rond 225, kreeg ${w.from}`);
+  assert.ok(Math.abs(w.speed - 25) < 0.5, `snelheid rond 25, kreeg ${w.speed}`);
+
+  // Geen weerdata: null.
+  assert.equal(legWindSummary([{ distance: 100, weer: null }]), null);
 });

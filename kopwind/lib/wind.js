@@ -129,15 +129,40 @@ export function classifyHeadwind(headwind, thresholds) {
 }
 
 /**
- * Continue kleur voor een kopwindwaarde: groen (rugwind) via geel naar rood.
+ * Continue kleur voor een kopwindwaarde: diep groen (rugwind) via amber naar
+ * diep rood (tegenwind). Hoog verzadigd en donker genoeg om over kaarttegels
+ * leesbaar te blijven; op de kaart komt er nog een witte omranding onder.
  * x wordt geklemd op -1..1 met x = headwind / tegenwindZwaar.
  */
 export function colorForHeadwind(headwind, thresholds) {
   const x = Math.max(-1, Math.min(1, headwind / thresholds.tegenwindZwaar));
-  // x = -1 -> hue 130 (groen), x = 0 -> hue 55 (geel), x = 1 -> hue 0 (rood)
-  const hue = x <= 0 ? 55 + -x * 75 : 55 - x * 55;
-  const licht = 42 - Math.abs(x) * 4;
-  return `hsl(${Math.round(hue)} 78% ${Math.round(licht)}%)`;
+  // x = -1 -> hue 150 (diep groen), x = 0 -> hue 45 (amber), x = 1 -> hue 2 (diep rood)
+  const hue = x <= 0 ? 45 + -x * 105 : 45 - x * 43;
+  const licht = 44 - Math.abs(x) * 8;
+  return `hsl(${Math.round(hue)} 88% ${Math.round(licht)}%)`;
+}
+
+/**
+ * Representatieve wind voor een hele etappe: afstandsgewogen gemiddelde
+ * windsnelheid en een circulair gemiddelde van de windrichting (vandaan).
+ * Handig voor het kompas op de kaart. null als er geen weerdata is.
+ */
+export function legWindSummary(segments) {
+  let sSin = 0;
+  let sCos = 0;
+  let sSpeed = 0;
+  let gewicht = 0;
+  for (const s of segments) {
+    if (!s.weer || s.weer.windFrom == null || s.weer.windSpeed == null) continue;
+    const rad = toRad(s.weer.windFrom);
+    sSin += Math.sin(rad) * s.distance;
+    sCos += Math.cos(rad) * s.distance;
+    sSpeed += s.weer.windSpeed * s.distance;
+    gewicht += s.distance;
+  }
+  if (gewicht === 0) return null;
+  const from = (toDeg(Math.atan2(sSin, sCos)) + 360) % 360;
+  return { from, speed: sSpeed / gewicht };
 }
 
 /**

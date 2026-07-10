@@ -30,8 +30,11 @@ export function demoLegOptions(nu = new Date()) {
 /**
  * Bouwt een routegeometrie tussen twee punten: 48 punten op een lichte
  * sinusboog, zodat de bearing per segment een beetje varieert.
+ *
+ * @param {number} amplitude grootte van de boog (default 0.004); groter geeft
+ *   een langere, meer westwaartse route met andere windexpositie
  */
-export function demoRoute(from, to) {
+export function demoRoute(from, to, amplitude = 0.004) {
   const N = 48;
   const coords = [];
   // Loodrechte richting voor de boog.
@@ -39,7 +42,7 @@ export function demoRoute(from, to) {
   const dLon = to[1] - from[1];
   for (let i = 0; i < N; i++) {
     const t = i / (N - 1);
-    const boog = Math.sin(t * Math.PI) * 0.004;
+    const boog = Math.sin(t * Math.PI) * amplitude;
     coords.push([
       from[0] + dLat * t + -dLon * boog,
       from[1] + dLon * t + dLat * boog,
@@ -104,14 +107,21 @@ export function demoHourly(nu = new Date()) {
 
 /**
  * Mock-fetch met dezelfde interface als de echte API-routes, zodat
- * berekenPlan er ongewijzigd doorheen kan.
+ * berekenPlan er ongewijzigd doorheen kan. De routelaag geeft twee
+ * alternatieven terug (snelste plus een ruimere boog met andere
+ * windexpositie), zodat je de routevergelijking in de demo ziet werken.
  */
 export function demoFetch(nu = new Date()) {
   const hourly = demoHourly(nu);
   return async (url, opts) => {
     if (typeof url === "string" && url.startsWith("/api/route")) {
       const body = JSON.parse(opts.body);
-      return respond(demoRoute(body.from, body.to));
+      return respond({
+        routes: [
+          demoRoute(body.from, body.to, 0.004),
+          demoRoute(body.from, body.to, -0.02),
+        ],
+      });
     }
     if (typeof url === "string" && url.startsWith("/api/weather")) {
       return respond({ hourly });

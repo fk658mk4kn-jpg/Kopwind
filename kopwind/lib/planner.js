@@ -2,8 +2,13 @@
  * lib/planner.js
  *
  * Rekent een keten van stops door tot een dagplan met etappes, weer,
- * windanalyse en advies. Netwerktoegang loopt via fetchImpl zodat de
- * hele pijplijn testbaar is met een mock (zie lib/demo.js).
+ * windanalyse, routealternatieven en advies. Netwerktoegang loopt via
+ * fetchImpl zodat de hele pijplijn testbaar is met een mock (zie lib/demo.js).
+ *
+ * De opzet is bewust in twee stukken:
+ * - haalRuweEtappes: doet het netwerk (routes met alternatieven + weer).
+ * - stelPlanSamen: puur rekenwerk gegeven een routekeuze per etappe.
+ * Zo kan de interface van route wisselen zonder opnieuw te fetchen.
  */
 
 import { analyzeLeg } from "./wind.js";
@@ -11,35 +16,22 @@ import { legAdvies, dagAdvies, DEFAULT_THRESHOLDS } from "./advice.js";
 import { afrondOpKwartier } from "./format.js";
 
 /**
- * @param {object} p
- * @param {Array<{naam: string, lat: number, lon: number}>} p.stops minimaal 2
- * @param {Array<{mode: "auto"|"vertrek"|"aankomst", tijd?: string, verblijfMin?: number}>} p.legOptions
- *   opties voor etappe i (van stop i naar stop i+1); tijd is een
- *   datetime-local string voor de modes vertrek en aankomst
- * @param {object} [p.thresholds]
- * @param {Function} [p.fetchImpl]
- * @param {Date} [p.nu]
+ * Haalt per etappe de routealternatieven en het weer op. Geen tijdrekenwerk.
+ * @returns {Array<{van, naar, routes: Array<{coords, distance, duration}>, hourly}>}
  */
-export async function berekenPlan({
+export async function haalRuweEtappes({
   stops,
-  legOptions,
-  thresholds = DEFAULT_THRESHOLDS,
   fetchImpl = (...a) => fetch(...a),
-  nu = new Date(),
 }) {
   if (!Array.isArray(stops) || stops.length < 2) {
     throw new Error("Voeg minstens twee stops toe.");
   }
 
-  const legs = [];
-  let vorigeAankomst = null;
-
+  const legsRaw = [];
   for (let i = 0; i < stops.length - 1; i++) {
     const van = stops[i];
     const naar = stops[i + 1];
-    const opties = legOptions?.[i] ?? { mode: "auto" };
 
-    // 1. Route ophalen.
     const routeRes = await fetchImpl("/api/route", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -48,56 +40,126 @@ export async function berekenPlan({
     if (!routeRes.ok) {
       throw new Error(`Route van ${van.naam} naar ${naar.naam} ophalen mislukt.`);
     }
-    const route = await routeRes.json();
-    if (!route.coords || route.coords.length < 2 || route.distance < 50) {
+    const routeData = await routeRes.json();
+    // Nieuwe vorm { routes: [...] }, met tolerantie voor een losse route.
+    const routes = Array.isArray(routeData.routes)
+      ? routeData.routes
+      : routeData.coords
+        ? [routeData]
+        : [];
+    const primair = routes[0];
+    if (!primair || !primair.coords || primair.coords.length < 2 || primair.distance < 50) {
       throw new Error(
         `${van.naam} en ${naar.naam} liggen op vrijwel dezelfde plek, daar valt weinig te plannen.`
       );
     }
 
-    // 2. Vertrektijd bepalen.
-    const departure = resolveDeparture(opties, route.duration, vorigeAankomst, nu);
-    const arrival = new Date(departure.getTime() + route.duration * 1000);
-    vorigeAankomst = arrival;
-
-    // 3. Weer op het middelpunt van de route.
-    const mid = route.coords[Math.floor(route.coords.length / 2)];
+    const mid = primair.coords[Math.floor(primair.coords.length / 2)];
     const weerRes = await fetchImpl(`/api/weather?lat=${mid[0]}&lon=${mid[1]}`);
     if (!weerRes.ok) {
       throw new Error(`Weer ophalen voor etappe ${i + 1} mislukt.`);
     }
     const weer = await weerRes.json();
 
-    // 4. Analyse en advies.
-    const analyse = analyzeLeg({
-      coords: route.coords,
-      distance: route.distance,
-      duration: route.duration,
-      departure,
-      hourly: weer.hourly,
-      thresholds,
-      segmentLength: thresholds.segmentLengte,
+    legsRaw.push({ van, naar, routes, hourly: weer.hourly });
+  }
+  return legsRaw;
+}
+
+/**
+ * Stelt het dagplan samen gegeven de ruwe etappes en een routekeuze.
+ * Puur en snel, zodat de interface direct kan herrekenen bij een routewissel.
+ *
+ * @param {object} p
+ * @param {Array} p.legsRaw uit haalRuweEtappes
+ * @param {Array} p.legOptions tijdopties per etappe
+ * @param {Array<number>} [p.selection] gekozen route-index per etappe (default snelste, 0)
+ * @param {object} [p.thresholds]
+ * @param {Date} [p.nu]
+ */
+export function stelPlanSamen({
+  legsRaw,
+  legOptions,
+  selection,
+  thresholds = DEFAULT_THRESHOLDS,
+  nu = new Date(),
+}) {
+  const legs = [];
+  let vorigeAankomst = null;
+
+  legsRaw.forEach((raw, i) => {
+    const opties = legOptions?.[i] ?? { mode: "auto" };
+    const maxIdx = raw.routes.length - 1;
+    const selIdx = Math.max(0, Math.min(maxIdx, selection?.[i] ?? 0));
+
+    // Vertrektijd hangt bij aankomstmodus af van de gekozen route.
+    const selRoute = raw.routes[selIdx];
+    const departure = resolveDeparture(opties, selRoute.duration, vorigeAankomst, nu);
+
+    // Alle alternatieven op dezelfde vertrektijd analyseren, zodat je de
+    // windscores eerlijk kunt vergelijken.
+    const alternatieven = raw.routes.map((r, ri) => {
+      const analyse = analyzeLeg({
+        coords: r.coords,
+        distance: r.distance,
+        duration: r.duration,
+        departure,
+        hourly: raw.hourly,
+        thresholds,
+        segmentLength: thresholds.segmentLengte,
+      });
+      return {
+        index: ri,
+        coords: r.coords,
+        distance: r.distance,
+        duration: r.duration,
+        segments: analyse.segments,
+        metrics: analyse.metrics,
+        samenvatting: analyse.samenvatting,
+        advies: legAdvies(analyse.metrics, thresholds),
+      };
     });
-    const advies = legAdvies(analyse.metrics, thresholds);
+
+    const gekozen = alternatieven[selIdx];
+    const arrival = new Date(departure.getTime() + gekozen.duration * 1000);
+    vorigeAankomst = arrival;
 
     legs.push({
-      van,
-      naar,
+      van: raw.van,
+      naar: raw.naar,
       departure,
       arrival,
-      distance: route.distance,
-      duration: route.duration,
-      segments: analyse.segments,
-      metrics: analyse.metrics,
-      samenvatting: analyse.samenvatting,
-      advies,
-      warning: analyse.metrics.missendWeer
+      distance: gekozen.distance,
+      duration: gekozen.duration,
+      segments: gekozen.segments,
+      metrics: gekozen.metrics,
+      samenvatting: gekozen.samenvatting,
+      advies: gekozen.advies,
+      alternatieven,
+      gekozenIndex: selIdx,
+      warning: gekozen.metrics.missendWeer
         ? "Voor een deel van deze etappe is geen uurvoorspelling beschikbaar (Open-Meteo kijkt hier ongeveer 4 dagen vooruit)."
         : null,
     });
-  }
+  });
 
   return { legs, dag: dagAdvies(legs) };
+}
+
+/**
+ * Gemak: haalt op en stelt samen in een keer, met de snelste route per
+ * etappe als default. Gebruikt door de meldingen en de tests.
+ */
+export async function berekenPlan({
+  stops,
+  legOptions,
+  thresholds = DEFAULT_THRESHOLDS,
+  fetchImpl = (...a) => fetch(...a),
+  nu = new Date(),
+  selection,
+}) {
+  const legsRaw = await haalRuweEtappes({ stops, fetchImpl });
+  return stelPlanSamen({ legsRaw, legOptions, selection, thresholds, nu });
 }
 
 /**
