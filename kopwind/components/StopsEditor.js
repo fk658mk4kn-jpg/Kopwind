@@ -3,9 +3,13 @@
 import { useEffect, useRef, useState } from "react";
 
 /**
- * Editor voor de keten van stops. Per stop drie invoerwegen:
- * preset-chips, huidige locatie (geolocation) en adres-autocomplete.
- * Tussen twee stops staat een tijdregel voor de etappe.
+ * Editor voor de keten van stops (bv. Thuis, Werk, en eventueel een
+ * tussenstop). Per stop drie invoerwegen: favoriete plekken als chips,
+ * huidige locatie (geolocation) en adres-autocomplete. Tussen twee stops
+ * staat een tijdregel voor de rit; de eerste rit kan ook "nu" vertrekken.
+ *
+ * Een plek die al favoriet is krijgt een gevulde gouden ster, zodat je in
+ * een oogopslag ziet wat er al opgeslagen is.
  */
 export default function StopsEditor({
   stops,
@@ -59,13 +63,23 @@ export default function StopsEditor({
         </div>
       ))}
       <button className="knop klein" onClick={addStop} style={{ marginTop: 8 }}>
-        + Stop toevoegen
+        + Tussenstop toevoegen
       </button>
     </div>
   );
 }
 
+function isFavoriet(stop, presets) {
+  if (!stop) return false;
+  return presets.some(
+    (p) =>
+      p.naam === stop.naam ||
+      (Math.abs(p.lat - stop.lat) < 1e-4 && Math.abs(p.lon - stop.lon) < 1e-4)
+  );
+}
+
 function StopRow({ index, stop, presets, onChange, onRemove, onSavePreset }) {
+  const favoriet = isFavoriet(stop, presets);
   return (
     <div className="stoprij">
       <div className="stopnummer">{index + 1}</div>
@@ -105,17 +119,27 @@ function StopRow({ index, stop, presets, onChange, onRemove, onSavePreset }) {
       </div>
       {stop && (
         <button
-          className="iconknop"
-          title="Bewaar als preset"
+          className={"iconknop ster" + (favoriet ? " goud" : "")}
+          title={
+            favoriet
+              ? "Al opgeslagen als favoriet"
+              : "Bewaar als favoriete plek"
+          }
+          aria-label={
+            favoriet
+              ? "Al opgeslagen als favoriet"
+              : "Bewaar als favoriete plek"
+          }
           onClick={() => {
+            if (favoriet) return;
             const naam = window.prompt(
-              "Naam voor deze preset (bv. Thuis, Werk):",
+              "Naam voor deze plek (bv. Thuis, Werk):",
               stop.naam.split(",")[0]
             );
             if (naam) onSavePreset({ ...stop, naam: naam.trim() });
           }}
         >
-          ★
+          {favoriet ? "★" : "☆"}
         </button>
       )}
       {onRemove && (
@@ -189,7 +213,7 @@ function ZoekVeld({ onKies }) {
     <div className="zoekwrap">
       <input
         type="text"
-        placeholder="Zoek een adres of plek..."
+        placeholder="Zoek een adres (bv. je werk)..."
         value={tekst}
         onChange={(e) => zoek(e.target.value)}
         aria-label="Adres zoeken"
@@ -223,19 +247,24 @@ function ZoekVeld({ onKies }) {
 }
 
 function LegTimeRow({ index, opties, onChange }) {
+  const eerste = index === 0;
   return (
     <div className="tijdrij">
-      <span>Etappe {index + 1}:</span>
+      <span>Rit {index + 1}:</span>
       <select
-        value={opties.mode}
+        value={eerste && opties.mode === "auto" ? "nu" : opties.mode}
         onChange={(e) => onChange({ mode: e.target.value })}
         aria-label="Tijdmodus"
       >
-        <option value="auto">na vorige stop</option>
+        {eerste ? (
+          <option value="nu">vertrekken nu</option>
+        ) : (
+          <option value="auto">na vorige stop</option>
+        )}
         <option value="vertrek">vertrek om</option>
         <option value="aankomst">aankomst om</option>
       </select>
-      {opties.mode === "auto" && index > 0 && (
+      {opties.mode === "auto" && !eerste && (
         <>
           <input
             type="number"
@@ -248,7 +277,6 @@ function LegTimeRow({ index, opties, onChange }) {
           <span>min verblijf</span>
         </>
       )}
-      {opties.mode === "auto" && index === 0 && <span>vertrek: nu</span>}
       {(opties.mode === "vertrek" || opties.mode === "aankomst") && (
         <input
           type="datetime-local"

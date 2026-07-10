@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { fmtTijd, fmtKm, bft, kompas } from "@/lib/format";
+import { fmtTijd, fmtKm, bft, kompas, fmtCijfer } from "@/lib/format";
 import { legWindSummary } from "@/lib/wind";
 
 /**
@@ -129,7 +129,7 @@ export default function MapView({ legs, actieveLeg, onKiesRoute, presets }) {
           }).addTo(layer);
           lijn.on("click", () => kiesRef.current?.(i, alt.index));
           lijn.bindTooltip(
-            `Alternatief: advies ${alt.advies.score}, ${fmtKm(alt.distance)}` +
+            `Alternatief: cijfer ${fmtCijfer(alt.advies.score)}, ${fmtKm(alt.distance)}` +
               ` (${dmin >= 0 ? "+" : ""}${dmin} min). Klik om te kiezen.`,
             { sticky: true }
           );

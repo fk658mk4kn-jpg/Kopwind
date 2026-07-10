@@ -64,3 +64,14 @@ export function afrondOpKwartier(date) {
   if (rest !== 0) d.setMinutes(d.getMinutes() + (15 - rest));
   return d;
 }
+
+/**
+ * Pijnscore (0 tot 100, hoger is vervelender) naar een rapportcijfer
+ * (1 tot 10, hoger is beter). Score 0 is een 10, score 30 een 7,0,
+ * score 60 een 4,0. Komma-notatie, ",0" wordt weggelaten.
+ */
+export function fmtCijfer(score) {
+  const c = Math.max(1, Math.min(10, (100 - score) / 10));
+  const s = (Math.round(c * 10) / 10).toFixed(1).replace(".", ",");
+  return s.endsWith(",0") ? s.slice(0, -2) : s;
+}

@@ -11,7 +11,7 @@ const VELDEN = [
   { key: "segmentLengte", label: "Segmentlengte", eenheid: "m" },
 ];
 
-/** Modal met drempelinstellingen (pijnscore) en presetbeheer. */
+/** Modal met drempelinstellingen, favoriete plekken en opgeslagen routes. */
 export default function SettingsPanel({
   open,
   onClose,
@@ -19,6 +19,8 @@ export default function SettingsPanel({
   setThresholds,
   presets,
   onDeletePreset,
+  routes,
+  onDeleteRoute,
 }) {
   if (!open) return null;
   return (
@@ -26,7 +28,7 @@ export default function SettingsPanel({
       <div className="modal" onClick={(e) => e.stopPropagation()}>
         <h2>Instellingen</h2>
 
-        <h3>Drempels voor de pijnscore</h3>
+        <h3>Drempels voor het cijfer</h3>
         {VELDEN.map((v) => (
           <div className="instelrij" key={v.key}>
             <label htmlFor={"inst-" + v.key}>
@@ -55,15 +57,37 @@ export default function SettingsPanel({
           </button>
         </div>
         <p className="uitleg">
-          Advies op basis van de score: 0 tot 29 fiets prima, 30 tot 59 fiets met
-          tegenzin, 60 plus pak de scooter.
+          Elke rit krijgt een rapportcijfer voor het fietsweer: 7 of hoger is een
+          prima fietsdag, tussen 4 en 7 wordt het pittig, onder de 4 raden we
+          fietsen af. Wind, regen, kou en windstoten drukken het cijfer.
         </p>
 
-        <h3>Opgeslagen locaties</h3>
+        <h3>Opgeslagen routes</h3>
+        {(!routes || routes.length === 0) && (
+          <p className="uitleg">
+            Nog geen routes. Vul je woon-werkrit in en klik op Route opslaan; dan
+            staat hij morgen met een klik klaar.
+          </p>
+        )}
+        {(routes ?? []).map((r) => (
+          <div className="presetrij" key={r.naam}>
+            <div>
+              <strong>{r.naam}</strong>
+              <div className="adres">
+                {r.stops.map((s) => s.naam.split(",")[0]).join(" → ")}
+              </div>
+            </div>
+            <button className="knop klein" onClick={() => onDeleteRoute(r.naam)}>
+              verwijder
+            </button>
+          </div>
+        ))}
+
+        <h3>Favoriete plekken</h3>
         {presets.length === 0 && (
           <p className="uitleg">
-            Nog geen presets. Kies een locatie in de planner en klik op ★ om hem te
-            bewaren.
+            Nog geen favorieten. Kies een locatie in de planner en klik op de ster
+            om hem te bewaren.
           </p>
         )}
         {presets.map((p) => (

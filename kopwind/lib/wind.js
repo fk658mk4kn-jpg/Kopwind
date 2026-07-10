@@ -264,12 +264,16 @@ export function analyzeLeg({
   let neerslagKansMax = 0;
   let neerslagMmMax = 0;
   let gevoelMin = Infinity;
+  let matigMeters = 0;
+  let zwaarMeters = 0;
 
   for (const s of segments) {
     gewicht += s.distance;
     som += s.headwind * s.distance;
     somPos += Math.max(0, s.headwind) * s.distance;
     if (s.headwind > maxHead) maxHead = s.headwind;
+    if (s.headwind >= thresholds.tegenwindMatig) matigMeters += s.distance;
+    if (s.headwind >= thresholds.tegenwindZwaar) zwaarMeters += s.distance;
     if (s.weer) {
       if (s.weer.gust != null) maxGust = Math.max(maxGust, s.weer.gust);
       if (s.weer.neerslagKans != null)
@@ -288,6 +292,10 @@ export function analyzeLeg({
     neerslagKansMax,
     neerslagMmMax,
     gevoelMin: gevoelMin === Infinity ? null : gevoelMin,
+    matigMeters,
+    zwaarMeters,
+    fracMatig: gewicht > 0 ? matigMeters / gewicht : 0,
+    fracZwaar: gewicht > 0 ? zwaarMeters / gewicht : 0,
     distance,
     duration,
     missendWeer,

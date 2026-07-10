@@ -1,6 +1,8 @@
-# Kopwind
+# Vandaag op de fiets?
 
-Fiets of scooter? Kopwind rekent je hele dagketen door (bv. Thuis → Sportschool → Thuis → Werk), berekent per routesegment de kopwind op het moment dat jij daar fietst, en geeft advies per etappe en voor de hele dag: fiets prima, fiets met tegenzin, of pak de scooter.
+Kan ik vandaag beter met de fiets naar werk? Deze check rekent je woon-werkrit door (heen, terug en eventuele tussenstops), berekent per stuk route hoeveel wind je tegen hebt op het uur dat je daar fietst, en geeft per rit een rapportcijfer met advies: prima fietsdag, pittige rit, of vandaag liever niet fietsen.
+
+Interne werknaam van dit project: kopwind (mapnaam, opslagsleutels en zip heten zo; alles wat de gebruiker ziet heet "Vandaag op de fiets?").
 
 ## Starten
 
@@ -9,26 +11,29 @@ npm install
 npm run dev
 ```
 
-Open http://localhost:3000. Geen API-keys nodig. Klik op Demo om de app meteen in actie te zien met een voorbeeldketen door Rotterdam.
+Open http://localhost:3000. Geen API-keys nodig. Klik op Demo om de check meteen in actie te zien met een voorbeeldketen door Rotterdam.
 
-Optioneel: maak een `.env.local` met `ORS_API_KEY=...` (gratis key via openrouteservice.org) om te routeren via OpenRouteService in plaats van de publieke OSRM-fietsrouter. De app schakelt automatisch.
+Optioneel in `.env.local`:
+- `ORS_API_KEY=...` (gratis via openrouteservice.org) om te routeren via OpenRouteService in plaats van de publieke OSRM-fietsrouter.
+- `NEXT_PUBLIC_SITE_URL=https://jouwdomein.nl` voor SEO (canonical, Open Graph, robots.txt en sitemap.xml).
 
 ## Wat het doet
 
-- Keten van stops: vertrekpunt van etappe N is automatisch het eindpunt van etappe N-1. Per etappe kies je een vertrektijd, een aankomsttijd (vertrek wordt teruggerekend met de reistijd), of "na vorige stop" met verblijftijd.
-- Locaties: opgeslagen presets (Thuis, Werk, ...), huidige locatie via de browser, of adres zoeken met autocomplete.
-- Wind op de route: de route wordt gesplitst in segmenten van ~300 m. Per segment: rijrichting (bearing), het voorspellingsuur waarop jij daar fietst, en dan kopwind = windsnelheid x cos(windrichting - rijrichting). Groen is rugwind, amber licht of zijwind, rood tegenwind. Op de kaart liggen de segmenten in hun windkleur met een witte omranding eronder zodat ze overal leesbaar blijven, plus windpijlen en een kompas dat laat zien waar de wind vandaan komt. In de windstrip per etappe zie je in een oogopslag waar het pijn doet.
-- Routealternatieven: de router geeft meerdere routes terug. Elke route krijgt zijn eigen windanalyse, zodat je ziet of een andere route minder tegenwind heeft. De alternatieven liggen dun en gestippeld op de kaart in hun eigen windkleuren; klik op de lijn of op een chip in de etappekaart om te wisselen. De route met de minste wind wordt gemarkeerd.
-- Planner en kaart naast elkaar: links stel je je dag samen en zie je het advies per etappe, rechts staat de kaart altijd in beeld. Op mobiel schuift alles netjes onder elkaar.
-- Volledig weer per etappe: temperatuur, gevoelstemperatuur, neerslagkans en -hoeveelheid, windkracht (Beaufort), windrichting en windstoten.
-- Advies: pijnscore 0 tot 100 per etappe uit tegenwind, regen, kou en windstoten. Drempels stel je zelf in. Het dagadvies volgt de zwaarste etappe: je kiest een keer per dag tussen fiets en scooter.
-- Meldingen: ochtendbriefing op een vast tijdstip met het dagadvies en het weer, en een herinnering X minuten voor elke geplande vertrektijd met het advies en het actuele weer voor die etappe. Zet ze aan via de knop Meldingen.
+- Woon-werkrit als keten: van huis naar werk, met als je wilt een tussenstop (sportschool, school). Vertrekpunt van rit N is automatisch het eindpunt van rit N-1. Per rit kies je: vertrekken nu (actuele situatie), een vertrektijd, of een aankomsttijd (vertrek wordt teruggerekend met de reistijd).
+- Routes opslaan: bewaar je complete route (stops plus tijden) onder een naam, bv. "Woon-werk". Morgen staat hij met een klik klaar.
+- Favoriete plekken: bewaar Thuis en Werk een keer; een plek die al favoriet is herken je aan de gevulde gouden ster.
+- Wind op de route: de route wordt gesplitst in stukken van ~300 m. Per stuk: rijrichting, het voorspellingsuur waarop jij daar fietst, en dan tegenwind = windsnelheid x cos(windrichting - rijrichting). Groen is wind mee, amber licht of zijwind, rood wind tegen, met een witte omranding zodat de kleuren op elke kaartachtergrond leesbaar zijn. Windpijlen en een kompas tonen waar de wind vandaan komt.
+- Routealternatieven: elke route krijgt zijn eigen windanalyse, zodat je ziet of een andere fietsroute naar werk minder tegenwind heeft. Alternatieven liggen gestippeld op de kaart in hun eigen windkleuren; klik op de lijn of op een chip om te wisselen. De route met de minste wind wordt gemarkeerd.
+- Rapportcijfer per rit: wind, regen, kou en windstoten drukken het cijfer (10 = perfecte fietsdag). 7 of hoger prima, 4 tot 7 pittig, onder de 4 liever niet. Drempels stel je zelf in. De zwaarste rit bepaalt het dagadvies, want de fiets gaat mee of niet.
+- Compacte ritblokken: direct onder de configuratie zie je per rit in een oogopslag route, tijden, weer, cijfer en waar op de route de wind zit.
+- Meldingen: ochtendbriefing met het dagadvies en het weer, en een herinnering X minuten voor elke geplande vertrektijd. Werkt zolang er een tabblad open staat.
 
-## Meldingen: hoe en beperking
+## SEO
 
-De meldingen gebruiken je laatst berekende keten. Kloktijden worden automatisch naar vandaag verschoven, zodat je vaste routine elke dag werkt zonder opnieuw invullen. Op het meldmoment wordt het actuele weer opgehaald, dus de melding klopt met dat moment.
-
-Beperking: dit zijn webmeldingen vanuit de pagina. Er moet dus ergens een tabblad met Kopwind open staan (mag op de achtergrond). Een gemiste ochtendbriefing wordt tot 3 uur later ingehaald zodra je de app opent. Echte push zonder open tab vraagt een service worker plus een server die op tijden pusht; zie LOGBOEK.md.
+- Titel, metabeschrijving, keywords, canonical, Open Graph en Twitter-card in `app/layout.js` (basis-URL via `NEXT_PUBLIC_SITE_URL`).
+- `robots.txt` en `sitemap.xml` via `app/robots.js` en `app/sitemap.js`.
+- H1 plus tekstsectie met tussenkoppen en FAQ over fietsen naar werk, fietsweer, wind tegen en het beste vertrekmoment.
+- JSON-LD: FAQPage en WebApplication.
 
 ## Testen
 
@@ -36,15 +41,14 @@ Beperking: dit zijn webmeldingen vanuit de pagina. Er moet dus ergens een tabbla
 npm test
 ```
 
-Draait de tests voor de rekenkern (bearing, haversine, windcomponenten, segmentering, uurkoppeling, samenvattingen), het adviesmodel, de meldingenplanning en een integratietest van de hele planner via de demoketen.
+Tests voor de rekenkern (bearing, haversine, windcomponenten, segmentering, uurkoppeling, samenvattingen), het cijfer- en adviesmodel, de meldingenplanning en een integratietest van de hele planner via de demoketen.
 
 ## Stack en keuzes
 
 - Next.js 14 (App Router, plain JavaScript), Leaflet met OpenStreetMap-tiles.
-- Routering: publieke OSRM-fietsrouter (FOSSGIS), optioneel OpenRouteService met key.
-- Geocoding: Photon (komoot), met bias naar Nederland.
-- Weer: Open-Meteo uurvoorspelling, tot ~4 dagen vooruit, zonder key.
+- Routering: publieke OSRM-fietsrouter (FOSSGIS) met alternatieven, optioneel OpenRouteService met key.
+- Geocoding: Photon (komoot), met bias naar Nederland. Weer: Open-Meteo uurvoorspelling, tot ~4 dagen vooruit, zonder key.
 - Drie dunne API-routes proxyen de externe diensten; alle rekenwerk zit in pure functies onder `lib/` en is getest.
-- Alles lokaal in localStorage: presets, drempels, laatste keten, meldinginstellingen. Geen accounts, geen database.
+- Alles lokaal in localStorage: favorieten, routes, drempels, laatste keten, meldinginstellingen. Geen accounts, geen database.
 
-Eerlijke beperking: Open-Meteo geeft modelwind op 10 m hoogte per uur. Lokale effecten (open dijk, tussen flats) zitten daar niet in. De kleuren zijn dus een goede gids, geen belofte.
+Eerlijke beperking: Open-Meteo geeft modelwind op 10 m hoogte per uur. Lokale effecten (open dijk, tussen flats) zitten daar niet in. De kleuren zijn een goede gids, geen belofte.

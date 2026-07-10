@@ -10,6 +10,8 @@ import {
   vertrekTekst,
 } from "@/lib/notify";
 
+// Opslagsleutels behouden het interne voorvoegsel kopwind zodat bestaande
+// gebruikersdata (presets, routes, drempels) een naamswissel overleeft.
 const LS_CHAIN = "kopwind.lastChain";
 const LS_LOG = "kopwind.meldingenLog";
 
@@ -83,8 +85,8 @@ export default function NotificationManager({ meldingen, thresholds }) {
             t = plan
               ? briefingTekst(plan)
               : {
-                  title: "Kopwind ochtendbriefing",
-                  body: "Kon het weer niet ophalen. Open Kopwind voor je advies van vandaag.",
+                  title: "Fietscheck ochtendbriefing",
+                  body: "Kon het weer niet ophalen. Open de fietscheck voor je advies van vandaag.",
                 };
           } else {
             const leg = plan?.legs?.[item.legIdx];
@@ -92,7 +94,7 @@ export default function NotificationManager({ meldingen, thresholds }) {
               ? vertrekTekst(leg, meldingen.vertrekMinuten)
               : {
                   title: `Over ${meldingen.vertrekMinuten} min vertrekken`,
-                  body: "Je volgende etappe staat gepland. Open Kopwind voor het actuele weer.",
+                  body: "Je volgende rit staat gepland. Open de fietscheck voor het actuele weer.",
                 };
           }
           try {

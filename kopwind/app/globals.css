@@ -83,48 +83,72 @@ h3 {
   box-shadow: inset 0 0 0 3px rgba(255, 255, 255, 0.55);
 }
 
-.kop h1 {
-  font-size: 25px;
-  margin: 0;
+.merk-naam {
+  font-size: 21px;
   font-weight: 700;
-}
-
-.kop .tagline {
-  color: var(--inkt-zacht);
-  font-size: 14.5px;
+  letter-spacing: -0.02em;
 }
 
 .kop .spacer {
   flex: 1;
 }
 
-/* Werkblad: planner links, kaart rechts, resultaten linksonder */
+/* Hero: de SEO-kop boven de tool, compact zodat de planner hoog blijft */
+.hero {
+  margin: 2px 0 16px;
+  max-width: 820px;
+}
+
+.hero h1 {
+  margin: 0 0 6px;
+  font-size: 30px;
+  line-height: 1.15;
+}
+
+.hero p {
+  margin: 0;
+  color: var(--inkt-zacht);
+  font-size: 15.5px;
+}
+
+/* Werkblad: configuratie links, kaart rechts; ritblokken komen er vol
+   in de breedte direct onder, naast elkaar. */
 .werkblad {
   display: grid;
   grid-template-columns: minmax(0, 460px) minmax(0, 1fr);
-  grid-template-rows: auto 1fr;
-  grid-template-areas:
-    "planner map"
-    "results map";
   gap: 18px;
-  align-items: start;
+  align-items: stretch;
+  margin-bottom: 16px;
 }
 
-.blok-planner { grid-area: planner; }
-.blok-results { grid-area: results; min-width: 0; }
-.blok-map { grid-area: map; }
+.blok-planner {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.blok-planner .paneel { flex: 1; }
+.blok-map { min-width: 0; }
 
 .blok-map .kaartpaneel {
-  position: sticky;
-  top: 18px;
-  height: calc(100vh - 130px);
-  min-height: 520px;
+  height: 100%;
+  min-height: 440px;
   border-radius: var(--radius);
   overflow: hidden;
   border: 1px solid var(--lijn-sterk);
   box-shadow: var(--schaduw);
   background: #eef0ec;
 }
+
+.actiebalk {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
+
+.routechips { margin-bottom: 10px; align-items: center; }
 
 /* Kaartjes */
 .paneel {
@@ -317,6 +341,20 @@ h3 {
   border-color: var(--accent);
 }
 
+.iconknop.ster {
+  font-size: 17px;
+  color: #a8a29e;
+}
+
+.iconknop.ster.goud {
+  color: #d97706;
+  background: #fff7e0;
+  border-color: #f3ce7c;
+  cursor: default;
+}
+
+.iconknop.ster.goud:hover { border-color: #f3ce7c; }
+
 /* Tijdregel tussen stops */
 .tijdrij {
   display: flex;
@@ -346,8 +384,8 @@ h3 {
 /* Dagbanner */
 .dagbanner {
   border-radius: var(--radius);
-  padding: 18px 20px;
-  margin: 0 0 16px;
+  padding: 16px 20px;
+  margin: 0 0 14px;
   border: 1px solid;
   box-shadow: var(--schaduw-zacht);
 }
@@ -366,15 +404,19 @@ h3 {
 .dagbanner.rood h2 { color: var(--rood); }
 
 .dagbanner p { margin: 0; color: var(--inkt-zacht); }
+.dagcijfer { font-weight: 500; }
 .dagbanner .noot { font-size: 13px; margin-top: 6px; }
 
 .demo-noot { margin: -6px 0 14px; }
 
-/* Etappekaarten */
+/* Ritblokken: compact, naast elkaar, in een oogopslag te scannen */
+.resultaten { margin-bottom: 26px; }
+
 .legs {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
   gap: 12px;
+  align-items: start;
 }
 
 .legkaart {
@@ -383,7 +425,7 @@ h3 {
   border: 1px solid var(--lijn);
   background: var(--kaart);
   border-radius: var(--radius);
-  padding: 15px 17px;
+  padding: 13px 15px;
   box-shadow: var(--schaduw-zacht);
   transition: border-color 0.12s ease, box-shadow 0.12s ease;
   cursor: pointer;
@@ -682,22 +724,44 @@ h3 {
   border: 1px dashed var(--lijn-sterk);
   border-radius: var(--radius);
   background: rgba(255, 255, 255, 0.5);
+  margin-bottom: 26px;
 }
 
-/* Responsive: onder elkaar, kaart tussen planner en resultaten */
+/* SEO-tekst onder de tool: leesbaar, rustig, indexeerbaar */
+.seotekst {
+  max-width: 860px;
+  margin-top: 34px;
+  padding-top: 8px;
+  border-top: 1px solid var(--lijn);
+}
+
+.seotekst h2 {
+  font-size: 19px;
+  margin: 26px 0 8px;
+}
+
+.seotekst p {
+  margin: 0 0 10px;
+  color: var(--inkt-zacht);
+}
+
+.faq-item h3 {
+  font-size: 15.5px;
+  margin: 16px 0 4px;
+}
+
+.faq-item p {
+  margin: 0;
+}
+
+/* Responsive: onder elkaar, kaart tussen configuratie en ritblokken */
 @media (max-width: 960px) {
-  .werkblad {
-    grid-template-columns: 1fr;
-    grid-template-areas:
-      "planner"
-      "map"
-      "results";
-  }
+  .werkblad { grid-template-columns: 1fr; }
   .blok-map .kaartpaneel {
-    position: static;
-    height: 360px;
+    height: 340px;
     min-height: 0;
   }
+  .hero h1 { font-size: 24px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

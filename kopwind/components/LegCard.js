@@ -1,11 +1,11 @@
 "use client";
 
-import { bft, kompas, fmtKm, fmtDuur, fmtTijd } from "@/lib/format";
+import { bft, kompas, fmtKm, fmtDuur, fmtTijd, fmtCijfer } from "@/lib/format";
 
 const BADGE_KLEUR = {
-  "fiets prima": "groen",
-  "fiets met tegenzin": "oranje",
-  "pak de scooter": "rood",
+  "prima fietsdag": "groen",
+  "pittige rit": "oranje",
+  "liever niet fietsen": "rood",
 };
 
 /**
@@ -58,7 +58,7 @@ export default function LegCard({ leg, index, actief, onClick, onKiesRoute }) {
           {index + 1}. {leg.van.naam.split(",")[0]} → {leg.naar.naam.split(",")[0]}
         </span>
         <span className={"badge " + BADGE_KLEUR[a.advies]}>
-          {a.advies} · {a.score}
+          {a.advies} · {fmtCijfer(a.score)}
         </span>
       </div>
 
@@ -110,9 +110,9 @@ export default function LegCard({ leg, index, actief, onClick, onKiesRoute }) {
                 key={j}
                 className={"routechip" + (j === leg.gekozenIndex ? " actief" : "")}
                 onClick={() => onKiesRoute(index, alt.index)}
-                title={`Advies-score ${alt.advies.score}, ${fmtKm(alt.distance)}`}
+                title={`Cijfer ${fmtCijfer(alt.advies.score)}, ${fmtKm(alt.distance)}`}
               >
-                {rol} · {alt.advies.score}
+                {rol} · {fmtCijfer(alt.advies.score)}
                 {dtxt}
                 {minsteWind && <span className="minstewind"> minste wind</span>}
               </button>
@@ -144,7 +144,7 @@ export default function LegCard({ leg, index, actief, onClick, onKiesRoute }) {
 
       <p className="samenvatting">{leg.samenvatting}</p>
       {a.redenen.length > 0 && (
-        <p className="redenen">Score: {a.redenen.join(", ")}.</p>
+        <p className="redenen">Cijfer gedrukt door: {a.redenen.join(", ")}.</p>
       )}
       {leg.warning && <p className="waarschuwing">{leg.warning}</p>}
     </div>

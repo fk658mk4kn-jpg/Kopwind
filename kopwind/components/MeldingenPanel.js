@@ -26,8 +26,8 @@ export default function MeldingenPanel({ open, onClose, meldingen, setMeldingen 
 
   const testMelding = () => {
     try {
-      const n = new Notification("Kopwind testmelding", {
-        body: "Zo zien je meldingen eruit. 14 graden, droog, wind 3 Bft uit ZW.",
+      const n = new Notification("Fietscheck testmelding", {
+        body: "Zo zien je meldingen eruit. Prima fietsdag (9,3): 14 graden, droog, wind 3 Bft uit ZW.",
       });
       n.onclick = () => window.focus();
     } catch {
@@ -113,8 +113,8 @@ export default function MeldingenPanel({ open, onClose, meldingen, setMeldingen 
         <p className="uitleg">
           De briefing en herinneringen gebruiken je laatst berekende keten en het
           actuele weer: advies, temperatuur, regen en wind. Herinneringen gelden
-          voor etappes met een geplande tijd. Werkt zolang er ergens een tabblad
-          met Kopwind open staat; een gemiste briefing wordt tot 3 uur later
+          voor ritten met een geplande tijd (niet bij vertrekken nu). Werkt zolang er ergens een tabblad
+          met de fietscheck open staat; een gemiste briefing wordt tot 3 uur later
           ingehaald zodra je de app opent.
         </p>
 

@@ -4,6 +4,12 @@ import { berekenPlan, resolveDeparture } from "../lib/planner.js";
 import { DEMO_STOPS, demoLegOptions, demoFetch } from "../lib/demo.js";
 import { DEFAULT_THRESHOLDS } from "../lib/advice.js";
 
+test("resolveDeparture: vertrekken nu gebruikt de actuele tijd exact", () => {
+  const nu = new Date(2026, 6, 10, 8, 7, 30);
+  const d = resolveDeparture({ mode: "nu" }, 1800, null, nu);
+  assert.equal(d.getTime(), nu.getTime());
+});
+
 test("resolveDeparture: aankomsttijd min reistijd is vertrektijd", () => {
   const d = resolveDeparture(
     { mode: "aankomst", tijd: "2026-07-09T09:00" },

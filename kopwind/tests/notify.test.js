@@ -42,10 +42,10 @@ test("planTimes: keten met vertrek, verblijf en aankomst rekent door", () => {
   assert.equal(t[2].departure.getMinutes(), 0);
 });
 
-test("planTimes: auto als eerste etappe geeft geen vaste tijd", () => {
+test("planTimes: auto of nu als eerste rit geeft geen vaste tijd", () => {
   const nu = new Date(2026, 6, 10, 6, 0);
-  const t = planTimes([{ mode: "auto" }], [1800], nu);
-  assert.equal(t[0].departure, null);
+  assert.equal(planTimes([{ mode: "auto" }], [1800], nu)[0].departure, null);
+  assert.equal(planTimes([{ mode: "nu" }], [1800], nu)[0].departure, null);
 });
 
 test("dueNotifications: ochtendbriefing binnen venster, een keer", () => {

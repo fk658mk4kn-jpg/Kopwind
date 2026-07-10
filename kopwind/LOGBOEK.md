@@ -68,3 +68,25 @@ Vier stukken feedback verwerkt.
 Nieuwe pure functies met tests: legWindSummary (circulair gemiddelde windrichting plus gewogen snelheid). Testtal nu 20, allemaal groen. De integratietest via de demo dekt de nieuwe { routes: [...] }-vorm; de demo geeft twee alternatieven per etappe zodat de routevergelijking zichtbaar is zonder netwerk.
 
 Nog steeds bewust niet gebouwd: automatische routekeuze op minste wind (kan absurde omwegen geven), en de weerpunten worden nog op het middelpunt van de snelste route opgehaald en hergebruikt voor de alternatieven (op NL-afstanden verwaarloosbaar, de tijdas per segment is wel exact). Meldingen gebruiken voor de zekerheid nog de snelste route.
+
+---
+
+## Iteratie 3 (10 juli 2026): woon-werkfocus, scorefix, routes, hiërarchie, SEO
+
+Repositionering van persoonlijke fiets-of-scooter-tool naar publieke check voor de vraag "kan ik vandaag beter met de fiets naar werk?".
+
+1. Scorediagnose en fix. De score was niet defect maar inconsistent: de tekstsamenvatting keek naar losse segmenten boven de drempel ("1,9 km merkbare tegenwind"), terwijl de score alleen het ritgemiddelde boven diezelfde drempel telde. Een verder rustige rit bleef daardoor op score 0 staan naast een tekst over tegenwind. Bovendien leest "score 0 = perfect" voor een breed publiek als kapot. Twee ingrepen: (a) de pijnscore is nu continu vanaf 5 km/u gemiddelde tegenwind en telt daarnaast de tegenwindstukken zelf mee (aandeel van de afstand boven matig en boven zwaar), met een reden die het aantal kilometers benoemt; (b) naar buiten toe is de score een rapportcijfer: 10 = perfecte fietsdag, 7+ prima, 4 tot 7 pittig, onder 4 liever niet. Cijfer en toelichting vertellen nu altijd hetzelfde verhaal. Interne pijnscore 0-100 blijft bestaan (drempels, meldingen, tests).
+
+2. Scooter eruit. Er zat overigens geen scooterdeelvervoer in; wel "pak de scooter" als adviestekst. Alle labels zijn nu fiets-of-niet: prima fietsdag, pittige rit, liever niet fietsen. Dagadvies-framing: heen en terug tellen allebei mee, de zwaarste rit bepaalt of de fiets meegaat.
+
+3. Routes opslaan. Complete routes (stops plus tijdopties) onder een naam in localStorage (kopwind.routes), laden via chips bovenin de planner, beheren in Instellingen. Favoriete plekken blijven los bestaan; een plek die al favoriet is toont een gevulde gouden ster (amber op lichtgele chip) in plaats van de neutrale ster, met een lege ster voor nog-niet-opgeslagen plekken.
+
+4. Vertrekken nu. Nieuwe vertrekmodus "nu" (default voor de eerste rit): rekent met de actuele kloktijd in plaats van het eerstvolgende kwartier. Oude opgeslagen ketens met "auto" op rit 1 worden bij het laden gemigreerd. Voor de vertrekherinnering geldt "nu" als geen vaste tijd (je vertrekt immers al).
+
+5. Informatiehiërarchie. Nieuwe volgorde: compacte hero met H1, dan configuratie links met de kaart rechts, en direct daaronder over de volle breedte het dagadvies plus de ritblokken naast elkaar in een responsief grid (minmax 330px). Elk blok volgt de gewenste opbouw: route en cijferbadge, tijden en afstand, weerregel, routekeuze, windstrip, samenvatting. Kaarten compacter (padding omlaag), scanbaar in een oogopslag.
+
+6. Positionering, copy en SEO. Naam in de interface: "Vandaag op de fiets?" (constante in lib/brand.js, makkelijk te wisselen). Titel en metabeschrijving op de zoekintentie (fietsen naar werk, fietsweer, kan ik fietsen vandaag, wind tegen fietsen, woon-werkverkeer fiets), canonical en Open Graph via NEXT_PUBLIC_SITE_URL, robots.txt en sitemap.xml via app/robots.js en app/sitemap.js, H1 plus vier H2-tekstblokken en een FAQ (vier vragen) onder de tool, en JSON-LD voor FAQPage en WebApplication. FAQ-tekst en JSON-LD zijn identiek (vereiste van Google). Meldingen heten nu Fietscheck-meldingen.
+
+7. Behoud. Interne mapnaam, zip en localStorage-sleutels blijven kopwind, zodat bestaande data en de Vercel-koppeling een naamswissel overleven. Meldingen gebruiken voor herinneringen de snelste route (ongewijzigd).
+
+Tests: 23 groen, waaronder een regressietest voor precies het gemelde geval (laag ritgemiddelde plus 1,9 km merkbare tegenwind geeft nu een mild gedrukt cijfer met een reden die het stuk benoemt, in plaats van score 0) en tests voor vertrekken nu. Build geslaagd, inclusief robots.txt en sitemap.xml.

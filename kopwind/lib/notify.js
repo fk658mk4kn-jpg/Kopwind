@@ -13,7 +13,8 @@
  *   etappe uit de laatst opgeslagen keten.
  */
 
-import { toLocalInput, bft, kompas, fmtTijd } from "./format.js";
+import { toLocalInput, bft, kompas, fmtTijd, fmtCijfer } from "./format.js";
+import { APP_KORT } from "./brand.js";
 
 export const DEFAULT_MELDINGEN = {
   ochtend: false,
@@ -75,7 +76,8 @@ export function planTimes(legOptions, durations, nu) {
       const verblijf = Number.isFinite(o.verblijfMin) ? o.verblijfMin : 45;
       departure = new Date(vorigeAankomst.getTime() + verblijf * 60 * 1000);
     }
-    // mode "auto" op de eerste etappe heeft geen vaste tijd: geen herinnering.
+    // mode "auto" of "nu" op de eerste rit heeft geen vaste kloktijd:
+    // je vertrekt gewoon, dus daar is geen herinnering voor nodig.
 
     const arrival =
       departure && Number.isFinite(dur)
@@ -154,16 +156,16 @@ export function briefingTekst(plan) {
   const dag = plan?.dag;
   if (!dag) {
     return {
-      title: "Kopwind ochtendbriefing",
-      body: "Geen keten om door te rekenen. Open Kopwind en stel je dag samen.",
+      title: `${APP_KORT} ochtendbriefing`,
+      body: "Geen route om door te rekenen. Open de fietscheck en stel je dag samen.",
     };
   }
   const leg = plan.legs[dag.worstIdx];
   const van = leg.van.naam.split(",")[0];
   const naar = leg.naar.naam.split(",")[0];
   return {
-    title: `Kopwind: ${dag.advies} (score ${dag.score})`,
-    body: `Zwaarste etappe ${van} naar ${naar} om ${fmtTijd(leg.departure)}: ${leg.samenvatting} ${weerZin(leg)}`,
+    title: `${APP_KORT}: ${dag.advies} (${fmtCijfer(dag.score)})`,
+    body: `Zwaarste rit ${van} naar ${naar} om ${fmtTijd(leg.departure)}: ${leg.samenvatting} ${weerZin(leg)}`,
   };
 }
 
@@ -173,7 +175,7 @@ export function vertrekTekst(leg, minuten) {
   const naar = leg.naar.naam.split(",")[0];
   return {
     title: `Over ${minuten} min: ${van} naar ${naar}`,
-    body: `${kapitaal(leg.advies.advies)} (score ${leg.advies.score}). ${weerZin(leg)}`,
+    body: `${kapitaal(leg.advies.advies)} (${fmtCijfer(leg.advies.score)}). ${weerZin(leg)}`,
   };
 }
 

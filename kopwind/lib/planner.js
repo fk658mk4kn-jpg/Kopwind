@@ -163,13 +163,17 @@ export async function berekenPlan({
 }
 
 /**
- * Bepaalt de vertrektijd van een etappe.
+ * Bepaalt de vertrektijd van een rit.
+ * - mode "nu": direct vertrekken, de actuele situatie.
  * - mode "vertrek": de opgegeven tijd.
  * - mode "aankomst": opgegeven aankomsttijd min de reistijd.
- * - mode "auto": aankomst vorige etappe plus verblijftijd, of nu afgerond
- *   op het eerstvolgende kwartier voor de eerste etappe.
+ * - mode "auto": aankomst vorige rit plus verblijftijd, of nu afgerond
+ *   op het eerstvolgende kwartier voor de eerste rit.
  */
 export function resolveDeparture(opties, durationSec, vorigeAankomst, nu) {
+  if (opties.mode === "nu") {
+    return new Date(nu.getTime());
+  }
   if (opties.mode === "vertrek" && opties.tijd) {
     return new Date(opties.tijd);
   }
