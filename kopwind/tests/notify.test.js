@@ -116,3 +116,28 @@ test("dueNotifications: vertrekherinnering in het kwartier voor vertrek", () => 
   due = dueNotifications({ settings, log: { [`${dagKey(nu)}:vertrek:0`]: 1 }, times, nu });
   assert.equal(due.length, 0);
 });
+
+test("dueNotifications: prefix maakt sleutels uniek per route", () => {
+  const settings = { ochtend: true, ochtendTijd: "07:00", vertrek: false };
+  const nu = new Date(2026, 6, 10, 7, 5);
+  const due = dueNotifications({
+    settings,
+    log: {},
+    times: [],
+    nu,
+    prefix: "Woon-werk",
+  });
+  assert.equal(due.length, 1);
+  assert.equal(due[0].key, `${dagKey(nu)}:Woon-werk:ochtend`);
+
+  // Dezelfde dag, andere route: eigen sleutel, dus geen botsing in de dedupe.
+  const due2 = dueNotifications({
+    settings,
+    log: { [due[0].key]: 1 },
+    times: [],
+    nu,
+    prefix: "Sportschooldag",
+  });
+  assert.equal(due2.length, 1);
+  assert.notEqual(due2[0].key, due[0].key);
+});

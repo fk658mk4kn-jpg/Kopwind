@@ -40,6 +40,15 @@ export const metadata = {
       "Check je woon-werkrit: fietsweer, wind tegen per deel van de route, regen en temperatuur.",
   },
   robots: { index: true, follow: true },
+  appleWebApp: {
+    capable: true,
+    title: "Fietscheck",
+    statusBarStyle: "default",
+  },
+};
+
+export const viewport = {
+  themeColor: "#0e7490",
 };
 
 export default function RootLayout({ children }) {

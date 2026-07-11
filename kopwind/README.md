@@ -52,3 +52,14 @@ Tests voor de rekenkern (bearing, haversine, windcomponenten, segmentering, uurk
 - Alles lokaal in localStorage: favorieten, routes, drempels, laatste keten, meldinginstellingen. Geen accounts, geen database.
 
 Eerlijke beperking: Open-Meteo geeft modelwind op 10 m hoogte per uur. Lokale effecten (open dijk, tussen flats) zitten daar niet in. De kleuren zijn een goede gids, geen belofte.
+
+## Synchronisatie en meldingen op je telefoon (PWA)
+
+Apparaten koppel je met een synccode (geen account): maak hem aan via de knop Meldingen, voer hem in op je andere apparaat, en routes, favorieten en instellingen reizen mee. Meldingen stel je per opgeslagen route in (ochtendbriefing en/of herinnering voor vertrek) en komen binnen als echte pushberichten, ook als de app dicht is. Op iPhone: zet de site op je beginscherm (deelknop, "Zet op beginscherm"), open de app daarvandaan en zet dan meldingen aan (iOS 16.4+).
+
+Serverkant (eenmalige setup, alles gratis):
+1. Supabase: maak een project (free tier), plak `supabase/schema.sql` in de SQL editor, en zet `SUPABASE_URL` en `SUPABASE_SERVICE_ROLE_KEY` in je Vercel-omgeving.
+2. VAPID: draai `npx web-push generate-vapid-keys` en zet `VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, `VAPID_SUBJECT` en `NEXT_PUBLIC_VAPID_PUBLIC_KEY`.
+3. Klok: maak op cron-job.org (gratis) een job die elke 5 minuten `GET https://jouwdomein.nl/api/cron/meldingen` aanroept met header `x-cron-secret` gelijk aan je `CRON_SECRET`.
+
+Zonder deze configuratie werkt de check gewoon; alleen sync en meldingen geven dan een nette foutmelding. Push vereist HTTPS (Vercel regelt dat; localhost werkt ook voor desktop-tests).

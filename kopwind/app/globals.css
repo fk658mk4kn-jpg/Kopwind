@@ -717,6 +717,63 @@ h3 {
 
 .uitleg { color: var(--inkt-zacht); font-size: 13px; margin-top: 10px; }
 
+.synccode-rij {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 8px 0;
+}
+
+.synccode-rij input[type="text"] {
+  flex: 1;
+  min-width: 160px;
+  border: 1px solid var(--lijn-sterk);
+  border-radius: var(--radius-s);
+  padding: 8px 11px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.synccode {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  background: var(--accent-zacht);
+  color: var(--accent-diep);
+  border: 1px solid #bcdde8;
+  border-radius: var(--radius-s);
+  padding: 7px 13px;
+}
+
+.routemeldingen {
+  border-top: 1px solid var(--lijn);
+  padding: 10px 0 4px;
+}
+
+.instelgroep {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.instelgroep input[type="number"] { width: 70px; }
+.instelhint { color: var(--inkt-zacht); font-size: 12.5px; }
+
+.synstatus {
+  background: var(--accent-zacht);
+  border-radius: var(--radius-s);
+  padding: 8px 11px;
+}
+
+.databron {
+  color: var(--inkt-zacht);
+  font-size: 12.5px;
+  margin: 10px 2px 0;
+}
+
 .leeg {
   color: var(--inkt-zacht);
   padding: 30px 8px;

@@ -1,18 +1,17 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import StopsEditor from "@/components/StopsEditor";
 import LegCard from "@/components/LegCard";
 import DagBanner from "@/components/DagBanner";
 import SettingsPanel from "@/components/SettingsPanel";
 import MeldingenPanel from "@/components/MeldingenPanel";
-import NotificationManager from "@/components/NotificationManager";
 import { haalRuweEtappes, stelPlanSamen } from "@/lib/planner";
 import { DEFAULT_THRESHOLDS } from "@/lib/advice";
-import { DEFAULT_MELDINGEN } from "@/lib/notify";
 import { APP_NAAM } from "@/lib/brand";
-import { DEMO_STOPS, demoLegOptions, demoFetch } from "@/lib/demo";
+import { fmtTijd } from "@/lib/format";
+import { registreerSw } from "@/lib/push-client";
 
 const MapView = dynamic(() => import("@/components/MapView"), { ssr: false });
 
@@ -22,8 +21,8 @@ const LS = {
   presets: "kopwind.presets",
   thresholds: "kopwind.thresholds",
   lastChain: "kopwind.lastChain",
-  meldingen: "kopwind.meldingen",
   routes: "kopwind.routes",
+  synccode: "kopwind.synccode",
 };
 
 const FAQ = [
@@ -43,6 +42,10 @@ const FAQ = [
     v: "Kan ik ook mijn terugrit en tussenstops checken?",
     a: "Ja. Je plant je hele dag als een keten: heen, eventueel via de sportschool, en weer terug. Elke rit krijgt zijn eigen cijfer op zijn eigen tijdstip, en de zwaarste rit bepaalt het dagadvies, want de fiets gaat mee of niet.",
   },
+  {
+    v: "Krijg ik ook meldingen op mijn telefoon?",
+    a: "Ja. Koppel je apparaten met een synccode en zet per route een ochtendbriefing of vertrekherinnering aan. Op iPhone zet je de site eerst op je beginscherm (vanaf iOS 16.4); daarna komen de meldingen binnen als gewone pushberichten, ook als de app dicht is.",
+  },
 ];
 
 export default function Page() {
@@ -51,19 +54,23 @@ export default function Page() {
   const [presets, setPresets] = useState([]);
   const [routes, setRoutes] = useState([]);
   const [thresholds, setThresholds] = useState({ ...DEFAULT_THRESHOLDS });
-  const [meldingen, setMeldingen] = useState({ ...DEFAULT_MELDINGEN });
+  const [syncCode, setSyncCode] = useState(null);
 
   // Resultaatstaat: ruwe ritten uit het netwerk plus de routekeuze per rit.
   const [legsRaw, setLegsRaw] = useState(null);
   const [selection, setSelection] = useState([]);
   const [planStops, setPlanStops] = useState(null);
   const [planLegOptions, setPlanLegOptions] = useState(null);
+  const [planTijd, setPlanTijd] = useState(null);
   const [actieveLeg, setActieveLeg] = useState(0);
   const [bezig, setBezig] = useState(false);
   const [fout, setFout] = useState(null);
   const [instellingenOpen, setInstellingenOpen] = useState(false);
   const [meldingenOpen, setMeldingenOpen] = useState(false);
-  const [isDemo, setIsDemo] = useState(false);
+
+  // Sync: pas naar de server schrijven nadat de eerste load klaar is.
+  const syncKlaar = useRef(false);
+  const syncTimer = useRef(null);
 
   // Het plan wordt puur afgeleid: routewissel herrekent direct, zonder fetch.
   const plan = useMemo(() => {
@@ -76,8 +83,10 @@ export default function Page() {
     });
   }, [legsRaw, planLegOptions, selection, thresholds]);
 
-  // Opgeslagen staat laden (hydration-safe: pas na mount).
+  // Opgeslagen staat laden (hydration-safe: pas na mount) en SW registreren.
   useEffect(() => {
+    registreerSw();
+    let code = null;
     try {
       const p = JSON.parse(localStorage.getItem(LS.presets) ?? "[]");
       if (Array.isArray(p)) setPresets(p);
@@ -85,8 +94,8 @@ export default function Page() {
       if (Array.isArray(r)) setRoutes(r);
       const t = JSON.parse(localStorage.getItem(LS.thresholds) ?? "null");
       if (t) setThresholds({ ...DEFAULT_THRESHOLDS, ...t });
-      const m = JSON.parse(localStorage.getItem(LS.meldingen) ?? "null");
-      if (m) setMeldingen({ ...DEFAULT_MELDINGEN, ...m });
+      code = localStorage.getItem(LS.synccode) || null;
+      setSyncCode(code);
       const keten = JSON.parse(localStorage.getItem(LS.lastChain) ?? "null");
       if (keten?.stops?.length >= 2) {
         setStops(keten.stops);
@@ -98,11 +107,61 @@ export default function Page() {
     } catch {
       // Kapotte localStorage negeren; schone start.
     }
+    // Serverdata ophalen als er een code is; server wint bij het laden.
+    (async () => {
+      if (code) {
+        try {
+          const res = await fetch(`/api/sync?code=${encodeURIComponent(code)}`);
+          if (res.ok) {
+            const { data } = await res.json();
+            pasServerDataToe(data);
+          }
+        } catch {
+          // Offline of server weg: lokaal verder.
+        }
+      }
+      syncKlaar.current = true;
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Laatste keten bewaren voor de meldingen: stops, tijden, reistijden, keuze.
+  const pasServerDataToe = (data) => {
+    if (!data) return;
+    if (Array.isArray(data.presets)) {
+      setPresets(data.presets);
+      localStorage.setItem(LS.presets, JSON.stringify(data.presets));
+    }
+    if (Array.isArray(data.routes)) {
+      setRoutes(data.routes);
+      localStorage.setItem(LS.routes, JSON.stringify(data.routes));
+    }
+    if (data.thresholds) {
+      const t = { ...DEFAULT_THRESHOLDS, ...data.thresholds };
+      setThresholds(t);
+      localStorage.setItem(LS.thresholds, JSON.stringify(t));
+    }
+  };
+
+  // Wijzigingen (debounced) naar de server sturen.
   useEffect(() => {
-    if (!plan || isDemo || !planStops) return;
+    if (!syncKlaar.current || !syncCode) return;
+    clearTimeout(syncTimer.current);
+    syncTimer.current = setTimeout(() => {
+      fetch("/api/sync", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          code: syncCode,
+          data: { presets, routes, thresholds },
+        }),
+      }).catch(() => {});
+    }, 800);
+    return () => clearTimeout(syncTimer.current);
+  }, [presets, routes, thresholds, syncCode]);
+
+  // Laatste keten bewaren (voor de volgende sessie op dit apparaat).
+  useEffect(() => {
+    if (!plan || !planStops) return;
     localStorage.setItem(
       LS.lastChain,
       JSON.stringify({
@@ -112,7 +171,7 @@ export default function Page() {
         selection,
       })
     );
-  }, [plan, isDemo, planStops, planLegOptions, selection]);
+  }, [plan, planStops, planLegOptions, selection]);
 
   const bewaarPreset = (preset) => {
     const next = [...presets.filter((p) => p.naam !== preset.naam), preset];
@@ -126,6 +185,11 @@ export default function Page() {
     localStorage.setItem(LS.presets, JSON.stringify(next));
   };
 
+  const zetRoutes = (next) => {
+    setRoutes(next);
+    localStorage.setItem(LS.routes, JSON.stringify(next));
+  };
+
   const bewaarRoute = () => {
     const gekozen = stops.filter(Boolean);
     if (gekozen.length < stops.length || gekozen.length < 2) {
@@ -137,12 +201,17 @@ export default function Page() {
       "Woon-werk"
     );
     if (!naam) return;
-    const next = [
+    const bestaand = routes.find((r) => r.naam === naam.trim());
+    zetRoutes([
       ...routes.filter((r) => r.naam !== naam.trim()),
-      { naam: naam.trim(), stops: gekozen, legOptions },
-    ];
-    setRoutes(next);
-    localStorage.setItem(LS.routes, JSON.stringify(next));
+      {
+        naam: naam.trim(),
+        stops: gekozen,
+        legOptions,
+        durations: plan?.legs?.map((l) => l.duration) ?? bestaand?.durations,
+        meldingen: bestaand?.meldingen,
+      },
+    ]);
     setFout(null);
   };
 
@@ -153,9 +222,11 @@ export default function Page() {
   };
 
   const verwijderRoute = (naam) => {
-    const next = routes.filter((r) => r.naam !== naam);
-    setRoutes(next);
-    localStorage.setItem(LS.routes, JSON.stringify(next));
+    zetRoutes(routes.filter((r) => r.naam !== naam));
+  };
+
+  const wijzigRouteMeldingen = (naam, meldingen) => {
+    zetRoutes(routes.map((r) => (r.naam === naam ? { ...r, meldingen } : r)));
   };
 
   const wijzigThresholds = (t) => {
@@ -163,9 +234,42 @@ export default function Page() {
     localStorage.setItem(LS.thresholds, JSON.stringify(t));
   };
 
-  const wijzigMeldingen = (m) => {
-    setMeldingen(m);
-    localStorage.setItem(LS.meldingen, JSON.stringify(m));
+  const maakSyncCode = async () => {
+    try {
+      const res = await fetch("/api/sync", { method: "POST" });
+      const d = await res.json();
+      if (!res.ok) return d.error ?? "Kon geen synccode aanmaken.";
+      setSyncCode(d.code);
+      localStorage.setItem(LS.synccode, d.code);
+      // Dit apparaat vult het nieuwe profiel meteen met zijn data.
+      await fetch("/api/sync", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code: d.code, data: { presets, routes, thresholds } }),
+      }).catch(() => {});
+      return null;
+    } catch {
+      return "Kon geen synccode aanmaken (server niet bereikbaar).";
+    }
+  };
+
+  const koppelSyncCode = async (code) => {
+    try {
+      const res = await fetch(`/api/sync?code=${encodeURIComponent(code)}`);
+      const d = await res.json();
+      if (!res.ok) return d.error ?? "Onbekende synccode.";
+      setSyncCode(code);
+      localStorage.setItem(LS.synccode, code);
+      pasServerDataToe(d.data);
+      return null;
+    } catch {
+      return "Koppelen mislukt (server niet bereikbaar).";
+    }
+  };
+
+  const ontkoppel = () => {
+    setSyncCode(null);
+    localStorage.removeItem(LS.synccode);
   };
 
   const bereken = async () => {
@@ -185,36 +289,14 @@ export default function Page() {
         selection: zeros,
         thresholds,
       });
-      setIsDemo(false);
       setPlanStops(gekozen);
       setPlanLegOptions(legOptions);
       setLegsRaw(raw);
       setSelection(zeros);
+      setPlanTijd(new Date());
       setActieveLeg(plan0.dag?.worstIdx ?? 0);
     } catch (e) {
       setLegsRaw(null);
-      setFout(e.message ?? String(e));
-    } finally {
-      setBezig(false);
-    }
-  };
-
-  const draaiDemo = async () => {
-    setFout(null);
-    setBezig(true);
-    try {
-      const nu = new Date();
-      const opties = demoLegOptions(nu);
-      const raw = await haalRuweEtappes({ stops: DEMO_STOPS, fetchImpl: demoFetch(nu) });
-      const zeros = raw.map(() => 0);
-      const plan0 = stelPlanSamen({ legsRaw: raw, legOptions: opties, selection: zeros, thresholds });
-      setIsDemo(true);
-      setPlanStops(DEMO_STOPS);
-      setPlanLegOptions(opties);
-      setLegsRaw(raw);
-      setSelection(zeros);
-      setActieveLeg(plan0.dag?.worstIdx ?? 0);
-    } catch (e) {
       setFout(e.message ?? String(e));
     } finally {
       setBezig(false);
@@ -230,8 +312,6 @@ export default function Page() {
     setActieveLeg(legIdx);
   };
 
-  const meldingenActief = meldingen.ochtend || meldingen.vertrek;
-
   const faqJsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -246,7 +326,7 @@ export default function Page() {
     "@type": "WebApplication",
     name: APP_NAAM,
     description:
-      "Gratis fietscheck voor woon-werkverkeer: zie reistijd, fietsweer, wind tegen per deel van de route, regen en temperatuur, met een rapportcijfer per rit.",
+      "Gratis fietscheck voor woon-werkverkeer: zie reistijd, fietsweer, wind tegen per deel van de route, regen en temperatuur, met een rapportcijfer per rit en meldingen op je telefoon.",
     applicationCategory: "TravelApplication",
     operatingSystem: "Web",
     offers: { "@type": "Offer", price: "0", priceCurrency: "EUR" },
@@ -261,11 +341,8 @@ export default function Page() {
           <span className="merk-naam">{APP_NAAM.toLowerCase()}</span>
         </div>
         <span className="spacer" />
-        <button className="knop" onClick={draaiDemo} disabled={bezig}>
-          Demo
-        </button>
         <button className="knop" onClick={() => setMeldingenOpen(true)}>
-          Meldingen{meldingenActief ? " ●" : ""}
+          Meldingen{syncCode ? " ●" : ""}
         </button>
         <button className="knop" onClick={() => setInstellingenOpen(true)}>
           Instellingen
@@ -277,7 +354,8 @@ export default function Page() {
         <p>
           Check in een oogopslag of fietsen naar werk vandaag een goed idee is:
           reistijd, wind (en waar op de route je die tegen hebt), regen en
-          temperatuur voor jouw woon-werkrit. Gratis, zonder account.
+          temperatuur voor jouw woon-werkrit. Gratis, zonder account, met
+          meldingen op je telefoon.
         </p>
       </section>
 
@@ -335,13 +413,6 @@ export default function Page() {
       {plan ? (
         <section className="resultaten" aria-label="Ritinformatie">
           <DagBanner dag={plan.dag} />
-          {isDemo && (
-            <p className="uitleg demo-noot">
-              Demoketen door Rotterdam met kunstmatige zuidwestenwind. Rit 1 heeft
-              twee routes; klik op de chips of op de gestippelde lijn op de kaart om
-              te wisselen en het windverschil te zien.
-            </p>
-          )}
           <div className="legs">
             {plan.legs.map((leg, i) => (
               <LegCard
@@ -354,12 +425,18 @@ export default function Page() {
               />
             ))}
           </div>
+          {planTijd && (
+            <p className="databron">
+              Weerdata: Open-Meteo uurvoorspelling, live opgehaald om{" "}
+              {fmtTijd(planTijd)}. Routes: OpenStreetMap.
+            </p>
+          )}
         </section>
       ) : (
         !fout && (
           <p className="leeg">
             Vul je vertrekpunt en je werk in (tussenstop zoals de sportschool kan
-            ook), of klik op Demo om te zien wat de check doet.
+            ook) en klik op Check mijn fietsrit.
           </p>
         )
       )}
@@ -393,6 +470,16 @@ export default function Page() {
           uurvoorspelling: je heenrit en je terugrit krijgen elk hun eigen wind,
           regen en temperatuur. Schuif met je vertrektijd en je ziet direct of een
           uurtje eerder of later vertrekken een droge of snellere rit oplevert.
+        </p>
+
+        <h2>Meldingen op je telefoon: elke ochtend je fietsadvies</h2>
+        <p>
+          Sla je woon-werkroute op en zet per route een ochtendbriefing aan: elke
+          werkdag een pushmelding met het dagadvies, de wind en de regen voor jouw
+          rit. Of kies een herinnering een kwartier voor vertrek met het actuele
+          weer. Werkt op je laptop en op je telefoon; op iPhone zet je de site
+          eerst op je beginscherm. Apparaten koppel je met een synccode, zonder
+          account of e-mailadres.
         </p>
 
         <h2>Fietsen naar werk: reistijd en comfort eerlijk vergelijken</h2>
@@ -434,10 +521,13 @@ export default function Page() {
       <MeldingenPanel
         open={meldingenOpen}
         onClose={() => setMeldingenOpen(false)}
-        meldingen={meldingen}
-        setMeldingen={wijzigMeldingen}
+        routes={routes}
+        onWijzigRouteMeldingen={wijzigRouteMeldingen}
+        syncCode={syncCode}
+        onMaakCode={maakSyncCode}
+        onKoppelCode={koppelSyncCode}
+        onOntkoppel={ontkoppel}
       />
-      <NotificationManager meldingen={meldingen} thresholds={thresholds} />
     </div>
   );
 }

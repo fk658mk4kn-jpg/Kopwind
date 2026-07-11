@@ -98,11 +98,14 @@ export function planTimes(legOptions, durations, nu) {
  * @param {object} p.log eerder gestuurde meldingen
  * @param {Array<{departure: Date|null}>} p.times uit planTimes
  * @param {Date} p.nu
+ * @param {string} [p.prefix] bv. de routenaam, zodat sleutels per route
+ *   uniek zijn: "2026-07-10:Woon-werk:ochtend"
  * @returns {Array<{type: string, key: string, legIdx?: number, departure?: Date}>}
  */
-export function dueNotifications({ settings, log, times, nu }) {
+export function dueNotifications({ settings, log, times, nu, prefix }) {
   const items = [];
-  const dk = dagKey(nu);
+  const p = prefix ? `:${String(prefix).replaceAll(":", "_")}` : "";
+  const dk = dagKey(nu) + p;
 
   if (settings?.ochtend && settings.ochtendTijd) {
     const [h, m] = settings.ochtendTijd.split(":").map(Number);
@@ -152,7 +155,7 @@ export function weerZin(leg) {
 }
 
 /** Titel en tekst voor de ochtendbriefing op basis van een berekend plan. */
-export function briefingTekst(plan) {
+export function briefingTekst(plan, routeNaam) {
   const dag = plan?.dag;
   if (!dag) {
     return {
@@ -163,8 +166,9 @@ export function briefingTekst(plan) {
   const leg = plan.legs[dag.worstIdx];
   const van = leg.van.naam.split(",")[0];
   const naar = leg.naar.naam.split(",")[0];
+  const kop = routeNaam ? `${APP_KORT} · ${routeNaam}` : APP_KORT;
   return {
-    title: `${APP_KORT}: ${dag.advies} (${fmtCijfer(dag.score)})`,
+    title: `${kop}: ${dag.advies} (${fmtCijfer(dag.score)})`,
     body: `Zwaarste rit ${van} naar ${naar} om ${fmtTijd(leg.departure)}: ${leg.samenvatting} ${weerZin(leg)}`,
   };
 }

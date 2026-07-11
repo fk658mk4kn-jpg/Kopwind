@@ -90,3 +90,25 @@ Repositionering van persoonlijke fiets-of-scooter-tool naar publieke check voor 
 7. Behoud. Interne mapnaam, zip en localStorage-sleutels blijven kopwind, zodat bestaande data en de Vercel-koppeling een naamswissel overleven. Meldingen gebruiken voor herinneringen de snelste route (ongewijzigd).
 
 Tests: 23 groen, waaronder een regressietest voor precies het gemelde geval (laag ritgemiddelde plus 1,9 km merkbare tegenwind geeft nu een mild gedrukt cijfer met een reden die het stuk benoemt, in plaats van score 0) en tests voor vertrekken nu. Build geslaagd, inclusief robots.txt en sitemap.xml.
+
+---
+
+## Iteratie 4 (11 juli 2026): synccode, iPhone-push, meldingen per route, demo eruit
+
+1. iPhone-meldingen. Kan sinds iOS 16.4, maar alleen als echte server-push naar een PWA die vanaf het beginscherm draait. De scheduler-in-een-open-tabblad is daarom vervangen door een serverketen: manifest plus service worker (public/sw.js) voor ontvangst, web-push met VAPID voor verzending, en een cron-endpoint (app/api/cron/meldingen) dat elke 5 minuten door een externe gratis klok (cron-job.org) wordt aangeroepen, omdat Vercel-cron op het gratis plan maar 1x per dag mag. NotificationManager (client) is verwijderd. Iconen worden gegenereerd met scripts/maak-iconen.mjs (pngjs, geen designtool nodig).
+
+2. Synccode in plaats van accounts. POST /api/sync maakt een code (8 tekens zonder verwarrende letters, bv. K7QX-2MP9); de server bewaart alleen de sha256-hash, dus de code is het geheim en het account tegelijk. GET/PUT synchroniseren een jsonb-blob (presets, routes, drempels) met last-write-wins; de client laadt bij het opstarten van de server en pusht wijzigingen debounced. Supabase free tier via de REST-laag met de service-role key, bewust zonder supabase-js (fetch volstaat, scheelt een dependency). Schema in supabase/schema.sql, RLS aan zonder policies zodat alleen de server erbij kan. Bijvangst: de 5-minuten-cron houdt het gratis Supabase-project actief (dat pauzeert anders na een week stilte).
+
+3. Meldingen per route. De meldinginstellingen zijn verhuisd van globaal naar per opgeslagen route (route.meldingen: ochtend, ochtendTijd, vertrek, vertrekMinuten), instelbaar in het Meldingen-paneel. De cron rekent per profiel per route: kloktijden naar vandaag, vertrektijden offline via gecachte reistijden (route.durations; ontbreken ze, dan haalt de server ze eenmalig op en schrijft ze terug in het profiel), dedupe via de melding_log-tabel met insert-die-duplicaten-negeert (sleutel bevat datum plus routenaam, dus twee routes botsen niet), en pas als er echt iets te sturen valt wordt het volledige plan met actueel weer doorgerekend via dezelfde pijplijn als de browser (serverFetch in lib/server/externe.js vangt de interne API-paden af). Tijdzone: de server draait in UTC, alle logica rekent in Nederlandse wandkloktijd via nuAmsterdam().
+
+4. Route-opslaan bewaart nu ook de reistijden van het laatste plan en behoudt bestaande meldinginstellingen bij overschrijven.
+
+5. Demo eruit. Knop en demo-tekst verwijderd; lib/demo.js blijft bestaan omdat de integratietests erop draaien.
+
+6. Actualiteit zichtbaar gemaakt: onder de resultaten staat "Weerdata: Open-Meteo uurvoorspelling, live opgehaald om HH:MM. Routes: OpenStreetMap." Het weer wordt bij elke berekening en elke melding vers opgehaald; routes en adressen volgen OpenStreetMap met dagen tot weken vertraging.
+
+7. API-hygiene: route- en weerlogica verhuisd naar lib/server/externe.js (gedeeld door API-routes en cron), synccodes in lib/server/codes.js (route-bestanden mogen alleen handlers exporteren), en de test-push-route heet /api/push/testmelding omdat de Node-testrunner mappen met de naam "test" als testbestanden oppakt.
+
+Eerlijke beperkingen: iOS-push vereist iOS 16.4+, beginscherm-installatie en HTTPS; Apple kan pushbezorging bij lage batterij of focusmodi vertragen. De 5-minuten-klok betekent dat een melding tot een paar minuten kan verschuiven. De code is het enige geheim: kwijt is kwijt (bewust, geen accounts). Bij publiek gebruik op schaal worden de fair-use grenzen van OSRM en Photon het eerste aandachtspunt (dan: ORS-key of zelf hosten).
+
+Tests: 24 groen (nieuw: routeprefix in de dedupe-sleutels). Build geslaagd, inclusief manifest.webmanifest, iconen, sw.js en alle nieuwe API-routes.

@@ -1,10 +1,12 @@
 /**
  * app/api/weather/route.js
  *
- * Uurvoorspelling van Open-Meteo voor een punt. Geen key nodig.
+ * Uurvoorspelling van Open-Meteo voor een punt. Geen key nodig. De echte
+ * aanroep zit in lib/server/externe.js en wordt gedeeld met de cron.
  * ?lat=..&lon=..
- * Respons: het "hourly" blok van Open-Meteo, ongewijzigd doorgegeven.
  */
+
+import { haalHourly } from "@/lib/server/externe";
 
 export const dynamic = "force-dynamic";
 
@@ -16,17 +18,9 @@ export async function GET(request) {
     return Response.json({ error: "lat en lon zijn verplicht." }, { status: 400 });
   }
 
-  const url =
-    `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}` +
-    `&hourly=temperature_2m,apparent_temperature,precipitation,precipitation_probability,` +
-    `wind_speed_10m,wind_direction_10m,wind_gusts_10m` +
-    `&wind_speed_unit=kmh&timezone=Europe%2FAmsterdam&forecast_days=4`;
-
   try {
-    const res = await fetch(url);
-    if (!res.ok) throw new Error(`Open-Meteo gaf ${res.status}`);
-    const data = await res.json();
-    return Response.json({ hourly: data.hourly });
+    const hourly = await haalHourly(lat, lon);
+    return Response.json({ hourly });
   } catch (e) {
     return Response.json(
       { error: "Weerdienst niet bereikbaar. Probeer het zo nog eens.", detail: String(e) },
