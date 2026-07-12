@@ -1,4 +1,124 @@
-# LOGBOEK Kopwind
+# Logboek
+
+Semantische versies met windcodenamen. Korte scanlijst in CHANGELOG.md.
+Git-tags zet je lokaal (zie README, kop Versies en tags).
+
+---
+
+## v2.0.0 - "Passaat" - 2026-07-11
+
+**Waarom:** De fietscheck werkt en de motor eronder (locatie, weer, score,
+meldingen, sync, PWA) is breder inzetbaar dan een tool. Deze release tilt
+de app op naar een merk-hub ("Vandaag wel?") met een toolregister, zodat
+een nieuwe weerbeslissing-tool ongeveer een configuratiebestand kost en
+alle tools elkaars autoriteit, installaties en meldingen versterken.
+
+**Wat:**
+- Merk-hub "Vandaag wel?" met twee naamlagen: hub in lib/brand.js (een
+  constante, dus omkeerbaar), toolnamen in het register. De vlaggendrager
+  verhuist van / naar /fietsen-naar-werk (met redirect vanaf
+  /fiets-naar-werk); de homepage is nu de hub met toolkaarten en de
+  windstrip als merkbeeld.
+- Gedeelde engine in lib/engine/: wind.js (ongewijzigd verplaatst),
+  score.js (generieke pijnscore uit gewogen factoren, plus de gedeelde
+  kleurramp), advies.js, locatie.js, weather.js (adapter waarin een tool
+  zijn velden declareert, whitelist-gevalideerd), meldingen.js
+  (schema-evaluator v2), eenheden.js (i18n-naad).
+- Toolregister in lib/tools/ met validatie. Twee werkende tools:
+  fiets-naar-werk (patroon A, route; alle v1-features intact) en
+  was-buiten-drogen (patroon A, locatie): droogvenster per dag op basis
+  van luchtvochtigheid, temperatuur, wind en neerslag, met beste
+  ophangblok, geschatte droogtijd, cijfer per dag voor vandaag plus vier
+  dagen, en een urenstrip in de signature-vormtaal.
+- Gedeelde gebruikersstaat (GebruikerContext): favorieten, routes,
+  drempels, synccode en toolmeldingen op elke pagina, met dezelfde
+  synccode-account en debounced serversync als v1.
+- Granulaire meldingen: per route en per gevolgde locatie-tool een
+  klikbaar schema met dagen-chips (ma t/m zo), een of meer tijden, en een
+  drempel (altijd, alleen bij cijfer <= grens, alleen bij cijfer >=
+  grens), plus een mensentaal-zin onder elk schema. De cron evalueert de
+  schema's in Nederlandse wandkloktijd, dedupliceert per route via
+  melding_log, en rekent pas bij een match live door. Wasmeldingen
+  gebruiken exact dezelfde droogvenster-engine als de browser.
+- Cross-platform installatie: beforeinstallprompt afgevangen met een
+  eigen kaart (pas na een eerste geslaagde check), iOS-instructie waar
+  het event niet bestaat, verbergen bij standalone, hub-manifest met
+  app-shortcuts naar beide tools.
+- Programmatische SEO: /{tool}/{stad} voor 35 steden met per-stad
+  gevarieerde tekst uit echte stadseigenschappen (ligging, provincie,
+  buursteden), /van/{a}/naar/{b} route-paren (2 dichtstbijzijnde
+  buursteden per stad vooraf gegenereerd, overige geldige paren on
+  demand), broodkruimels, BreadcrumbList/WebApplication/FAQPage JSON-LD,
+  interne links tussen buursteden en tussen tools, en een automatische
+  sitemap uit register maal steden plus paren.
+- Nieuw designsysteem (niet AI-achtig): koele Hollandse-luchtbasis in
+  plaats van creme, zes benoemde kerntokens (lucht #E9EEF3, wolk #FFFFFF,
+  inkt #17222C, delfts #234E9D, plus het vaste oordeel-trio groen
+  #15803D / amber #B45309 / rood #B91C1C), Archivo Variable als
+  karaktervolle display-letter (via fontsource, offline), tabulaire
+  cijfers, een consistente SVG-icoonset in plaats van emoji, en de
+  windstrip als signature: op de hub als geanimeerd merkbeeld (met
+  prefers-reduced-motion) en in de wastool hergebruikt als urenstrip.
+- Roadmap-naden, bewust niet gebouwd: StemPeiling-component (sociaal,
+  par. 12), AdSlot-component en affiliate-veld in de toolconfig plus
+  AVG-notitie (par. 13), strings-laag lib/strings/nl.js en eenheden-laag
+  (par. 14, gedeeltelijk toegepast op nieuwe en gedeelde UI), en in het
+  register gedocumenteerde patroon-B ("welke stad heeft het beste
+  terrasweer") en patroon-C ("Vandaag voetbal?", eerst legale databron
+  valideren) stubs.
+
+**Breaking / migratie:** Geen datamigratie: localStorage-sleutels
+(kopwind.*) en Supabase-tabellen zijn ongewijzigd; v1-meldingsinstellingen
+migreren on the fly naar het v2-schema. Wel verhuizen URLs: de fietscheck
+staat nu op /fietsen-naar-werk (redirect vanaf /fiets-naar-werk staat in
+next.config.mjs; wie / had gebookmarkt komt op de hub met de fietscheck
+een klik verderop).
+
+**Tests:** 46 groen (was 24). Nieuw gedekt: generieke score-engine,
+droogvenster (regendag, droge dag, resterende uren) met de
+cijfer-tekst-consistentie-regressietest, meldingschema v2 (isoDag,
+migratie, dagenfilter, meerdere tijden, dedupe, vertrekvenster,
+drempelmodi, mensentaal-zin) en registervalidatie.
+
+**Bekende beperkingen:** De SEO-analyse uit par. 10 ontbrak in het
+bericht; generieke best practices zijn toegepast en de analyse kan in een
+patch-release verwerkt worden. De strings-extractie dekt de nieuwe en
+gedeelde UI, nog niet elke bestaande componenttekst. Route-paren zijn
+beperkt tot buursteden om de buildtijd gezond te houden (overige paren
+renderen on demand). De drempel op routes geldt voor de briefing, niet
+voor de vertrekherinnering (bewust: die bevat zelf het actuele weer).
+Stadscoordinaten zijn stadscentra; de hoogte-dimensie (Limburg) zit niet
+in het fietsmodel. Er is geen analytics; bij monetisatie is eerst een
+consent-laag nodig.
+
+---
+
+## v1.0.0 - "Kopwind" - 2026-07-11 (retroactief getagd)
+
+**Waarom:** Schone startlijn voor semantisch versiebeheer.
+
+**Wat:** De fietscheck zoals opgeleverd na vier bouwiteraties: multi-stop
+keten met per-segment kopwindberekening (v maal cos van windrichting min
+rijrichting, meteo-conventie), uurgekoppeld weer (Open-Meteo),
+alternatieve routes (OSRM/ORS) met routekeuze zonder herfetch, rapportcijfer
+met consistente redenen, kaart met kleurramp en windpijlen, opgeslagen
+routes en favorieten, vertrekmodus "nu"/vertrek/aankomst, synccode zonder
+account (Supabase, sha256-hash), server-push met VAPID en externe
+5-minuten-cron, PWA (manifest, service worker, gegenereerde iconen) en
+basis-SEO (metadata, robots, sitemap, FAQ en WebApplication JSON-LD).
+
+**Breaking / migratie:** n.v.t. (startlijn).
+
+**Tests:** 24 groen (wind, advies, planner, meldingen v1).
+
+**Bekende beperkingen:** iOS-push vereist iOS 16.4+, beginscherm en HTTPS;
+de 5-minuten-klok kan een melding enkele minuten verschuiven; de synccode
+is het enige geheim (geen herstel); installatie-instructie was iPhone-only
+(opgelost in v2.0.0).
+
+---
+
+## Archief: gedetailleerd bouwlog van de v1-iteraties
 
 Datum: 10 juli 2026
 

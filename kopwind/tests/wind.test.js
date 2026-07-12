@@ -8,7 +8,7 @@ import {
   hourKey,
   summarizeLegNL,
   legWindSummary,
-} from "../lib/wind.js";
+} from "../lib/engine/wind.js";
 import { DEFAULT_THRESHOLDS } from "../lib/advice.js";
 
 const T = DEFAULT_THRESHOLDS;

@@ -6,7 +6,7 @@
  * integratietest. Zo zie je de app werken zonder een adres in te vullen.
  */
 
-import { haversine } from "./wind.js";
+import { haversine } from "./engine/wind.js";
 
 export const DEMO_STOPS = [
   { naam: "Thuis (demo)", lat: 51.9236, lon: 4.503 },

@@ -6,6 +6,8 @@
  * meldingen-cron (die zelf rekent, want de telefoon-app is dan dicht).
  */
 
+import { valideerVelden, STANDAARD_VELDEN } from "../engine/weather.js";
+
 const MAX_ROUTES = 3;
 
 /** Fietsroutes met alternatieven. from/to zijn [lat, lon]. */
@@ -69,13 +71,18 @@ async function orsCall(coordinates, key, metAlternatieven) {
   return res.json();
 }
 
-/** Open-Meteo uurvoorspelling voor een punt. */
-export async function haalHourly(lat, lon) {
+/**
+ * Open-Meteo uurvoorspelling voor een punt. Tools declareren hun velden
+ * (whitelist in lib/engine/weather.js); standaard is de fiets-set zodat
+ * bestaande aanroepen ongewijzigd blijven.
+ */
+export async function haalHourly(lat, lon, velden = STANDAARD_VELDEN, dagen = 4) {
+  const v = valideerVelden(velden).join(",");
+  const d = Math.min(7, Math.max(1, Number(dagen) || 4));
   const url =
     `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}` +
-    `&hourly=temperature_2m,apparent_temperature,precipitation,precipitation_probability,` +
-    `wind_speed_10m,wind_direction_10m,wind_gusts_10m` +
-    `&wind_speed_unit=kmh&timezone=Europe%2FAmsterdam&forecast_days=4`;
+    `&hourly=${encodeURIComponent(v)}` +
+    `&wind_speed_unit=kmh&timezone=Europe%2FAmsterdam&forecast_days=${d}`;
   const res = await fetch(url);
   if (!res.ok) throw new Error(`Open-Meteo gaf ${res.status}`);
   const data = await res.json();

@@ -5,30 +5,45 @@
  * externe gratis cron (bv. cron-job.org) met een geheim:
  *   GET /api/cron/meldingen  met header  x-cron-secret: <CRON_SECRET>
  *
- * Per profiel en per opgeslagen route met meldingen aan:
- * 1. Bepaal de geplande vertrektijden van vandaag (kloktijden van de route,
- *    reistijden uit de cache of eenmalig vers opgehaald).
- * 2. Kijk of er een ochtendbriefing of vertrekherinnering in het venster valt.
- * 3. Dedupliceer via de melding_log tabel (insert die duplicaten negeert).
- * 4. Reken dan pas het volledige plan door met actueel weer en verstuur de
- *    push naar alle gekoppelde apparaten.
+ * V2 (granulair, par. 8): elk schema heeft dagen, een of meer tijden, en
+ * een drempel (altijd melden, alleen bij cijfer <= grens, of alleen bij
+ * cijfer >= grens). Er zijn twee soorten:
  *
- * Alles rekent in Nederlandse wandkloktijd (nuAmsterdam), ook al draait de
- * server in UTC.
+ * 1. Per opgeslagen ROUTE (fiets): briefing op tijdstippen plus een
+ *    vertrekherinnering X minuten voor een geplande vertrektijd. De cron
+ *    bepaalt de vertrektijden offline (reistijden uit de cache op de
+ *    route; ontbreken ze, dan eenmalig vers ophalen en terugschrijven),
+ *    dedupliceert via melding_log, en rekent pas daarna het volledige
+ *    plan door met actueel weer via dezelfde pijplijn als de browser.
+ *    De drempel geldt voor de briefing; een vertrekherinnering gaat
+ *    altijd door (die bevat zelf het actuele weer).
+ *
+ * 2. Per gevolgde LOCATIE-TOOL (zoals de wascheck): een briefing op
+ *    tijdstippen voor een vaste plek, met de drempel als filter
+ *    ("alleen als het een drooghangdag is").
+ *
+ * Alles rekent in Nederlandse wandkloktijd (nuAmsterdam), ook al draait
+ * de server in UTC.
  */
 
 import { dbGeconfigureerd, dbSelect, dbInsert, dbPatch, dbDelete } from "@/lib/server/db";
 import { verstuurNaarAbos, pushGeconfigureerd } from "@/lib/server/push";
-import { serverFetch, haalRoutes, nuAmsterdam } from "@/lib/server/externe";
+import { serverFetch, haalRoutes, haalHourly, nuAmsterdam } from "@/lib/server/externe";
 import { berekenPlan } from "@/lib/planner";
 import {
   normalizeChainToToday,
   planTimes,
-  dueNotifications,
   briefingTekst,
   vertrekTekst,
-} from "@/lib/notify";
+  migreerRouteSchema,
+  dueBriefings,
+  dueVertrek,
+  drempelLaatDoor,
+} from "@/lib/engine/meldingen";
 import { DEFAULT_THRESHOLDS } from "@/lib/advice";
+import { vindToolOpId } from "@/lib/tools";
+import { WAS_VELDEN, berekenDroogdagen } from "@/lib/tools/was-buiten-drogen";
+import { fmtCijfer } from "@/lib/format";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -55,19 +70,26 @@ export async function GET(request) {
   const fouten = [];
 
   try {
-    const profielen = await dbSelect(
-      "profielen?select=code_hash,data&limit=200"
-    );
+    const profielen = await dbSelect("profielen?select=code_hash,data&limit=200");
 
     for (const profiel of profielen) {
       const data = profiel.data ?? {};
-      const routes = Array.isArray(data.routes) ? data.routes : [];
       const thresholds = { ...DEFAULT_THRESHOLDS, ...(data.thresholds ?? {}) };
       let dataGewijzigd = false;
+      let abosCache = null;
+      const abos = async () => {
+        if (abosCache == null) {
+          abosCache = await dbSelect(
+            `push_abos?code_hash=eq.${profiel.code_hash}&select=endpoint,subscription`
+          );
+        }
+        return abosCache;
+      };
 
-      for (const route of routes) {
-        const m = route.meldingen;
-        if (!m || (!m.ochtend && !m.vertrek)) continue;
+      // 1. Routes (fiets): briefing plus vertrekherinnering.
+      for (const route of Array.isArray(data.routes) ? data.routes : []) {
+        const schema = migreerRouteSchema(route.meldingen);
+        if (!schema.briefing.aan && !schema.vertrek.aan) continue;
         if (!Array.isArray(route.stops) || route.stops.length < 2) continue;
         gecheckt++;
 
@@ -75,14 +97,14 @@ export async function GET(request) {
           const opties = normalizeChainToToday(route.legOptions ?? [], nu);
 
           // Reistijden: uit de cache op de route, anders eenmalig vers
-          // ophalen en terugschrijven zodat de volgende ticks gratis zijn.
+          // ophalen en terugschrijven zodat volgende ticks gratis zijn.
           let durations = route.durations;
           const heeftVasteTijden = opties.some(
             (o) => o?.mode === "vertrek" || o?.mode === "aankomst"
           );
           if (
             (!Array.isArray(durations) || durations.length < route.stops.length - 1) &&
-            m.vertrek &&
+            schema.vertrek.aan &&
             heeftVasteTijden
           ) {
             durations = [];
@@ -97,29 +119,16 @@ export async function GET(request) {
           }
 
           const times = planTimes(opties, durations ?? [], nu);
-          const due = dueNotifications({
-            settings: m,
-            log: {},
-            times,
-            nu,
-            prefix: route.naam,
-          });
+          const due = [
+            ...dueBriefings({ schema, log: {}, nu, prefix: route.naam }),
+            ...dueVertrek({ schema, times, log: {}, nu, prefix: route.naam }),
+          ];
           if (!due.length) continue;
 
-          // Dedupe: alleen sleutels die echt nieuw zijn komen terug.
-          const inserted = await dbInsert(
-            "melding_log",
-            due.map((d) => ({ code_hash: profiel.code_hash, sleutel: d.key })),
-            { negeerDuplicaten: true }
-          );
-          const nieuweSleutels = new Set(inserted.map((r) => r.sleutel));
-          const teSturen = due.filter((d) => nieuweSleutels.has(d.key));
+          const teSturen = await dedupe(profiel.code_hash, due);
           if (!teSturen.length) continue;
-
-          const abos = await dbSelect(
-            `push_abos?code_hash=eq.${profiel.code_hash}&select=endpoint,subscription`
-          );
-          if (!abos.length) continue;
+          const lijst = await abos();
+          if (!lijst.length) continue;
 
           // Nu pas het volledige plan met actueel weer doorrekenen.
           let plan = null;
@@ -137,29 +146,61 @@ export async function GET(request) {
 
           for (const item of teSturen) {
             let tekst;
-            if (item.type === "ochtend") {
+            if (item.type === "briefing") {
+              // Drempel: alleen melden als de dagscore erdoorheen komt.
+              if (plan?.dag && !drempelLaatDoor(schema.drempel, plan.dag.score)) {
+                continue;
+              }
               tekst = plan
                 ? briefingTekst(plan, route.naam)
                 : {
-                    title: `Fietscheck · ${route.naam}`,
+                    title: `Fietscheck \u00b7 ${route.naam}`,
                     body: "Kon het weer niet ophalen. Open de fietscheck voor je advies van vandaag.",
                   };
             } else {
               const leg = plan?.legs?.[item.legIdx];
               tekst = leg
-                ? vertrekTekst(leg, m.vertrekMinuten ?? 15)
+                ? vertrekTekst(leg, schema.vertrek.minuten ?? 15)
                 : {
-                    title: `Bijna vertrekken · ${route.naam}`,
+                    title: `Bijna vertrekken \u00b7 ${route.naam}`,
                     body: "Je volgende rit staat gepland. Open de fietscheck voor het actuele weer.",
                   };
             }
-            verzonden += await verstuurNaarAbos(abos, {
-              ...tekst,
-              tag: item.key,
-            });
+            verzonden += await verstuurNaarAbos(lijst, { ...tekst, tag: item.key });
           }
         } catch (e) {
           fouten.push(`${route.naam}: ${String(e)}`);
+        }
+      }
+
+      // 2. Locatie-tools (zoals de wascheck): briefing voor een vaste plek.
+      const toolMeldingen = data.toolMeldingen ?? {};
+      for (const [toolId, schema] of Object.entries(toolMeldingen)) {
+        if (!schema?.aan || !schema?.locatie?.lat) continue;
+        const tool = vindToolOpId(toolId);
+        if (!tool) continue;
+        gecheckt++;
+
+        try {
+          const due = dueBriefings({
+            schema: { dagen: schema.dagen, briefing: { aan: true, tijden: schema.tijden } },
+            log: {},
+            nu,
+            prefix: `tool_${toolId}`,
+          });
+          if (!due.length) continue;
+          const teSturen = await dedupe(profiel.code_hash, due);
+          if (!teSturen.length) continue;
+          const lijst = await abos();
+          if (!lijst.length) continue;
+
+          const tekst = await toolBriefing(tool, schema, nu);
+          if (!tekst) continue; // Drempel hield hem tegen of data ontbrak.
+          for (const item of teSturen) {
+            verzonden += await verstuurNaarAbos(lijst, { ...tekst, tag: item.key });
+          }
+        } catch (e) {
+          fouten.push(`${toolId}: ${String(e)}`);
         }
       }
 
@@ -187,4 +228,32 @@ export async function GET(request) {
       { status: 502 }
     );
   }
+}
+
+/** Dedupe via melding_log: alleen sleutels die echt nieuw zijn komen terug. */
+async function dedupe(codeHash, due) {
+  const inserted = await dbInsert(
+    "melding_log",
+    due.map((d) => ({ code_hash: codeHash, sleutel: d.key })),
+    { negeerDuplicaten: true }
+  );
+  const nieuw = new Set(inserted.map((r) => r.sleutel));
+  return due.filter((d) => nieuw.has(d.key));
+}
+
+/**
+ * Berekent de briefing van een locatie-tool met dezelfde engine als de
+ * browser. Geeft null terug als de drempel de melding tegenhoudt.
+ * Nu alleen de wascheck; een volgende locatie-tool haakt hier in.
+ */
+async function toolBriefing(tool, schema, nu) {
+  if (tool.id !== "was-buiten-drogen") return null;
+  const hourly = await haalHourly(schema.locatie.lat, schema.locatie.lon, WAS_VELDEN, 2);
+  const vandaag = berekenDroogdagen(hourly, nu)[0];
+  if (!vandaag) return null;
+  if (!drempelLaatDoor(schema.drempel, vandaag.oordeel.score)) return null;
+  return {
+    title: `${tool.meldingKort}: ${vandaag.oordeel.advies} (${fmtCijfer(vandaag.oordeel.score)})`,
+    body: `${vandaag.samenvatting} Voor ${schema.locatie.naam.split(",")[0]}.`,
+  };
 }

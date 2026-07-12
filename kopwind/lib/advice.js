@@ -22,11 +22,7 @@ export const DEFAULT_THRESHOLDS = {
   segmentLengte: 300, // meter per routesegment
 };
 
-function lerp(x, x0, x1, y0, y1) {
-  if (x1 === x0) return y0;
-  const t = Math.max(0, Math.min(1, (x - x0) / (x1 - x0)));
-  return y0 + t * (y1 - y0);
-}
+import { lerp } from "./engine/score.js";
 
 /**
  * Berekent de pijnscore van een rit op basis van de metrics uit analyzeLeg.

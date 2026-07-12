@@ -1,5 +1,5 @@
 /**
- * lib/notify.js
+ * lib/engine/meldingen.js
  *
  * Pure logica voor meldingen: wanneer moet er een ochtendbriefing of
  * vertrekherinnering af, en wat staat erin. Geen browser-API's hier,
@@ -13,8 +13,8 @@
  *   etappe uit de laatst opgeslagen keten.
  */
 
-import { toLocalInput, bft, kompas, fmtTijd, fmtCijfer } from "./format.js";
-import { APP_KORT } from "./brand.js";
+import { toLocalInput, bft, kompas, fmtTijd, fmtCijfer } from "../format.js";
+import { APP_KORT } from "../brand.js";
 
 export const DEFAULT_MELDINGEN = {
   ochtend: false,
@@ -185,4 +185,139 @@ export function vertrekTekst(leg, minuten) {
 
 function kapitaal(s) {
   return s ? s.charAt(0).toUpperCase() + s.slice(1) : s;
+}
+
+
+/* ------------------------------------------------------------------ */
+/* V2: granulaire schema's (dagen, meerdere tijden, drempel)           */
+/* ------------------------------------------------------------------ */
+
+/** ISO-weekdag in Nederlandse telling: 1 = maandag ... 7 = zondag. */
+export function isoDag(nu) {
+  return ((nu.getDay() + 6) % 7) + 1;
+}
+
+export const DEFAULT_ROUTE_SCHEMA = {
+  dagen: [1, 2, 3, 4, 5],
+  briefing: { aan: false, tijden: ["07:00"] },
+  vertrek: { aan: false, minuten: 15 },
+  drempel: { modus: "altijd", cijfer: 6.5 },
+};
+
+export const DEFAULT_TOOL_SCHEMA = {
+  aan: false,
+  locatie: null,
+  dagen: [1, 2, 3, 4, 5, 6, 7],
+  tijden: ["08:00"],
+  drempel: { modus: "goed", cijfer: 7 },
+};
+
+/**
+ * Migreert het v1-meldingenobject van een route ({ochtend, ochtendTijd,
+ * vertrek, vertrekMinuten}) naar het v2-schema. V2-objecten gaan er
+ * ongewijzigd doorheen; null/undefined wordt een uitgeschakeld schema.
+ */
+export function migreerRouteSchema(oud) {
+  if (!oud) return structuredClone(DEFAULT_ROUTE_SCHEMA);
+  if (oud.briefing || oud.dagen) {
+    return {
+      ...structuredClone(DEFAULT_ROUTE_SCHEMA),
+      ...oud,
+      briefing: { ...DEFAULT_ROUTE_SCHEMA.briefing, ...(oud.briefing ?? {}) },
+      vertrek: { ...DEFAULT_ROUTE_SCHEMA.vertrek, ...(oud.vertrek ?? {}) },
+      drempel: { ...DEFAULT_ROUTE_SCHEMA.drempel, ...(oud.drempel ?? {}) },
+    };
+  }
+  return {
+    dagen: [1, 2, 3, 4, 5, 6, 7],
+    briefing: { aan: Boolean(oud.ochtend), tijden: [oud.ochtendTijd ?? "07:00"] },
+    vertrek: { aan: Boolean(oud.vertrek), minuten: oud.vertrekMinuten ?? 15 },
+    drempel: { modus: "altijd", cijfer: 6.5 },
+  };
+}
+
+/**
+ * Bepaalt welke briefings nu af moeten volgens een v2-schema.
+ * Zelfde vensterlogica als v1 (inhaal tot 3 uur), plus dagen-filter en
+ * meerdere tijden. Sleutels: "<dag>:<prefix>:briefing:<tijd>".
+ */
+export function dueBriefings({ schema, log, nu, prefix }) {
+  const items = [];
+  if (!schema?.briefing?.aan) return items;
+  if (Array.isArray(schema.dagen) && !schema.dagen.includes(isoDag(nu))) return items;
+  const dk = dagKey(nu);
+  const p = prefix ? `:${String(prefix).replaceAll(":", "_")}` : "";
+  const inhaal = 3 * 3600 * 1000;
+  for (const tijd of schema.briefing.tijden ?? []) {
+    const [h, m] = String(tijd).split(":").map(Number);
+    if (!Number.isFinite(h)) continue;
+    const t = new Date(nu.getTime());
+    t.setHours(h, m ?? 0, 0, 0);
+    const key = `${dk}${p}:briefing:${tijd}`;
+    if (nu >= t && nu.getTime() - t.getTime() <= inhaal && !log[key]) {
+      items.push({ type: "briefing", key, tijd });
+    }
+  }
+  return items;
+}
+
+/** Vertrekherinneringen volgens een v2-schema (dagen-filter plus venster). */
+export function dueVertrek({ schema, times, log, nu, prefix }) {
+  const items = [];
+  if (!schema?.vertrek?.aan) return items;
+  if (Array.isArray(schema.dagen) && !schema.dagen.includes(isoDag(nu))) return items;
+  const dk = dagKey(nu);
+  const p = prefix ? `:${String(prefix).replaceAll(":", "_")}` : "";
+  const minuten = Number.isFinite(schema.vertrek.minuten) ? schema.vertrek.minuten : 15;
+  const venster = minuten * 60 * 1000;
+  (times ?? []).forEach((t, i) => {
+    const d = t?.departure;
+    if (!d) return;
+    const key = `${dk}${p}:vertrek:${i}`;
+    if (nu.getTime() >= d.getTime() - venster && nu < d && !log[key]) {
+      items.push({ type: "vertrek", key, legIdx: i, departure: d, minuten });
+    }
+  });
+  return items;
+}
+
+/**
+ * Drempelfilter: mag deze melding eruit, gegeven de pijnscore?
+ * modus "altijd" stuurt altijd; "slecht" alleen bij cijfer <= grens
+ * (waarschuw me op rotdagen); "goed" alleen bij cijfer >= grens
+ * (zeg het me als het WEL kan, bv. een drooghangdag).
+ */
+export function drempelLaatDoor(drempel, score) {
+  const modus = drempel?.modus ?? "altijd";
+  if (modus === "altijd") return true;
+  const cijfer = Math.max(1, Math.min(10, (100 - score) / 10));
+  const grens = Number.isFinite(drempel?.cijfer) ? drempel.cijfer : 6.5;
+  if (modus === "slecht") return cijfer <= grens;
+  if (modus === "goed") return cijfer >= grens;
+  return true;
+}
+
+/** Mensentaal-zin onder een schema in het meldingenpaneel. */
+export function schemaZin(schema, soort) {
+  const NAMEN = ["ma", "di", "wo", "do", "vr", "za", "zo"];
+  const dagen = (schema.dagen ?? []).map((d) => NAMEN[d - 1]).join(", ") || "geen dagen";
+  const alle = (schema.dagen ?? []).length === 7;
+  const dagTekst = alle ? "elke dag" : `op ${dagen}`;
+  const delen = [];
+  if (soort === "route") {
+    if (schema.briefing?.aan) {
+      delen.push(`${dagTekst} om ${(schema.briefing.tijden ?? []).join(" en ")} een briefing`);
+    }
+    if (schema.vertrek?.aan) {
+      delen.push(`een herinnering ${schema.vertrek.minuten} min voor vertrek`);
+    }
+  } else {
+    delen.push(`${dagTekst} om ${(schema.tijden ?? []).join(" en ")} een check`);
+  }
+  if (!delen.length) return "Geen meldingen ingesteld.";
+  let zin = `Je krijgt ${delen.join(" en ")}`;
+  const d = schema.drempel;
+  if (d?.modus === "slecht") zin += ` (alleen bij cijfer ${String(d.cijfer).replace(".", ",")} of lager)`;
+  if (d?.modus === "goed") zin += ` (alleen bij cijfer ${String(d.cijfer).replace(".", ",")} of hoger)`;
+  return zin + ".";
 }

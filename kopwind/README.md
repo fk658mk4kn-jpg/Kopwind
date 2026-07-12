@@ -63,3 +63,40 @@ Serverkant (eenmalige setup, alles gratis):
 3. Klok: maak op cron-job.org (gratis) een job die elke 5 minuten `GET https://jouwdomein.nl/api/cron/meldingen` aanroept met header `x-cron-secret` gelijk aan je `CRON_SECRET`.
 
 Zonder deze configuratie werkt de check gewoon; alleen sync en meldingen geven dan een nette foutmelding. Push vereist HTTPS (Vercel regelt dat; localhost werkt ook voor desktop-tests).
+
+## v2.0.0 "Passaat": de hub Vandaag wel?
+
+De app is nu een merk-hub met meerdere weerbeslissing-tools. De fietscheck
+(/fietsen-naar-werk) blijft de vlaggendrager; de wascheck
+(/was-buiten-drogen) bewijst het register met een droogvenster per dag.
+
+Structuur:
+- lib/engine/ gedeelde kern: locatie, weer-adapter (declareerbare velden),
+  wind (ongewijzigd), generieke score, advies, meldingschema-evaluator,
+  eenheden (i18n-naad)
+- lib/tools/ het register: een bestand per tool, index.js valideert
+- content/ SEO-teksten en FAQ per tool, gescheiden van code
+- app/[tool]/ en app/[tool]/[stad]/ en app/van/.../naar/... programmatische
+  pagina's uit register maal lib/steden/nl.js; sitemap volgt automatisch
+
+Nieuwe tool toevoegen: schrijf lib/tools/mijn-tool.js (zie
+was-buiten-drogen.js als voorbeeld), registreer hem in lib/tools/index.js,
+voeg content/mijn-tool.js toe en koppel hem in content/index.js. Locatie-
+tools krijgen de pagina's, meldingen, sitemap en hub-kaart er gratis bij;
+alleen een eigen resultaat-UI (zoals WasTool) is nog handwerk.
+
+Design-tokens (app/globals.css): lucht #E9EEF3, wolk #FFFFFF, inkt #17222C,
+delfts #234E9D, en het oordeel-trio groen #15803D / amber #B45309 / rood
+#B91C1C. Display-letter: Archivo Variable (fontsource, offline). De
+windstrip is de signature; de urenstrip van de wascheck gebruikt dezelfde
+vormtaal.
+
+## Versies en tags
+
+Semver met windcodenamen; details in LOGBOEK.md, scanlijst in CHANGELOG.md.
+Git leeft op jouw machine, dus zet de tags lokaal:
+
+    git tag v1.0.0 <hash van je laatste commit voor deze drop>
+    git add -A && git commit -m "v2.0.0 Passaat: merk-hub met toolregister"
+    git tag v2.0.0
+    git push && git push --tags

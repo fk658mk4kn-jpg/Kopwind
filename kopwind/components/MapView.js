@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { fmtTijd, fmtKm, bft, kompas, fmtCijfer } from "@/lib/format";
-import { legWindSummary } from "@/lib/wind";
+import { legWindSummary } from "@/lib/engine/wind";
 
 /**
  * Leaflet-kaart zonder react-leaflet: eigen dunne wrapper. Leaflet wordt

@@ -11,7 +11,7 @@
  * Zo kan de interface van route wisselen zonder opnieuw te fetchen.
  */
 
-import { analyzeLeg } from "./wind.js";
+import { analyzeLeg } from "./engine/wind.js";
 import { legAdvies, dagAdvies, DEFAULT_THRESHOLDS } from "./advice.js";
 import { afrondOpKwartier } from "./format.js";
 

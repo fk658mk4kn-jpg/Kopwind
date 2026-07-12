@@ -1,12 +1,43 @@
+import { TOOLS } from "@/lib/tools";
+import { STEDEN } from "@/lib/steden/nl";
+import { buurSteden } from "@/lib/steden/teksten";
+
 const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
+/** Sitemap automatisch uit register maal steden plus route-paren (§9). */
 export default function sitemap() {
-  return [
-    {
-      url: `${SITE}/`,
-      lastModified: new Date(),
-      changeFrequency: "daily",
-      priority: 1,
-    },
+  const nu = new Date();
+  const urls = [
+    { url: `${SITE}/`, lastModified: nu, changeFrequency: "daily", priority: 1 },
   ];
+
+  for (const t of TOOLS) {
+    urls.push({
+      url: `${SITE}/${t.slug}`,
+      lastModified: nu,
+      changeFrequency: "daily",
+      priority: 0.9,
+    });
+    for (const s of STEDEN) {
+      urls.push({
+        url: `${SITE}/${t.slug}/${s.slug}`,
+        lastModified: nu,
+        changeFrequency: "weekly",
+        priority: 0.7,
+      });
+    }
+  }
+
+  for (const s of STEDEN) {
+    for (const b of buurSteden(s, 2)) {
+      urls.push({
+        url: `${SITE}/van/${s.slug}/naar/${b.slug}`,
+        lastModified: nu,
+        changeFrequency: "weekly",
+        priority: 0.6,
+      });
+    }
+  }
+
+  return urls;
 }

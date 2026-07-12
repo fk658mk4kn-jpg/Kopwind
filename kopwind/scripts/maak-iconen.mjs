@@ -11,7 +11,7 @@
 import { PNG } from "pngjs";
 import { writeFileSync, mkdirSync } from "node:fs";
 
-const ACHTERGROND = [14, 116, 144]; // #0e7490
+const ACHTERGROND = [35, 78, 157]; // #234E9D (delfts)
 const WIT = [255, 255, 255];
 
 function tekenIcoon(maat) {

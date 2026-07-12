@@ -1,6 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import LocatieZoek from "./LocatieZoek";
+import Icoon from "./Icoon";
+import { isFavoriet } from "@/lib/engine/locatie";
 
 /**
  * Editor voor de keten van stops (bv. Thuis, Werk, en eventueel een
@@ -69,15 +71,6 @@ export default function StopsEditor({
   );
 }
 
-function isFavoriet(stop, presets) {
-  if (!stop) return false;
-  return presets.some(
-    (p) =>
-      p.naam === stop.naam ||
-      (Math.abs(p.lat - stop.lat) < 1e-4 && Math.abs(p.lon - stop.lon) < 1e-4)
-  );
-}
-
 function StopRow({ index, stop, presets, onChange, onRemove, onSavePreset }) {
   const favoriet = isFavoriet(stop, presets);
   return (
@@ -114,7 +107,7 @@ function StopRow({ index, stop, presets, onChange, onRemove, onSavePreset }) {
             </button>
           </div>
         ) : (
-          <ZoekVeld onKies={onChange} />
+          <LocatieZoek onKies={onChange} placeholder="Zoek een adres (bv. je werk)..." />
         )}
       </div>
       {stop && (
@@ -139,108 +132,13 @@ function StopRow({ index, stop, presets, onChange, onRemove, onSavePreset }) {
             if (naam) onSavePreset({ ...stop, naam: naam.trim() });
           }}
         >
-          {favoriet ? "★" : "☆"}
+          <Icoon naam="ster" vol={favoriet} maat={17} />
         </button>
       )}
       {onRemove && (
         <button className="iconknop" title="Stop verwijderen" onClick={onRemove}>
-          ✕
+          <Icoon naam="kruis" maat={15} />
         </button>
-      )}
-    </div>
-  );
-}
-
-function ZoekVeld({ onKies }) {
-  const [tekst, setTekst] = useState("");
-  const [suggesties, setSuggesties] = useState([]);
-  const [bezig, setBezig] = useState(false);
-  const timer = useRef(null);
-  const laatste = useRef("");
-
-  useEffect(() => {
-    return () => clearTimeout(timer.current);
-  }, []);
-
-  const zoek = (q) => {
-    setTekst(q);
-    clearTimeout(timer.current);
-    if (q.trim().length < 3) {
-      setSuggesties([]);
-      return;
-    }
-    timer.current = setTimeout(async () => {
-      laatste.current = q;
-      try {
-        const res = await fetch(`/api/geocode?q=${encodeURIComponent(q)}`);
-        const data = await res.json();
-        if (laatste.current === q) setSuggesties(data.results ?? []);
-      } catch {
-        setSuggesties([]);
-      }
-    }, 300);
-  };
-
-  const huidigeLocatie = () => {
-    if (!navigator.geolocation) {
-      window.alert("Geolocatie wordt niet ondersteund door deze browser.");
-      return;
-    }
-    setBezig(true);
-    navigator.geolocation.getCurrentPosition(
-      async (pos) => {
-        const { latitude: lat, longitude: lon } = pos.coords;
-        let naam = `Huidige locatie (${lat.toFixed(4)}, ${lon.toFixed(4)})`;
-        try {
-          const res = await fetch(`/api/geocode?lat=${lat}&lon=${lon}`);
-          const data = await res.json();
-          if (data.results?.[0]?.naam) naam = data.results[0].naam;
-        } catch {
-          // Reverse geocoding is nice-to-have; coordinaten volstaan.
-        }
-        setBezig(false);
-        onKies({ naam, lat, lon });
-      },
-      () => {
-        setBezig(false);
-        window.alert("Kon je locatie niet bepalen. Geef de browser toestemming.");
-      },
-      { enableHighAccuracy: true, timeout: 10000 }
-    );
-  };
-
-  return (
-    <div className="zoekwrap">
-      <input
-        type="text"
-        placeholder="Zoek een adres (bv. je werk)..."
-        value={tekst}
-        onChange={(e) => zoek(e.target.value)}
-        aria-label="Adres zoeken"
-      />
-      <button
-        className="iconknop"
-        title="Huidige locatie gebruiken"
-        onClick={huidigeLocatie}
-        disabled={bezig}
-      >
-        {bezig ? "…" : "📍"}
-      </button>
-      {suggesties.length > 0 && (
-        <div className="suggesties">
-          {suggesties.map((s, i) => (
-            <button
-              key={i}
-              onClick={() => {
-                setSuggesties([]);
-                setTekst("");
-                onKies(s);
-              }}
-            >
-              {s.naam}
-            </button>
-          ))}
-        </div>
       )}
     </div>
   );

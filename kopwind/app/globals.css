@@ -1,23 +1,37 @@
 :root {
-  --papier: #f5f3ee;
-  --kaart: #ffffff;
-  --inkt: #1c1917;
-  --inkt-zacht: #6b655d;
-  --lijn: #e5e1d8;
-  --lijn-sterk: #d8d3c8;
-  --accent: #0e7490;
-  --accent-diep: #0b5468;
-  --accent-zacht: #e2f1f5;
+  /* Vandaag wel? kerntokens (6 benoemde kleuren):
+     lucht  #E9EEF3  koele Hollandse lucht, de basis
+     wolk   #FFFFFF  kaarten en panelen
+     inkt   #17222C  tekst, diep leiblauw
+     delfts #234E9D  merkaccent (knoppen, links, focus)
+     en het vaste oordeel-trio groen #15803D / amber #B45309 / rood #B91C1C,
+     dezelfde ramp als de windstrip: dat is de merkkern. */
+  --lucht: #E9EEF3;
+  --wolk: #ffffff;
+  --inkt: #17222C;
+  --inkt-zacht: #5A6B7C;
+  --lijn: #CDD8E1;
+  --lijn-sterk: #B7C6D3;
+  --delfts: #234E9D;
+  --delfts-diep: #17376F;
+  --delfts-zacht: #E4EBF8;
   --groen: #15803d;
-  --groen-zacht: #e7f4ec;
+  --groen-zacht: #E4F2E9;
   --oranje: #b45309;
-  --oranje-zacht: #fbeedd;
+  --oranje-zacht: #FBEEDD;
   --rood: #b91c1c;
-  --rood-zacht: #fbe9e9;
-  --radius: 16px;
-  --radius-s: 10px;
-  --schaduw: 0 1px 2px rgba(28, 25, 23, 0.04), 0 8px 24px rgba(28, 25, 23, 0.06);
-  --schaduw-zacht: 0 1px 2px rgba(28, 25, 23, 0.05);
+  --rood-zacht: #FBE9E9;
+  /* Compat-aliassen: bestaande regels verwijzen hiernaar. */
+  --papier: var(--lucht);
+  --kaart: var(--wolk);
+  --accent: var(--delfts);
+  --accent-diep: var(--delfts-diep);
+  --accent-zacht: var(--delfts-zacht);
+  --radius: 14px;
+  --radius-s: 9px;
+  --schaduw: 0 1px 2px rgba(23, 34, 44, 0.05), 0 10px 28px rgba(23, 34, 44, 0.08);
+  --schaduw-zacht: 0 1px 2px rgba(23, 34, 44, 0.06);
+  --font-display: "Archivo Variable", Archivo, "Trebuchet MS", system-ui, sans-serif;
 }
 
 * {
@@ -34,6 +48,7 @@ body {
     "Helvetica Neue", Arial, sans-serif;
   font-size: 15px;
   line-height: 1.5;
+  font-variant-numeric: tabular-nums;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -49,9 +64,20 @@ select {
 }
 
 h1,
-h2,
+h2 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
 h3 {
   letter-spacing: -0.02em;
+}
+
+:is(a, button, input, select, [tabindex]):focus-visible {
+  outline: 2.5px solid var(--delfts);
+  outline-offset: 2px;
+  border-radius: 4px;
 }
 
 .container {
@@ -79,7 +105,11 @@ h3 {
   width: 26px;
   height: 26px;
   border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, #22b8cf, var(--accent) 70%);
+  background:
+    linear-gradient(var(--wolk), var(--wolk)) no-repeat 6px 8px / 13px 3px,
+    linear-gradient(var(--wolk), var(--wolk)) no-repeat 6px 14px / 17px 3px,
+    linear-gradient(var(--wolk), var(--wolk)) no-repeat 6px 20px / 10px 3px,
+    var(--delfts);
   box-shadow: inset 0 0 0 3px rgba(255, 255, 255, 0.55);
 }
 
@@ -824,3 +854,293 @@ h3 {
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; }
 }
+
+/* ------------------------------------------------------------------ */
+/* v2 "Passaat": hub, navigatie, tools en meldingen                    */
+/* ------------------------------------------------------------------ */
+
+.merk-naam {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  font-size: 19px;
+  color: var(--inkt);
+}
+
+a.merk { text-decoration: none; }
+
+.hoofdnav {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.navlink {
+  color: var(--inkt-zacht);
+  text-decoration: none;
+  font-size: 13.5px;
+  font-weight: 600;
+  padding: 6px 10px;
+  border-radius: var(--radius-s);
+}
+
+.navlink:hover {
+  color: var(--delfts-diep);
+  background: var(--delfts-zacht);
+}
+
+.stip {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--groen);
+  margin-left: 5px;
+  vertical-align: 2px;
+}
+
+.icoon { vertical-align: -2.5px; }
+
+/* Hub-hero: functioneel, met de windstrip als merkbeeld. */
+.hub-hero {
+  background: var(--wolk);
+  border: 1px solid var(--lijn);
+  border-radius: var(--radius);
+  box-shadow: var(--schaduw);
+  padding: 34px 30px 28px;
+  margin-bottom: 22px;
+}
+
+.hub-hero h1 {
+  margin: 0 0 10px;
+  font-size: clamp(30px, 5vw, 44px);
+}
+
+.hub-hero p {
+  max-width: 640px;
+  color: var(--inkt-zacht);
+  margin: 0 0 20px;
+  font-size: 16px;
+}
+
+.demo-strip {
+  display: flex;
+  height: 26px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--lijn);
+  max-width: 640px;
+}
+
+.demo-strip > div {
+  transform-origin: left center;
+  animation: segIn 0.5s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+}
+
+@keyframes segIn {
+  from { transform: scaleX(0); opacity: 0.2; }
+  to { transform: scaleX(1); opacity: 1; }
+}
+
+.demo-legenda {
+  display: flex;
+  justify-content: space-between;
+  max-width: 640px;
+  color: var(--inkt-zacht);
+  font-size: 12.5px;
+  margin-top: 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .demo-strip > div { animation: none; }
+  * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}
+
+/* Toolkaarten op de hub */
+.toolkaarten {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 14px;
+  margin: 0 0 26px;
+}
+
+.toolkaart {
+  display: block;
+  background: var(--wolk);
+  border: 1px solid var(--lijn);
+  border-radius: var(--radius);
+  box-shadow: var(--schaduw-zacht);
+  padding: 20px 20px 18px;
+  text-decoration: none;
+  color: var(--inkt);
+}
+
+.toolkaart:hover {
+  border-color: var(--delfts);
+  box-shadow: var(--schaduw);
+}
+
+.toolkaart h2 {
+  margin: 0 0 6px;
+  font-size: 21px;
+}
+
+.toolkaart p {
+  margin: 0 0 10px;
+  color: var(--inkt-zacht);
+  font-size: 14px;
+}
+
+.toolkaart .doorlink {
+  color: var(--delfts);
+  font-weight: 700;
+  font-size: 14px;
+}
+
+/* Tool- en stadpagina's */
+.tool-hero { margin: 4px 0 18px; }
+
+.tool-hero h1 {
+  margin: 0 0 8px;
+  font-size: clamp(26px, 4vw, 36px);
+}
+
+.tool-hero p {
+  max-width: 680px;
+  color: var(--inkt-zacht);
+  margin: 0;
+}
+
+.broodkruimel {
+  font-size: 13px;
+  color: var(--inkt-zacht);
+  margin: 2px 0 10px;
+}
+
+.broodkruimel a {
+  color: var(--inkt-zacht);
+  text-decoration: none;
+}
+
+.broodkruimel a:hover { color: var(--delfts-diep); text-decoration: underline; }
+
+.kruimel-scheider { margin: 0 6px; }
+
+.stadlinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 10px 0 4px;
+}
+
+.stadlinks a {
+  border: 1px solid var(--lijn-sterk);
+  background: var(--wolk);
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 13px;
+  color: var(--inkt);
+  text-decoration: none;
+}
+
+.stadlinks a:hover {
+  border-color: var(--delfts);
+  background: var(--delfts-zacht);
+}
+
+/* Wastool */
+.dagkiezer {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(108px, 1fr));
+  gap: 8px;
+  margin: 14px 0;
+}
+
+.dagkaart {
+  border: 1px solid var(--lijn-sterk);
+  background: var(--wolk);
+  border-radius: var(--radius-s);
+  padding: 9px 10px;
+  text-align: left;
+  display: grid;
+  gap: 3px;
+}
+
+.dagkaart .dagnaam { font-size: 12.5px; color: var(--inkt-zacht); font-weight: 600; }
+
+.dagkaart .dagcijfer {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 20px;
+}
+
+.dagkaart .dagvenster { font-size: 12px; color: var(--inkt-zacht); }
+
+.dagkaart.actief {
+  border-color: var(--delfts);
+  background: var(--delfts-zacht);
+}
+
+.urenstrip { margin-top: 6px; }
+
+.was-samenvatting { font-size: 15.5px; margin: 8px 0 2px; }
+
+.locatie-gekozen {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.locatie-naam { font-weight: 600; }
+
+/* Meldingenpaneel v2 */
+.modal-breed { max-width: 660px; }
+
+.dagchips { margin: 8px 0 4px; }
+
+.dagchips .chip { text-transform: none; min-width: 42px; text-align: center; }
+
+.chip.actief {
+  border-color: var(--delfts);
+  background: var(--delfts);
+  color: #fff;
+}
+
+.tijdchip { display: inline-flex; align-items: center; gap: 4px; }
+
+.schemazin {
+  color: var(--inkt-zacht);
+  font-size: 13px;
+  background: var(--lucht);
+  border-radius: var(--radius-s);
+  padding: 7px 10px;
+  margin: 8px 0 2px;
+}
+
+/* Installatiekaart (beforeinstallprompt of iOS-instructie) */
+.installkaart {
+  position: fixed;
+  left: 16px;
+  right: 16px;
+  bottom: 16px;
+  margin: 0 auto;
+  max-width: 460px;
+  background: var(--inkt);
+  color: var(--lucht);
+  border-radius: var(--radius);
+  box-shadow: 0 12px 34px rgba(23, 34, 44, 0.35);
+  padding: 16px 18px;
+  z-index: 1200;
+}
+
+.installkaart p { margin: 6px 0 12px; color: #C9D6E2; font-size: 14px; }
+
+.installknoppen { display: flex; gap: 8px; }
+
+.installkaart .knop { background: transparent; color: var(--lucht); border-color: #4A5C6D; }
+
+.installkaart .knop.primair { background: var(--delfts); border-color: var(--delfts); color: #fff; }
+
+.seotekst h2 { font-size: 21px; }

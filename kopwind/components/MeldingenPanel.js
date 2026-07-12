@@ -1,7 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { DEFAULT_MELDINGEN } from "@/lib/notify";
+import {
+  migreerRouteSchema,
+  DEFAULT_TOOL_SCHEMA,
+  schemaZin,
+} from "@/lib/engine/meldingen";
+import { S } from "@/lib/strings/nl";
+import { TOOLS } from "@/lib/tools";
 import {
   pushOndersteund,
   draaitStandalone,
@@ -10,23 +16,18 @@ import {
   zegOp,
   isGeabonneerd,
 } from "@/lib/push-client";
+import { useGebruiker } from "./GebruikerContext";
 
 /**
- * Modal voor synchronisatie en meldingen:
- * 1. Apparaten koppelen met een synccode (laptop en telefoon zien hetzelfde).
- * 2. Dit apparaat aanmelden voor push (op iPhone: eerst op het beginscherm).
- * 3. Per opgeslagen route de ochtendbriefing en vertrekherinnering instellen.
+ * Meldingen en apparaten, granulair (§8):
+ * 1. Apparaten koppelen met een synccode.
+ * 2. Dit apparaat aanmelden voor push (iPhone: eerst op het beginscherm).
+ * 3. Per opgeslagen route: dagen, tijden, typen en drempel als klikbare
+ *    instellingen, met een mensentaal-zin eronder.
+ * 4. Per locatie-tool (zoals de wascheck): hetzelfde, met een locatie.
  */
-export default function MeldingenPanel({
-  open,
-  onClose,
-  routes,
-  onWijzigRouteMeldingen,
-  syncCode,
-  onMaakCode,
-  onKoppelCode,
-  onOntkoppel,
-}) {
+export default function MeldingenPanel({ open, onClose }) {
+  const g = useGebruiker();
   const [invoer, setInvoer] = useState("");
   const [bezig, setBezig] = useState(false);
   const [status, setStatus] = useState(null);
@@ -39,16 +40,17 @@ export default function MeldingenPanel({
     isGeabonneerd().then(setAbo);
   }, [open]);
 
-  if (!open) return null;
+  if (!open || !g) return null;
 
   const ios = isIos();
   const standalone = draaitStandalone();
   const ondersteund = pushOndersteund();
+  const locatieTools = TOOLS.filter((t) => t.inputType === "locatie");
 
   const maakCode = async () => {
     setBezig(true);
     setStatus(null);
-    const fout = await onMaakCode();
+    const fout = await g.maakSyncCode();
     if (fout) setStatus(fout);
     setBezig(false);
   };
@@ -57,16 +59,15 @@ export default function MeldingenPanel({
     if (!invoer.trim()) return;
     setBezig(true);
     setStatus(null);
-    const fout = await onKoppelCode(invoer.trim().toUpperCase());
-    if (fout) setStatus(fout);
-    else setStatus("Gekoppeld. Je routes en instellingen zijn overgenomen.");
+    const fout = await g.koppelSyncCode(invoer.trim().toUpperCase());
+    setStatus(fout ?? "Gekoppeld. Je routes en instellingen zijn overgenomen.");
     setBezig(false);
   };
 
   const zetPushAan = async () => {
     setBezig(true);
     setStatus(null);
-    const r = await abonneer(syncCode);
+    const r = await abonneer(g.syncCode);
     if (r.ok) {
       setAbo(true);
       setStatus("Dit apparaat ontvangt nu meldingen.");
@@ -78,7 +79,7 @@ export default function MeldingenPanel({
 
   const zetPushUit = async () => {
     setBezig(true);
-    await zegOp(syncCode);
+    await zegOp(g.syncCode);
     setAbo(false);
     setStatus("Meldingen op dit apparaat uitgezet.");
     setBezig(false);
@@ -91,7 +92,7 @@ export default function MeldingenPanel({
       const res = await fetch("/api/push/testmelding", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ code: syncCode }),
+        body: JSON.stringify({ code: g.syncCode }),
       });
       const d = await res.json();
       setStatus(
@@ -107,29 +108,28 @@ export default function MeldingenPanel({
 
   return (
     <div className="modalachter" onClick={onClose}>
-      <div className="modal" onClick={(e) => e.stopPropagation()}>
+      <div className="modal modal-breed" onClick={(e) => e.stopPropagation()}>
         <h2>Meldingen en apparaten</h2>
 
         <h3>1. Apparaten koppelen</h3>
-        {syncCode ? (
+        {g.syncCode ? (
           <>
             <p className="uitleg" style={{ marginTop: 0 }}>
-              Jouw synccode. Voer hem in op je andere apparaat (laptop of
-              telefoon), dan zien ze allebei dezelfde routes, favorieten en
-              instellingen.
+              Jouw synccode. Voer hem in op je andere apparaat, dan zien laptop
+              en telefoon dezelfde routes, favorieten en meldingen.
             </p>
             <div className="synccode-rij">
-              <code className="synccode">{syncCode}</code>
+              <code className="synccode">{g.syncCode}</code>
               <button
                 className="knop klein"
                 onClick={() => {
-                  navigator.clipboard?.writeText(syncCode);
+                  navigator.clipboard?.writeText(g.syncCode);
                   setStatus("Code gekopieerd.");
                 }}
               >
                 Kopieer
               </button>
-              <button className="knop klein" onClick={onOntkoppel}>
+              <button className="knop klein" onClick={g.ontkoppel}>
                 Ontkoppel
               </button>
             </div>
@@ -165,23 +165,21 @@ export default function MeldingenPanel({
         )}
 
         <h3>2. Meldingen op dit apparaat</h3>
-        {!syncCode && (
-          <p className="uitleg">Koppel eerst je apparaten (stap 1).</p>
-        )}
-        {syncCode && ios && !standalone && (
+        {!g.syncCode && <p className="uitleg">Koppel eerst je apparaten (stap 1).</p>}
+        {g.syncCode && ios && !standalone && (
           <p className="uitleg">
             Op iPhone en iPad: zet de site eerst op je beginscherm (deelknop,
-            dan "Zet op beginscherm") en open de app daarvandaan. Daarna kun je
-            hier meldingen aanzetten. Werkt vanaf iOS 16.4.
+            dan {"\u201c"}Zet op beginscherm{"\u201d"}) en open de app daarvandaan. Daarna kun
+            je hier meldingen aanzetten. Werkt vanaf iOS 16.4.
           </p>
         )}
-        {syncCode && !ondersteund && !ios && (
+        {g.syncCode && !ondersteund && !ios && (
           <p className="uitleg">
             Deze browser ondersteunt geen webpush. Probeer Chrome, Edge of
             Firefox, of Safari op iPhone via het beginscherm.
           </p>
         )}
-        {syncCode && ondersteund && (!ios || standalone) && (
+        {g.syncCode && ondersteund && (!ios || standalone) && (
           <div className="synccode-rij">
             {abo ? (
               <>
@@ -201,77 +199,258 @@ export default function MeldingenPanel({
         )}
 
         <h3>3. Meldingen per route</h3>
-        {routes.length === 0 && (
+        {g.routes.length === 0 && (
           <p className="uitleg">
-            Nog geen opgeslagen routes. Vul je woon-werkrit in en klik op Route
-            opslaan; daarna stel je hier per route de meldingen in.
+            Nog geen opgeslagen routes. Sla in de fietscheck je woon-werkrit op;
+            daarna stel je hier per route in wanneer je een melding wilt.
           </p>
         )}
-        {routes.map((r) => {
-          const m = { ...DEFAULT_MELDINGEN, ...(r.meldingen ?? {}) };
-          const wijzig = (patch) => onWijzigRouteMeldingen(r.naam, { ...m, ...patch });
-          return (
-            <div className="routemeldingen" key={r.naam}>
-              <strong>{r.naam}</strong>
-              <div className="instelrij">
-                <label htmlFor={`ocht-${r.naam}`}>Ochtendbriefing</label>
-                <span className="instelgroep">
-                  <input
-                    id={`ocht-${r.naam}`}
-                    type="checkbox"
-                    checked={m.ochtend}
-                    onChange={(e) => wijzig({ ochtend: e.target.checked })}
-                  />
-                  <input
-                    type="time"
-                    value={m.ochtendTijd}
-                    disabled={!m.ochtend}
-                    onChange={(e) => wijzig({ ochtendTijd: e.target.value })}
-                    aria-label={`Tijdstip ochtendbriefing ${r.naam}`}
-                  />
-                </span>
-              </div>
-              <div className="instelrij">
-                <label htmlFor={`vert-${r.naam}`}>Herinnering voor vertrek</label>
-                <span className="instelgroep">
-                  <input
-                    id={`vert-${r.naam}`}
-                    type="checkbox"
-                    checked={m.vertrek}
-                    onChange={(e) => wijzig({ vertrek: e.target.checked })}
-                  />
-                  <input
-                    type="number"
-                    min="5"
-                    step="5"
-                    value={m.vertrekMinuten}
-                    disabled={!m.vertrek}
-                    onChange={(e) => wijzig({ vertrekMinuten: Number(e.target.value) })}
-                    aria-label={`Minuten voor vertrek ${r.naam}`}
-                  />
-                  <span className="instelhint">min vooraf</span>
-                </span>
-              </div>
-            </div>
-          );
-        })}
-        {routes.length > 0 && (
-          <p className="uitleg">
-            De briefing geeft het dagadvies met weer voor de hele route.
-            Vertrekherinneringen gelden voor ritten met een vaste vertrek- of
-            aankomsttijd (niet bij vertrekken nu). De klok kijkt elke 5 minuten,
-            dus een melding kan een paar minuten verschuiven.
-          </p>
-        )}
+        {g.routes.map((r) => (
+          <RouteSchema
+            key={r.naam}
+            route={r}
+            onWijzig={(schema) => g.wijzigRouteMeldingen(r.naam, schema)}
+          />
+        ))}
+
+        {locatieTools.map((tool) => (
+          <ToolSchema
+            key={tool.id}
+            tool={tool}
+            presets={g.presets}
+            schema={g.toolMeldingen[tool.id]}
+            onWijzig={(schema) => g.wijzigToolMeldingen(tool.id, schema)}
+          />
+        ))}
+
+        <p className="uitleg">
+          De klok kijkt elke 5 minuten, dus een melding kan een paar minuten
+          verschuiven. Vertrekherinneringen gelden voor ritten met een vaste
+          vertrek- of aankomsttijd (niet bij vertrekken nu).
+        </p>
 
         {status && <p className="uitleg synstatus">{status}</p>}
 
         <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 12 }}>
           <button className="knop primair" onClick={onClose}>
-            Sluiten
+            {S.algemeen.sluiten}
           </button>
         </div>
       </div>
+    </div>
+  );
+}
+
+function DagenChips({ dagen, onWijzig }) {
+  const toggle = (d) => {
+    const set = new Set(dagen ?? []);
+    if (set.has(d)) set.delete(d);
+    else set.add(d);
+    onWijzig([...set].sort((a, b) => a - b));
+  };
+  return (
+    <div className="chips dagchips" role="group" aria-label="Dagen">
+      {S.meldingen.dagen.map((naam, i) => (
+        <button
+          key={naam}
+          type="button"
+          className={"chip" + ((dagen ?? []).includes(i + 1) ? " actief" : "")}
+          onClick={() => toggle(i + 1)}
+        >
+          {naam}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+function TijdenLijst({ tijden, onWijzig }) {
+  const lijst = tijden?.length ? tijden : ["07:00"];
+  return (
+    <span className="instelgroep">
+      {lijst.map((t, i) => (
+        <span key={i} className="tijdchip">
+          <input
+            type="time"
+            value={t}
+            onChange={(e) => {
+              const next = lijst.slice();
+              next[i] = e.target.value;
+              onWijzig(next);
+            }}
+            aria-label={`Tijd ${i + 1}`}
+          />
+          {lijst.length > 1 && (
+            <button
+              type="button"
+              className="knop klein"
+              onClick={() => onWijzig(lijst.filter((_, j) => j !== i))}
+              aria-label="Tijd verwijderen"
+            >
+              &times;
+            </button>
+          )}
+        </span>
+      ))}
+      {lijst.length < 3 && (
+        <button
+          type="button"
+          className="knop klein"
+          onClick={() => onWijzig([...lijst, "17:00"])}
+        >
+          {S.meldingen.tijdToevoegen}
+        </button>
+      )}
+    </span>
+  );
+}
+
+function DrempelKeuze({ drempel, richtingGoed, onWijzig }) {
+  const d = drempel ?? { modus: "altijd", cijfer: richtingGoed ? 7 : 6.5 };
+  return (
+    <span className="instelgroep">
+      <select
+        value={d.modus}
+        onChange={(e) => onWijzig({ ...d, modus: e.target.value })}
+        aria-label="Wanneer melden"
+      >
+        <option value="altijd">{S.meldingen.drempelAltijd}</option>
+        <option value="slecht">{S.meldingen.drempelSlecht}</option>
+        <option value="goed">{S.meldingen.drempelGoed}</option>
+      </select>
+      {d.modus !== "altijd" && (
+        <input
+          type="number"
+          min="1"
+          max="10"
+          step="0.5"
+          value={d.cijfer}
+          onChange={(e) => onWijzig({ ...d, cijfer: Number(e.target.value) })}
+          aria-label="Cijfergrens"
+        />
+      )}
+    </span>
+  );
+}
+
+function RouteSchema({ route, onWijzig }) {
+  const s = migreerRouteSchema(route.meldingen);
+  const patch = (p) => onWijzig({ ...s, ...p });
+  return (
+    <div className="routemeldingen">
+      <strong>{route.naam}</strong>
+      <DagenChips dagen={s.dagen} onWijzig={(dagen) => patch({ dagen })} />
+      <div className="instelrij">
+        <label>
+          <input
+            type="checkbox"
+            checked={s.briefing.aan}
+            onChange={(e) => patch({ briefing: { ...s.briefing, aan: e.target.checked } })}
+          />{" "}
+          {S.meldingen.briefing}
+        </label>
+        {s.briefing.aan && (
+          <TijdenLijst
+            tijden={s.briefing.tijden}
+            onWijzig={(tijden) => patch({ briefing: { ...s.briefing, tijden } })}
+          />
+        )}
+      </div>
+      <div className="instelrij">
+        <label>
+          <input
+            type="checkbox"
+            checked={s.vertrek.aan}
+            onChange={(e) => patch({ vertrek: { ...s.vertrek, aan: e.target.checked } })}
+          />{" "}
+          {S.meldingen.vertrek}
+        </label>
+        {s.vertrek.aan && (
+          <span className="instelgroep">
+            <input
+              type="number"
+              min="5"
+              step="5"
+              value={s.vertrek.minuten}
+              onChange={(e) =>
+                patch({ vertrek: { ...s.vertrek, minuten: Number(e.target.value) } })
+              }
+              aria-label="Minuten voor vertrek"
+            />
+            <span className="instelhint">{S.meldingen.minVooraf}</span>
+          </span>
+        )}
+      </div>
+      <div className="instelrij">
+        <span className="instelhint">Wanneer melden</span>
+        <DrempelKeuze
+          drempel={s.drempel}
+          richtingGoed={false}
+          onWijzig={(drempel) => patch({ drempel })}
+        />
+      </div>
+      <p className="schemazin">{schemaZin(s, "route")}</p>
+    </div>
+  );
+}
+
+function ToolSchema({ tool, presets, schema, onWijzig }) {
+  const s = { ...structuredClone(DEFAULT_TOOL_SCHEMA), ...(schema ?? {}) };
+  const patch = (p) => onWijzig({ ...s, ...p });
+  return (
+    <div className="routemeldingen">
+      <h3 style={{ margin: "14px 0 4px" }}>Meldingen voor {tool.naam}</h3>
+      <div className="instelrij">
+        <label>
+          <input
+            type="checkbox"
+            checked={s.aan}
+            onChange={(e) => patch({ aan: e.target.checked })}
+          />{" "}
+          Volg deze check
+        </label>
+        <span className="instelgroep">
+          <select
+            value={s.locatie?.naam ?? ""}
+            onChange={(e) => {
+              const p = presets.find((x) => x.naam === e.target.value);
+              patch({ locatie: p ? { naam: p.naam, lat: p.lat, lon: p.lon } : null });
+            }}
+            aria-label="Locatie voor deze melding"
+          >
+            <option value="">kies locatie...</option>
+            {presets.map((p) => (
+              <option key={p.naam} value={p.naam}>
+                {p.naam}
+              </option>
+            ))}
+          </select>
+        </span>
+      </div>
+      {s.aan && (
+        <>
+          {!s.locatie && (
+            <p className="uitleg">
+              Kies een favoriete plek hierboven (sla er eerst een op met de ster
+              in een van de tools).
+            </p>
+          )}
+          <DagenChips dagen={s.dagen} onWijzig={(dagen) => patch({ dagen })} />
+          <div className="instelrij">
+            <span className="instelhint">Tijd</span>
+            <TijdenLijst tijden={s.tijden} onWijzig={(tijden) => patch({ tijden })} />
+          </div>
+          <div className="instelrij">
+            <span className="instelhint">Wanneer melden</span>
+            <DrempelKeuze
+              drempel={s.drempel}
+              richtingGoed
+              onWijzig={(drempel) => patch({ drempel })}
+            />
+          </div>
+          <p className="schemazin">{schemaZin(s, "tool")}</p>
+        </>
+      )}
     </div>
   );
 }

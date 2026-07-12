@@ -1,6 +1,6 @@
 {
   "name": "kopwind",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
   "type": "module",
   "description": "Fiets of scooter? Multi-stop fietsplanner met kopwind per routesegment.",
@@ -11,6 +11,7 @@
     "test": "node --test"
   },
   "dependencies": {
+    "@fontsource-variable/archivo": "^5.2.8",
     "leaflet": "^1.9.4",
     "next": "^14.2.5",
     "react": "^18.3.1",

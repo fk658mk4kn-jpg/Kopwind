@@ -5,7 +5,7 @@ import {
   planTimes,
   dueNotifications,
   dagKey,
-} from "../lib/notify.js";
+} from "../lib/engine/meldingen.js";
 
 test("normalizeChainToToday: kloktijd blijft, datum wordt vandaag", () => {
   const nu = new Date(2026, 6, 10, 6, 0);

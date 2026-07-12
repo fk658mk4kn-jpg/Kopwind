@@ -1,5 +1,5 @@
 /**
- * lib/wind.js
+ * lib/engine/wind.js
  *
  * Pure rekenkern voor Kopwind. Geen React, geen fetch, volledig testbaar.
  *
