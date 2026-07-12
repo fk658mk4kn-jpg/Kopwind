@@ -8,8 +8,8 @@ export default function manifest() {
     description: HUB_CLAIM,
     start_url: "/",
     display: "standalone",
-    background_color: "#E9EEF3",
-    theme_color: "#234E9D",
+    background_color: "#EFF2F5",
+    theme_color: "#1B2733",
     lang: "nl",
     icons: [
       { src: "/icons/icon-192.png", sizes: "192x192", type: "image/png", purpose: "any" },

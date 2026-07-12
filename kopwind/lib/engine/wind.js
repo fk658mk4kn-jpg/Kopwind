@@ -1,3 +1,5 @@
+import { kleurDivergerend } from "./kleuren.js";
+
 /**
  * lib/engine/wind.js
  *
@@ -136,10 +138,9 @@ export function classifyHeadwind(headwind, thresholds) {
  */
 export function colorForHeadwind(headwind, thresholds) {
   const x = Math.max(-1, Math.min(1, headwind / thresholds.tegenwindZwaar));
-  // x = -1 -> hue 150 (diep groen), x = 0 -> hue 45 (amber), x = 1 -> hue 2 (diep rood)
-  const hue = x <= 0 ? 45 + -x * 105 : 45 - x * 43;
-  const licht = 44 - Math.abs(x) * 8;
-  return `hsl(${Math.round(hue)} 88% ${Math.round(licht)}%)`;
+  // Divergerend blauw (rugwind) <-> oranje (tegenwind), colorblind-veilig;
+  // de ramp zelf staat in lib/engine/kleuren.js.
+  return kleurDivergerend(x);
 }
 
 /**

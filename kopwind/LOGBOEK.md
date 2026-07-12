@@ -5,6 +5,110 @@ Git-tags zet je lokaal (zie README, kop Versies en tags).
 
 ---
 
+## v2.1.0 - "Mistral" - 2026-07-12
+
+**Waarom:** De SEO-/visualisatie-audit van de live site (invulling van
+par. 10 van de masterbriefing) legde vier must-fixes bloot die de
+kernwaarde raakten: score-inflatie (bijna alles een 10), canonicals en
+sitemap naar localhost, een kapot ogende kaart voor de eerste check, en
+strategie-copy richting de bezoeker. Daarnaast: installatie was in de
+praktijk niet vindbaar, kleuren betekenden per tool iets anders zonder
+legenda en waren niet colorblind-veilig, instellingen waren fiets-only,
+en het design was de generieke SaaS-look die par. 11 verbiedt. Het domein
+kanhetvandaag.nl is geclaimd; merk en domein zijn nu een.
+
+**Wat:**
+- Merk: hubnaam van "Vandaag wel?" naar "Kan het vandaag?" (1 constante
+  in lib/brand.js, omkeerbaar), passend bij het domein. Korte naam voor
+  beginscherm: "Vandaag?".
+- P0-A score-ankers: beide tools kregen een verankerde curve met
+  componenten die over hun hele bereik meetellen. Was: de vensterduur is
+  de primaire, vrijwel lineaire driver (ankertabel 12u=0 pijn tot 3u=48),
+  plus droogkracht, buien rond het venster en een "te kort om droog te
+  krijgen"-tak; twee consistentie-caps borgen tekst-cijfer (droogtijd past
+  => nooit "binnen drogen"; venster te kort => rond anker 3). Fiets:
+  tegenwind steiler gekalibreerd (matig-drempel landt rond de 7,
+  zwaar-drempel diep in de 2-3), regenkans gegradeerd vanaf 30% zonder
+  drempelklif, neerslag vanaf motregen, kou en windstoten gegradeerd.
+  Ankers staan als docblok in de code en als regressietests vast.
+- P0-B site-URL: lib/site.js forceert https en valt terug op
+  https://kanhetvandaag.nl (localhost-uitzondering voor dev);
+  metadataBase, canonicals, og:url, robots.txt en alle sitemap-locs lopen
+  erdoorheen.
+- P0-C kaart: nette NL-overzichtsdefault, stadscentrum-default op
+  stad-pagina's, en een ResizeObserver die Leaflet herijkt bij elke
+  maatverandering (de oorzaak van de wazige uitgesmeerde tegel).
+- P0-D copy: hub-blokken herschreven naar gebruikersvoordeel ("je krijgt
+  een antwoord, geen tabel", "Op je beginscherm, op jouw momenten").
+- P1-A installatie: het beforeinstallprompt-event leeft nu in de
+  GebruikerContext; het meldingenpaneel opent met een sectie "Op je
+  beginscherm" (knop op Chromium/Android, deelknop-instructie op iOS,
+  browsermenu-uitleg elders, verborgen wanneer al standalone) en de
+  zwevende kaart na de eerste check gebruikt dezelfde staat. Install- en
+  push-uitleg per platform in beide tool-contents.
+- P1-B kleuren: nieuwe module lib/engine/kleuren.js. Wind is divergerend
+  blauw-oranje (colorblind-veilig, geen rood-groen), goedheid is
+  sequentieel op cividis-stops (donker=slecht, lichtgeel=goed). Windstrip,
+  kaartsegmenten, urenstrip en hub-demo staan op de nieuwe ramps; de
+  wascards kregen kleur plus oordeelwoord; elke tool toont een
+  KleurLegenda die de betekenis benoemt. Betekenis hangt nergens alleen
+  aan kleur (woord plus getal overal).
+- P1-C instellingen per tool: elke toolconfig declareert zijn eigen
+  instelvelden en defaults; het instellingenpaneel toont tabs per check;
+  opslag is per tool in localStorage en synccode, met automatische
+  migratie van het oude platte formaat (ook in de cron). De wascheck is
+  instelbaar op ophangvenster en buienkansgrens.
+- P1-D design "wegwijzer": leisteen (#1B2733) als donker merkvlak (kop,
+  installkaart), bewegwijzering-geel (#F2B705) als accent in plaats van
+  SaaS-blauw, Bricolage Grotesque als display-letter, wordmark in kleine
+  letters, iconen hergenereerd in leisteen-geel. Hero is functioneel:
+  VandaagHier laat je een keer je plek kiezen en toont live het wascijfer
+  van vandaag plus het fietsweer van dit uur met doorklik; toolkaarten
+  centraal met een teaser voor terras en barbecue.
+- P1-E delen: OG-images (1200x630) voor hub en toolpagina's met de
+  windstrip als signature, gerenderd via next/og met de display-woff in
+  assets/og/ (scripts/maak-og-font.mjs); twitter op summary_large_image
+  en titels erven per pagina.
+- P2: windstrip-legenda mobielproof (korte labels via KleurLegenda),
+  hub-FAQ naar zes vragen met toolverwijzingen, CTA-patroon consequent in
+  de gebiedende wijs ("Doe de check", "Check mijn fietsrit", "Bewaar
+  route", "Stuur testmelding").
+
+**Breaking / migratie:** Geen datamigratie nodig. Het drempelformaat is
+nu per tool; oude platte profielen (localStorage en synccode-profielen)
+migreren automatisch bij laden en in de cron. Visueel is alles anders
+(naam, palet, letter), URLs zijn ongewijzigd. Na het pullen eenmalig npm
+install (archivo eruit, bricolage-grotesque erin).
+
+**Tests:** 64 groen (was 46). Nieuw: fiets-ankers en spreiding,
+was-ankers (Apeldoorn 3u-venster <= 6,5 met "krap", venster te kort rond
+de 3, minder dan 2 uur <= 4, volle droge dag >= 9, spreiding over vijf
+dagen, consistentie-cap), kleurramps (exacte eindpunten),
+siteUrl-helper, drempelmigratie en instellingen-declaraties. Aangepast:
+regenkans-kliftest vervangen door gegradeerde tests, plannertest op het
+nieuwe kleurformaat.
+
+**Bekende beperkingen:**
+- De drempel-modus werkt bewust NIET op de vertrekherinnering, alleen op
+  de briefing: de herinnering is een wekker met actueel weer erin;
+  wegfilteren zou de wekkerfunctie breken. Stond open sinds v2.0.0 en is
+  nu een besluit, geen vergeten hoekje.
+- Android-installatie, iOS-beginscherm en push zijn NIET op een echt
+  toestel geverifieerd; de sandbox heeft geen browser. Dat is de
+  eerstvolgende teststap voor Martijn (acceptatie P1-A).
+- De P0-B-acceptatie op productie (canonical, og:url, robots, sitemap
+  tonen het live domein) vergt de env-var in Vercel plus een steekproef
+  na deploy.
+- De kleurenblind-simulatorcheck (Coblis of Sim Daltonism) is een
+  visuele verificatiestap voor Martijn; de ramps zijn wel gekozen uit
+  colorblind-veilige families en betekenis is overal redundant.
+- VandaagHier toont het wasverdict live; voor fietsen toont hij het weer
+  van dit uur als regel, want een fietscijfer vergt een route.
+- De OG-image van stad-pagina's is die van de bovenliggende tool
+  (bewust: 152 unieke images bouwen is de moeite nog niet waard).
+
+---
+
 ## v2.0.0 - "Passaat" - 2026-07-11
 
 **Waarom:** De fietscheck werkt en de motor eronder (locatie, weer, score,

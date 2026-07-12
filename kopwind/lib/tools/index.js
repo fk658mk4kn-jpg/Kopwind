@@ -37,6 +37,28 @@ export function vindToolOpId(id) {
   return TOOLS.find((t) => t.id === id) ?? null;
 }
 
+/** Instellingen-metadata en defaults van een tool. */
+export function instellingenVoor(toolId) {
+  return vindToolOpId(toolId)?.instellingen ?? null;
+}
+
+export function defaultsVoor(toolId) {
+  return instellingenVoor(toolId)?.defaults ?? {};
+}
+
+/**
+ * Migreert het oude platte drempelobject (alleen fiets) naar het per-tool
+ * formaat { toolId: { ... } }. Per-tool objecten gaan er ongewijzigd door.
+ */
+export function migreerThresholds(oud) {
+  if (!oud || typeof oud !== "object") return {};
+  if (TOOLS.some((t) => oud[t.id])) return oud;
+  if ("tegenwindMatig" in oud || "segmentLengte" in oud) {
+    return { "fiets-naar-werk": { ...oud } };
+  }
+  return {};
+}
+
 /** Validatie voor de registertest: elk verplicht veld aanwezig en uniek. */
 export function valideerRegister(tools = TOOLS) {
   const fouten = [];

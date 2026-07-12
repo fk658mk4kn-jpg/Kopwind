@@ -46,7 +46,7 @@ export default function FietsTool({ beginStops = null }) {
       legsRaw,
       legOptions: planLegOptions ?? [],
       selection,
-      thresholds: g.thresholds,
+      thresholds: g.thresholdsVoor("fiets-naar-werk"),
     });
   }, [legsRaw, planLegOptions, selection, g.thresholds]);
 
@@ -85,7 +85,7 @@ export default function FietsTool({ beginStops = null }) {
   const bewaarRoute = () => {
     const gekozen = stops.filter(Boolean);
     if (gekozen.length < stops.length || gekozen.length < 2) {
-      setFout("Vul eerst alle stops in, dan kun je de route opslaan.");
+      setFout("Vul eerst alle stops in, dan kun je de route bewaren.");
       return;
     }
     const naam = window.prompt(
@@ -128,7 +128,7 @@ export default function FietsTool({ beginStops = null }) {
         legsRaw: raw,
         legOptions,
         selection: zeros,
-        thresholds: g.thresholds,
+        thresholds: g.thresholdsVoor("fiets-naar-werk"),
       });
       setPlanStops(gekozen);
       setPlanLegOptions(legOptions);
@@ -188,7 +188,7 @@ export default function FietsTool({ beginStops = null }) {
                 {bezig ? "Bezig..." : "Check mijn fietsrit"}
               </button>
               <button className="knop" onClick={bewaarRoute} disabled={bezig}>
-                Route opslaan
+                Bewaar route
               </button>
             </div>
           </section>
@@ -202,6 +202,10 @@ export default function FietsTool({ beginStops = null }) {
               actieveLeg={actieveLeg}
               onKiesRoute={kiesRoute}
               presets={g.presets}
+              startCenter={
+                beginStops?.[0] ? [beginStops[0].lat, beginStops[0].lon] : undefined
+              }
+              startZoom={beginStops?.[0] ? 11 : undefined}
             />
           </div>
         </div>

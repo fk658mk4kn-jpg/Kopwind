@@ -4,7 +4,6 @@ import {
   maakScore,
   adviesVoorScore,
   cijferWaarde,
-  kleurSchaal,
   lerp,
   clamp,
 } from "../lib/engine/score.js";
@@ -38,12 +37,7 @@ test("cijferWaarde: 10 bij score 0, ondergrens 1", () => {
   assert.equal(cijferWaarde(100), 1);
 });
 
-test("kleurSchaal: geldige hsl over het hele bereik en clamp", () => {
-  for (const x of [-2, -1, 0, 0.5, 1, 2]) {
-    assert.match(kleurSchaal(x), /^hsl\(\d+ 88% \d+%\)$/);
-  }
-  assert.equal(kleurSchaal(5), kleurSchaal(1));
-});
+
 
 test("lerp en clamp: basisgedrag", () => {
   assert.equal(lerp(5, 0, 10, 0, 100), 50);

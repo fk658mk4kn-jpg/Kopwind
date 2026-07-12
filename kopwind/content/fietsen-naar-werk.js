@@ -31,7 +31,7 @@ export const blokken = [
   {
     kop: "Meldingen op je telefoon: elke ochtend je fietsadvies",
     tekst:
-      "Sla je woon-werkroute op en stel per route in wanneer je een melding wilt: welke dagen, hoe laat, en of je alleen gewaarschuwd wilt worden op dagen dat het tegenzit. Werkt op je laptop en op je telefoon; op iPhone zet je de site eerst op je beginscherm. Apparaten koppel je met een synccode, zonder account of e-mailadres.",
+      "Sla je woon-werkroute op en stel per route in wanneer je een melding wilt: welke dagen, hoe laat, en of je alleen gewaarschuwd wilt worden op dagen dat het tegenzit. Werkt op Android, iPhone en desktop: op Android en in Chrome of Edge zet je de check met een knop op je beginscherm, op iPhone via de deelknop (vanaf iOS 16.4). Apparaten koppel je met een synccode, zonder account of e-mailadres.",
   },
 ];
 
@@ -54,6 +54,6 @@ export const faq = [
   },
   {
     v: "Krijg ik ook meldingen op mijn telefoon?",
-    a: "Ja. Koppel je apparaten met een synccode en stel per route in op welke dagen en tijden je een briefing wilt, of een herinnering voor vertrek. Op iPhone zet je de site eerst op je beginscherm (vanaf iOS 16.4); daarna komen de meldingen binnen als gewone pushberichten, ook als de app dicht is.",
+    a: "Ja. Koppel je apparaten met een synccode en stel per route in op welke dagen en tijden je een briefing wilt, of een herinnering voor vertrek. Op Android en desktop (Chrome, Edge, Firefox) werken de meldingen direct in de browser en kun je de check met een knop op je beginscherm zetten. Op iPhone zet je de site eerst op je beginscherm via de deelknop (vanaf iOS 16.4); daarna komen de meldingen binnen als gewone pushberichten, ook als de app dicht is.",
   },
 ];

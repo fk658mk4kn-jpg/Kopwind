@@ -45,6 +45,6 @@ export const faq = [
   },
   {
     v: "Krijg ik een seintje op een drooghangdag?",
-    a: "Ja. Volg de wascheck met een melding: kies je dagen en tijd, en stel in dat je alleen een melding wilt als het echt een drooghangdag is (cijfer 7 of hoger). Zo hoor je alleen iets op de dagen die ertoe doen.",
+    a: "Ja. Zet de wascheck op je beginscherm (op Android en desktop met een knop in het meldingenpaneel, op iPhone via de deelknop, vanaf iOS 16.4) en volg hem met een melding: kies je dagen en tijd, en stel in dat je alleen een melding wilt als het echt een drooghangdag is (cijfer 7 of hoger). Zo hoor je alleen iets op de dagen die ertoe doen.",
   },
 ];

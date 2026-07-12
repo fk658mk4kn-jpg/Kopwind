@@ -51,18 +51,3 @@ export function adviesVoorScore(score, labels) {
   return labels.goed;
 }
 
-/**
- * Kleurschaal die de hele hub deelt (de signature-ramp van de windstrip):
- * x van -1 (goed, diep groen) via 0 (amber) naar 1 (slecht, diep rood).
- */
-export function kleurSchaal(x) {
-  const k = clamp(x, -1, 1);
-  const hue = k <= 0 ? 45 + -k * 105 : 45 - k * 43;
-  const licht = 44 - Math.abs(k) * 8;
-  return `hsl(${Math.round(hue)} 88% ${Math.round(licht)}%)`;
-}
-
-/** Gemak: goedheid 0..1 (1 = perfect) naar dezelfde kleurschaal. */
-export function kleurVoorGoedheid(goedheid) {
-  return kleurSchaal(1 - 2 * clamp(goedheid, 0, 1));
-}

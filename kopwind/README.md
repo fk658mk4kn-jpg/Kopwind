@@ -99,4 +99,18 @@ Git leeft op jouw machine, dus zet de tags lokaal:
     git tag v1.0.0 <hash van je laatste commit voor deze drop>
     git add -A && git commit -m "v2.0.0 Passaat: merk-hub met toolregister"
     git tag v2.0.0
+    git add -A && git commit -m "v2.1.0 Mistral: audit, ankers, wegwijzer-design"
+    git tag v2.1.0
     git push && git push --tags
+
+## v2.1.0 "Mistral" in het kort
+
+Live domein: https://kanhetvandaag.nl. Zet in Vercel de env-var
+NEXT_PUBLIC_SITE_URL=https://kanhetvandaag.nl (de code valt er ook zonder
+op terug via lib/site.js, maar expliciet is beter). Tokens: leisteen
+#1B2733 en bewegwijzering-geel #F2B705 naast lucht/wolk/inkt; display is
+Bricolage Grotesque (fontsource). Kleurbeleid staat in
+lib/engine/kleuren.js: wind divergerend blauw-oranje, goedheid
+sequentieel cividis, altijd met legenda en woordlabels. De OG-images
+gebruiken de woff in assets/og/; regenereren kan met
+node scripts/maak-og-font.mjs.

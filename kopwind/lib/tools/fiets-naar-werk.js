@@ -27,6 +27,19 @@ export const fietsNaarWerk = {
     "wind_gusts_10m",
   ],
   scoreConfig: { thresholds: DEFAULT_THRESHOLDS },
+  instellingen: {
+    defaults: DEFAULT_THRESHOLDS,
+    velden: [
+      { key: "tegenwindMatig", label: "Tegenwind merkbaar vanaf", eenheid: "km/u", step: 1 },
+      { key: "tegenwindZwaar", label: "Tegenwind zwaar vanaf", eenheid: "km/u", step: 1 },
+      { key: "neerslagKans", label: "Neerslagkans genoemd vanaf", eenheid: "%", step: 5 },
+      { key: "neerslagMm", label: "Neerslag zwaar vanaf", eenheid: "mm/u", step: 0.1 },
+      { key: "gevoelMin", label: "Te koud onder gevoels-", eenheid: "graden", step: 1 },
+      { key: "segmentLengte", label: "Segmentlengte", eenheid: "m", step: 50 },
+    ],
+    uitleg:
+      "Elke rit krijgt een rapportcijfer voor het fietsweer: rond de 7 is merkbare tegenwind maar droog, rond de 5 stevige tegenwind of serieuze buienkans, onder de 4 raden we fietsen af. Deze drempels bepalen waar merkbaar en zwaar voor jou beginnen.",
+  },
   adviesLabels: {
     goed: "prima fietsdag",
     matig: "pittige rit",

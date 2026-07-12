@@ -11,8 +11,8 @@
 import { PNG } from "pngjs";
 import { writeFileSync, mkdirSync } from "node:fs";
 
-const ACHTERGROND = [35, 78, 157]; // #234E9D (delfts)
-const WIT = [255, 255, 255];
+const ACHTERGROND = [27, 39, 51]; // #1B2733 (leisteen)
+const WIT = [242, 183, 5]; // #F2B705 (geel), naam behouden voor de tekenfuncties
 
 function tekenIcoon(maat) {
   const png = new PNG({ width: maat, height: maat });

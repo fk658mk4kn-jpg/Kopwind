@@ -1,6 +1,6 @@
 "use client";
 
-import { kleurVoorGoedheid } from "@/lib/engine/score";
+import { kleurSequentieel } from "@/lib/engine/kleuren";
 
 /**
  * De signature-vormtaal van de hub, toegepast op uren: een horizontale
@@ -17,7 +17,7 @@ export default function UrenStrip({ uren, venster }) {
             key={u.uur}
             style={{
               width: `${100 / uren.length}%`,
-              background: kleurVoorGoedheid(u.kracht / 100),
+              background: kleurSequentieel(u.kracht / 100),
               opacity: venster && (u.uur < venster.van || u.uur >= venster.tot) ? 0.45 : 1,
             }}
             title={`${String(u.uur).padStart(2, "0")}:00 \u00b7 droogkracht ${u.kracht}/100`}

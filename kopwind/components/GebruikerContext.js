@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, useRef, useState } from "react";
-import { DEFAULT_THRESHOLDS } from "@/lib/advice";
+import { migreerThresholds, defaultsVoor } from "@/lib/tools";
 import SettingsPanel from "./SettingsPanel";
 import MeldingenPanel from "./MeldingenPanel";
 import InstallPrompt from "./InstallPrompt";
@@ -35,12 +35,50 @@ export function useGebruiker() {
 export default function GebruikerProvider({ children }) {
   const [presets, setPresets] = useState([]);
   const [routes, setRoutes] = useState([]);
-  const [thresholds, setThresholds] = useState({ ...DEFAULT_THRESHOLDS });
+  const [thresholds, setThresholds] = useState({});
   const [toolMeldingen, setToolMeldingen] = useState({});
   const [syncCode, setSyncCode] = useState(null);
   const [instellingenOpen, setInstellingenOpen] = useState(false);
   const [meldingenOpen, setMeldingenOpen] = useState(false);
   const [interactieGedaan, setInteractieGedaan] = useState(false);
+  const [installEvent, setInstallEvent] = useState(null);
+  const [geinstalleerd, setGeinstalleerd] = useState(false);
+
+  // Install-event (Chromium) centraal afvangen: de zwevende kaart en het
+  // meldingenpaneel delen zo dezelfde staat en dezelfde knop.
+  useEffect(() => {
+    try {
+      if (window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone) {
+        setGeinstalleerd(true);
+        return;
+      }
+    } catch {
+      // matchMedia kan ontbreken in oude browsers; dan gewoon luisteren.
+    }
+    const vang = (e) => {
+      e.preventDefault();
+      setInstallEvent(e);
+    };
+    const klaar = () => {
+      setInstallEvent(null);
+      setGeinstalleerd(true);
+    };
+    window.addEventListener("beforeinstallprompt", vang);
+    window.addEventListener("appinstalled", klaar);
+    return () => {
+      window.removeEventListener("beforeinstallprompt", vang);
+      window.removeEventListener("appinstalled", klaar);
+    };
+  }, []);
+
+  const zetOpBeginscherm = async () => {
+    if (!installEvent) return false;
+    installEvent.prompt();
+    const keuze = await installEvent.userChoice.catch(() => null);
+    setInstallEvent(null);
+    return keuze?.outcome === "accepted";
+  };
+
 
   const syncKlaar = useRef(false);
   const syncTimer = useRef(null);
@@ -54,7 +92,7 @@ export default function GebruikerProvider({ children }) {
       const r = JSON.parse(localStorage.getItem(LS.routes) ?? "[]");
       if (Array.isArray(r)) setRoutes(r);
       const t = JSON.parse(localStorage.getItem(LS.thresholds) ?? "null");
-      if (t) setThresholds({ ...DEFAULT_THRESHOLDS, ...t });
+      if (t) setThresholds(migreerThresholds(t));
       const tm = JSON.parse(localStorage.getItem(LS.toolMeldingen) ?? "null");
       if (tm && typeof tm === "object") setToolMeldingen(tm);
       code = localStorage.getItem(LS.synccode) || null;
@@ -89,7 +127,7 @@ export default function GebruikerProvider({ children }) {
       localStorage.setItem(LS.routes, JSON.stringify(data.routes));
     }
     if (data.thresholds) {
-      const t = { ...DEFAULT_THRESHOLDS, ...data.thresholds };
+      const t = migreerThresholds(data.thresholds);
       setThresholds(t);
       localStorage.setItem(LS.thresholds, JSON.stringify(t));
     }
@@ -143,10 +181,16 @@ export default function GebruikerProvider({ children }) {
     localStorage.setItem(LS.toolMeldingen, JSON.stringify(next));
   };
 
-  const wijzigThresholds = (t) => {
-    setThresholds(t);
-    localStorage.setItem(LS.thresholds, JSON.stringify(t));
+  const wijzigThresholds = (toolId, waarden) => {
+    const next = { ...thresholds, [toolId]: waarden };
+    setThresholds(next);
+    localStorage.setItem(LS.thresholds, JSON.stringify(next));
   };
+
+  const thresholdsVoor = (toolId) => ({
+    ...defaultsVoor(toolId),
+    ...(thresholds[toolId] ?? {}),
+  });
 
   const maakSyncCode = async () => {
     try {
@@ -192,6 +236,7 @@ export default function GebruikerProvider({ children }) {
     presets,
     routes,
     thresholds,
+    thresholdsVoor,
     toolMeldingen,
     syncCode,
     bewaarPreset,
@@ -200,6 +245,9 @@ export default function GebruikerProvider({ children }) {
     wijzigRouteMeldingen,
     wijzigToolMeldingen,
     wijzigThresholds,
+    installBeschikbaar: Boolean(installEvent),
+    geinstalleerd,
+    zetOpBeginscherm,
     maakSyncCode,
     koppelSyncCode,
     ontkoppel,

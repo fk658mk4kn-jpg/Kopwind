@@ -54,18 +54,22 @@ test("painScore: korte tegenwindstukken drukken het cijfer wel, maar mild", () =
   );
 });
 
-test("painScore: alleen 80% regenkans geeft precies een pittige rit (7,0)", () => {
+test("painScore: 80% regenkans geeft een pittige rit", () => {
   const m = { ...basisMetrics, neerslagKansMax: 80 };
-  const { score } = painScore(m, T);
-  assert.equal(score, 30, `lerp 60->100 geeft 20->40, dus 80% = 30, kreeg ${score}`);
-  assert.equal(fmtCijfer(score), "7");
+  const { score, redenen } = painScore(m, T);
   assert.equal(legAdvies(m, T).advies, "pittige rit");
+  assert.ok(redenen.some((r) => r.includes("kans op neerslag")));
+  assert.ok(score >= 30 && score < 45, `80% hoort rond de 6 te landen, kreeg ${score}`);
 });
 
-test("painScore: regenkans onder de drempel telt niet mee", () => {
-  const m = { ...basisMetrics, neerslagKansMax: 55 };
-  assert.equal(painScore(m, T).score, 0);
-  assert.equal(legAdvies(m, T).advies, "prima fietsdag");
+test("painScore: regenkans is gegradeerd, geen klif op de drempel", () => {
+  const laag = painScore({ ...basisMetrics, neerslagKansMax: 20 }, T).score;
+  const onder = painScore({ ...basisMetrics, neerslagKansMax: 55 }, T);
+  const boven = painScore({ ...basisMetrics, neerslagKansMax: 62 }, T).score;
+  assert.equal(laag, 0, "20% kans is gewoon Nederland");
+  assert.ok(onder.score > 0 && onder.score < 20, "55% telt licht mee");
+  assert.ok(!onder.redenen.some((r) => r.includes("kans")), "reden pas vanaf de drempel");
+  assert.ok(boven - onder.score < 8, `geen sprong rond de drempel (${onder.score} -> ${boven})`);
 });
 
 test("fmtCijfer: score naar rapportcijfer met komma", () => {

@@ -55,7 +55,7 @@ test("berekenPlan: demoketen levert drie etappes met kloppende tijden en wind", 
   for (const leg of plan.legs) {
     assert.ok(leg.segments.length > 1, "meerdere segmenten");
     for (const s of leg.segments) {
-      assert.ok(typeof s.kleur === "string" && s.kleur.startsWith("hsl"));
+      assert.ok(typeof s.kleur === "string" && s.kleur.startsWith("rgb"));
       assert.ok(s.passage instanceof Date);
     }
     assert.ok(typeof leg.samenvatting === "string" && leg.samenvatting.length > 0);

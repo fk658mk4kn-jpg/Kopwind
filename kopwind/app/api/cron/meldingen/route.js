@@ -41,8 +41,8 @@ import {
   drempelLaatDoor,
 } from "@/lib/engine/meldingen";
 import { DEFAULT_THRESHOLDS } from "@/lib/advice";
-import { vindToolOpId } from "@/lib/tools";
-import { WAS_VELDEN, berekenDroogdagen } from "@/lib/tools/was-buiten-drogen";
+import { vindToolOpId, migreerThresholds } from "@/lib/tools";
+import { WAS_VELDEN, WAS_DEFAULTS, berekenDroogdagen } from "@/lib/tools/was-buiten-drogen";
 import { fmtCijfer } from "@/lib/format";
 
 export const dynamic = "force-dynamic";
@@ -74,7 +74,9 @@ export async function GET(request) {
 
     for (const profiel of profielen) {
       const data = profiel.data ?? {};
-      const thresholds = { ...DEFAULT_THRESHOLDS, ...(data.thresholds ?? {}) };
+      // Drempels zijn sinds v2.1 per tool; oude platte profielen migreren mee.
+      const perTool = migreerThresholds(data.thresholds);
+      const thresholds = { ...DEFAULT_THRESHOLDS, ...(perTool["fiets-naar-werk"] ?? {}) };
       let dataGewijzigd = false;
       let abosCache = null;
       const abos = async () => {
@@ -194,7 +196,7 @@ export async function GET(request) {
           const lijst = await abos();
           if (!lijst.length) continue;
 
-          const tekst = await toolBriefing(tool, schema, nu);
+          const tekst = await toolBriefing(tool, schema, nu, perTool);
           if (!tekst) continue; // Drempel hield hem tegen of data ontbrak.
           for (const item of teSturen) {
             verzonden += await verstuurNaarAbos(lijst, { ...tekst, tag: item.key });
@@ -246,10 +248,11 @@ async function dedupe(codeHash, due) {
  * browser. Geeft null terug als de drempel de melding tegenhoudt.
  * Nu alleen de wascheck; een volgende locatie-tool haakt hier in.
  */
-async function toolBriefing(tool, schema, nu) {
+async function toolBriefing(tool, schema, nu, perTool = {}) {
   if (tool.id !== "was-buiten-drogen") return null;
   const hourly = await haalHourly(schema.locatie.lat, schema.locatie.lon, WAS_VELDEN, 2);
-  const vandaag = berekenDroogdagen(hourly, nu)[0];
+  const instellingen = { ...WAS_DEFAULTS, ...(perTool["was-buiten-drogen"] ?? {}) };
+  const vandaag = berekenDroogdagen(hourly, nu, instellingen)[0];
   if (!vandaag) return null;
   if (!drempelLaatDoor(schema.drempel, vandaag.oordeel.score)) return null;
   return {

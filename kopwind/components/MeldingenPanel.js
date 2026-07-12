@@ -111,6 +111,36 @@ export default function MeldingenPanel({ open, onClose }) {
       <div className="modal modal-breed" onClick={(e) => e.stopPropagation()}>
         <h2>Meldingen en apparaten</h2>
 
+        <h3>Op je beginscherm</h3>
+        {g.geinstalleerd || standalone ? (
+          <p className="uitleg">
+            Deze check staat als app op dit apparaat. Meldingen en snelle
+            toegang werken hiervandaan het best.
+          </p>
+        ) : g.installBeschikbaar ? (
+          <div className="synccode-rij">
+            <button className="knop primair" onClick={g.zetOpBeginscherm}>
+              Zet op beginscherm
+            </button>
+            <span className="uitleg" style={{ margin: 0 }}>
+              Een tik en de check staat als app tussen je andere apps.
+            </span>
+          </div>
+        ) : ios ? (
+          <p className="uitleg">
+            Op iPhone en iPad: tik op de deelknop en kies {"\u201c"}Zet op
+            beginscherm{"\u201d"}. Daarna opent de check als app en kun je
+            hieronder meldingen aanzetten (iOS 16.4 of nieuwer).
+          </p>
+        ) : (
+          <p className="uitleg">
+            In Chrome of Edge: open het browsermenu en kies {"\u201c"}App
+            installeren{"\u201d"} of {"\u201c"}Toevoegen aan startscherm{"\u201d"}.
+            In Firefox en Safari op desktop werkt de check gewoon in de
+            browser, inclusief meldingen.
+          </p>
+        )}
+
         <h3>1. Apparaten koppelen</h3>
         {g.syncCode ? (
           <>
@@ -187,7 +217,7 @@ export default function MeldingenPanel({ open, onClose }) {
                   Meldingen op dit apparaat uitzetten
                 </button>
                 <button className="knop" onClick={testMelding} disabled={bezig}>
-                  Test melding
+                  Stuur testmelding
                 </button>
               </>
             ) : (

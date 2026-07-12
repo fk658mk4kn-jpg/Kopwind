@@ -2,7 +2,7 @@ import { TOOLS } from "@/lib/tools";
 import { STEDEN } from "@/lib/steden/nl";
 import { buurSteden } from "@/lib/steden/teksten";
 
-const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+import { SITE_URL as SITE } from "@/lib/site";
 
 /** Sitemap automatisch uit register maal steden plus route-paren (§9). */
 export default function sitemap() {

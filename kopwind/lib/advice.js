@@ -11,6 +11,12 @@
  * met "1,9 km merkbare tegenwind" alsnog score 0 en dat voelde kapot.
  * Nu tellen ook de tegenwindstukken zelf mee, zodat cijfer en toelichting
  * altijd hetzelfde verhaal vertellen.
+ *
+ * Cijfer-ankers (v2.1.0 "Mistral", tegen score-inflatie): 10 = rugwind of
+ * luw, droog en mild; 7 = merkbare tegenwind maar droog; 5 = stevige
+ * tegenwind of een serieuze buienkans; 3 = stevige tegenwind plus regen;
+ * 0-2 = storm of zware regen. De middenmoot hoort 5-7 te zijn; 9,5-10 is
+ * gereserveerd voor bijna-perfect.
  */
 
 export const DEFAULT_THRESHOLDS = {
@@ -35,9 +41,18 @@ export function painScore(metrics, thresholds = DEFAULT_THRESHOLDS) {
   const rond = (n) => Math.round(n);
   const km = (m) => (m / 1000).toFixed(1).replace(".", ",");
 
-  // Basis: gemiddelde positieve kopwind over de rit, continu vanaf 5 km/u.
+  // Ankers (v2.1.0 "Mistral"): 10 = rugwind of luw, droog en mild;
+  // 7 = merkbare tegenwind (rond de matig-drempel) maar droog;
+  // 5 = stevige tegenwind of een serieuze buienkans;
+  // 3 en lager = stevige tegenwind plus regen, of storm.
+
+  // Tegenwind: continu vanaf 5 km/u, gekalibreerd zodat de matig-drempel
+  // rond de 7 landt en de zwaar-drempel diep in de 2-3.
   if (metrics.meanPosHead >= 5) {
-    score += lerp(metrics.meanPosHead, 5, thresholds.tegenwindZwaar, 0, 55);
+    score += lerp(metrics.meanPosHead, 5, thresholds.tegenwindZwaar, 0, 60);
+    if (metrics.meanPosHead > thresholds.tegenwindZwaar) {
+      score += lerp(metrics.meanPosHead, thresholds.tegenwindZwaar, thresholds.tegenwindZwaar + 12, 0, 15);
+    }
     if (metrics.meanPosHead >= thresholds.tegenwindMatig) {
       redenen.push(`gemiddeld ${rond(metrics.meanPosHead)} km/u wind tegen`);
     }
@@ -47,8 +62,8 @@ export function painScore(metrics, thresholds = DEFAULT_THRESHOLDS) {
   // tegenwind telt mee, ook als het ritgemiddelde laag blijft.
   const fracMatig = metrics.fracMatig ?? 0;
   const fracZwaar = metrics.fracZwaar ?? 0;
-  if (fracMatig > 0) score += fracMatig * 15;
-  if (fracZwaar > 0) score += fracZwaar * 10;
+  if (fracMatig > 0) score += fracMatig * 10;
+  if (fracZwaar > 0) score += fracZwaar * 8;
   if ((metrics.zwaarMeters ?? 0) >= 300) {
     redenen.push(`${km(metrics.zwaarMeters)} km stevige tegenwind op de route`);
   } else if ((metrics.matigMeters ?? 0) >= 300) {
@@ -61,36 +76,47 @@ export function painScore(metrics, thresholds = DEFAULT_THRESHOLDS) {
       metrics.maxHead,
       thresholds.tegenwindZwaar,
       thresholds.tegenwindZwaar + 15,
-      5,
-      15
+      4,
+      10
     );
     redenen.push(`piek van ${rond(metrics.maxHead)} km/u tegenwind`);
   }
 
-  // Neerslagkans.
-  if (metrics.neerslagKansMax >= thresholds.neerslagKans) {
-    score += lerp(metrics.neerslagKansMax, thresholds.neerslagKans, 100, 20, 40);
-    redenen.push(`${rond(metrics.neerslagKansMax)}% kans op neerslag`);
+  // Neerslagkans: gegradeerd vanaf 30% (geen klif meer op de drempel);
+  // de reden verschijnt vanaf de ingestelde drempel.
+  if ((metrics.neerslagKansMax ?? 0) >= 30) {
+    score += lerp(metrics.neerslagKansMax, 30, 100, 0, 42);
+    if (metrics.neerslagKansMax >= thresholds.neerslagKans) {
+      redenen.push(`${rond(metrics.neerslagKansMax)}% kans op neerslag`);
+    }
   }
 
-  // Hoeveelheid neerslag.
-  if (metrics.neerslagMmMax >= thresholds.neerslagMm) {
-    score += lerp(metrics.neerslagMmMax, thresholds.neerslagMm, 4, 10, 25);
-    redenen.push(
-      `tot ${metrics.neerslagMmMax.toFixed(1).replace(".", ",")} mm neerslag per uur`
-    );
+  // Hoeveelheid neerslag: gegradeerd vanaf motregen.
+  if ((metrics.neerslagMmMax ?? 0) >= 0.15) {
+    score += lerp(metrics.neerslagMmMax, 0.15, 4, 3, 28);
+    if (metrics.neerslagMmMax >= thresholds.neerslagMm) {
+      redenen.push(
+        `tot ${metrics.neerslagMmMax.toFixed(1).replace(".", ",")} mm neerslag per uur`
+      );
+    }
   }
 
-  // Koud aanvoelen.
-  if (metrics.gevoelMin != null && metrics.gevoelMin < thresholds.gevoelMin) {
-    score += 10;
-    redenen.push(`gevoelstemperatuur ${rond(metrics.gevoelMin)} graden`);
+  // Koud aanvoelen: gegradeerd onder de 10 graden gevoel, zwaarder onder
+  // de ingestelde grens.
+  if (metrics.gevoelMin != null && metrics.gevoelMin < 10) {
+    score += lerp(metrics.gevoelMin, 10, thresholds.gevoelMin, 0, 8);
+    if (metrics.gevoelMin < thresholds.gevoelMin) {
+      score += lerp(metrics.gevoelMin, thresholds.gevoelMin, thresholds.gevoelMin - 8, 4, 14);
+      redenen.push(`gevoelstemperatuur ${rond(metrics.gevoelMin)} graden`);
+    }
   }
 
-  // Zware windstoten.
-  if (metrics.maxGust >= 60) {
-    score += 10;
-    redenen.push(`windstoten tot ${rond(metrics.maxGust)} km/u`);
+  // Windstoten: gegradeerd vanaf 45 km/u.
+  if ((metrics.maxGust ?? 0) >= 45) {
+    score += lerp(metrics.maxGust, 45, 80, 2, 14);
+    if (metrics.maxGust >= 60) {
+      redenen.push(`windstoten tot ${rond(metrics.maxGust)} km/u`);
+    }
   }
 
   return { score: Math.min(100, Math.round(score)), redenen };

@@ -1,20 +1,21 @@
 import Link from "next/link";
-import { HUB_NAAM, HUB_CLAIM } from "@/lib/brand";
+import { HUB_NAAM, HUB_CLAIM, WINDSTRIP_DEMO } from "@/lib/brand";
 import { TOOLS } from "@/lib/tools";
 import { hub } from "@/content/hub";
-import { kleurSchaal } from "@/lib/engine/score";
+import { kleurDivergerend } from "@/lib/engine/kleuren";
+import VandaagHier from "@/components/VandaagHier";
+import KleurLegenda from "@/components/KleurLegenda";
 
 export const metadata = {
   alternates: { canonical: "/" },
+  openGraph: { url: "/" },
 };
 
 /**
- * De hub: functionele hero met de windstrip als merkbeeld, daarna de tools
- * als vraag-kaarten. Geen marketingblok: elke kaart is de vraag zelf.
+ * De hub: functionele hero (kies je plek, zie direct het antwoord van
+ * vandaag), de windstrip als signature met een uitgelegde legenda, en de
+ * tools als vraag-kaarten met een teaser voor de groeiende familie.
  */
-
-// Demo-windstrip: een herkenbare rit van wind mee naar tegen en terug.
-const DEMO = [-0.9, -0.7, -0.55, -0.2, 0.1, 0.35, 0.6, 0.85, 0.95, 0.7, 0.3, -0.1, -0.4, -0.75];
 
 export default function HubPagina() {
   const faqJsonLd = {
@@ -37,25 +38,22 @@ export default function HubPagina() {
   return (
     <main>
       <section className="hub-hero">
-        <h1>{HUB_NAAM}</h1>
+        <h1>{HUB_NAAM.toLowerCase()}</h1>
         <p>{hub.intro}</p>
-        <div className="demo-strip" role="img" aria-label="De windstrip: per stuk route zie je of je wind mee of tegen hebt, van groen naar rood.">
-          {DEMO.map((x, i) => (
+        <div className="demo-strip" role="img" aria-label="De windstrip: per stuk route zie je of je wind mee of tegen hebt, van blauw naar oranje.">
+          {WINDSTRIP_DEMO.map((x, i) => (
             <div
               key={i}
               style={{
-                width: `${100 / DEMO.length}%`,
-                background: kleurSchaal(x),
+                width: `${100 / WINDSTRIP_DEMO.length}%`,
+                background: kleurDivergerend(x),
                 animationDelay: `${i * 55}ms`,
               }}
             />
           ))}
         </div>
-        <div className="demo-legenda">
-          <span>wind mee</span>
-          <span>de windstrip: elk blok is een stuk van jouw route</span>
-          <span>wind tegen</span>
-        </div>
+        <KleurLegenda soort="wind" links="wind mee" rechts="wind tegen" />
+        <VandaagHier />
       </section>
 
       <div className="toolkaarten">
@@ -63,9 +61,13 @@ export default function HubPagina() {
           <Link key={t.slug} href={`/${t.slug}`} className="toolkaart">
             <h2>{t.naam}</h2>
             <p>{t.korteVraag}</p>
-            <span className="doorlink">Open de check</span>
+            <span className="doorlink">Doe de check</span>
           </Link>
         ))}
+        <div className="toolkaart teaser" aria-label="Binnenkort">
+          <h2>Binnenkort</h2>
+          <p>Vandaag terras? Vandaag barbecue? De familie groeit.</p>
+        </div>
       </div>
 
       <section className="seotekst">

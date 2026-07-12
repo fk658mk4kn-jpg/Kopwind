@@ -141,6 +141,7 @@ export default function LegCard({ leg, index, actief, onClick, onKiesRoute }) {
         <span>start</span>
         <span>aankomst</span>
       </div>
+      <KleurLegenda soort="wind" links="rugwind" rechts="tegenwind" />
 
       <p className="samenvatting">{leg.samenvatting}</p>
       {a.redenen.length > 0 && (

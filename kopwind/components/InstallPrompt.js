@@ -2,51 +2,35 @@
 
 import { useEffect, useState } from "react";
 import { S } from "@/lib/strings/nl";
-import { draaitStandalone, isIos } from "@/lib/push-client";
+import { isIos } from "@/lib/push-client";
+import { useGebruiker } from "./GebruikerContext";
 
 /**
- * Cross-platform "op beginscherm zetten" (§7). Chrome, Edge en Android
- * geven een beforeinstallprompt-event; dat vangen we af en tonen we als
- * eigen knop, pas na een zinnige interactie (eerste check) zodat het geen
- * spam is. iOS en iPadOS kennen dat event niet: daar tonen we de
- * deelknop-instructie. Al geinstalleerd (standalone) verbergt alles.
+ * Cross-platform "op beginscherm zetten" (par. 7). Het
+ * beforeinstallprompt-event leeft in de GebruikerContext; deze zwevende
+ * kaart verschijnt pas na een zinnige interactie (eerste geslaagde check)
+ * zodat het geen spam is. iOS en iPadOS kennen het event niet: daar tonen
+ * we de deelknop-instructie. Al geinstalleerd (standalone) verbergt alles.
+ * Dezelfde knop en uitleg staan permanent in het meldingenpaneel, zodat
+ * wie de kaart wegklikt hem terug kan vinden.
  */
 export default function InstallPrompt({ interactieGedaan }) {
-  const [promptEvent, setPromptEvent] = useState(null);
+  const g = useGebruiker();
   const [zichtbaar, setZichtbaar] = useState(false);
   const [ios, setIos] = useState(false);
 
   useEffect(() => {
-    if (draaitStandalone()) return;
+    if (!interactieGedaan || g.geinstalleerd) return;
     if (localStorage.getItem("kopwind.installAfgewezen")) return;
     setIos(isIos());
-    const vang = (e) => {
-      e.preventDefault();
-      setPromptEvent(e);
-    };
-    window.addEventListener("beforeinstallprompt", vang);
-    const klaar = () => setZichtbaar(false);
-    window.addEventListener("appinstalled", klaar);
-    return () => {
-      window.removeEventListener("beforeinstallprompt", vang);
-      window.removeEventListener("appinstalled", klaar);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!interactieGedaan) return;
-    if (draaitStandalone()) return;
-    if (localStorage.getItem("kopwind.installAfgewezen")) return;
     // Toon pas na een geslaagde check, en alleen als er iets te bieden is.
-    if (promptEvent || isIos()) setZichtbaar(true);
-  }, [interactieGedaan, promptEvent]);
+    if (g.installBeschikbaar || isIos()) setZichtbaar(true);
+  }, [interactieGedaan, g.installBeschikbaar, g.geinstalleerd]);
 
-  if (!zichtbaar) return null;
+  if (!zichtbaar || g.geinstalleerd) return null;
 
   const installeer = async () => {
-    if (!promptEvent) return;
-    promptEvent.prompt();
-    await promptEvent.userChoice.catch(() => {});
+    await g.zetOpBeginscherm();
     setZichtbaar(false);
   };
 
@@ -58,9 +42,9 @@ export default function InstallPrompt({ interactieGedaan }) {
   return (
     <div className="installkaart" role="dialog" aria-label={S.install.titel}>
       <strong>{S.install.titel}</strong>
-      <p>{ios && !promptEvent ? S.install.iosStap : S.install.uitleg}</p>
+      <p>{ios && !g.installBeschikbaar ? S.install.iosStap : S.install.uitleg}</p>
       <div className="installknoppen">
-        {promptEvent && (
+        {g.installBeschikbaar && (
           <button className="knop primair" onClick={installeer}>
             {S.install.knop}
           </button>

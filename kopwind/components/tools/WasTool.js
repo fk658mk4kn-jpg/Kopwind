@@ -5,10 +5,12 @@ import { useGebruiker } from "@/components/GebruikerContext";
 import LocatieZoek from "@/components/LocatieZoek";
 import VerdictBadge from "@/components/VerdictBadge";
 import UrenStrip from "@/components/UrenStrip";
+import KleurLegenda from "@/components/KleurLegenda";
 import Icoon from "@/components/Icoon";
 import { haalWeer } from "@/lib/engine/weather";
 import { isFavoriet } from "@/lib/engine/locatie";
-import { WAS_VELDEN, berekenDroogdagen } from "@/lib/tools/was-buiten-drogen";
+import { WAS_VELDEN, berekenDroogdagen, wasBuitenDrogen } from "@/lib/tools/was-buiten-drogen";
+import { kleurSequentieel } from "@/lib/engine/kleuren";
 import { fmtTijd, fmtCijfer } from "@/lib/format";
 
 /**
@@ -51,7 +53,7 @@ export default function WasTool({ beginLocatie = null }) {
     setFout(null);
     try {
       const hourly = await haalWeer(plek.lat, plek.lon, WAS_VELDEN, 5);
-      const res = berekenDroogdagen(hourly, new Date());
+      const res = berekenDroogdagen(hourly, new Date(), g.thresholdsVoor("was-buiten-drogen"));
       if (!res.length) throw new Error("Geen bruikbare weerdata ontvangen. Probeer het zo nog eens.");
       setDagen(res);
       setGekozen(0);
@@ -126,13 +128,15 @@ export default function WasTool({ beginLocatie = null }) {
                   key={d.datum}
                   className={"dagkaart" + (i === gekozen ? " actief" : "")}
                   onClick={() => setGekozen(i)}
+                  style={{ borderTop: `4px solid ${kleurSequentieel(1 - d.oordeel.score / 100)}` }}
                 >
                   <span className="dagnaam">{dagLabel(d.datum, i)}</span>
                   <span className="dagcijfer">{fmtCijfer(d.oordeel.score)}</span>
+                  <span className="dagoordeel">{d.oordeel.advies}</span>
                   <span className="dagvenster">
                     {d.venster
                       ? `${String(d.venster.van).padStart(2, "0")}-${String(d.venster.tot).padStart(2, "0")} u`
-                      : "binnen drogen"}
+                      : "geen venster"}
                   </span>
                 </button>
               ))}
@@ -142,6 +146,7 @@ export default function WasTool({ beginLocatie = null }) {
               <>
                 {gekozen > 0 && <p className="was-samenvatting">{dag.samenvatting}</p>}
                 <UrenStrip uren={dag.uren} venster={dag.venster} />
+                <KleurLegenda soort="goedheid" links="blijft nat" rechts="droogt snel" />
                 {dag.oordeel.redenen.length > 0 && (
                   <p className="uitleg">{zinnen(dag.oordeel.redenen)}</p>
                 )}

@@ -15,7 +15,14 @@ import { legWindSummary } from "@/lib/engine/wind";
  * zodat je in een oogopslag ziet of een andere route minder tegenwind heeft.
  * Klik op een alternatief om het te kiezen.
  */
-export default function MapView({ legs, actieveLeg, onKiesRoute, presets }) {
+export default function MapView({
+  legs,
+  actieveLeg,
+  onKiesRoute,
+  presets,
+  startCenter = [52.15, 5.3],
+  startZoom = 7,
+}) {
   const wrapRef = useRef(null);
   const mapRef = useRef(null);
   const layerRef = useRef(null);
@@ -33,18 +40,28 @@ export default function MapView({ legs, actieveLeg, onKiesRoute, presets }) {
         mapRef.current = L.map(wrapRef.current, {
           zoomControl: true,
           attributionControl: true,
-        }).setView([52.1, 5.3], 8);
+        }).setView(startCenter, startZoom);
         L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
           maxZoom: 19,
           attribution: "&copy; OpenStreetMap-bijdragers",
         }).addTo(mapRef.current);
         layerRef.current = L.layerGroup().addTo(mapRef.current);
+        // De container kan na init nog van maat veranderen (fonts, grid,
+        // mobiel). Zonder herijking rekent Leaflet met de oude maat en
+        // rendert hij een uitgesmeerde lage-zoom-tegel. Een ResizeObserver
+        // houdt de kaart scherp bij elke maatverandering.
         setTimeout(() => mapRef.current?.invalidateSize(), 60);
+        if (typeof ResizeObserver !== "undefined") {
+          const ro = new ResizeObserver(() => mapRef.current?.invalidateSize());
+          ro.observe(wrapRef.current);
+          mapRef.current._kopwindRo = ro;
+        }
       }
       teken();
     })();
     return () => {
       gestopt = true;
+      mapRef.current?._kopwindRo?.disconnect();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
