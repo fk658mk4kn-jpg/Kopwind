@@ -5,38 +5,44 @@ import { useGebruiker } from "@/components/GebruikerContext";
 import LocatieZoek from "@/components/LocatieZoek";
 import VerdictBadge from "@/components/VerdictBadge";
 import UrenStrip from "@/components/UrenStrip";
-import KleurLegenda from "@/components/KleurLegenda";
 import Icoon from "@/components/Icoon";
 import { haalWeer } from "@/lib/engine/weather";
+import { BASIS_VELDEN } from "@/lib/engine/weerbasis";
 import { isFavoriet } from "@/lib/engine/locatie";
-import { WAS_VELDEN, berekenDroogdagen, wasBuitenDrogen } from "@/lib/tools/was-buiten-drogen";
-import { kleurSequentieel } from "@/lib/engine/kleuren";
+import { TOOLS } from "@/lib/tools";
 import { fmtTijd, fmtCijfer } from "@/lib/format";
+import { kleurSequentieel } from "@/lib/engine/kleuren";
 
 /**
- * De wastool: locatie-only oordeel (patroon A) op de gedeelde engine.
- * Geen kaal ja/nee maar een droogvenster: per dag het beste blok uren om
- * de was buiten te hangen, de geschatte droogtijd en een rapportcijfer,
- * voor vandaag en de vier dagen erna.
+ * Gedeelde UI voor elke locatie-tool (het overlay-contract): kies je plek,
+ * druk op de check en je krijgt conditie-cijfer, status in gewone taal,
+ * het aanbevolen venster in de urenstrip en een dagkiezer met cijfer plus
+ * een regel per dag. Een nieuwe tool levert alleen een overlay-functie en
+ * teksten; deze component doet de rest.
  */
 
-const LS_LOCATIE = "kopwind.wasLocatie";
 const WEEKDAG = ["zo", "ma", "di", "wo", "do", "vr", "za"];
 
-export default function WasTool({ beginLocatie = null }) {
+export default function LocatieTool({ toolId, beginLocatie = null }) {
+  const tool = TOOLS.find((t) => t.id === toolId);
   const g = useGebruiker();
   const [locatie, setLocatie] = useState(beginLocatie);
   const [dagen, setDagen] = useState(null);
+  const [legenda, setLegenda] = useState(null);
   const [gekozen, setGekozen] = useState(0);
   const [checkTijd, setCheckTijd] = useState(null);
   const [bezig, setBezig] = useState(false);
   const [fout, setFout] = useState(null);
 
-  // Laatst gebruikte plek terugzetten, behalve als de pagina er een meegeeft.
+  const lsSleutel = `kopwind.locatie.${toolId}`;
+
+  // Laatst gebruikte plek terugzetten (met de oude was-sleutel als erfenis).
   useEffect(() => {
     if (beginLocatie) return;
     try {
-      const l = JSON.parse(localStorage.getItem(LS_LOCATIE) ?? "null");
+      const l =
+        JSON.parse(localStorage.getItem(lsSleutel) ?? "null") ??
+        JSON.parse(localStorage.getItem("kopwind.wasLocatie") ?? "null");
       if (l?.lat) setLocatie(l);
     } catch {
       // Kapotte localStorage negeren.
@@ -46,19 +52,20 @@ export default function WasTool({ beginLocatie = null }) {
 
   const check = async (plek = locatie) => {
     if (!plek) {
-      setFout("Kies eerst een plek: zoek een adres, tik een favoriet aan of gebruik je huidige locatie.");
+      setFout("Kies eerst een plek: zoek een adres, tik een favoriet aan of gebruik je locatie.");
       return;
     }
     setBezig(true);
     setFout(null);
     try {
-      const hourly = await haalWeer(plek.lat, plek.lon, WAS_VELDEN, 5);
-      const res = berekenDroogdagen(hourly, new Date(), g.thresholdsVoor("was-buiten-drogen"));
-      if (!res.length) throw new Error("Geen bruikbare weerdata ontvangen. Probeer het zo nog eens.");
-      setDagen(res);
+      const hourly = await haalWeer(plek.lat, plek.lon, tool.weerVelden ?? BASIS_VELDEN, tool.weerDagen ?? 5);
+      const res = tool.overlay(hourly, new Date(), g.thresholdsVoor(toolId));
+      if (!res?.dagen?.length) throw new Error("Geen bruikbare weerdata ontvangen. Probeer het zo nog eens.");
+      setDagen(res.dagen);
+      setLegenda(res.legenda ?? null);
       setGekozen(0);
       setCheckTijd(new Date());
-      localStorage.setItem(LS_LOCATIE, JSON.stringify(plek));
+      localStorage.setItem(lsSleutel, JSON.stringify(plek));
       g.meldInteractie();
     } catch (e) {
       setDagen(null);
@@ -71,6 +78,7 @@ export default function WasTool({ beginLocatie = null }) {
   const kies = (plek) => {
     setLocatie(plek);
     setFout(null);
+    g.meldInteractie();
   };
 
   const favoriet = isFavoriet(locatie, g.presets);
@@ -109,18 +117,19 @@ export default function WasTool({ beginLocatie = null }) {
         )}
         <div className="actiebalk">
           <button className="knop primair" onClick={() => check()} disabled={bezig}>
-            {bezig ? "Bezig..." : "Check droogweer"}
+            {bezig ? "Bezig..." : tool.cta}
           </button>
         </div>
       </section>
 
       {fout && <div className="fout">{fout}</div>}
 
-      {dagen && (
-        <section className="resultaten" aria-label="Droogvenster">
+      {dagen && dag && (
+        <section className="resultaten" aria-label="Resultaat">
           <div className="paneel">
-            <VerdictBadge score={dagen[0].oordeel.score} label={dagen[0].oordeel.advies} />
-            <p className="was-samenvatting">{dagen[0].samenvatting}</p>
+            <VerdictBadge score={dag.conditie.score} label={dag.conditie.advies} />
+            <p className="status-regel">{dag.status.zin}</p>
+            {dag.metric?.zin && <p className="metric-zin">{dag.metric.zin}</p>}
 
             <div className="dagkiezer">
               {dagen.map((d, i) => (
@@ -128,35 +137,21 @@ export default function WasTool({ beginLocatie = null }) {
                   key={d.datum}
                   className={"dagkaart" + (i === gekozen ? " actief" : "")}
                   onClick={() => setGekozen(i)}
-                  style={{ borderTop: `4px solid ${kleurSequentieel(1 - d.oordeel.score / 100)}` }}
+                  style={{ borderTop: `4px solid ${kleurSequentieel(1 - d.conditie.score / 100)}` }}
                 >
                   <span className="dagnaam">{dagLabel(d.datum, i)}</span>
-                  <span className="dagcijfer">{fmtCijfer(d.oordeel.score)}</span>
-                  <span className="dagoordeel">{d.oordeel.advies}</span>
-                  <span className="dagvenster">
-                    {d.venster
-                      ? `${String(d.venster.van).padStart(2, "0")}-${String(d.venster.tot).padStart(2, "0")} u`
-                      : "geen venster"}
-                  </span>
+                  <span className="dagcijfer">{fmtCijfer(d.conditie.score)}</span>
+                  <span className="dagregel">{dagRegel(d)}</span>
                 </button>
               ))}
             </div>
 
-            {dag && (
-              <>
-                {gekozen > 0 && <p className="was-samenvatting">{dag.samenvatting}</p>}
-                <UrenStrip uren={dag.uren} venster={dag.venster} />
-                <KleurLegenda soort="goedheid" links="blijft nat" rechts="droogt snel" />
-                {dag.oordeel.redenen.length > 0 && (
-                  <p className="uitleg">{zinnen(dag.oordeel.redenen)}</p>
-                )}
-              </>
-            )}
+            <UrenStrip uren={dag.uren} venster={dag.venster} legenda={legenda} />
+            {dag.conditie.redenen.length > 0 && <p className="uitleg">{zinnen(dag.conditie.redenen)}</p>}
 
             {checkTijd && (
               <p className="databron">
-                Weerdata: Open-Meteo uurvoorspelling (incl. luchtvochtigheid),
-                live opgehaald om {fmtTijd(checkTijd)}.
+                Weerdata: Open-Meteo uurvoorspelling, live opgehaald om {fmtTijd(checkTijd)}.
               </p>
             )}
           </div>
@@ -165,8 +160,7 @@ export default function WasTool({ beginLocatie = null }) {
 
       {!dagen && !fout && (
         <p className="leeg">
-          Kies je plek en klik op Check droogweer: je ziet direct het beste
-          ophangvenster van vandaag en de komende dagen.
+          Kies je plek en tik op {tool.cta}: je ziet direct het antwoord voor vandaag en de dagen erna.
         </p>
       )}
     </div>
@@ -177,6 +171,13 @@ function dagLabel(datum, index) {
   if (index === 0) return "vandaag";
   const d = new Date(`${datum}T12:00:00`);
   return `${WEEKDAG[d.getDay()]} ${d.getDate()}`;
+}
+
+function dagRegel(d) {
+  if (d.venster) {
+    return `${String(d.venster.van).padStart(2, "0")}-${String(d.venster.tot).padStart(2, "0")} u`;
+  }
+  return d.status?.soort === "nee" ? "liever niet" : "wisselvallig";
 }
 
 function zinnen(redenen) {

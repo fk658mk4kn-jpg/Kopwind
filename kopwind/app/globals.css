@@ -1287,3 +1287,221 @@ a.merk { text-decoration: none; }
 .toolkaart.teaser:hover { border-color: var(--lijn-sterk); box-shadow: none; }
 
 .toolkaart.teaser h2 { color: var(--inkt-zacht); }
+
+/* Urenstrip v2.2: markering, natte-uren-patroon en tijdlabels */
+.urenstrip-wrap { margin-top: 8px; }
+
+.windstrip.urenstrip { position: relative; overflow: visible; }
+
+.uur-nat {
+  background-image: repeating-linear-gradient(
+    135deg,
+    rgba(23, 34, 44, 0.4) 0 3px,
+    transparent 3px 8px
+  ) !important;
+  background-color: var(--lucht) !important;
+}
+
+.venster-markering {
+  position: absolute;
+  top: -3px;
+  bottom: -3px;
+  border: 2.5px solid var(--inkt);
+  border-radius: 8px;
+  pointer-events: none;
+}
+
+.venster-label {
+  position: absolute;
+  top: -17px;
+  left: 4px;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--inkt);
+  background: var(--wolk);
+  padding: 0 5px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.strip-tijden {
+  position: relative;
+  height: 16px;
+  font-size: 11px;
+  color: var(--inkt-zacht);
+  margin-top: 3px;
+}
+
+.strip-tijden span { position: absolute; transform: translateX(-50%); }
+
+.strip-tijden span:first-child { transform: none; }
+
+.status-regel {
+  font-size: 15.5px;
+  font-weight: 600;
+  margin: 10px 0 2px;
+}
+
+.metric-zin { color: var(--inkt-zacht); font-size: 13.5px; margin: 2px 0 0; }
+
+.dagkaart .dagregel { font-size: 12px; color: var(--inkt-zacht); }
+
+/* ============================================================
+   v2.2.0 "Zephyr": kop-iconen, watermerk, navknoppen, catalogus
+   ============================================================ */
+
+.kop .iconknop.kop-icoon {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 10px;
+  background: transparent;
+  color: #fff;
+  flex: 0 0 auto;
+  cursor: pointer;
+}
+
+.kop .iconknop.kop-icoon:hover { border-color: var(--geel); color: var(--geel); }
+
+.kop-icoon .stip { position: absolute; top: 5px; right: 5px; }
+
+.navknoppen {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.tool-hero { position: relative; }
+
+.watermerk {
+  position: absolute;
+  right: 4px;
+  top: -10px;
+  opacity: 0.08;
+  pointer-events: none;
+  color: var(--leisteen);
+}
+
+.groep-kop {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--inkt-zacht);
+  margin: 26px 0 10px;
+}
+
+.toolkaart .kaart-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--leisteen);
+}
+
+.toolkaart .diepte {
+  font-size: 12.5px;
+  color: var(--inkt-zacht);
+  margin: 6px 0 0;
+}
+
+.gewone-taal {
+  margin-top: 34px;
+}
+
+.gewone-taal .uitleg-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+/* ============================================================
+   Mobiel-first pass (Zephyr must-fix): tikdoelen, bottom sheets,
+   geen horizontaal scrollen, kop met scrollbare nav
+   ============================================================ */
+
+@media (max-width: 640px) {
+  .container { padding-left: 14px; padding-right: 14px; }
+
+  .kop { gap: 10px; }
+
+  .hoofdnav {
+    order: 5;
+    flex: 1 1 100%;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 6px;
+    padding-bottom: 2px;
+  }
+
+  .hoofdnav::-webkit-scrollbar { display: none; }
+
+  .hoofdnav .navlink { white-space: nowrap; }
+
+  .knop { min-height: 42px; }
+
+  .chip { min-height: 38px; }
+
+  .kop .iconknop.kop-icoon { width: 44px; height: 44px; }
+
+  .modalachter { align-items: flex-end; padding: 0; }
+
+  .modal {
+    width: 100%;
+    max-width: none;
+    max-height: 92vh;
+    overflow-y: auto;
+    border-radius: 18px 18px 0 0;
+    margin: 0;
+  }
+
+  .dagkiezer { grid-template-columns: repeat(auto-fit, minmax(88px, 1fr)); }
+
+  .hub-hero h1 { font-size: 34px; }
+}
+
+/* Voet */
+.voet {
+  margin-top: 56px;
+  border-top: 1px solid var(--rand);
+  padding: 26px 0 8px;
+}
+
+.voet-kolommen {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 18px;
+}
+
+.voet-kolommen h2 {
+  font-size: 12.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--inkt-zacht);
+  margin: 0 0 8px;
+}
+
+.voet-kolommen a {
+  display: block;
+  color: var(--inkt);
+  text-decoration: none;
+  font-size: 13.5px;
+  padding: 3px 0;
+}
+
+.voet-kolommen a:hover { text-decoration: underline; }
+
+.voet-regel {
+  margin-top: 22px;
+  font-size: 12px;
+  color: var(--inkt-zacht);
+}

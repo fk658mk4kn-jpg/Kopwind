@@ -14,10 +14,11 @@ export const S = {
   },
   install: {
     knop: "Zet op beginscherm",
-    titel: "Sneller terugkomen?",
-    uitleg: "Zet deze check op je beginscherm en open hem elke ochtend met een tik.",
+    titel: "Zet 'm op je beginscherm",
+    uitleg:
+      "Dan weet je elke ochtend met een tik of het kan. En we tikken je op de schouder als het weer omslaat bij jou in de buurt.",
     iosStap:
-      "Op iPhone en iPad: tik op de deelknop en kies daarna \u201cZet op beginscherm\u201d.",
+      "Tik op de deelknop en kies \u201cZet op beginscherm\u201d. Daarna opent de check als app en kun je meldingen aanzetten.",
     later: "Niet nu",
   },
   meldingen: {

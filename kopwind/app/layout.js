@@ -4,6 +4,7 @@ import "./globals.css";
 import "leaflet/dist/leaflet.css";
 import GebruikerProvider from "@/components/GebruikerContext";
 import SiteHeader from "@/components/SiteHeader";
+import SiteFooter from "@/components/SiteFooter";
 import Analytics from "@/components/Analytics";
 import AnalyticsPageViews from "@/components/AnalyticsPageViews";
 import { HUB_NAAM, HUB_KORT, HUB_CLAIM } from "@/lib/brand";
@@ -61,6 +62,7 @@ export default function RootLayout({ children }) {
           <div className="container">
             <SiteHeader />
             {children}
+            <SiteFooter />
           </div>
         </GebruikerProvider>
       </body>

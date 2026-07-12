@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import Icoon from "@/components/Icoon";
 import Link from "next/link";
 import { TOOLS, vindTool } from "@/lib/tools";
 import { inhoudVoorTool } from "@/content";
@@ -6,7 +7,7 @@ import { STEDEN, vindStad } from "@/lib/steden/nl";
 import { stadTekst, buurSteden } from "@/lib/steden/teksten";
 import { HUB_NAAM } from "@/lib/brand";
 import FietsTool from "@/components/tools/FietsTool";
-import WasTool from "@/components/tools/WasTool";
+import LocatieTool from "@/components/tools/LocatieTool";
 import Broodkruimel from "@/components/Broodkruimel";
 import StemPeiling from "@/components/StemPeiling";
 import AdSlot from "@/components/AdSlot";
@@ -116,7 +117,7 @@ export default function StadPagina({ params }) {
       {tool.inputType === "route" ? (
         <FietsTool beginStops={[centrum, null]} />
       ) : (
-        <WasTool beginLocatie={centrum} />
+        <LocatieTool toolId={tool.id} beginLocatie={centrum} />
       )}
 
       <StemPeiling toolId={tool.id} />

@@ -3,6 +3,7 @@ import { STEDEN } from "@/lib/steden/nl";
 import { buurSteden } from "@/lib/steden/teksten";
 
 import { SITE_URL as SITE } from "@/lib/site";
+import { UITLEG } from "@/content/uitleg";
 
 /** Sitemap automatisch uit register maal steden plus route-paren (§9). */
 export default function sitemap() {
@@ -37,6 +38,19 @@ export default function sitemap() {
         priority: 0.6,
       });
     }
+  }
+
+  urls.push({ url: `${SITE}/uitleg`, lastModified: nu, changeFrequency: "monthly", priority: 0.5 });
+  for (const a of UITLEG) {
+    urls.push({
+      url: `${SITE}/uitleg/${a.slug}`,
+      lastModified: nu,
+      changeFrequency: "monthly",
+      priority: 0.5,
+    });
+  }
+  for (const p of ["over", "bronnen", "changelog", "privacy", "voorwaarden"]) {
+    urls.push({ url: `${SITE}/${p}`, lastModified: nu, changeFrequency: "monthly", priority: 0.3 });
   }
 
   return urls;

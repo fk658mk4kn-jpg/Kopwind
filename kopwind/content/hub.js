@@ -7,7 +7,7 @@
 
 export const hub = {
   intro:
-    "Elke dag dezelfde kleine vragen: fiets ik naar werk, kan de was buiten? Kan het vandaag? beantwoordt ze met live weer voor jouw plek, in een cijfer dat je in een seconde leest.",
+    "Geen weerbericht, maar een antwoord. Met het wanneer en waar erbij. Elke dag dezelfde kleine vragen: fiets ik naar werk, kan de was buiten, wat trek ik aan? Kan het vandaag? beantwoordt ze met live weer voor jouw plek, in een cijfer dat je in een seconde leest.",
   blokken: [
     {
       kop: "Een cijfer, geen weerkaart",
@@ -43,7 +43,7 @@ export const hub = {
     },
     {
       v: "Komen er meer checks bij?",
-      a: "Ja, de familie groeit. Terrasweer en barbecueweer staan op de rol, met dezelfde opzet: een concreet antwoord op een dagelijkse vraag, in een cijfer.",
+      a: "Ja, de familie groeit. Naast de fietscheck, wascheck, kledingcheck en terrascheck staan barbecueweer, regen-timing en gladheid op de rol, met dezelfde opzet: een concreet antwoord op een dagelijkse vraag, in een cijfer met het beste moment erbij.",
     },
   ],
 };

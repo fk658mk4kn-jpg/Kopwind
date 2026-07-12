@@ -5,6 +5,8 @@ import { hub } from "@/content/hub";
 import { kleurDivergerend } from "@/lib/engine/kleuren";
 import VandaagHier from "@/components/VandaagHier";
 import KleurLegenda from "@/components/KleurLegenda";
+import Icoon from "@/components/Icoon";
+import { UITLEG } from "@/content/uitleg";
 
 export const metadata = {
   alternates: { canonical: "/" },
@@ -16,6 +18,14 @@ export const metadata = {
  * vandaag), de windstrip als signature met een uitgelegde legenda, en de
  * tools als vraag-kaarten met een teaser voor de groeiende familie.
  */
+
+const GROEPEN = ["Elke dag", "Onderweg", "Rondom huis"];
+
+const TEASERS = [
+  { naam: "Vandaag barbecue?", zin: "Het beste vensterblok vanavond, en waar je 'm neerzet met deze windrichting." },
+  { naam: "Word ik nat vandaag?", zin: "Niet \u00f3f het regent, maar wanneer, op jouw dag." },
+  { naam: "Moet ik krabben?", zin: "Winterspecial: vorst- en ijzelrisico voor morgenochtend, met timing." },
+];
 
 export default function HubPagina() {
   const faqJsonLd = {
@@ -56,19 +66,52 @@ export default function HubPagina() {
         <VandaagHier />
       </section>
 
-      <div className="toolkaarten">
-        {TOOLS.map((t) => (
-          <Link key={t.slug} href={`/${t.slug}`} className="toolkaart">
-            <h2>{t.naam}</h2>
-            <p>{t.korteVraag}</p>
-            <span className="doorlink">Doe de check</span>
-          </Link>
-        ))}
-        <div className="toolkaart teaser" aria-label="Binnenkort">
-          <h2>Binnenkort</h2>
-          <p>Vandaag terras? Vandaag barbecue? De familie groeit.</p>
+      {GROEPEN.map((groep) => (
+        <section key={groep} aria-label={groep}>
+          <h2 className="groep-kop">{groep}</h2>
+          <div className="toolkaarten">
+            {TOOLS.filter((t) => t.groep === groep).map((t) => (
+              <Link key={t.slug} href={`/${t.slug}`} className="toolkaart">
+                <span className="kaart-top">
+                  <Icoon naam={t.icoon} maat={20} />
+                  <h2>{t.naam}</h2>
+                </span>
+                <p>{t.korteVraag}</p>
+                <p className="diepte">{t.diepte}</p>
+                <span className="doorlink">{t.cta}</span>
+              </Link>
+            ))}
+          </div>
+        </section>
+      ))}
+
+      <section aria-label="Binnenkort">
+        <h2 className="groep-kop">Binnenkort</h2>
+        <div className="toolkaarten">
+          {TEASERS.map((t) => (
+            <div key={t.naam} className="toolkaart teaser">
+              <h2>{t.naam}</h2>
+              <p>{t.zin}</p>
+            </div>
+          ))}
         </div>
-      </div>
+      </section>
+
+      <section className="gewone-taal seotekst" aria-label="Het weer in gewone taal">
+        <h2>Het weer in gewone taal</h2>
+        <p>
+          Waarom voelt 12 graden soms als 7? Wat betekent 60% kans op regen nou echt? En hoe
+          droogt een was eigenlijk? Korte uitleg zonder vakjargon, zodat je snapt waarom de
+          checks zeggen wat ze zeggen.
+        </p>
+        <div className="uitleg-links">
+          {UITLEG.map((a) => (
+            <Link key={a.slug} href={`/uitleg/${a.slug}`} className="chip">
+              {a.vraag}
+            </Link>
+          ))}
+        </div>
+      </section>
 
       <section className="seotekst">
         {hub.blokken.map((b) => (

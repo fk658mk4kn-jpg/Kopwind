@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import StopsEditor from "@/components/StopsEditor";
 import LegCard from "@/components/LegCard";
 import DagBanner from "@/components/DagBanner";
+import NavKnoppen from "@/components/NavKnoppen";
 import { useGebruiker } from "@/components/GebruikerContext";
 import { haalRuweEtappes, stelPlanSamen } from "@/lib/planner";
 import { fmtTijd } from "@/lib/format";
@@ -108,6 +109,7 @@ export default function FietsTool({ beginStops = null }) {
   };
 
   const laadRoute = (r) => {
+    g.meldInteractie();
     setStops(r.stops);
     setLegOptions(r.legOptions?.length ? r.legOptions : [{ mode: "nu" }]);
     setFout(null);
@@ -185,7 +187,7 @@ export default function FietsTool({ beginStops = null }) {
             />
             <div className="actiebalk">
               <button className="knop primair" onClick={bereken} disabled={bezig}>
-                {bezig ? "Bezig..." : "Check mijn fietsrit"}
+                {bezig ? "Bezig..." : "Check je rit"}
               </button>
               <button className="knop" onClick={bewaarRoute} disabled={bezig}>
                 Bewaar route
@@ -214,6 +216,7 @@ export default function FietsTool({ beginStops = null }) {
       {plan ? (
         <section className="resultaten" aria-label="Ritinformatie">
           <DagBanner dag={plan.dag} />
+          <NavKnoppen stops={planStops} />
           <div className="legs">
             {plan.legs.map((leg, i) => (
               <LegCard
@@ -237,7 +240,7 @@ export default function FietsTool({ beginStops = null }) {
         !fout && (
           <p className="leeg">
             Vul je vertrekpunt en je werk in (tussenstop zoals de sportschool kan
-            ook) en klik op Check mijn fietsrit.
+            ook) en tik op Check je rit.
           </p>
         )
       )}

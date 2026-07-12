@@ -57,3 +57,22 @@ export function rampGradient(soort) {
   const stops = soort === "wind" ? DIVERGEREND : SEQUENTIEEL;
   return `linear-gradient(90deg, ${stops.join(", ")})`;
 }
+
+/**
+ * Kiest de tekstkleur (wit of inkt) met het hoogste WCAG-contrast op een
+ * gegeven rgb-achtergrond, zodat cijfers op elke rampkleur leesbaar zijn.
+ */
+export function tekstKleurVoor(achtergrondRgb) {
+  const m = String(achtergrondRgb).match(/\d+/g);
+  const rgb = m ? m.slice(0, 3).map(Number) : [255, 255, 255];
+  const lin = (c) => {
+    const x = c / 255;
+    return x <= 0.03928 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4);
+  };
+  const lum = ([r, g, b]) => 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b);
+  const L = lum(rgb);
+  const inktL = lum([23, 34, 44]);
+  const contrastWit = 1.05 / (L + 0.05);
+  const contrastInkt = (L + 0.05) / (inktL + 0.05);
+  return contrastWit >= contrastInkt ? "#FFFFFF" : "#17222C";
+}

@@ -7,7 +7,11 @@ import { TOOLS } from "@/lib/tools";
 import { useGebruiker } from "./GebruikerContext";
 import Icoon from "./Icoon";
 
-/** Vaste kop van de hub: merk, toolnavigatie en de twee panelen. */
+/**
+ * Vaste kop (Zephyr item 1): merk links, een rustige tool-switcher in het
+ * midden, en meldingen en instellingen als kleine iconen rechtsboven,
+ * duim-bereikbaar op mobiel. Consistent op elke pagina.
+ */
 export default function SiteHeader() {
   const g = useGebruiker();
   return (
@@ -19,17 +23,27 @@ export default function SiteHeader() {
       <nav className="hoofdnav" aria-label={S.header.alleTools}>
         {TOOLS.map((t) => (
           <Link key={t.slug} href={`/${t.slug}`} className="navlink">
-            {t.naam}
+            {t.meldingKort}
           </Link>
         ))}
       </nav>
       <span className="spacer" />
-      <button className="knop" onClick={g.openMeldingen}>
-        <Icoon naam="bel" maat={15} /> {S.header.meldingen}
+      <button
+        className="iconknop kop-icoon"
+        onClick={g.openMeldingen}
+        aria-label={S.header.meldingen}
+        title={S.header.meldingen}
+      >
+        <Icoon naam="bel" maat={19} />
         {g.syncCode ? <span className="stip" aria-hidden="true" /> : null}
       </button>
-      <button className="knop" onClick={g.openInstellingen}>
-        {S.header.instellingen}
+      <button
+        className="iconknop kop-icoon"
+        onClick={g.openInstellingen}
+        aria-label={S.header.instellingen}
+        title={S.header.instellingen}
+      >
+        <Icoon naam="tandwiel" maat={19} />
       </button>
     </header>
   );

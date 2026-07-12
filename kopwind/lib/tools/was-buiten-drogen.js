@@ -1,40 +1,29 @@
 /**
  * lib/tools/was-buiten-drogen.js
  *
- * Tweede tool en het bewijs van het register: locatie-only (patroon A,
- * inputType locatie), volledig op de gedeelde engine. Geen kaal ja/nee maar
- * een droogvenster: welke uren vandaag en de komende dagen droogt de was
- * buiten goed, met een rapportcijfer per dag.
+ * De wascheck als overlay op de gedeelde weerbasis. Kern van v2.2.0
+ * "Zephyr": het cijfer en de klok zijn uit elkaar getrokken.
  *
- * Droogmodel (bewust simpel en uitlegbaar):
- * - Per uur een droogkracht 0..100 uit luchtvochtigheid (de motor),
- *   temperatuur (traag onder de 5 graden) en wind (bonus). Uren met
- *   neerslag of een hoge buienkans zijn ongeschikt.
- * - Het droogvenster is het beste aaneengesloten blok regenvrije uren
- *   binnen het ophangvenster (standaard 08:00 tot 20:00, instelbaar).
+ * 1. CONDITIE-CIJFER: hoe goed zijn de omstandigheden om buiten te drogen,
+ *    over de hele bruikbare dag (dagStart tot dagEind), los van hoe laat
+ *    je kijkt. Ankers: 10 = warm, luchtig, droog, zon; 6-7 = droog maar
+ *    koel/vochtig/weinig wind (drogen gaat traag); laag = nat.
+ * 2. STATUS: kun je het nu of vandaag nog doen. Tijd-bewust: is er nog
+ *    genoeg aaneengesloten droge tijd voor de geschatte droogtijd? Zo ja:
+ *    "hang 'm nu op, rond HH:MM droog". Zo nee: "vandaag te laat, drogen
+ *    duurt ±X uur, morgenvroeg lukt het wel." De status sloopt het cijfer
+ *    dus niet meer: prima droogweer om 18:24 blijft een 8+.
  *
- * Cijfer-ankers (v2.1.0 "Mistral", tegen score-inflatie):
- *   10  hele dag droog, lage luchtvochtigheid, een briesje
- *    7  degelijk venster van 6 tot 8 uur
- *    5  marginaal venster van 3 tot 4 uur
- *    3  minder dan 2 bruikbare uren of onderbroken door regen
- *  0-2  het grootste deel van de dag nat
- * De vensterduur is daarom de primaire, vrijwel lineaire driver van het
- * dagcijfer; droogkracht en buien rond het venster stapelen erbovenop.
- * Consistentieregel: zolang de samenvatting zegt dat je de was buiten kunt
- * hangen (droogtijd past in het venster), zakt het advies nooit naar
- * "binnen drogen vandaag".
+ * De droogsnelheid zelf (warm + wind + droge lucht + zon = sneller droog)
+ * komt uit lib/engine/drogen.js en wordt letterlijk getoond: "drogen duurt
+ * bij dit weer ±X uur".
  */
 
 import { clamp, lerp, maakScore, adviesVoorScore } from "../engine/score.js";
+import { bouwBasis, basisPerDag, dagKeyVan, BASIS_VELDEN } from "../engine/weerbasis.js";
+import { droogsnelheid, geschatteDroogtijd, fmtUren } from "../engine/drogen.js";
 
-export const WAS_VELDEN = [
-  "temperature_2m",
-  "precipitation",
-  "precipitation_probability",
-  "wind_speed_10m",
-  "relative_humidity_2m",
-];
+export const WAS_VELDEN = BASIS_VELDEN;
 
 export const WAS_DEFAULTS = {
   dagStart: 8, // ophangen kan vanaf dit uur
@@ -42,194 +31,225 @@ export const WAS_DEFAULTS = {
   buiKans: 55, // % buienkans waarboven een uur niet meetelt
 };
 
-const DROOG_BUDGET = 260; // som van droogkracht die een gemiddelde was nodig heeft
-const MIN_VENSTER_UREN = 3;
-const MAX_PIJN_MET_VENSTER = 58; // consistentie: buiten hangen kan => nooit "binnen drogen"
-const MAX_PIJN_VENSTER_TE_KORT = 70; // anker 3: er is een venster, maar te kort
+const MIN_VENSTER_UREN = 2;
 
-/** Droogkracht van een enkel uur, 0..100. */
-export function uurDroogkracht({ rh, temp, wind, neerslag, neerslagKans }, buiKans = WAS_DEFAULTS.buiKans) {
-  if ((neerslag ?? 0) > 0.1 || (neerslagKans ?? 0) >= buiKans) return 0;
-  const vocht = clamp((92 - (rh ?? 85)) / (92 - 45), 0, 1);
-  const tempF = clamp(((temp ?? 10) + 2) / 20, 0.25, 1.2);
-  const windF = 0.7 + clamp((wind ?? 0) / 25, 0, 1) * 0.6;
-  return clamp(Math.round(100 * vocht * tempF * windF), 0, 100);
-}
-
-/**
- * Vensterduur naar pijnpunten, op de ankers gefit: 12u+ perfect, 8u prima,
- * 6u degelijk (rond de 7), 4u en 3u marginaal (rond de 5), korter dan
- * MIN_VENSTER_UREN telt als geen venster.
- */
-export function duurPijn(uren) {
+/** Vensterduur-ankers van de conditie: alleen echt natte dagen zakken diep. */
+function droogtijdPijn(uren) {
   const ANKERS = [
-    [12, 0],
-    [10, 4],
-    [8, 14],
-    [6, 26],
-    [4, 40],
-    [3, 48],
+    [2.5, 0],
+    [3.5, 8],
+    [5, 18],
+    [8, 28],
+    [12, 35],
   ];
-  if (uren >= ANKERS[0][0]) return 0;
+  if (uren == null) return 35;
+  if (uren <= ANKERS[0][0]) return 0;
   for (let i = 0; i < ANKERS.length - 1; i++) {
-    const [x1, y1] = ANKERS[i];
-    const [x0, y0] = ANKERS[i + 1];
-    if (uren >= x0) return Math.round(lerp(uren, x0, x1, y0, y1));
+    const [x0, y0] = ANKERS[i];
+    const [x1, y1] = ANKERS[i + 1];
+    if (uren <= x1) return Math.round(lerp(uren, x0, x1, y0, y1));
   }
-  return 48;
+  return 35;
 }
 
-/**
- * Analyseert het Open-Meteo hourly-blok tot dagen met venster en oordeel.
- * @returns {Array<{datum, uren, venster, droogUren, oordeel, samenvatting}>}
- */
-export function berekenDroogdagen(hourly, nu = new Date(), instellingen = WAS_DEFAULTS) {
-  if (!hourly?.time?.length) return [];
-  const inst = { ...WAS_DEFAULTS, ...(instellingen ?? {}) };
-  const perDag = new Map();
-  for (let i = 0; i < hourly.time.length; i++) {
-    const [datum, tijd] = hourly.time[i].split("T");
-    const uur = Number(tijd.slice(0, 2));
-    if (uur < inst.dagStart || uur >= inst.dagEind) continue;
-    if (!perDag.has(datum)) perDag.set(datum, []);
-    perDag.get(datum).push({
-      uur,
-      kracht: uurDroogkracht(
-        {
-          rh: hourly.relative_humidity_2m?.[i],
-          temp: hourly.temperature_2m?.[i],
-          wind: hourly.wind_speed_10m?.[i],
-          neerslag: hourly.precipitation?.[i],
-          neerslagKans: hourly.precipitation_probability?.[i],
-        },
-        inst.buiKans
-      ),
-      neerslag: (hourly.precipitation?.[i] ?? 0) > 0.1,
-      rh: hourly.relative_humidity_2m?.[i] ?? null,
-      wind: hourly.wind_speed_10m?.[i] ?? null,
-    });
+function natPijn(fractieNat) {
+  const ANKERS = [
+    [0, 0],
+    [0.2, 8],
+    [0.4, 22],
+    [0.6, 45],
+    [0.8, 62],
+    [1, 78],
+  ];
+  for (let i = 0; i < ANKERS.length - 1; i++) {
+    const [x0, y0] = ANKERS[i];
+    const [x1, y1] = ANKERS[i + 1];
+    if (fractieNat <= x1) return Math.round(lerp(fractieNat, x0, x1, y0, y1));
   }
-
-  const vandaagKey = lokaleDagKey(nu);
-  const dagen = [];
-  for (const [datum, uren] of perDag) {
-    if (datum < vandaagKey) continue;
-    dagen.push(analyseerDag(datum, uren, datum === vandaagKey ? nu : null));
-  }
-  return dagen.sort((a, b) => (a.datum < b.datum ? -1 : 1)).slice(0, 5);
+  return 78;
 }
 
-function lokaleDagKey(d) {
-  const p = (n) => String(n).padStart(2, "0");
-  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
+function fmtTijdUit(uurDecimaal) {
+  const totaalMinuten = Math.round((uurDecimaal * 60) / 15) * 15;
+  const hh = Math.floor(totaalMinuten / 60);
+  const mm = totaalMinuten % 60;
+  return `${String(hh).padStart(2, "0")}:${String(mm).padStart(2, "0")}`;
 }
 
-function analyseerDag(datum, uren, nuOfNull) {
-  // Voor vandaag tellen alleen de uren die nog komen (plus het lopende uur).
-  const bruikbaar = nuOfNull ? uren.filter((u) => u.uur >= nuOfNull.getHours()) : uren;
-
-  // Beste aaneengesloten regenvrije venster: kwaliteit maal lengte wint.
-  const blokken = [];
+function blokken(uren) {
+  const res = [];
   let blok = [];
-  for (const u of bruikbaar) {
+  for (const u of uren) {
     if (u.kracht > 0) {
       blok.push(u);
     } else if (blok.length) {
-      blokken.push(blok);
+      res.push(blok);
       blok = [];
     }
   }
-  if (blok.length) blokken.push(blok);
+  if (blok.length) res.push(blok);
+  return res;
+}
 
+function besteBlok(uren, minUren) {
   let beste = null;
-  for (const b of blokken) {
-    if (b.length < MIN_VENSTER_UREN) continue;
+  for (const b of blokken(uren)) {
+    if (b.length < minUren) continue;
     const gemiddeld = b.reduce((a, u) => a + u.kracht, 0) / b.length;
     if (!beste || gemiddeld * b.length > beste.gemiddeld * beste.uren) {
-      beste = {
-        van: b[0].uur,
-        tot: b[b.length - 1].uur + 1,
-        uren: b.length,
-        gemiddeld,
-      };
+      beste = { van: b[0].uur, tot: b[b.length - 1].uur + 1, uren: b.length, gemiddeld };
     }
   }
+  return beste;
+}
 
-  // Geschatte droogtijd binnen het venster.
-  let droogUren = null;
-  if (beste) {
-    droogUren = clamp(DROOG_BUDGET / Math.max(beste.gemiddeld, 15), 2, 12);
-    if (droogUren > beste.uren) droogUren = null; // venster te kort om droog te krijgen
+/**
+ * De overlay: hourly plus instellingen erin, dagen met conditie, status,
+ * venster, urenstrip en droogtijd eruit.
+ */
+export function overlay(hourly, nu = new Date(), instellingen = WAS_DEFAULTS) {
+  const inst = { ...WAS_DEFAULTS, ...(instellingen ?? {}) };
+  const basis = bouwBasis(hourly);
+  const perDag = basisPerDag(basis, inst.dagStart, inst.dagEind);
+  const vandaagKey = dagKeyVan(nu);
+  const dagLengte = inst.dagEind - inst.dagStart;
+
+  const dagen = [];
+  for (const [datum, dagUren] of perDag) {
+    if (datum < vandaagKey) continue;
+    const uren = dagUren.map((u) => ({
+      ...u,
+      kracht: droogsnelheid(u, inst.buiKans),
+      nat: (u.neerslag ?? 0) > 0.1,
+    }));
+    dagen.push({ datum, uren });
   }
+  dagen.sort((a, b) => (a.datum < b.datum ? -1 : 1));
+  const dagenUit = dagen.slice(0, 5).map(({ datum, uren }) => {
+    // CONDITIE: over de hele bruikbare dag, los van de klok.
+    const venster = besteBlok(uren, MIN_VENSTER_UREN);
+    const droogtijd = venster ? geschatteDroogtijd(venster.gemiddeld) : null;
+    const fractieNat = uren.filter((u) => u.kracht === 0).length / Math.max(uren.length, 1);
 
-  // Pijnscore: vensterduur is de primaire driver, droogkracht en buien
-  // rondom stapelen erbovenop. Alles gegradeerd, geen drempel-kliffen.
-  const factoren = [];
-  if (!beste) {
-    const regen = bruikbaar.some((u) => u.neerslag);
-    factoren.push({
-      punten: 72,
-      reden: regen
-        ? "neerslag verpest elk droogvenster"
-        : `geen aaneengesloten droog venster van ${MIN_VENSTER_UREN} uur of meer`,
-    });
-  } else {
-    factoren.push({
-      punten: duurPijn(beste.uren),
-      reden: beste.uren <= 4 ? `krap venster van ${beste.uren} uur` : null,
-    });
-    factoren.push({
-      punten: Math.round(clamp((78 - beste.gemiddeld) * 0.9, 0, 40)),
-      reden:
-        beste.gemiddeld < 50
-          ? `vochtige lucht remt het drogen (gem. droogkracht ${Math.round(beste.gemiddeld)}/100)`
-          : null,
-    });
-    const regenRondom = bruikbaar.some(
-      (u) => u.neerslag && (u.uur < beste.van || u.uur >= beste.tot)
-    );
-    if (regenRondom) {
-      factoren.push({ punten: 8, reden: "buien rond het venster" });
+    const factoren = [];
+    if (!venster) {
+      const regent = uren.some((u) => u.nat);
+      factoren.push({
+        punten: 78,
+        reden: regent ? "het is te nat: geen bruikbaar droog blok" : "geen aaneengesloten droge uren",
+      });
+    } else {
+      factoren.push({
+        punten: droogtijdPijn(droogtijd),
+        reden: droogtijd >= 5 ? `drogen gaat traag bij dit weer (\u00b1${fmtUren(droogtijd)} u)` : null,
+      });
+      factoren.push({
+        punten: natPijn(fractieNat),
+        reden:
+          fractieNat >= 0.4
+            ? `een flink deel van de dag is nat (${Math.round(fractieNat * 100)}%)`
+            : null,
+      });
+      if (uren.some((u) => u.nat && (u.uur < venster.van || u.uur >= venster.tot))) {
+        factoren.push({ punten: 4, reden: "buien rond het droge blok" });
+      }
     }
-    if (droogUren == null) {
-      factoren.push({ punten: 20, reden: "het droge venster is te kort om alles droog te krijgen" });
+    let { score, redenen } = maakScore(factoren);
+    // Consistentie: past de droogtijd in het venster, dan zegt het label
+    // nooit "binnen drogen" terwijl de status "hang 'm op" adviseert.
+    if (venster && droogtijd != null && droogtijd <= venster.uren && score > 58) {
+      score = 58;
     }
-  }
-  let { score, redenen } = maakScore(factoren);
-
-  // Consistentieborg: past de droogtijd in het venster ("hang de was
-  // buiten"), dan blijft het advies maximaal "kan, met geduld". Is er wel
-  // een venster maar te kort, dan landt de dag rond anker 3, niet lager.
-  if (beste && droogUren != null && score > MAX_PIJN_MET_VENSTER) {
-    score = MAX_PIJN_MET_VENSTER;
-  } else if (beste && droogUren == null && score > MAX_PIJN_VENSTER_TE_KORT) {
-    score = MAX_PIJN_VENSTER_TE_KORT;
-  }
-
-  return {
-    datum,
-    uren: bruikbaar,
-    venster: beste,
-    droogUren,
-    oordeel: {
+    const conditie = {
       score,
       redenen,
       advies: adviesVoorScore(score, wasBuitenDrogen.adviesLabels),
-    },
-    samenvatting: samenvatDag(beste, droogUren),
+    };
+
+    // STATUS: tijd-bewust voor vandaag, informatief voor de rest.
+    const isVandaag = datum === vandaagKey;
+    const status = isVandaag
+      ? statusVandaag(uren, nu, dagLengte, inst)
+      : statusToekomst(venster, droogtijd);
+
+    return {
+      datum,
+      uren: uren.map((u) => ({ uur: u.uur, score: u.kracht, nat: u.nat })),
+      venster,
+      droogtijd,
+      metric: droogtijd
+        ? { zin: `Drogen duurt bij dit weer \u00b1${fmtUren(droogtijd)} uur.` }
+        : null,
+      conditie,
+      status,
+    };
+  });
+
+  // Morgen-hint in de status van vandaag, nu we morgen kennen.
+  if (dagenUit[0]?.status?.soort === "te-laat" && dagenUit[1]) {
+    const morgen = dagenUit[1];
+    dagenUit[0].status.zin +=
+      morgen.venster && morgen.conditie.score < 50
+        ? " Hang 'm morgenvroeg op, dan lukt het wel."
+        : " Morgen ziet er ook niet best uit; check de dagen erna.";
+  }
+
+  return {
+    legenda: { links: "blijft nat", rechts: "droogt snel" },
+    dagen: dagenUit,
   };
 }
 
-function samenvatDag(venster, droogUren) {
-  if (!venster) {
-    return "Vandaag binnen drogen: er is geen bruikbaar droog venster.";
+function statusVandaag(uren, nu, dagLengte, inst) {
+  const resterend = uren.filter((u) => u.uur >= nu.getHours());
+  const droogResterend = resterend.filter((u) => u.kracht > 0);
+  if (!resterend.length || !droogResterend.length) {
+    const regende = uren.some((u) => u.nat);
+    return {
+      soort: "nee",
+      zin: regende
+        ? "Vandaag binnen drogen: het blijft nat."
+        : "Vandaag zit erop; buiten drogen lukt niet meer.",
+    };
   }
-  const tijd = `${String(venster.van).padStart(2, "0")}:00 en ${String(venster.tot).padStart(2, "0")}:00`;
-  if (droogUren == null) {
-    return `Er is een droog venster tussen ${tijd}, maar te kort om alles droog te krijgen.`;
+  const blokNu = besteBlok(resterend, 1);
+  if (blokNu.uren < MIN_VENSTER_UREN) {
+    return { soort: "nee", zin: "Vandaag binnen drogen: geen droog blok dat lang genoeg is." };
   }
-  const uren = droogUren.toFixed(1).replace(".", ",").replace(/,0$/, "");
-  return `Hang de was buiten tussen ${tijd}: in ongeveer ${uren} uur droog.`;
+  const droogtijdNu = geschatteDroogtijd(blokNu.gemiddeld);
+  if (droogtijdNu != null && droogtijdNu > dagLengte) {
+    return {
+      soort: "traag",
+      zin: `Buiten wordt 'ie vandaag niet droog: drogen duurt \u00b1${fmtUren(droogtijdNu)} uur bij dit weer.`,
+    };
+  }
+  if (droogtijdNu != null && blokNu.uren >= droogtijdNu) {
+    const start = Math.max(blokNu.van, nu.getHours());
+    const klaar = fmtTijdUit(start + droogtijdNu);
+    const wanneer = blokNu.van <= nu.getHours() ? "nu" : `vanaf ${String(blokNu.van).padStart(2, "0")}:00`;
+    return {
+      soort: blokNu.van <= nu.getHours() ? "nu" : "later",
+      zin: `Hang 'm ${wanneer} op: rond ${klaar} droog.`,
+    };
+  }
+  return {
+    soort: "te-laat",
+    zin: `Vandaag te laat: nog \u00b1${blokNu.uren} u bruikbaar en drogen duurt \u00b1${fmtUren(droogtijdNu)} u.`,
+  };
+}
+
+function statusToekomst(venster, droogtijd) {
+  if (!venster) return { soort: "nee", zin: "Binnen drogen." };
+  const tijd = `${String(venster.van).padStart(2, "0")}:00-${String(venster.tot).padStart(2, "0")}:00`;
+  if (droogtijd != null && droogtijd > venster.uren) {
+    return { soort: "te-laat", zin: `Droog blok ${tijd}, maar te kort om alles droog te krijgen.` };
+  }
+  return { soort: "info", zin: `Beste blok: ${tijd}, drogen duurt \u00b1${fmtUren(droogtijd)} u.` };
+}
+
+/** Back-compat naam: geeft direct de dagenlijst van de overlay terug. */
+export function berekenDroogdagen(hourly, nu = new Date(), instellingen = WAS_DEFAULTS) {
+  return overlay(hourly, nu, instellingen).dagen;
 }
 
 export const wasBuitenDrogen = {
@@ -238,11 +258,16 @@ export const wasBuitenDrogen = {
   naam: "Vandaag de was buiten?",
   meldingKort: "Wascheck",
   korteVraag: "Kan de was vandaag buiten drogen?",
+  cta: "Check de was",
+  icoon: "druppel",
+  groep: "Rondom huis",
+  diepte: "Niet alleen \u00f3f, maar wanneer je moet ophangen en hoe lang het duurt.",
   patroon: "A",
   inputType: "locatie",
   weerVelden: WAS_VELDEN,
   weerDagen: 5,
-  scoreConfig: { berekenDroogdagen, uurDroogkracht, defaults: WAS_DEFAULTS },
+  overlay,
+  scoreConfig: { overlay, defaults: WAS_DEFAULTS },
   instellingen: {
     defaults: WAS_DEFAULTS,
     velden: [
@@ -251,12 +276,12 @@ export const wasBuitenDrogen = {
       { key: "buiKans", label: "Uur telt niet mee vanaf buienkans", eenheid: "%", step: 5, min: 20, max: 90 },
     ],
     uitleg:
-      "Het cijfer volgt vooral de lengte van het droge venster: een hele droge dag is een 9 of 10, een venster van 6 tot 8 uur rond de 7, een krap venster van 3 tot 4 uur rond de 5. Luchtvochtigheid, kou en windstilte drukken het verder.",
+      "Het cijfer zegt hoe goed het dr\u00f3\u00f3gweer is: warm, luchtig en droog is een 9 of 10, droog maar koel en vochtig een 6 of 7, nat is laag. Of je het n\u00fa nog redt is een aparte statusregel, geen cijferstraf.",
   },
   adviesLabels: {
     goed: "drooghangdag",
     matig: "kan, met geduld",
-    slecht: "binnen drogen vandaag",
+    slecht: "binnen drogen",
   },
   affiliate: null,
 };

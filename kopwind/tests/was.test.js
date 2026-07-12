@@ -1,194 +1,124 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import {
-  uurDroogkracht,
-  berekenDroogdagen,
-} from "../lib/tools/was-buiten-drogen.js";
+import { berekenDroogdagen, overlay } from "../lib/tools/was-buiten-drogen.js";
 
 // Bouwt een synthetisch Open-Meteo hourly-blok voor 1 dag.
 function maakHourly(datum, per) {
   const h = {
-    time: [],
-    temperature_2m: [],
-    precipitation: [],
-    precipitation_probability: [],
-    wind_speed_10m: [],
-    relative_humidity_2m: [],
+    time: [], temperature_2m: [], apparent_temperature: [], precipitation: [],
+    precipitation_probability: [], wind_speed_10m: [], relative_humidity_2m: [],
+    cloud_cover: [], is_day: [],
   };
   for (let uur = 0; uur < 24; uur++) {
     const w = per(uur);
     h.time.push(`${datum}T${String(uur).padStart(2, "0")}:00`);
     h.temperature_2m.push(w.temp);
+    h.apparent_temperature.push(w.gevoel ?? w.temp);
     h.precipitation.push(w.neerslag);
     h.precipitation_probability.push(w.kans);
     h.wind_speed_10m.push(w.wind);
     h.relative_humidity_2m.push(w.rh);
+    h.cloud_cover.push(w.bewolking ?? 60);
+    h.is_day.push(uur >= 6 && uur <= 21 ? 1 : 0);
   }
   return h;
 }
 
-const NU = new Date(2026, 6, 11, 7, 0); // za 11 juli, 07:00
-
 function maakMeerdaags(startDatum, dagenSpecs) {
-  const alles = { time: [], temperature_2m: [], precipitation: [], precipitation_probability: [], wind_speed_10m: [], relative_humidity_2m: [] };
-  const d0 = new Date(`${startDatum}T00:00:00`);
+  const alles = null;
+  let uit;
   dagenSpecs.forEach((per, di) => {
-    const d = new Date(d0.getTime() + di * 24 * 3600 * 1000);
+    const d = new Date(`${startDatum}T00:00:00`);
+    d.setDate(d.getDate() + di);
     const p = (n) => String(n).padStart(2, "0");
     const datum = `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
     const dag = maakHourly(datum, per);
-    for (const k of Object.keys(alles)) alles[k].push(...dag[k]);
+    if (!uit) uit = dag;
+    else for (const k of Object.keys(uit)) uit[k].push(...dag[k]);
   });
-  return alles;
+  return uit;
 }
 
-test("uurDroogkracht: regen of hoge buienkans maakt het uur ongeschikt", () => {
-  assert.equal(uurDroogkracht({ rh: 50, temp: 20, wind: 20, neerslag: 0.5, neerslagKans: 0 }), 0);
-  assert.equal(uurDroogkracht({ rh: 50, temp: 20, wind: 20, neerslag: 0, neerslagKans: 60 }), 0);
+const cijfer = (dag) => (100 - dag.conditie.score) / 10;
+const primaDroog = () => ({ temp: 19, neerslag: 0, kans: 5, wind: 15, rh: 55, bewolking: 30 });
+
+test("acceptatie: hele dag droog, gecheckt om 18:24, geeft conditie >= 8 en status te laat", () => {
+  const hourly = maakMeerdaags("2026-07-12", [primaDroog, primaDroog]);
+  const [dag] = berekenDroogdagen(hourly, new Date(2026, 6, 12, 18, 24));
+  assert.ok(cijfer(dag) >= 8, `conditie hoort >= 8, kreeg ${cijfer(dag)}`);
+  assert.equal(dag.status.soort, "te-laat");
+  assert.match(dag.status.zin, /te laat/i);
+  assert.match(dag.status.zin, /morgenvroeg/i);
+  assert.match(dag.metric.zin, /Drogen duurt bij dit weer/);
 });
 
-test("uurDroogkracht: wind helpt, vochtige lucht remt", () => {
-  const basis = { temp: 18, neerslag: 0, neerslagKans: 10 };
-  const metWind = uurDroogkracht({ ...basis, rh: 60, wind: 20 });
-  const zonderWind = uurDroogkracht({ ...basis, rh: 60, wind: 0 });
-  const vochtig = uurDroogkracht({ ...basis, rh: 90, wind: 20 });
-  assert.ok(metWind > zonderWind, "wind geeft een bonus");
-  assert.ok(vochtig < metWind, "hoge luchtvochtigheid drukt de droogkracht");
-});
-
-test("regendag: laag cijfer en samenvatting zegt binnen drogen (cijfer en tekst consistent)", () => {
-  const hourly = maakHourly("2026-07-11", () => ({
-    temp: 15, neerslag: 1.2, kans: 90, wind: 10, rh: 95,
+test("acceptatie: warm, winderig en droog met de hele dag beschikbaar is 9 tot 10", () => {
+  const hourly = maakHourly("2026-07-12", () => ({
+    temp: 24, neerslag: 0, kans: 5, wind: 22, rh: 45, bewolking: 15,
   }));
-  const [dag] = berekenDroogdagen(hourly, NU);
-  assert.equal(dag.venster, null);
-  assert.ok(dag.oordeel.score >= 60, "pijnscore hoort hoog te zijn");
-  assert.equal(dag.oordeel.advies, "binnen drogen vandaag");
-  assert.match(dag.samenvatting, /binnen drogen/i);
+  const [dag] = berekenDroogdagen(hourly, new Date(2026, 6, 12, 9, 0));
+  assert.ok(cijfer(dag) >= 9, `kreeg ${cijfer(dag)}`);
+  assert.ok(["nu", "later"].includes(dag.status.soort));
+  assert.match(dag.status.zin, /rond \d{2}:\d{2} droog/);
 });
 
-test("droge winderige dag: hoog cijfer en samenvatting noemt het venster (cijfer en tekst consistent)", () => {
-  const hourly = maakHourly("2026-07-11", () => ({
-    temp: 18, neerslag: 0, kans: 5, wind: 18, rh: 55,
+test("acceptatie: koel, vochtig maar droog is 6 tot 7, niet 10, en status legt traagheid uit", () => {
+  const hourly = maakHourly("2026-07-12", () => ({
+    temp: 8, neerslag: 0, kans: 10, wind: 6, rh: 82, bewolking: 90,
   }));
-  const [dag] = berekenDroogdagen(hourly, NU);
-  assert.ok(dag.venster, "er hoort een venster te zijn");
-  assert.ok(dag.oordeel.score < 30, `pijnscore hoort laag te zijn, was ${dag.oordeel.score}`);
-  assert.equal(dag.oordeel.advies, "drooghangdag");
-  assert.match(dag.samenvatting, /tussen \d{2}:00 en \d{2}:00/);
-  assert.ok(dag.droogUren > 0, "geschatte droogtijd aanwezig");
+  const [dag] = berekenDroogdagen(hourly, new Date(2026, 6, 12, 9, 0));
+  assert.ok(cijfer(dag) >= 6 && cijfer(dag) <= 7.4, `kreeg ${cijfer(dag)}`);
+  assert.equal(dag.status.soort, "traag");
+  assert.ok(dag.conditie.redenen.some((r) => r.includes("traag")));
 });
 
-test("regressie: als de samenvatting zegt buiten hangen, is het advies nooit binnen drogen", () => {
-  const hourly = maakHourly("2026-07-11", (uur) => ({
-    temp: 16,
-    neerslag: uur >= 16 ? 0.8 : 0,
-    kans: uur >= 16 ? 80 : 10,
-    wind: 12,
-    rh: 68,
-  }));
-  const [dag] = berekenDroogdagen(hourly, NU);
-  if (/hang de was buiten/i.test(dag.samenvatting)) {
-    assert.notEqual(dag.oordeel.advies, "binnen drogen vandaag");
-    assert.ok(dag.oordeel.score < 60);
-  }
-});
-
-test("vandaag telt alleen resterende uren mee", () => {
-  const laat = new Date(2026, 6, 11, 18, 0);
-  const hourly = maakHourly("2026-07-11", () => ({
-    temp: 18, neerslag: 0, kans: 5, wind: 18, rh: 55,
-  }));
-  const [dag] = berekenDroogdagen(hourly, laat);
-  // Om 18:00 resteren de uren 18 en 19: te kort voor een venster van 3 uur.
-  assert.equal(dag.venster, null);
-});
-
-
-/* P0-A acceptatietests (was): de verankerde curve. */
-
-test("anker Apeldoorn: droogvenster van 3 uur geeft hooguit 6,5 en de tekst zegt krap", () => {
-  // Sterk drogend maar kort venster, zoals het Apeldoorn-geval uit de audit.
-  const hourly = maakHourly("2026-07-11", (uur) => ({
-    temp: 19,
-    neerslag: uur >= 9 && uur < 12 ? 0 : 0.6,
-    kans: uur >= 9 && uur < 12 ? 10 : 80,
-    wind: 20,
-    rh: 50,
-  }));
-  const [dag] = berekenDroogdagen(hourly, NU);
-  assert.equal(dag.venster.uren, 3);
-  const cijfer = (100 - dag.oordeel.score) / 10;
-  assert.ok(cijfer <= 6.5, `3 uur venster hoort <= 6,5, kreeg ${cijfer}`);
-  assert.ok(cijfer >= 3.5, `maar niet als een regendag, kreeg ${cijfer}`);
-  assert.ok(dag.oordeel.redenen.some((r) => r.includes("krap venster")));
-});
-
-test("anker: venster te kort om droog te krijgen landt rond de 3", () => {
-  const hourly = maakHourly("2026-07-11", (uur) => ({
+test("acceptatie: regen het grootste deel van de dag is 3 of lager", () => {
+  const hourly = maakHourly("2026-07-12", (uur) => ({
     temp: 15,
-    neerslag: uur >= 10 && uur < 13 ? 0 : 0.6,
-    kans: uur >= 10 && uur < 13 ? 15 : 80,
-    wind: 8,
-    rh: 74,
-  }));
-  const [dag] = berekenDroogdagen(hourly, NU);
-  assert.ok(dag.venster && dag.droogUren == null, "venster bestaat maar is te kort");
-  const cijfer = (100 - dag.oordeel.score) / 10;
-  assert.ok(cijfer >= 2.5 && cijfer <= 4, `hoort rond de 3, kreeg ${cijfer}`);
-  assert.match(dag.samenvatting, /te kort/);
-  assert.equal(dag.oordeel.advies, "binnen drogen vandaag");
-});
-
-test("anker: minder dan 2 bruikbare uren geeft hooguit een 4", () => {
-  const hourly = maakHourly("2026-07-11", (uur) => ({
-    temp: 16,
     neerslag: uur === 13 ? 0 : 0.8,
     kans: uur === 13 ? 10 : 85,
-    wind: 12,
-    rh: 70,
+    wind: 10,
+    rh: 90,
   }));
-  const [dag] = berekenDroogdagen(hourly, NU);
-  assert.equal(dag.venster, null);
-  assert.ok((100 - dag.oordeel.score) / 10 <= 4);
+  const [dag] = berekenDroogdagen(hourly, new Date(2026, 6, 12, 7, 0));
+  assert.ok(cijfer(dag) <= 3, `kreeg ${cijfer(dag)}`);
+  assert.equal(dag.conditie.advies, "binnen drogen");
+  assert.equal(dag.status.soort, "nee");
 });
 
-test("anker: volledig droge, luwe, milde dag is 9 of hoger", () => {
-  const hourly = maakHourly("2026-07-11", () => ({
-    temp: 19, neerslag: 0, kans: 5, wind: 9, rh: 55,
-  }));
-  const [dag] = berekenDroogdagen(hourly, NU);
-  assert.ok((100 - dag.oordeel.score) / 10 >= 9);
-});
-
-test("spreiding: vijf gevarieerde dagen zijn niet allemaal 9 of hoger", () => {
-  const droog = () => ({ temp: 19, neerslag: 0, kans: 5, wind: 12, rh: 55 });
-  const regen = () => ({ temp: 14, neerslag: 1.0, kans: 90, wind: 10, rh: 92 });
-  const krap = (uur) => (uur >= 10 && uur < 13 ? droog() : regen());
-  const vochtigStil = () => ({ temp: 16, neerslag: 0, kans: 15, wind: 4, rh: 82 });
-  const halfje = (uur) => (uur < 14 ? droog() : regen());
-  const hourly = maakMeerdaags("2026-07-11", [droog, regen, krap, vochtigStil, halfje]);
-  const dagen = berekenDroogdagen(hourly, NU);
+test("acceptatie: vijf gevarieerde dagen spreiden over de schaal", () => {
+  const regen = () => ({ temp: 14, neerslag: 1, kans: 90, wind: 10, rh: 92 });
+  const koelVochtig = () => ({ temp: 8, neerslag: 0, kans: 10, wind: 5, rh: 83, bewolking: 95 });
+  const half = (uur) => (uur < 14 ? primaDroog() : regen());
+  const top = () => ({ temp: 23, neerslag: 0, kans: 5, wind: 20, rh: 48, bewolking: 20 });
+  const hourly = maakMeerdaags("2026-07-12", [top, regen, half, koelVochtig, primaDroog]);
+  const dagen = berekenDroogdagen(hourly, new Date(2026, 6, 12, 8, 0));
   assert.equal(dagen.length, 5);
-  const cijfers = dagen.map((d) => (100 - d.oordeel.score) / 10);
+  const cijfers = dagen.map(cijfer);
   assert.ok(cijfers.filter((c) => c >= 9).length <= 2, `te veel negens: ${cijfers}`);
-  assert.ok(Math.min(...cijfers) <= 4, `de regendag hoort laag: ${cijfers}`);
-  assert.ok(cijfers.some((c) => c > 4 && c < 8.5), `middenmoot bestaat: ${cijfers}`);
+  assert.ok(Math.min(...cijfers) <= 4);
+  assert.ok(cijfers.some((c) => c > 4 && c < 8.5), `middenmoot ontbreekt: ${cijfers}`);
 });
 
-test("consistentie-cap: past de droogtijd in het venster, dan nooit binnen drogen als advies", () => {
-  // Matig venster van 5 uur, matige droogkracht, buien eromheen.
-  const hourly = maakHourly("2026-07-11", (uur) => ({
-    temp: 18,
-    neerslag: uur >= 9 && uur < 14 ? 0 : 0.7,
-    kans: uur >= 9 && uur < 14 ? 20 : 85,
-    wind: 14,
-    rh: 65,
+test("consistentie: zegt de status hang op, dan zegt het label nooit binnen drogen", () => {
+  // Grotendeels natte dag met een sterk droog blok van 3 uur.
+  const hourly = maakHourly("2026-07-12", (uur) => ({
+    temp: 19,
+    neerslag: uur >= 10 && uur < 13 ? 0 : 0.7,
+    kans: uur >= 10 && uur < 13 ? 10 : 85,
+    wind: 20,
+    rh: 50,
+    bewolking: 30,
   }));
-  const [dag] = berekenDroogdagen(hourly, NU);
-  if (dag.droogUren != null) {
-    assert.match(dag.samenvatting, /hang de was buiten/i);
-    assert.notEqual(dag.oordeel.advies, "binnen drogen vandaag");
-    assert.ok(dag.oordeel.score <= 58);
-  }
+  const [dag] = berekenDroogdagen(hourly, new Date(2026, 6, 12, 9, 0));
+  assert.ok(["nu", "later"].includes(dag.status.soort), dag.status.zin);
+  assert.notEqual(dag.conditie.advies, "binnen drogen");
+});
+
+test("overlay levert legenda en strip-uren volgens het contract", () => {
+  const res = overlay(maakHourly("2026-07-12", primaDroog), new Date(2026, 6, 12, 9, 0));
+  assert.equal(res.legenda.links, "blijft nat");
+  const dag = res.dagen[0];
+  assert.ok(dag.uren.every((u) => "uur" in u && "score" in u && "nat" in u));
+  assert.ok(dag.venster.van >= 8 && dag.venster.tot <= 20);
 });

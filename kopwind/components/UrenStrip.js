@@ -1,33 +1,56 @@
 "use client";
 
 import { kleurSequentieel } from "@/lib/engine/kleuren";
+import KleurLegenda from "./KleurLegenda";
 
 /**
- * De signature-vormtaal van de hub, toegepast op uren: een horizontale
- * strip van 08:00 tot 20:00 waarin elk blokje de droogkracht (of een
- * andere goedheid 0..100) van dat uur kleurt. Zelfde ramp als de windstrip.
+ * De signature-vormtaal toegepast op uren (Zephyr 1b): een gelabelde
+ * strip waarin elk blokje de score van dat uur kleurt (sequentiele ramp),
+ * natte uren een streep-patroon krijgen (dus niet alleen kleur draagt de
+ * betekenis) en het aanbevolen blok een duidelijke markering heeft.
+ * Tijdlabels bij begin, einde en de venstergrenzen.
  */
-export default function UrenStrip({ uren, venster }) {
+export default function UrenStrip({ uren, venster, legenda, vensterLabel = "beste blok" }) {
   if (!uren?.length) return null;
+  const eerste = uren[0].uur;
+  const n = uren.length;
+  const pct = (uur) => ((uur - eerste) / n) * 100;
+
+  const labels = [...new Set([eerste, venster?.van, venster?.tot, uren[n - 1].uur + 1].filter((x) => x != null))].sort(
+    (a, b) => a - b
+  );
+
   return (
-    <div>
+    <div className="urenstrip-wrap">
       <div className="windstrip urenstrip" aria-hidden="true">
         {uren.map((u) => (
           <div
             key={u.uur}
+            className={u.nat ? "uur-nat" : undefined}
             style={{
-              width: `${100 / uren.length}%`,
-              background: kleurSequentieel(u.kracht / 100),
-              opacity: venster && (u.uur < venster.van || u.uur >= venster.tot) ? 0.45 : 1,
+              width: `${100 / n}%`,
+              background: kleurSequentieel((u.score ?? 0) / 100),
             }}
-            title={`${String(u.uur).padStart(2, "0")}:00 \u00b7 droogkracht ${u.kracht}/100`}
+            title={`${String(u.uur).padStart(2, "0")}:00 \u00b7 ${u.nat ? "nat" : `score ${u.score}/100`}`}
           />
         ))}
+        {venster && (
+          <span
+            className="venster-markering"
+            style={{ left: `${pct(venster.van)}%`, width: `${((venster.tot - venster.van) / n) * 100}%` }}
+          >
+            <span className="venster-label">{vensterLabel}</span>
+          </span>
+        )}
       </div>
-      <div className="windstriplegenda">
-        <span>{String(uren[0].uur).padStart(2, "0")}:00</span>
-        <span>{String(uren[uren.length - 1].uur + 1).padStart(2, "0")}:00</span>
+      <div className="strip-tijden" aria-hidden="true">
+        {labels.map((uur) => (
+          <span key={uur} style={{ left: `${pct(uur)}%` }}>
+            {String(uur).padStart(2, "0")}
+          </span>
+        ))}
       </div>
+      {legenda && <KleurLegenda soort="goedheid" links={legenda.links} rechts={legenda.rechts} />}
     </div>
   );
 }

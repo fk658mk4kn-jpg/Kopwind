@@ -1,11 +1,12 @@
 import { notFound } from "next/navigation";
+import Icoon from "@/components/Icoon";
 import Link from "next/link";
 import { TOOLS, vindTool } from "@/lib/tools";
 import { inhoudVoorTool } from "@/content";
 import { STEDEN } from "@/lib/steden/nl";
 import { HUB_NAAM } from "@/lib/brand";
 import FietsTool from "@/components/tools/FietsTool";
-import WasTool from "@/components/tools/WasTool";
+import LocatieTool from "@/components/tools/LocatieTool";
 import Broodkruimel from "@/components/Broodkruimel";
 import StemPeiling from "@/components/StemPeiling";
 import AdSlot from "@/components/AdSlot";
@@ -72,7 +73,7 @@ export default function ToolPagina({ params }) {
         <p>{inhoud.seo.intro}</p>
       </section>
 
-      {tool.inputType === "route" ? <FietsTool /> : <WasTool />}
+      {tool.inputType === "route" ? <FietsTool /> : <LocatieTool toolId={tool.id} />}
 
       <StemPeiling toolId={tool.id} />
       <AdSlot plek="onder-tool" />

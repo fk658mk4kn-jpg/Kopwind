@@ -336,3 +336,29 @@ Tests: 23 groen, waaronder een regressietest voor precies het gemelde geval (laa
 Eerlijke beperkingen: iOS-push vereist iOS 16.4+, beginscherm-installatie en HTTPS; Apple kan pushbezorging bij lage batterij of focusmodi vertragen. De 5-minuten-klok betekent dat een melding tot een paar minuten kan verschuiven. De code is het enige geheim: kwijt is kwijt (bewust, geen accounts). Bij publiek gebruik op schaal worden de fair-use grenzen van OSRM en Photon het eerste aandachtspunt (dan: ORS-key of zelf hosten).
 
 Tests: 24 groen (nieuw: routeprefix in de dedupe-sleutels). Build geslaagd, inclusief manifest.webmanifest, iconen, sw.js en alle nieuwe API-routes.
+
+## v2.2.0 "Zephyr" - 2026-07-12
+
+### Waarom
+De live-test van Mistral legde vier dingen bloot: het wascijfer strafte "te laat op de dag" alsof het slecht weer was (een 2,8 om 18:24 op een kurkdroge dag), de installkaart verscheen niet op de telefoon, opgeslagen routes stonden onder de wascheck en het hub-cijfer was op donkere rampkleuren onleesbaar. Daarnaast de geconsolideerde brief: Coolblue-toon overal, een weerbasis met overlays zodat nieuwe tools goedkoop worden, nav-deeplinks, een rijkere landing en de eerste catalogus-uitbreiding met een harde kwaliteitslat (cijfer, tijdvenster, reden, actie, meldingen).
+
+### Wat
+- **Weerbasis + overlay-architectuur.** `lib/engine/weerbasis.js` normaliseert de uurvoorspelling (incl. bewolking, uv, dag/nacht) tot basis-uren; alle locatie-tools vragen dezelfde `BASIS_VELDEN` op en delen daardoor de clientcache van tien minuten in `haalWeer`. Een tool is nu een overlay-functie plus teksten: `overlay(hourly, nu, instellingen)` levert per dag conditie, status, venster, strip-uren en een metric. De cron gebruikt exact dezelfde overlay voor briefings, dus elke nieuwe locatie-tool krijgt meldingen gratis.
+- **Wascheck: conditie los van de klok.** Het cijfer beoordeelt de omstandigheden over de hele bruikbare dag (droogsnelheid uit vocht, temperatuur, wind en zon via `lib/engine/drogen.js`; ankers: warm/luchtig/droog/zon rond de 10, droog maar koel/vochtig 6 tot 7, nat laag). Een aparte tijd-bewuste status zegt of je het nu nog redt: "hang 'm nu op, rond 15:30 droog", "vandaag te laat, morgenvroeg lukt het wel" of "buiten wordt 'ie vandaag niet droog". De geschatte droogtijd staat er letterlijk bij. Consistentie-cap: past de droogtijd in het venster, dan zegt het label nooit "binnen drogen" terwijl de status "hang op" adviseert.
+- **Twee nieuwe checks.** Terras (beste terrasuren, zon-vanaf, wind-gaan-liggen, instelbare gevoels- en windgrens) en kleding (laagjes-advies per dagdeel op gevoelstemperatuur, meeneem-advies voor vanavond, regen-timing, comfortcijfer). Beide met eigen content, FAQ, instellingen, stad-pagina's en meldingen.
+- **Nav-deeplinks.** `lib/engine/navigatie.js` + `NavKnoppen`: na een fietscheck open je de route in Google Maps (officieel schema, fietsmodus, waypoints) of Apple Maps (klassiek schema, `dirflg=c`). Config-gestuurd via `vervoer` in het register; auto/motor krijgt later dezelfde helper plus Waze.
+- **UI.** Header met meldingen en instellingen als icoontjes rechtsboven (44px-tikdoel op mobiel), per-tool watermerk in de hero, gedeelde `LocatieTool`-resultaatweergave (VerdictBadge, statusregel, dagkiezer met cijfer plus een regel, gelabelde urenstrip met venster-markering en streeppatroon voor natte uren), hub-cijfer met contrastbewuste tekstkleur, mobiel-eerst pass (bottom-sheet modals, scrollbare nav, tikdoelen, geen h-scroll).
+- **Hub en site.** Belofte-zin, catalogus gegroepeerd (Elke dag / Onderweg / Rondom huis) met diepte-zin per kaart en teasers (barbecue, word-ik-nat, krabben), uitleg-cluster met vier artikelen in gewone taal, footer, en pagina's over/bronnen/changelog/privacy/voorwaarden (privacy noemt GA4 expliciet). Sitemap uitgebreid. Installcopy en alle knoppen in Coolblue-toon met het vaste patroon "Check je rit / Check de was / Check je outfit / Check het terras".
+
+### Breaking
+- `berekenDroogdagen` levert de nieuwe dag-shape (`conditie`, `status`, `droogtijd`, `metric`, strip-`uren`); `oordeel`/`samenvatting`/`uurDroogkracht` bestaan niet meer. `WasTool` is vervangen door de generieke `LocatieTool`.
+
+### Tests
+77 groen, waaronder de vier acceptatiescenario's uit de brief (18:24-geval conditie >= 8 met status te-laat en morgenvroeg-hint; warm/winderig/droog 9 tot 10; koel/vochtig/droog 6 tot 7 met traag-uitleg; regendag <= 3), spreiding over vijf dagen, de consistentie-cap, droogsnelheid-gedrag, terras- en kledingankers en de deeplink-formaten.
+
+### Bekende beperkingen
+- Devicetests liggen bij Martijn: installkaart op Android/iPhone, push end-to-end, en of Apple Maps `dirflg=c` op iOS echt de fietsmodus opent (onbekende vlaggen negeert Maps; dan opent de route in je voorkeursmodus). Apple's URL-schema kan geen tussenstops aan; die route gaat van start naar eind, met uitleg in de UI.
+- De drempel werkt bewust niet op de vertrekherinnering (besluit uit v2.0.0): een herinnering is een afspraak met jezelf, geen advies.
+- Kleurcontrast is per rampkleur berekend (WCAG), maar de kleurenblind-simulator-check op echte schermen is een visuele taak voor Martijn.
+- Het comfortcijfer van de kledingcheck beoordeelt hoe makkelijk de keuze is, niet hoe lekker het weer is; dat staat in de instellingen-uitleg maar kan gebruikers verrassen.
+- BBQ, regen-timing en gladheid zijn teasers, nog geen tools; de brief-batches 2 en 3 zijn de logische volgende stap op dezelfde overlay.

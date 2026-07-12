@@ -42,7 +42,7 @@ import {
 } from "@/lib/engine/meldingen";
 import { DEFAULT_THRESHOLDS } from "@/lib/advice";
 import { vindToolOpId, migreerThresholds } from "@/lib/tools";
-import { WAS_VELDEN, WAS_DEFAULTS, berekenDroogdagen } from "@/lib/tools/was-buiten-drogen";
+import { BASIS_VELDEN } from "@/lib/engine/weerbasis";
 import { fmtCijfer } from "@/lib/format";
 
 export const dynamic = "force-dynamic";
@@ -244,19 +244,25 @@ async function dedupe(codeHash, due) {
 }
 
 /**
- * Berekent de briefing van een locatie-tool met dezelfde engine als de
- * browser. Geeft null terug als de drempel de melding tegenhoudt.
- * Nu alleen de wascheck; een volgende locatie-tool haakt hier in.
+ * Berekent de briefing van een locatie-tool met dezelfde overlay als de
+ * browser (het overlay-contract): elke tool in het register met een
+ * overlay-functie krijgt hier gratis meldingen. Geeft null terug als de
+ * drempel de melding tegenhoudt.
  */
 async function toolBriefing(tool, schema, nu, perTool = {}) {
-  if (tool.id !== "was-buiten-drogen") return null;
-  const hourly = await haalHourly(schema.locatie.lat, schema.locatie.lon, WAS_VELDEN, 2);
-  const instellingen = { ...WAS_DEFAULTS, ...(perTool["was-buiten-drogen"] ?? {}) };
-  const vandaag = berekenDroogdagen(hourly, nu, instellingen)[0];
+  if (typeof tool.overlay !== "function") return null;
+  const hourly = await haalHourly(
+    schema.locatie.lat,
+    schema.locatie.lon,
+    tool.weerVelden ?? BASIS_VELDEN,
+    2
+  );
+  const instellingen = { ...(tool.instellingen?.defaults ?? {}), ...(perTool[tool.id] ?? {}) };
+  const vandaag = tool.overlay(hourly, nu, instellingen).dagen?.[0];
   if (!vandaag) return null;
-  if (!drempelLaatDoor(schema.drempel, vandaag.oordeel.score)) return null;
+  if (!drempelLaatDoor(schema.drempel, vandaag.conditie.score)) return null;
   return {
-    title: `${tool.meldingKort}: ${vandaag.oordeel.advies} (${fmtCijfer(vandaag.oordeel.score)})`,
-    body: `${vandaag.samenvatting} Voor ${schema.locatie.naam.split(",")[0]}.`,
+    title: `${tool.meldingKort}: ${vandaag.conditie.advies} (${fmtCijfer(vandaag.conditie.score)})`,
+    body: `${vandaag.status.zin} Voor ${schema.locatie.naam.split(",")[0]}.`,
   };
 }

@@ -7,7 +7,7 @@ import LocatieZoek from "@/components/LocatieZoek";
 import Icoon from "@/components/Icoon";
 import { haalWeer } from "@/lib/engine/weather";
 import { berekenDroogdagen } from "@/lib/tools/was-buiten-drogen";
-import { kleurSequentieel } from "@/lib/engine/kleuren";
+import { kleurSequentieel, tekstKleurVoor } from "@/lib/engine/kleuren";
 import { fmtCijfer, bft, kompas } from "@/lib/format";
 
 /**
@@ -82,6 +82,7 @@ export default function VandaagHier() {
   const kies = (plek) => {
     setLocatie(plek);
     setData(null);
+    g.meldInteractie();
     try {
       localStorage.setItem(LS_HUB, JSON.stringify(plek));
     } catch {
@@ -123,12 +124,15 @@ export default function VandaagHier() {
                 <Link href="/was-buiten-drogen" className="hier-kaart">
                   <span
                     className="hier-cijfer"
-                    style={{ background: kleurSequentieel(1 - data.was.oordeel.score / 100) }}
+                    style={{
+                      background: kleurSequentieel(1 - data.was.conditie.score / 100),
+                      color: tekstKleurVoor(kleurSequentieel(1 - data.was.conditie.score / 100)),
+                    }}
                   >
-                    {fmtCijfer(data.was.oordeel.score)}
+                    {fmtCijfer(data.was.conditie.score)}
                   </span>
                   <span className="hier-tekst">
-                    <strong>{data.was.oordeel.advies}</strong>
+                    <strong>{data.was.conditie.advies}</strong>
                     <span className="hier-vraag">Vandaag de was buiten? Doe de check</span>
                   </span>
                 </Link>

@@ -78,6 +78,8 @@ export default function SettingsPanel({
         </div>
         {meta?.uitleg && <p className="uitleg">{meta.uitleg}</p>}
 
+        {tool.inputType === "route" && (
+          <>
         <h3>Opgeslagen routes</h3>
         {(!routes || routes.length === 0) && (
           <p className="uitleg">
@@ -99,7 +101,10 @@ export default function SettingsPanel({
           </div>
         ))}
 
-        <h3>Favoriete plekken</h3>
+          </>
+        )}
+
+        <h3>Algemeen: favoriete plekken</h3>
         {presets.length === 0 && (
           <p className="uitleg">
             Nog geen favorieten. Kies een locatie in een van de checks en klik op

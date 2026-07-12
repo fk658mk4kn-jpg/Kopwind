@@ -114,3 +114,31 @@ lib/engine/kleuren.js: wind divergerend blauw-oranje, goedheid
 sequentieel cividis, altijd met legenda en woordlabels. De OG-images
 gebruiken de woff in assets/og/; regenereren kan met
 node scripts/maak-og-font.mjs.
+
+## Releasen
+
+```
+git tag -a v2.2.0 -m "Zephyr"
+git push origin v2.2.0
+```
+
+## Een nieuwe locatie-tool bouwen (overlay-contract)
+
+Een nieuwe check is sinds v2.2.0 een overlay plus content, geen herbouw:
+
+1. `lib/tools/<naam>.js`: exporteer een `overlay(hourly, nu, instellingen)` die
+   `{ legenda, dagen: [{ datum, uren, venster, conditie, status, metric }] }`
+   teruggeeft (zie terras.js als kleinste voorbeeld), plus de toolconfig met
+   `cta`, `icoon`, `groep`, `diepte`, `weerVelden: BASIS_VELDEN`, `instellingen`
+   en `adviesLabels`.
+2. `content/<slug>.js`: seo, blokken en faq. Registreer in `content/index.js`.
+3. Voeg de tool toe aan `TOOLS` in `lib/tools/index.js`. Klaar: de toolpagina,
+   35 stad-pagina's, de sitemap, de instellingen-tab, de meldingen en de
+   cron-briefing volgen automatisch uit het register.
+
+## Nav-deeplinks
+
+`lib/engine/navigatie.js` bouwt de open-in-Maps-links. Google gebruikt het
+officiele universele schema met `travelmode=bicycling` en waypoints; Apple het
+klassieke `saddr/daddr/dirflg=c` (fietsvlag community-gedocumenteerd sinds
+iOS 14, onbekende vlaggen worden genegeerd; waypoints bestaan daar niet).
