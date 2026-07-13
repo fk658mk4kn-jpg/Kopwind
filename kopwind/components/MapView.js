@@ -146,7 +146,7 @@ export default function MapView({
           }).addTo(layer);
           lijn.on("click", () => kiesRef.current?.(i, alt.index));
           lijn.bindTooltip(
-            `Alternatief: cijfer ${fmtCijfer(alt.advies.score)}, ${fmtKm(alt.distance)}` +
+            `Alternatief: ${schaalVoor(alt.advies.score).label.toLowerCase()}, ${fmtKm(alt.distance)}` +
               ` (${dmin >= 0 ? "+" : ""}${dmin} min). Klik om te kiezen.`,
             { sticky: true }
           );

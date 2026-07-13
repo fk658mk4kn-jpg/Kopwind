@@ -7,8 +7,10 @@ import Script from "next/script";
  *
  * Laadt Google Analytics 4 op de manier die Next.js aanraadt: via
  * next/script met strategy afterInteractive, zodat de meettag de eerste
- * render niet vertraagt. Het meet-ID komt uit NEXT_PUBLIC_GA_ID; staat die
- * niet gezet (bijvoorbeeld lokaal), dan laadt er niets en meet je niets.
+ * render niet vertraagt. Het meet-ID komt uit NEXT_PUBLIC_GA_ID, met het
+ * property-ID van kanhetvandaag.nl als fallback zodat de tag ook zonder
+ * Vercel-env gewoon meet (Google's tagcontrole vereist dat de tag in de
+ * HTML staat).
  *
  * Belangrijk: send_page_view staat hier UIT. De eerste paginaweergave en
  * elke client-side navigatie tellen we zelf in AnalyticsPageViews, anders
@@ -16,8 +18,7 @@ import Script from "next/script";
  * paginalading zijn) of telt hij de eerste view dubbel.
  */
 export default function Analytics() {
-  const id = process.env.NEXT_PUBLIC_GA_ID;
-  if (!id) return null;
+  const id = process.env.NEXT_PUBLIC_GA_ID ?? "G-DRGGM053ZK";
 
   return (
     <>

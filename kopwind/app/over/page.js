@@ -2,7 +2,7 @@ import Link from "next/link";
 import { HUB_NAAM } from "@/lib/brand";
 
 export const metadata = {
-  title: `Over ${HUB_NAAM}`,
+  title: { absolute: `Over ${HUB_NAAM}` },
   description:
     "Waarom Kan het vandaag? bestaat: dagelijkse beslissingen verdienen een antwoord, geen weerkaart.",
   alternates: { canonical: "/over" },
@@ -18,17 +18,15 @@ export default function OverPagina() {
       <section className="seotekst">
         <h2>Waarom dit bestaat</h2>
         <p>
-          Weerapps geven je een kaart vol getallen en laten het denkwerk aan jou. Maar de vraag
-          is nooit "hoe hard waait het om 14:00", de vraag is "fiets ik, hangt de was buiten,
-          kan het terras aan". {HUB_NAAM} draait het om: elke check weegt precies de factoren
-          die er voor die ene beslissing toe doen en geeft een cijfer, het beste moment en een
-          uitleg in gewone taal.
+          Weerapps geven je een kaart vol getallen en laten het denkwerk aan jou. {HUB_NAAM}{" "}
+          draait dat om. Elke check weegt de factoren die er voor die ene beslissing toe doen
+          en geeft ja of nee, het beste moment en een uitleg in gewone taal.
         </p>
         <h2>Hoe het werkt</h2>
         <p>
           Elke check haalt live de uurvoorspelling op voor jouw plek en rekent daar per uur op.
-          Het cijfer zegt hoe goed de omstandigheden zijn; een aparte statusregel zegt of je het
-          nu nog redt en wanneer het beste blok valt. Alles werkt zonder account, is gratis en
+          Het oordeel (van Zeer slecht tot Ideaal) zegt hoe goed de omstandigheden zijn; een
+          aparte statusregel zegt of je het nu nog redt en wanneer het beste blok valt. Alles werkt zonder account, is gratis en
           draait op je beginscherm als app, met meldingen op de momenten die jij kiest.
         </p>
         <h2>Eerlijk over de grenzen</h2>

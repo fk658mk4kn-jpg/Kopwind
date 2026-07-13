@@ -24,7 +24,9 @@ export function maakOordeel(factoren, labels) {
 }
 
 /** "Prima fietsdag \u00b7 8,9 \u2014 reden, reden." */
-export function oordeelZin(oordeel, fmtCijfer) {
-  const kop = `${oordeel.advies} \u00b7 ${fmtCijfer(oordeel.score)}`;
+import { schaalVoor } from "./schaal.js";
+
+export function oordeelZin(oordeel) {
+  const kop = `${oordeel.advies} \u00b7 ${schaalVoor(oordeel.score).label.toLowerCase()}`;
   return oordeel.redenen.length ? `${kop} \u2014 ${oordeel.redenen.join(", ")}.` : kop;
 }

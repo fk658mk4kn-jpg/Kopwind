@@ -51,7 +51,7 @@ export function generateMetadata({ params }) {
   if (!tool || !stad) return {};
   const t = titelVoor(tool, stad);
   return {
-    title: { absolute: t.title },
+    title: t.title,
     description: t.description,
     alternates: { canonical: `/${tool.slug}/${stad.slug}` },
     openGraph: { title: t.title, description: t.description, url: `/${tool.slug}/${stad.slug}` },

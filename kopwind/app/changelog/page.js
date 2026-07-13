@@ -2,7 +2,7 @@ import { VERSIES } from "@/content/versies";
 import { HUB_NAAM } from "@/lib/brand";
 
 export const metadata = {
-  title: `Changelog | ${HUB_NAAM}`,
+  title: "Changelog",
   description: "Wat er per versie bijkwam en veranderde in Kan het vandaag?",
   alternates: { canonical: "/changelog" },
 };
@@ -12,7 +12,7 @@ export default function ChangelogPagina() {
     <main>
       <div className="tool-hero">
         <h1>Changelog</h1>
-        <p>We bouwen in de open lucht. Dit kwam er per versie bij.</p>
+        <p>Wat er per versie veranderde en bijkwam.</p>
       </div>
       <section className="seotekst">
         {VERSIES.map((v) => (

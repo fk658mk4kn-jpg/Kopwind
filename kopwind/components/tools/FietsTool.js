@@ -14,7 +14,7 @@ const MapView = dynamic(() => import("@/components/MapView"), { ssr: false });
 
 /**
  * De vlaggendrager: route/wind/keten-check met alternatieve routes, kaart
- * en rapportcijfer per rit. Draait op elke pagina die hem nodig heeft:
+ * en oordeel per rit. Draait op elke pagina die hem nodig heeft:
  * de toolpagina, de stadpagina's (beginStops = [stadscentrum, null]) en de
  * van/naar-pagina's (beginStops = [A, B]). Gedeelde staat (favorieten,
  * routes, drempels, synccode) komt uit de GebruikerContext.

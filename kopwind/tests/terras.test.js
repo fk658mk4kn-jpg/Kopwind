@@ -33,6 +33,7 @@ test("zomerse dag: hoog cijfer, venster en beste-uren-status", () => {
   assert.ok(dag.venster, "venster hoort te bestaan");
   assert.match(dag.status.zin, /Beste terrasuren/);
   assert.match(dag.status.zin, /met zon/);
+  assert.equal(dag.antwoord.ja, true);
 });
 
 test("regen de hele dag: laag cijfer en geen terrasweer", () => {
@@ -40,6 +41,7 @@ test("regen de hele dag: laag cijfer en geen terrasweer", () => {
   const dag = overlay(hourly, new Date(2026, 6, 12, 9, 0)).dagen[0];
   assert.ok(cijfer(dag) <= 3.5, `kreeg ${cijfer(dag)}`);
   assert.equal(dag.conditie.advies, "geen terrasweer");
+  assert.equal(dag.antwoord.ja, false);
 });
 
 test("fris met wat zon: middenmoot, kan met een vestje", () => {

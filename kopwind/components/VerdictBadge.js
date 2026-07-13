@@ -1,17 +1,20 @@
 "use client";
 
-import { fmtCijfer } from "@/lib/format";
+import { schaalVoor, kleurVoorSchaal } from "@/lib/engine/schaal";
 
 /**
- * Het cijfer-oordeel als badge: label plus rapportcijfer in tabulaire
- * cijfers. Kleurklasse volgt de pijnscore (goed, matig, slecht), zodat
- * elke tool hetzelfde oordeelbeeld deelt.
+ * Het verdict in woorden (v3.0.0): eerst Ja of Nee, dan het schaalwoord
+ * (Zeer slecht, Matig, Twijfelachtig, Goed, Ideaal) in een kleurbadge.
+ * Voor tools zonder kan-vraag (ja is null) alleen het schaalwoord.
+ * De pijnscore blijft intern de motor; hij komt alleen niet meer in beeld.
  */
-export default function VerdictBadge({ score, label }) {
-  const kleur = score >= 60 ? "rood" : score >= 30 ? "oranje" : "groen";
+export default function VerdictBadge({ score, ja = null }) {
+  const s = schaalVoor(score);
+  const kleur = kleurVoorSchaal(s.id);
   return (
     <span className={"badge " + kleur}>
-      {label} <span className="badge-cijfer">{fmtCijfer(score)}</span>
+      {ja === null ? s.label : ja ? "Ja" : "Nee"}
+      {ja !== null && <span className="badge-woord">{s.label}</span>}
     </span>
   );
 }

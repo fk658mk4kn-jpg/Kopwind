@@ -262,7 +262,7 @@ async function toolBriefing(tool, schema, nu, perTool = {}) {
   if (!vandaag) return null;
   if (!drempelLaatDoor(schema.drempel, vandaag.conditie.score)) return null;
   return {
-    title: `${tool.meldingKort}: ${vandaag.conditie.advies} (${fmtCijfer(vandaag.conditie.score)})`,
+    title: `${tool.meldingKort}: ${vandaag.antwoord?.ja === false ? "nee" : "ja"}, ${schaalVoor(vandaag.conditie.score).label.toLowerCase()}`,
     body: `${vandaag.status.zin} Voor ${schema.locatie.naam.split(",")[0]}.`,
   };
 }

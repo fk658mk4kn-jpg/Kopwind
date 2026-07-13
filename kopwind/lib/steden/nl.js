@@ -47,3 +47,17 @@ export const STEDEN = [
 export function vindStad(slug) {
   return STEDEN.find((s) => s.slug === slug) ?? null;
 }
+
+/** Dichtstbijzijnde stad bij een coordinaat (stad volstaat voor de hub). */
+export function dichtstbijzijndeStad(lat, lon) {
+  let beste = null;
+  let besteAfstand = Infinity;
+  for (const stad of STEDEN) {
+    const d = (stad.lat - lat) ** 2 + (stad.lon - lon) ** 2;
+    if (d < besteAfstand) {
+      besteAfstand = d;
+      beste = stad;
+    }
+  }
+  return beste;
+}

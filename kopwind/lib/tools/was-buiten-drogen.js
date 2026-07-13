@@ -20,6 +20,7 @@
  */
 
 import { clamp, lerp, maakScore, adviesVoorScore } from "../engine/score.js";
+import { jaVoor } from "../engine/schaal.js";
 import { bouwBasis, basisPerDag, dagKeyVan, BASIS_VELDEN } from "../engine/weerbasis.js";
 import { droogsnelheid, geschatteDroogtijd, fmtUren } from "../engine/drogen.js";
 
@@ -172,8 +173,16 @@ export function overlay(hourly, nu = new Date(), instellingen = WAS_DEFAULTS) {
       ? statusVandaag(uren, nu, dagLengte, inst)
       : statusToekomst(venster, droogtijd);
 
+    const antwoord = {
+      ja: isVandaag
+        ? ["nu", "later"].includes(status.soort)
+        : status.soort === "info" && jaVoor(score),
+      zin: status.zin,
+    };
+
     return {
       datum,
+      antwoord,
       uren: uren.map((u) => ({ uur: u.uur, score: u.kracht, nat: u.nat })),
       venster,
       droogtijd,
@@ -259,9 +268,11 @@ export const wasBuitenDrogen = {
   meldingKort: "Wascheck",
   korteVraag: "Kan de was vandaag buiten drogen?",
   cta: "Check de was",
+  navLabel: "De was",
+  locatieHint: "Zoek je adres of stad...",
   icoon: "druppel",
   groep: "Rondom huis",
-  diepte: "Niet alleen \u00f3f, maar wanneer je moet ophangen en hoe lang het duurt.",
+  diepte: "Wanneer je ophangt en hoe lang het drogen duurt.",
   patroon: "A",
   inputType: "locatie",
   weerVelden: WAS_VELDEN,
@@ -276,7 +287,7 @@ export const wasBuitenDrogen = {
       { key: "buiKans", label: "Uur telt niet mee vanaf buienkans", eenheid: "%", step: 5, min: 20, max: 90 },
     ],
     uitleg:
-      "Het cijfer zegt hoe goed het dr\u00f3\u00f3gweer is: warm, luchtig en droog is een 9 of 10, droog maar koel en vochtig een 6 of 7, nat is laag. Of je het n\u00fa nog redt is een aparte statusregel, geen cijferstraf.",
+      "Ideaal is warm, luchtig en droog. Droog maar koel en vochtig wordt Goed of Twijfelachtig, want drogen gaat dan traag. Nat is Matig of slechter. Of je het nu nog redt staat los daarvan in de statusregel.",
   },
   adviesLabels: {
     goed: "drooghangdag",

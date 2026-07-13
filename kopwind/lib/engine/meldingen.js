@@ -13,7 +13,8 @@
  *   etappe uit de laatst opgeslagen keten.
  */
 
-import { toLocalInput, bft, kompas, fmtTijd, fmtCijfer } from "../format.js";
+import { toLocalInput, bft, kompas, fmtTijd } from "../format.js";
+import { schaalVoor } from "./schaal.js";
 import { APP_KORT } from "../brand.js";
 
 export const DEFAULT_MELDINGEN = {
@@ -168,7 +169,7 @@ export function briefingTekst(plan, routeNaam) {
   const naar = leg.naar.naam.split(",")[0];
   const kop = routeNaam ? `${APP_KORT} · ${routeNaam}` : APP_KORT;
   return {
-    title: `${kop}: ${dag.advies} (${fmtCijfer(dag.score)})`,
+    title: `${kop}: ${dag.advies} (${schaalVoor(dag.score).label.toLowerCase()})`,
     body: `Zwaarste rit ${van} naar ${naar} om ${fmtTijd(leg.departure)}: ${leg.samenvatting} ${weerZin(leg)}`,
   };
 }
@@ -179,7 +180,7 @@ export function vertrekTekst(leg, minuten) {
   const naar = leg.naar.naam.split(",")[0];
   return {
     title: `Over ${minuten} min: ${van} naar ${naar}`,
-    body: `${kapitaal(leg.advies.advies)} (${fmtCijfer(leg.advies.score)}). ${weerZin(leg)}`,
+    body: `${kapitaal(leg.advies.advies)} (${schaalVoor(leg.advies.score).label.toLowerCase()}). ${weerZin(leg)}`,
   };
 }
 

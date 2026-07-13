@@ -6,6 +6,12 @@
 
 export const VERSIES = [
   {
+    versie: "3.0.0",
+    codenaam: "Levante",
+    datum: "2026-07-13",
+    zin: "Antwoorden in woorden: elke check zegt nu eerst Ja of Nee met een schaalwoord van Zeer slecht tot Ideaal. De homepage werd compacter en toont het live antwoord per kaart, je kunt per dag met een duim laten weten of het advies klopte, de kledingcheck kreeg een outfit-figuurtje en de teksten op de hele site werden directer.",
+  },
+  {
     versie: "2.2.0",
     codenaam: "Zephyr",
     datum: "2026-07-12",

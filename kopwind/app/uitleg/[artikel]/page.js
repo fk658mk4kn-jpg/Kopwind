@@ -13,36 +13,36 @@ export function generateMetadata({ params }) {
   const a = vindArtikel(params.artikel);
   if (!a) return {};
   return {
-    title: `${a.titel} | ${HUB_NAAM}`,
+    title: a.titel,
     description: a.intro,
     alternates: { canonical: `/uitleg/${a.slug}` },
   };
 }
 
 export default function UitlegArtikel({ params }) {
-  const a = vindArtikel(params.artikel);
-  if (!a) notFound();
-  const tool = TOOLS.find((t) => t.slug === a.gerelateerdeToolSlug);
-  const anderen = UITLEG.filter((x) => x.slug !== a.slug);
+  const art = vindArtikel(params.artikel);
+  if (!art) notFound();
+  const tool = TOOLS.find((t) => t.slug === art.gerelateerdeToolSlug);
+  const anderen = UITLEG.filter((x) => x.slug !== art.slug);
 
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
-    headline: a.titel,
-    description: a.intro,
+    headline: art.titel,
+    description: art.intro,
     inLanguage: "nl",
-    mainEntityOfPage: `${SITE_URL}/uitleg/${a.slug}`,
+    mainEntityOfPage: `${SITE_URL}/uitleg/${art.slug}`,
     publisher: { "@type": "Organization", name: HUB_NAAM },
   };
 
   return (
     <main>
       <div className="tool-hero">
-        <h1>{a.titel}</h1>
-        <p>{a.intro}</p>
+        <h1>{art.titel}</h1>
+        <p>{art.intro}</p>
       </div>
       <section className="seotekst">
-        {a.blokken.map((b) => (
+        {art.blokken.map((b) => (
           <div key={b.kop}>
             <h2>{b.kop}</h2>
             <p>{b.tekst}</p>
@@ -50,8 +50,7 @@ export default function UitlegArtikel({ params }) {
         ))}
         {tool && (
           <p>
-            Zelf checken? <Link href={`/${tool.slug}`}>{tool.naam}</Link> geeft je het antwoord
-            voor jouw plek, met het beste moment erbij.
+            Zelf checken? <Link href={`/${tool.slug}`}>{tool.naam}</Link> {art.cta}
           </p>
         )}
         <h2>Meer uitleg</h2>

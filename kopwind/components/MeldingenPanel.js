@@ -349,15 +349,30 @@ function DrempelKeuze({ drempel, richtingGoed, onWijzig }) {
         <option value="goed">{S.meldingen.drempelGoed}</option>
       </select>
       {d.modus !== "altijd" && (
-        <input
-          type="number"
-          min="1"
-          max="10"
-          step="0.5"
-          value={d.cijfer}
+        <select
+          value={String(d.cijfer)}
           onChange={(e) => onWijzig({ ...d, cijfer: Number(e.target.value) })}
-          aria-label="Cijfergrens"
-        />
+          aria-label="Grens"
+        >
+          {(richtingGoed
+            ? [
+                ["8.8", "alleen bij Ideaal"],
+                ["7", "bij Goed of beter"],
+                ["5.5", "bij Twijfelachtig of beter"],
+              ]
+            : [
+                ["5.4", "bij Matig of slechter"],
+                ["3.8", "alleen bij Zeer slecht"],
+              ]
+          ).map(([w, label]) => (
+            <option key={w} value={w}>
+              {label}
+            </option>
+          ))}
+          {![8.8, 7, 5.5, 5.4, 3.8].includes(d.cijfer) && (
+            <option value={String(d.cijfer)}>eigen grens</option>
+          )}
+        </select>
       )}
     </span>
   );

@@ -1,7 +1,7 @@
 import { HUB_NAAM } from "@/lib/brand";
 
 export const metadata = {
-  title: `Privacy | ${HUB_NAAM}`,
+  title: "Privacy",
   description: "Wat Kan het vandaag? wel en niet van je weet, in gewone taal.",
   alternates: { canonical: "/privacy" },
 };

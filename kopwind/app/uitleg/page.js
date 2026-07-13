@@ -3,7 +3,7 @@ import { UITLEG } from "@/content/uitleg";
 import { HUB_NAAM } from "@/lib/brand";
 
 export const metadata = {
-  title: `Het weer in gewone taal | ${HUB_NAAM}`,
+  title: "Het weer in gewone taal",
   description:
     "Korte uitleg zonder vakjargon: gevoelstemperatuur, hoe je was droogt, waarom tegenwind zwaarder telt en wat buienkans echt betekent.",
   alternates: { canonical: "/uitleg" },

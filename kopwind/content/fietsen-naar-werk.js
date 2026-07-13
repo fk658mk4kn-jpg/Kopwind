@@ -16,7 +16,7 @@ export const blokken = [
   {
     kop: "Zo werkt de fietscheck voor woon-werkverkeer",
     tekst:
-      "Vul je route in: van huis naar werk, met als je wilt een tussenstop zoals de sportschool of school. Kies vertrekken nu, een vertrektijd of een aankomsttijd (dan rekenen we terug wanneer je weg moet). De check haalt je fietsroute op, splitst hem in stukken van zo'n 300 meter en rekent per stuk uit hoeveel wind je tegen hebt op het uur dat je daar fietst. Elke rit krijgt een rapportcijfer voor het fietsweer en een advies: prima fietsdag, pittige rit, of vandaag liever niet fietsen.",
+      "Vul je route in: van huis naar werk, met als je wilt een tussenstop zoals de sportschool of school. Kies vertrekken nu, een vertrektijd of een aankomsttijd (dan rekenen we terug wanneer je weg moet). De check haalt je fietsroute op, splitst hem in stukken van zo'n 300 meter en rekent per stuk uit hoeveel wind je tegen hebt op het uur dat je daar fietst. Elke rit krijgt een oordeel van Zeer slecht tot Ideaal en een advies: prima fietsdag, pittige rit, of vandaag liever niet.",
   },
   {
     kop: "Wind tegen op de fiets: zie waar en hoe hard",
@@ -38,7 +38,7 @@ export const blokken = [
 export const faq = [
   {
     v: "Kan ik vandaag fietsen naar werk?",
-    a: "Vul je route in (thuis naar werk, eventueel met een tussenstop) en kies vertrekken nu of een vertrektijd. Je ziet direct het fietsweer voor jouw rit: wind per deel van de route, regen, temperatuur en een rapportcijfer met advies.",
+    a: "Vul je route in (thuis naar werk, eventueel met een tussenstop) en kies vertrekken nu of een vertrektijd. Je ziet direct het fietsweer voor jouw rit: wind per deel van de route, regen, temperatuur en een duidelijk ja of nee met advies.",
   },
   {
     v: "Hoeveel wind is te veel om te fietsen?",
@@ -46,11 +46,11 @@ export const faq = [
   },
   {
     v: "Wat is goed fietsweer?",
-    a: "Droog, een gevoelstemperatuur boven een graad of 5 en weinig wind tegen (of wind mee). In de check is dat een rapportcijfer van 7 of hoger: een prima fietsdag.",
+    a: "Droog, een gevoelstemperatuur boven een graad of 5 en weinig wind tegen (of wind mee). In de check is dat Goed of Ideaal: een prima fietsdag.",
   },
   {
     v: "Kan ik ook mijn terugrit en tussenstops checken?",
-    a: "Ja. Je plant je hele dag als een keten: heen, eventueel via de sportschool, en weer terug. Elke rit krijgt zijn eigen cijfer op zijn eigen tijdstip, en de zwaarste rit bepaalt het dagadvies, want de fiets gaat mee of niet.",
+    a: "Ja. Je plant je hele dag als een keten: heen, eventueel via de sportschool, en weer terug. Elke rit krijgt zijn eigen oordeel op zijn eigen tijdstip, en de zwaarste rit bepaalt het dagadvies, want de fiets gaat mee of niet.",
   },
   {
     v: "Krijg ik ook meldingen op mijn telefoon?",

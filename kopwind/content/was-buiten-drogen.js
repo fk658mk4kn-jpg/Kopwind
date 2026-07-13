@@ -1,50 +1,47 @@
-/**
- * content/was-buiten-drogen.js
- * SEO-teksten en FAQ van de wastool.
- */
+/** content/was-buiten-drogen.js: teksten van de wascheck. Direct, zonder cijfers. */
 
 export const seo = {
   title: "Vandaag de was buiten drogen? Droogvenster, wind en regen check",
   description:
-    "Kan de was vandaag buiten? Zie per uur wanneer je was buiten goed droogt: luchtvochtigheid, wind, temperatuur en regen, met een cijfer per dag. Gratis.",
+    "Kan de was vandaag buiten? Zie per uur wanneer je was goed droogt, hoe lang het duurt en het beste ophangmoment. Vijf dagen vooruit. Gratis.",
   h1: "Vandaag de was buiten?",
   intro:
-    "Zie in een oogopslag of en wanneer je was vandaag buiten droogt: het beste ophangvenster per dag, de geschatte droogtijd, en een rapportcijfer voor vandaag en de komende dagen.",
+    "Hang je 'm nu op, of wordt het morgenvroeg? De check kijkt per uur naar vocht, wind, temperatuur en buien en zegt het gewoon: ja of nee, het beste blok en hoe lang drogen duurt.",
 };
 
 export const blokken = [
   {
-    kop: "Zo werkt de wascheck",
+    kop: "Zo droogt je was",
     tekst:
-      "Kies je locatie (of gebruik je huidige plek) en je ziet per uur de droogkracht: een combinatie van luchtvochtigheid, temperatuur en wind. Uren met regen of een hoge buienkans vallen af, want dan wordt de was natter in plaats van droger. Uit de droge uren tussen 08:00 en 20:00 kiest de check het beste aaneengesloten venster en schat hij hoe lang je was nodig heeft.",
+      "Vochtige lucht droogt slecht, ook in de zon. Was droogt door verdamping, en dat gaat het hardst bij droge lucht, wind en een beetje warmte. De check rekent per uur met luchtvochtigheid, wind en temperatuur en schat hoe lang jouw was nodig heeft.",
   },
   {
-    kop: "Waarom luchtvochtigheid belangrijker is dan zon",
+    kop: "Het antwoord en de klok",
     tekst:
-      "Was droogt doordat vocht verdampt, en dat gaat vooral snel bij droge lucht en wind. Een grijze dag met 55 procent luchtvochtigheid en windkracht 4 droogt beter dan een zwoele zonnige dag met 85 procent. Daarom rekent de check met luchtvochtigheid, wind en temperatuur, en niet met zonuren.",
+      "Prima droogweer om half zeven 's avonds blijft prima droogweer, alleen red je het niet meer voor het donker. Daarom zie je twee dingen: hoe goed het droogweer is (van Zeer slecht tot Ideaal) en een statusregel die zegt of je het nu nog redt. En zo niet, wanneer wel.",
   },
   {
-    kop: "De komende dagen plannen",
+    kop: "Vijf dagen vooruit",
     tekst:
-      "Je ziet niet alleen vandaag maar ook de vier dagen erna, elk met een cijfer en het beste venster. Zo schuif je de grote was naar de dag waarop hij in een middag droog is, en laat je hem hangen op dagen dat er tegen de avond een bui overtrekt.",
+      "Per dag zie je het beste venster en de geschatte droogtijd, vijf dagen vooruit. Grote was of beddengoed? Schuif 'm naar de dag die Ideaal is en laat de rest hangen.",
   },
 ];
 
 export const faq = [
   {
-    v: "Kan de was vandaag buiten drogen?",
-    a: "Kies je locatie en je ziet direct het droogvenster van vandaag: tussen welke uren het droog genoeg is, hoe lang de was ongeveer nodig heeft, en een rapportcijfer. Onder de 4 kun je beter binnen drogen.",
+    v: "Wanneer kan de was buiten drogen?",
+    a: "Als er een aaneengesloten droog blok is dat langer duurt dan de droogtijd. Bij 19 graden met een stevige bries is een gemiddelde was in zo'n 2,5 tot 3 uur droog; koel en vochtig weer kan zomaar het dubbele kosten. De check rekent het per dag voor je uit.",
   },
   {
-    v: "Bij welke luchtvochtigheid droogt de was buiten?",
-    a: "Onder de 70 procent gaat het lekker, zeker met wind erbij. Boven de 85 procent droogt de was buiten nauwelijks, hoe warm het ook is. De check rekent dit per uur uit, zodat je de vochtige ochtend kunt overslaan.",
+    v: "Wat betekenen de woorden, van Ideaal tot Zeer slecht?",
+    a: "Ideaal is warm, luchtig en droog: ophangen en klaar. Goed en Twijfelachtig kunnen prima, maar drogen gaat trager of er hangt een bui omheen. Bij Matig en Zeer slecht droog je binnen.",
   },
   {
-    v: "Droogt de was buiten in de winter?",
-    a: "Ja, mits het droog is en er wind staat: koude lucht kan weinig vocht bevatten, dus de luchtvochtigheid is de baas. De check laat zien of er vandaag een venster is; onder de 5 graden gaat het traag en duurt het al snel een hele dag.",
+    v: "Er staat regen op de planning. Kan het dan toch?",
+    a: "Vaak wel. Een dag met buien heeft geregeld een droog blok van een paar uur, en dat blok zie je gemarkeerd in de urenstrip. Valt de bui pas na het blok, dan haal je het gewoon.",
   },
   {
-    v: "Krijg ik een seintje op een drooghangdag?",
-    a: "Ja. Zet de wascheck op je beginscherm (op Android en desktop met een knop in het meldingenpaneel, op iPhone via de deelknop, vanaf iOS 16.4) en volg hem met een melding: kies je dagen en tijd, en stel in dat je alleen een melding wilt als het echt een drooghangdag is (cijfer 7 of hoger). Zo hoor je alleen iets op de dagen die ertoe doen.",
+    v: "Krijg ik een seintje op drooghangdagen?",
+    a: "Ja. Zet de wascheck op je beginscherm, kies je dagen en tijd, en laat 'm alleen piepen bij goed nieuws. Dan hoor je alleen iets op de dagen die ertoe doen.",
   },
 ];

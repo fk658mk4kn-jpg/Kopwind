@@ -1,7 +1,7 @@
 import { HUB_NAAM } from "@/lib/brand";
 
 export const metadata = {
-  title: `Voorwaarden | ${HUB_NAAM}`,
+  title: "Voorwaarden",
   description: "De spelregels van Kan het vandaag?, zonder kleine lettertjes.",
   alternates: { canonical: "/voorwaarden" },
 };
@@ -11,7 +11,7 @@ export default function VoorwaardenPagina() {
     <main>
       <div className="tool-hero">
         <h1>Voorwaarden</h1>
-        <p>Geen kleine lettertjes, wel drie duidelijke afspraken.</p>
+        <p>De spelregels, in drie korte afspraken.</p>
       </div>
       <section className="seotekst">
         <h2>Gratis, zoals het is</h2>

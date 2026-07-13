@@ -6,18 +6,19 @@ import LocatieZoek from "@/components/LocatieZoek";
 import VerdictBadge from "@/components/VerdictBadge";
 import UrenStrip from "@/components/UrenStrip";
 import Icoon from "@/components/Icoon";
+import OutfitFiguur from "@/components/OutfitFiguur";
 import { haalWeer } from "@/lib/engine/weather";
 import { BASIS_VELDEN } from "@/lib/engine/weerbasis";
 import { isFavoriet } from "@/lib/engine/locatie";
 import { TOOLS } from "@/lib/tools";
-import { fmtTijd, fmtCijfer } from "@/lib/format";
-import { kleurSequentieel } from "@/lib/engine/kleuren";
+import { fmtTijd } from "@/lib/format";
+import { schaalVoor, kleurVoorSchaal } from "@/lib/engine/schaal";
 
 /**
  * Gedeelde UI voor elke locatie-tool (het overlay-contract): kies je plek,
- * druk op de check en je krijgt conditie-cijfer, status in gewone taal,
- * het aanbevolen venster in de urenstrip en een dagkiezer met cijfer plus
- * een regel per dag. Een nieuwe tool levert alleen een overlay-functie en
+ * druk op de check en je krijgt het antwoord (Ja/Nee plus schaalwoord),
+ * de status in gewone taal, het aanbevolen venster in de urenstrip en een
+ * dagkiezer met per dag het antwoord plus een regel. Een nieuwe tool levert alleen een overlay-functie en
  * teksten; deze component doet de rest.
  */
 
@@ -97,7 +98,7 @@ export default function LocatieTool({ toolId, beginLocatie = null }) {
             ))}
           </div>
         )}
-        <LocatieZoek onKies={kies} placeholder="Zoek een adres of plaats..." />
+        <LocatieZoek onKies={kies} placeholder={tool.locatieHint ?? "Zoek een adres of plaats..."} />
         {locatie && (
           <div className="locatie-gekozen">
             <Icoon naam="locatie" vol maat={16} />
@@ -127,7 +128,8 @@ export default function LocatieTool({ toolId, beginLocatie = null }) {
       {dagen && dag && (
         <section className="resultaten" aria-label="Resultaat">
           <div className="paneel">
-            <VerdictBadge score={dag.conditie.score} label={dag.conditie.advies} />
+            <VerdictBadge score={dag.conditie.score} ja={dag.antwoord?.ja ?? null} />
+            {dag.outfit && <OutfitFiguur outfit={dag.outfit} />}
             <p className="status-regel">{dag.status.zin}</p>
             {dag.metric?.zin && <p className="metric-zin">{dag.metric.zin}</p>}
 
@@ -137,10 +139,16 @@ export default function LocatieTool({ toolId, beginLocatie = null }) {
                   key={d.datum}
                   className={"dagkaart" + (i === gekozen ? " actief" : "")}
                   onClick={() => setGekozen(i)}
-                  style={{ borderTop: `4px solid ${kleurSequentieel(1 - d.conditie.score / 100)}` }}
+                  data-kleur={kleurVoorSchaal(schaalVoor(d.conditie.score).id)}
                 >
                   <span className="dagnaam">{dagLabel(d.datum, i)}</span>
-                  <span className="dagcijfer">{fmtCijfer(d.conditie.score)}</span>
+                  <span className="dagwoord">
+                    {d.antwoord?.ja == null
+                      ? schaalVoor(d.conditie.score).label
+                      : d.antwoord.ja
+                        ? "Ja"
+                        : "Nee"}
+                  </span>
                   <span className="dagregel">{dagRegel(d)}</span>
                 </button>
               ))}

@@ -1,47 +1,47 @@
-/** content/terras.js: SEO-teksten en FAQ van de terrascheck, in Coolblue-toon. */
+/** content/terras.js: teksten van de terrascheck. Je stad is genoeg. */
 
 export const seo = {
-  title: "Terrasweer vandaag: de beste terrasuren voor jouw plek",
+  title: "Terrasweer vandaag: de beste terrasuren voor jouw stad",
   description:
-    "Kan ik vandaag op het terras? Check het in een tik: de beste uren, of de zon er dan op staat en of de wind is gaan liggen. Met een cijfer en 5 dagen vooruit. Gratis.",
+    "Kan ik vandaag op het terras? Zie de beste uren, of de zon er dan bij is en wanneer de wind gaat liggen. Vijf dagen vooruit. Gratis.",
   h1: "Vandaag op het terras?",
   intro:
-    "Geen ja of nee, maar het echte antwoord: de beste terrasuren van vandaag, of de zon er dan op staat en wanneer de wind gaat liggen. Kies je plek en check het terras.",
+    "Wordt het wat op het terras? Je ziet de beste uren van vandaag, of de zon er dan bij is en wanneer de wind gaat liggen. Kies je stad, meer is niet nodig.",
 };
 
 export const blokken = [
   {
-    kop: "De beste uren, niet een gemiddelde",
+    kop: "Per uur bekeken",
     tekst:
-      "Een middag kan prima terrasweer zijn terwijl de ochtend fris en winderig is. Daarom kijkt de terrascheck per uur: gevoelstemperatuur, wind, buienkans en zon. Je ziet in een strip welke uren goed zijn en waar het beste blok zit. Zo plan je de borrel op het juiste moment in plaats van gokken op de middag.",
+      "Een frisse, winderige ochtend zegt niks over de middag. De check kijkt per uur naar gevoelstemperatuur, wind, buienkans en zon, en markeert het beste blok. Zo plan je de borrel op het juiste moment.",
   },
   {
-    kop: "Gevoelstemperatuur telt, niet de thermometer",
+    kop: "Het draait om gevoelstemperatuur",
     tekst:
-      "20 graden met een strakke noordenwind voelt als 16, en dan is dat vestje ineens geen overbodige luxe. De check rekent daarom met de gevoelstemperatuur en trekt punten af voor wind. Een 9 betekent: shirt uit de kast, zon erbij, biertje blijft staan.",
+      "20 graden met een strakke noordenwind voelt als 16, en dan is dat vestje ineens geen overbodige luxe. De check rekent daarom met wat het voelt en trekt punten af voor wind. Staat je terras in de luwte? Zet je windgrens dan wat hoger in de instellingen.",
   },
   {
-    kop: "Vijf dagen vooruit, met een cijfer per dag",
+    kop: "Vijf dagen vooruit",
     tekst:
-      "Vanavond vrienden over de vloer of het weekend plannen? Je ziet per dag een cijfer en het beste blok, vijf dagen vooruit. En wil je een seintje op de eerste echte terrasdag? Zet een melding aan met de drempel op cijfer 7 of hoger.",
+      "Vanavond vrienden over de vloer of het weekend plannen? Per dag zie je het oordeel en het beste blok, vijf dagen vooruit. En wil je een seintje op de eerste echte terrasdag? Zet een melding aan en laat 'm alleen piepen bij Goed of beter.",
   },
 ];
 
 export const faq = [
   {
-    v: "Wat betekent het cijfer van de terrascheck?",
-    a: "Het cijfer zegt hoe goed het terrasweer is. Een 9 of 10 is 22 graden gevoel of meer, zon en een zwak windje. Rond de 7 zit je prima met wat bewolking. Rond de 5 is het fris of waait het stevig: kan, met een vestje. Onder de 4 blijf je binnen.",
+    v: "Wanneer is het terrasweer?",
+    a: "Ideaal is 22 graden gevoel of meer met zon en een zwak windje. Goed zit daar net onder. Twijfelachtig is fris of vlagerig: kan, met een vestje. Bij Matig en Zeer slecht blijf je binnen.",
   },
   {
     v: "Waarom zegt de check dat het pas vanaf 15:00 lekker wordt?",
-    a: "Omdat het per uur rekent. De zon moet vaak eerst even werken en de wind gaat regelmatig pas in de namiddag liggen. De status vertelt je precies het beste blok, zodat je niet om 12:00 verkleumd zit te wachten op de zon van 16:00.",
+    a: "Omdat het per uur rekent. De zon moet vaak eerst even werken en de wind gaat regelmatig pas in de namiddag liggen. De status noemt het beste blok, zodat je niet om 12:00 verkleumd op de zon van 16:00 zit te wachten.",
   },
   {
-    v: "Houdt de check rekening met wind?",
-    a: "Ja, flink zelfs. Wind maakt het kouder dan de thermometer zegt en is de nummer een terrasverpester. Boven jouw windgrens (instelbaar, standaard zo'n 4 Bft) zakt de score van een uur hard. Staat je terras in de luwte? Zet de grens dan wat hoger in de instellingen.",
+    v: "Hoe zwaar telt wind mee?",
+    a: "Zwaar. Wind maakt het kouder dan de thermometer zegt en is de grootste terrasverpester. Boven jouw windgrens (instelbaar, standaard zo'n 4 Bft) zakt een uur hard in het oordeel.",
   },
   {
-    v: "Kan ik een seintje krijgen op terrasdagen?",
-    a: "Ja. Zet de terrascheck op je beginscherm, kies bij Meldingen je dagen en tijd, en zet de drempel op alleen melden bij een 7 of hoger. Dan hoor je alleen iets als het echt de moeite is.",
+    v: "Moet ik mijn exacte adres invullen?",
+    a: "Nee. Voor terrasweer is je stad ruim voldoende; het weer verschilt op die schaal nauwelijks. Alleen bij de fietscheck loont een precies adres, omdat daar de route wordt doorgerekend.",
   },
 ];

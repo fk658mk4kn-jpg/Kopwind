@@ -4,7 +4,7 @@
  * Het uitleg-cluster (Zephyr item 5): het weer in gewone taal. Korte
  * artikelen die uitleggen waarom de checks zeggen wat ze zeggen. Goed
  * voor de lezer en voor topical authority: elke check linkt naar de
- * uitleg die zijn cijfer draagt, en andersom.
+ * uitleg die zijn oordeel draagt, en andersom.
  */
 
 export const UITLEG = [
@@ -28,10 +28,11 @@ export const UITLEG = [
       {
         kop: "Wat wij ermee doen",
         tekst:
-          "Alle checks van Kan het vandaag? rekenen met de gevoelstemperatuur per uur uit de uurvoorspelling. De kledingcheck vertaalt die naar laagjes over de dag heen, de terrascheck bepaalt er de lekkerste uren mee en de fietscheck weegt de kou op je handen mee in het cijfer.",
+          "Alle checks van Kan het vandaag? rekenen met de gevoelstemperatuur per uur uit de uurvoorspelling. De kledingcheck vertaalt die naar laagjes over de dag heen, de terrascheck bepaalt er de lekkerste uren mee en de fietscheck weegt de kou op je handen mee in het oordeel.",
       },
     ],
     gerelateerdeToolSlug: "wat-trek-ik-aan",
+    cta: "vertaalt dit elke ochtend naar een concreet kledingadvies.",
   },
   {
     slug: "zo-droogt-je-was",
@@ -51,12 +52,13 @@ export const UITLEG = [
           "Wind blaast de vochtige lucht rond je was steeds weg, zodat er droge lucht voor in de plaats komt. Warmte laat water sneller verdampen, en zon op de lijn scheelt nog een schepje. Warm, luchtig, droog en zonnig is de jackpot: dan is een gemiddelde was in een uur of twee droog.",
       },
       {
-        kop: "Waarom het cijfer en de klok twee dingen zijn",
+        kop: "Het antwoord en de klok zijn twee dingen",
         tekst:
-          "Prima droogweer om half zeven 's avonds blijft prima droogweer, alleen red je het niet meer voor het donker. Daarom geeft de wascheck twee dingen: een cijfer voor hoe goed het droogweer is, en een aparte statusregel die zegt of je het nu nog redt, hoe lang drogen duurt en wanneer je beter kunt ophangen.",
+          "Prima droogweer om half zeven 's avonds blijft prima droogweer, alleen red je het niet meer voor het donker. Daarom geeft de wascheck twee dingen: een oordeel van Zeer slecht tot Ideaal voor het droogweer, en een aparte statusregel die zegt of je het nu nog redt, hoe lang drogen duurt en wanneer je beter kunt ophangen.",
       },
     ],
     gerelateerdeToolSlug: "was-buiten-drogen",
+    cta: "rekent dit per uur voor jouw waslijn uit.",
   },
   {
     slug: "wind-en-fietsen",
@@ -78,10 +80,11 @@ export const UITLEG = [
       {
         kop: "Wat je eraan hebt",
         tekst:
-          "De check rekent per stuk route de hoek tussen jouw rijrichting en de windrichting uit. Zo zie je niet alleen een cijfer, maar ook waar op de route de wind zit en of een alternatieve route langs de luwte slimmer is. Tegenwind op de heenweg met meewind terug plant anders dan andersom.",
+          "De check rekent per stuk route de hoek tussen jouw rijrichting en de windrichting uit. Zo zie je behalve het oordeel ook waar op de route de wind zit en of een alternatieve route langs de luwte slimmer is. Tegenwind op de heenweg met meewind terug plant anders dan andersom.",
       },
     ],
     gerelateerdeToolSlug: "fietsen-naar-werk",
+    cta: "laat per stuk route zien waar de wind zit.",
   },
   {
     slug: "buienkans",
@@ -101,12 +104,13 @@ export const UITLEG = [
           "Voor een beslissing heb je niks aan een percentage; je wilt weten of het uur bruikbaar is. Daarom hanteren onze checks een grens: boven een instelbare buienkans telt een uur niet meer mee als droog. Voor de was ligt die grens standaard bij 55%, want een natte bui op een bijna droge was is dubbel zonde.",
       },
       {
-        kop: "Timing verslaat gemiddelden",
+        kop: "Drie droge uren zijn genoeg",
         tekst:
-          "Een dag met 80% buienkans kan prima drie droge uren hebben, en die drie uren zijn precies wat je zoekt. Daarom kijken de checks per uur en tonen ze het beste blok, in plaats van een dagkans die je alleen maar somber maakt.",
+          "Een dag met 80% buienkans kan prima drie droge uren hebben, en die drie uren zijn precies wat je zoekt. Daarom kijken de checks per uur en tonen ze het beste blok, in plaats van een dagkans waar je niks mee kunt.",
       },
     ],
     gerelateerdeToolSlug: "was-buiten-drogen",
+    cta: "markeert het beste droge blok in jouw dag.",
   },
 ];
 

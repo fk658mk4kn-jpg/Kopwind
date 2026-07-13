@@ -148,6 +148,13 @@ export function overlay(hourly, nu = new Date(), instellingen = KLEDING_DEFAULTS
 
     return {
       datum,
+      antwoord: { ja: null, zin },
+      outfit: {
+        laagIndex: hoofd.index,
+        regen: natUren.length > 0,
+        koudsteGevoel: Math.round(minG),
+        warmsteGevoel: Math.round(maxG),
+      },
       uren: uren.map((u) => ({ uur: u.uur, score: u.score, nat: u.nat })),
       venster,
       metric: { zin: `Gevoelstemperatuur vandaag: ${Math.round(minG)} tot ${Math.round(maxG)} graden.` },
@@ -169,9 +176,11 @@ export const kleding = {
   meldingKort: "Kledingcheck",
   korteVraag: "Wat trek ik vandaag aan?",
   cta: "Check je outfit",
+  navLabel: "Aankleden",
+  locatieHint: "Zoek je stad, dat is genoeg...",
   icoon: "shirt",
   groep: "Elke dag",
-  diepte: "Geen momentopname maar laagjes over de dag heen, met wat je meeneemt voor vanavond.",
+  diepte: "Wat je aantrekt, en wat je meeneemt voor vanavond.",
   patroon: "A",
   inputType: "locatie",
   weerVelden: BASIS_VELDEN,
@@ -187,7 +196,7 @@ export const kleding = {
       { key: "dagEind", label: "Dag eindigt om", eenheid: "uur", step: 1, min: 18, max: 24 },
     ],
     uitleg:
-      "Het cijfer zegt hoe makkelijk de keuze is: aangenaam en stabiel is een 9 of 10, een laagjesdag met flinke verschillen rond de 6, guur en nat is laag. Het advies zelf staat er altijd in gewone taal bij.",
+      "Het woord zegt hoe makkelijk de keuze is: Ideaal of Goed is een laag en klaar, Twijfelachtig een laagjesdag, Matig of slechter guur en nat. Het advies zelf staat er altijd in gewone taal bij.",
   },
   adviesLabels: {
     goed: "makkelijke keuze",

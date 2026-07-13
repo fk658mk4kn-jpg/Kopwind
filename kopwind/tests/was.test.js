@@ -49,6 +49,7 @@ test("acceptatie: hele dag droog, gecheckt om 18:24, geeft conditie >= 8 en stat
   assert.equal(dag.status.soort, "te-laat");
   assert.match(dag.status.zin, /te laat/i);
   assert.match(dag.status.zin, /morgenvroeg/i);
+  assert.equal(dag.antwoord.ja, false, "te laat vandaag is een nee");
   assert.match(dag.metric.zin, /Drogen duurt bij dit weer/);
 });
 
@@ -60,6 +61,7 @@ test("acceptatie: warm, winderig en droog met de hele dag beschikbaar is 9 tot 1
   assert.ok(cijfer(dag) >= 9, `kreeg ${cijfer(dag)}`);
   assert.ok(["nu", "later"].includes(dag.status.soort));
   assert.match(dag.status.zin, /rond \d{2}:\d{2} droog/);
+  assert.equal(dag.antwoord.ja, true);
 });
 
 test("acceptatie: koel, vochtig maar droog is 6 tot 7, niet 10, en status legt traagheid uit", () => {
@@ -84,6 +86,7 @@ test("acceptatie: regen het grootste deel van de dag is 3 of lager", () => {
   assert.ok(cijfer(dag) <= 3, `kreeg ${cijfer(dag)}`);
   assert.equal(dag.conditie.advies, "binnen drogen");
   assert.equal(dag.status.soort, "nee");
+  assert.equal(dag.antwoord.ja, false);
 });
 
 test("acceptatie: vijf gevarieerde dagen spreiden over de schaal", () => {

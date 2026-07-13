@@ -23,7 +23,7 @@ export default function SiteHeader() {
       <nav className="hoofdnav" aria-label={S.header.alleTools}>
         {TOOLS.map((t) => (
           <Link key={t.slug} href={`/${t.slug}`} className="navlink">
-            {t.meldingKort}
+            {t.navLabel}
           </Link>
         ))}
       </nav>

@@ -362,3 +362,53 @@ De live-test van Mistral legde vier dingen bloot: het wascijfer strafte "te laat
 - Kleurcontrast is per rampkleur berekend (WCAG), maar de kleurenblind-simulator-check op echte schermen is een visuele taak voor Martijn.
 - Het comfortcijfer van de kledingcheck beoordeelt hoe makkelijk de keuze is, niet hoe lekker het weer is; dat staat in de instellingen-uitleg maar kan gebruikers verrassen.
 - BBQ, regen-timing en gladheid zijn teasers, nog geen tools; de brief-batches 2 en 3 zijn de logische volgende stap op dezelfde overlay.
+
+## v3.0.0 "Levante" - 2026-07-13
+
+### Waarom
+Twee kritische reviews (homepage en site-breed) plus de redesignbrief: de site voelde als hetzelfde sjabloon vier keer ingevuld, de copy leunde op een steeds terugkerende retorische truc, cijfers overal maakten het minder menselijk, de homepage was een longread en het sociale aspect ontbrak. Daarnaast het SEO-playbook als lat en een echte bug: dubbele title-suffix op alle nieuwe pagina's.
+
+### A. Homepage-concept
+Compact en beslissingsgericht: een zin hero, dan de HubGrid waarin elke check-kaart het live antwoord van vandaag toont (Ja/Nee plus schaalwoord in een kleurbadge, een regel met het moment, een echte knop). Stad kiezen volstaat; geolocatie snapt naar de dichtstbijzijnde stad. Binnenkort-checks staan gedimd met badge in een aparte rij. Uitleg- en cijferblokken zijn van de homepage af (een verwijzing naar /uitleg blijft), de FAQ is teruggebracht tot vier korte vragen. De demo-windstrip is weg uit de hero; die vormtaal leeft in de fietscheck zelf.
+
+### B. Copy-richting
+Eerst het antwoord, dan de toelichting. Het verdictmodel praat in Ja/Nee plus vijf schalen (Zeer slecht, Matig, Twijfelachtig, Goed, Ideaal); het interne pijncijfer blijft de motor voor schaal, kleur en drempels maar komt nergens meer in beeld. Site-brede sweep: het "niet X, maar Y"-patroon is teruggesnoeid tot een bewuste merkzin op /over, alle cijfertaal in content, FAQ's, instellingen-uitleg en over-pagina is herschreven naar woorden, kaart-tweede-regels beschrijven meerwaarde in plaats van de vraag te herhalen, en de vier identieke artikel-afsluiters zijn per artikel een eigen verwijzing geworden. Terras- en kledingcontent volledig herschreven, wascontent opnieuw opgezet met gededupliceerde FAQ.
+
+### C. UX en UI
+VerdictBadge toont Ja/Nee plus schaalwoord (groen, oranje, rood); de dagkiezer toont per dag Ja/Nee of het schaalwoord met een kleuraccent. De kledingcheck kreeg een emoji-outfitfiguur (laagjes-stack, paraplu bij buien, gevoelsrange ernaast). Duimpjes onder elk advies: klopte het vandaag, met totalen na je eigen stem of vanaf drie stemmen. Meldingsdrempels kiezen nu in woorden ("bij Goed of beter"), opgeslagen cijfergrenzen blijven compatibel. Stedenlijsten zijn een uitklap onderaan de check, de zoekbalk hint per tool dat een stad genoeg is, en de header-navigatie gebruikt een naamgeving die matcht met de kaarten.
+
+### D. Geschrapt of vervangen
+Cijfers uit de complete UI (badge, dagkiezer, banner, kaart-popups, meldingen, cron-titels). VandaagHier vervangen door HubGrid. De groepsindeling Elke dag/Onderweg/Rondom huis van de homepage af. De dubbele vraag-subtitels op kaarten. De vaste artikel-afsluiter. De Base64-link-claim uit de review is onderzocht en niet gereproduceerd: alle hrefs zijn gewone URL's; vermoedelijk zag de reviewer de RSC-payload van Next.js aan voor obfuscatie.
+
+### SEO (playbook toegepast)
+Title-template levert het merk nu exact een keer (bug gefixt op alle info-, uitleg-, tool- en stadpagina's), Organization-schema site-breed, BreadcrumbList-schema in het kruimelpad, WebApplication- en FAQPage-schema stonden er al en de FAQ bleef identiek aan de zichtbare tekst, llms.txt in public/, en de GA4-tag rendert nu gegarandeerd door het meet-ID als fallback in de code te zetten (Google's tagcontrole faalde omdat de Vercel-env ontbrak). Changelog-datums blijven echt: het playbook verbiedt freshness-manipulatie, en vier versies in twee dagen is gewoon de waarheid.
+
+### Sociaal: duimpjes
+Anonieme stem per apparaat per tool per dag via /api/stem op de bestaande server-side Supabase-helper (service key, geen supabase-js of @supabase/ssr nodig; de aangeleverde publishable-key-setup is voor sessies en auth en die hebben we niet). Eenmalig in Supabase draaien:
+
+```sql
+create table if not exists stemmen (
+  id bigint generated always as identity primary key,
+  tool_id text not null,
+  dag date not null,
+  stem smallint not null check (stem in (-1, 1)),
+  apparaat text not null,
+  created_at timestamptz not null default now(),
+  unique (tool_id, dag, apparaat)
+);
+alter table stemmen enable row level security;
+```
+
+Geen policies nodig: de service key op de server omzeilt RLS, en de tabel is daardoor dicht voor directe client-toegang.
+
+### Breaking
+VerdictBadge-API is nu { score, ja }. Overlay-dagen hebben een antwoord-veld ({ ja, zin }) en de kledingcheck een outfit-veld. fmtCijfer wordt nergens in de UI meer gebruikt.
+
+### Tests
+80 groen: schaalgrenzen en kleuren, Ja/Nee-antwoorden per acceptatiescenario, outfit-velden, plus de bestaande 77.
+
+### Bekende beperkingen
+- De stemmen-tabel moet eenmalig in Supabase worden aangemaakt (SQL hierboven); tot die tijd verbergt de component zichzelf netjes (503 van de API).
+- Duimpjes en het outfitfiguur verdienen een devicetest; emoji-weergave verschilt per platform.
+- Google's tagcontrole opnieuw draaien na deploy; de tag staat nu hard in de HTML.
+- De sandbox kan niet live bij Supabase of GA; end-to-end verificatie is een deploy-taak.

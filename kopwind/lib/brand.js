@@ -11,7 +11,7 @@
 export const HUB_NAAM = "Kan het vandaag?";
 export const HUB_KORT = "Vandaag?";
 export const HUB_CLAIM =
-  "Kleine, dagelijkse beslistools op basis van live weer: fiets ik vandaag naar werk, kan de was buiten, en meer.";
+  "Kan ik vandaag fietsen, de was buiten hangen of het terras op? Live antwoord voor jouw stad, met het beste moment erbij.";
 
 // Compatibiliteit met bestaande imports (vlaggendrager).
 export const APP_NAAM = "Vandaag op de fiets?";

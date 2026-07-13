@@ -32,6 +32,9 @@ test("warme stabiele dag: korte broek en een hoog comfortcijfer", () => {
   assert.match(dag.status.zin, /korte broek/);
   assert.ok(cijfer(dag) >= 8, `kreeg ${cijfer(dag)}`);
   assert.equal(dag.conditie.advies, "makkelijke keuze");
+  assert.equal(dag.antwoord.ja, null, "kleding heeft geen kan-vraag");
+  assert.equal(dag.outfit.laagIndex, 0);
+  assert.equal(dag.outfit.regen, false);
 });
 
 test("laagjesdag: koude ochtend, warme middag, koele avond geeft meeneem-advies", () => {
@@ -53,6 +56,7 @@ test("regen in de middag: de zin noemt de regenjas en de timing", () => {
   const dag = overlay(hourly, new Date(2026, 6, 12, 8, 0)).dagen[0];
   assert.match(dag.status.zin, /regenjas of paraplu/);
   assert.match(dag.status.zin, /rond 14:00/);
+  assert.equal(dag.outfit.regen, true);
 });
 
 test("gure natte winterdag: laag cijfer en winterjas", () => {

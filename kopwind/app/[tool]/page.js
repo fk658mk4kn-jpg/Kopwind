@@ -28,7 +28,7 @@ export function generateMetadata({ params }) {
   const inhoud = inhoudVoorTool(params.tool);
   if (!tool || !inhoud) return {};
   return {
-    title: { absolute: inhoud.seo.title },
+    title: inhoud.seo.title,
     description: inhoud.seo.description,
     alternates: { canonical: `/${tool.slug}` },
     openGraph: {
@@ -86,18 +86,6 @@ export default function ToolPagina({ params }) {
           </div>
         ))}
 
-        <h2>{tool.naam.replace("?", "")} per stad</h2>
-        <p>
-          Direct beginnen met je eigen plaats vooraf ingevuld? Kies je stad:
-        </p>
-        <div className="stadlinks">
-          {STEDEN.map((s) => (
-            <Link key={s.slug} href={`/${tool.slug}/${s.slug}`}>
-              {s.naam}
-            </Link>
-          ))}
-        </div>
-
         <h2>Veelgestelde vragen</h2>
         {inhoud.faq.map((f) => (
           <div key={f.v} className="faq-item">
@@ -105,6 +93,18 @@ export default function ToolPagina({ params }) {
             <p>{f.a}</p>
           </div>
         ))}
+
+        <details className="stadlijst">
+          <summary>{tool.naam.replace("?", "")} per stad</summary>
+          <p>Direct beginnen met je eigen plaats vooraf ingevuld? Kies je stad:</p>
+          <div className="stadlinks">
+            {STEDEN.map((s) => (
+              <Link key={s.slug} href={`/${tool.slug}/${s.slug}`}>
+                {s.naam}
+              </Link>
+            ))}
+          </div>
+        </details>
       </section>
 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(appJsonLd) }} />

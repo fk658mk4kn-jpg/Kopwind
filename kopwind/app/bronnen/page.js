@@ -1,7 +1,7 @@
 import { HUB_NAAM } from "@/lib/brand";
 
 export const metadata = {
-  title: `Bronnen en data | ${HUB_NAAM}`,
+  title: "Bronnen en data",
   description: "Welke data Kan het vandaag? gebruikt en waarom: Open-Meteo, OSRM en Photon.",
   alternates: { canonical: "/bronnen" },
 };

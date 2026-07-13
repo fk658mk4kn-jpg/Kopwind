@@ -28,8 +28,8 @@ export const S = {
     minVooraf: "min vooraf",
     tijdToevoegen: "+ tijd",
     drempelAltijd: "altijd melden",
-    drempelSlecht: "alleen bij cijfer \u2264",
-    drempelGoed: "alleen bij cijfer \u2265",
+    drempelSlecht: "waarschuw bij slecht nieuws",
+    drempelGoed: "alleen bij goed nieuws",
   },
   algemeen: {
     liveOpgehaald: "live opgehaald om",

@@ -119,6 +119,7 @@ node scripts/maak-og-font.mjs.
 
 ```
 git tag -a v2.2.0 -m "Zephyr"
+git tag -a v3.0.0 -m "Levante"
 git push origin v2.2.0
 ```
 
@@ -142,3 +143,42 @@ Een nieuwe check is sinds v2.2.0 een overlay plus content, geen herbouw:
 officiele universele schema met `travelmode=bicycling` en waypoints; Apple het
 klassieke `saddr/daddr/dirflg=c` (fietsvlag community-gedocumenteerd sinds
 iOS 14, onbekende vlaggen worden genegeerd; waypoints bestaan daar niet).
+
+## Verdictmodel (v3.0.0)
+
+Geen cijfers in beeld: elke check antwoordt met Ja of Nee plus een schaalwoord
+(Zeer slecht, Matig, Twijfelachtig, Goed, Ideaal) uit `lib/engine/schaal.js`.
+De interne pijnscore (0..100) blijft de motor: schaal, badgekleur en
+meldingsdrempels rekenen ermee, de UI toont alleen woorden. Overlays leveren
+per dag een `antwoord: { ja, zin }`; tools zonder kan-vraag (kleding) geven
+`ja: null` en tonen alleen het schaalwoord.
+
+## Duimpjes (sociale laag)
+
+`/api/stem` bewaart anonieme stemmen (een per apparaat per tool per dag) via
+de bestaande server-helper `lib/server/db.js` met de service-role key. Er is
+geen extra package of env nodig; alleen eenmalig deze tabel in Supabase:
+
+```sql
+create table if not exists stemmen (
+  id bigint generated always as identity primary key,
+  tool_id text not null,
+  dag date not null,
+  stem smallint not null check (stem in (-1, 1)),
+  apparaat text not null,
+  created_at timestamptz not null default now(),
+  unique (tool_id, dag, apparaat)
+);
+alter table stemmen enable row level security;
+```
+
+De service key omzeilt RLS; zonder policies is de tabel dicht voor directe
+client-toegang. `@supabase/supabase-js` en `@supabase/ssr` zijn bewust niet
+geinstalleerd: die zijn voor sessies en auth, en duimpjes zijn anoniem.
+
+## Analytics
+
+GA4 laadt via `components/Analytics.js` met meet-ID uit `NEXT_PUBLIC_GA_ID`
+en `G-DRGGM053ZK` als fallback, zodat de tag ook zonder Vercel-env in de
+HTML staat (vereist voor Google's tagcontrole). Pageviews stuurt
+`AnalyticsPageViews` zelf, inclusief App Router-routewissels.

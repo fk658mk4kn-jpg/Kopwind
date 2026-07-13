@@ -18,6 +18,7 @@
  */
 
 import { clamp, lerp, maakScore, adviesVoorScore } from "../engine/score.js";
+import { jaVoor } from "../engine/schaal.js";
 import { bouwBasis, basisPerDag, dagKeyVan, BASIS_VELDEN } from "../engine/weerbasis.js";
 
 export const TERRAS_DEFAULTS = {
@@ -143,8 +144,16 @@ export function overlay(hourly, nu = new Date(), instellingen = TERRAS_DEFAULTS)
       ? venster.blok.reduce((a, u) => (u.score > a.score ? u : a), venster.blok[0])
       : null;
 
+    const antwoord = {
+      ja: isVandaag
+        ? ["nu", "later"].includes(status.soort)
+        : status.soort === "info" && jaVoor(score),
+      zin: status.zin,
+    };
+
     return {
       datum,
+      antwoord,
       uren: uren.map((u) => ({ uur: u.uur, score: u.score, nat: u.nat })),
       venster: venster ? { van: venster.van, tot: venster.tot, uren: venster.uren } : null,
       metric: top
@@ -208,9 +217,11 @@ export const terras = {
   meldingKort: "Terrascheck",
   korteVraag: "Kan ik vandaag op het terras zitten?",
   cta: "Check het terras",
+  navLabel: "Terras",
+  locatieHint: "Zoek je stad, dat is genoeg...",
   icoon: "parasol",
   groep: "Rondom huis",
-  diepte: "Niet alleen \u00f3f, maar w\u00e1nneer: de beste uren, en of de zon er dan op staat.",
+  diepte: "De beste uren, en of de zon er dan bij is.",
   patroon: "A",
   inputType: "locatie",
   weerVelden: BASIS_VELDEN,
@@ -226,7 +237,7 @@ export const terras = {
       { key: "dagEind", label: "Terras dicht om", eenheid: "uur", step: 1, min: 16, max: 24 },
     ],
     uitleg:
-      "Het cijfer zegt hoe goed het terrasweer is: 22 graden gevoel met zon en een zwak windje is een 9 of 10, 18 graden met wat bewolking rond de 7, fris of stevige wind rond de 5. De status vertelt de beste uren.",
+      "Ideaal is 22 graden gevoel met zon en een zwak windje. Rond de 18 met wat bewolking is Goed, fris of vlagerig wordt Twijfelachtig. De statusregel noemt de beste uren.",
   },
   adviesLabels: {
     goed: "terrasweer",

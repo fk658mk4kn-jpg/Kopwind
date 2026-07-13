@@ -22,7 +22,7 @@ const GSC_VERIFICATIE =
 export const metadata = {
   metadataBase: new URL(SITE),
   title: {
-    default: `${HUB_NAAM} Dagelijkse weerbeslissingen in een cijfer`,
+    default: `${HUB_NAAM} Fietsen, de was buiten of het terras op`,
     template: `%s | ${HUB_NAAM}`,
   },
   description: HUB_CLAIM,
@@ -31,7 +31,7 @@ export const metadata = {
     locale: "nl_NL",
     url: "/",
     siteName: HUB_NAAM,
-    title: `${HUB_NAAM} Dagelijkse weerbeslissingen in een cijfer`,
+    title: `${HUB_NAAM} Fietsen, de was buiten of het terras op`,
     description: HUB_CLAIM,
   },
   twitter: {
@@ -63,6 +63,17 @@ export default function RootLayout({ children }) {
             <SiteHeader />
             {children}
             <SiteFooter />
+            <script
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{
+                __html: JSON.stringify({
+                  "@context": "https://schema.org",
+                  "@type": "Organization",
+                  name: HUB_NAAM,
+                  url: SITE,
+                }),
+              }}
+            />
           </div>
         </GebruikerProvider>
       </body>

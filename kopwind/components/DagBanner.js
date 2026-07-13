@@ -1,6 +1,6 @@
 "use client";
 
-import { fmtCijfer } from "@/lib/format";
+import { schaalVoor, jaVoor } from "@/lib/engine/schaal";
 
 const KLEUR = {
   "prima fietsdag": "groen",
@@ -20,8 +20,9 @@ export default function DagBanner({ dag }) {
   return (
     <div className={"dagbanner " + KLEUR[dag.advies]}>
       <h2>
-        {TITEL[dag.advies]}{" "}
-        <span className="dagcijfer">· {fmtCijfer(dag.score)}</span>
+        {jaVoor(dag.score) ? "Ja: " : "Nee: "}
+        {TITEL[dag.advies].toLowerCase()}{" "}
+        <span className="dagcijfer">{"\u00b7"} {schaalVoor(dag.score).label}</span>
       </h2>
       <p>{dag.uitleg}</p>
       <p className="noot">
