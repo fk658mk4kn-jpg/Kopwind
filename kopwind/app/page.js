@@ -34,7 +34,7 @@ export default function HubPagina() {
   return (
     <main>
       <section className="hub-hero compact">
-        <h1>{HUB_NAAM.toLowerCase()}</h1>
+        <h1>{HUB_NAAM}</h1>
         <p className="hero-zin">{hub.intro}</p>
       </section>
 

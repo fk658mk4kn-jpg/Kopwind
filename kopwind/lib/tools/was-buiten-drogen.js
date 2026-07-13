@@ -269,6 +269,7 @@ export const wasBuitenDrogen = {
   korteVraag: "Kan de was vandaag buiten drogen?",
   cta: "Check de was",
   navLabel: "De was",
+  kleur: "#2E7D74",
   locatieHint: "Zoek je adres of stad...",
   icoon: "druppel",
   groep: "Rondom huis",

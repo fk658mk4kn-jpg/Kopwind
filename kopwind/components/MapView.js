@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { fmtTijd, fmtKm, bft, kompas, fmtCijfer } from "@/lib/format";
+import { fmtTijd, fmtKm, bft, kompas } from "@/lib/format";
+import { schaalVoor } from "@/lib/engine/schaal";
 import { legWindSummary } from "@/lib/engine/wind";
 
 /**

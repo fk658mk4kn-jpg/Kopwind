@@ -218,6 +218,7 @@ export const terras = {
   korteVraag: "Kan ik vandaag op het terras zitten?",
   cta: "Check het terras",
   navLabel: "Terras",
+  kleur: "#BF6B3F",
   locatieHint: "Zoek je stad, dat is genoeg...",
   icoon: "parasol",
   groep: "Rondom huis",

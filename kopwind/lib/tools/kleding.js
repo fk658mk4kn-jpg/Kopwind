@@ -177,6 +177,7 @@ export const kleding = {
   korteVraag: "Wat trek ik vandaag aan?",
   cta: "Check je outfit",
   navLabel: "Aankleden",
+  kleur: "#57794E",
   locatieHint: "Zoek je stad, dat is genoeg...",
   icoon: "shirt",
   groep: "Elke dag",

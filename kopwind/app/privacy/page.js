@@ -27,6 +27,15 @@ export default function PrivacyPagina() {
           het push-abonnement van je browser. Daar zit geen naam of e-mailadres aan vast.
           Ontkoppel je, dan stopt het gebruik ervan.
         </p>
+        <h2>Duimpjes onder een advies</h2>
+        <p>
+          Stem je met een duim omhoog of omlaag of het advies klopte, dan bewaren we die stem
+          met de check, de datum en een willekeurige apparaatcode. Die code is een random
+          nummer uit je eigen browser en dient alleen om dubbel stemmen tegen te gaan; er
+          hangt geen naam, e-mailadres of locatie aan. De totalen tonen we anoniem bij de
+          check. Niet stemmen kan natuurlijk ook: de knoppen doen niets tot je erop tikt.
+        </p>
+
         <h2>Weer en routes ophalen</h2>
         <p>
           Voor een check sturen we de plek of route die jij kiest (als coördinaten) naar de

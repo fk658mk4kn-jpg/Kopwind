@@ -1,6 +1,7 @@
 "use client";
 
-import { bft, kompas, fmtKm, fmtDuur, fmtTijd, fmtCijfer } from "@/lib/format";
+import { bft, kompas, fmtKm, fmtDuur, fmtTijd } from "@/lib/format";
+import { schaalVoor } from "@/lib/engine/schaal";
 
 const BADGE_KLEUR = {
   "prima fietsdag": "groen",

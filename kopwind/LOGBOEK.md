@@ -412,3 +412,11 @@ VerdictBadge-API is nu { score, ja }. Overlay-dagen hebben een antwoord-veld ({ 
 - Duimpjes en het outfitfiguur verdienen een devicetest; emoji-weergave verschilt per platform.
 - Google's tagcontrole opnieuw draaien na deploy; de tag staat nu hard in de HTML.
 - De sandbox kan niet live bij Supabase of GA; end-to-end verificatie is een deploy-taak.
+
+### Patchronde na live-test (zelfde dag)
+- **Fietscheck-crash gefixt.** LegCard en MapView gebruikten schaalVoor zonder import: mijn eerdere patch injecteerde de import via een replace zonder assert die stil niet matchte. Build bleef groen (client-componenten renderen pas bij interactie), live crashte de rit-weergave met een ReferenceError. Imports toegevoegd, ongebruikte fmtCijfer-imports opgeruimd, en de werkwijze aangescherpt: elke patch-replace krijgt een assert.
+- **Stedenlijst als eerste blok onder de tool** (uitklapbaar), en het min-teken bij openklappen gefixt: CSS-escapes zijn \2212, niet \u2212.
+- **Merknotatie:** koppen en lopende tekst met hoofdletter; alleen het logo-woordmerk linksboven blijft bewust klein als beeldmerk.
+- **Privacy noemt de duimpjes:** wat we bewaren (check, datum, stem, random apparaatcode), waarom, en wat er niet aan vastzit.
+- **Kleuren:** elke check heeft nu een eigen gedempte accentkleur (fietsen staalblauw, was teal, kleding katoengroen, terras terracotta) op kaartrand, icoon en watermerk; dat doorbreekt het leisteen-geel-monotone zonder het palet om te gooien.
+- **Homepage-kaarten volledig klikbaar** met het tool-watermerk als visualisatie in de kaart; de CTA-knop is een visueel element binnen de link geworden.

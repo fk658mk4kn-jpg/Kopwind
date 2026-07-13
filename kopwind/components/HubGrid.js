@@ -111,16 +111,24 @@ export default function HubGrid() {
 
       <div className="checkgrid">
         {TOOLS.map((t) => (
-          <div key={t.id} className="checkkaart">
+          <Link
+            key={t.id}
+            href={`/${t.slug}`}
+            className="checkkaart"
+            style={{ borderTop: `3px solid ${t.kleur}` }}
+          >
+            <span className="kaart-watermerk" aria-hidden="true" style={{ color: t.kleur }}>
+              <Icoon naam={t.icoon} maat={96} />
+            </span>
             <span className="kaart-top">
-              <Icoon naam={t.icoon} maat={20} />
+              <span className="kaart-icoon" style={{ color: t.kleur }}>
+                <Icoon naam={t.icoon} maat={20} />
+              </span>
               <h2>{t.naam}</h2>
             </span>
             <KaartLive tool={t} dag={dagen?.[t.id]} stad={stad} laden={laden} />
-            <Link href={`/${t.slug}`} className="knop klein kaartknop">
-              {t.cta}
-            </Link>
-          </div>
+            <span className="knop klein kaartknop">{t.cta}</span>
+          </Link>
         ))}
       </div>
 

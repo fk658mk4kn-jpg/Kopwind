@@ -16,6 +16,7 @@ export const fietsNaarWerk = {
   meldingKort: "Fietscheck",
   cta: "Check je rit",
   navLabel: "Fietsen",
+  kleur: "#3D6E96",
   icoon: "fiets",
   groep: "Onderweg",
   diepte: "Wind per stuk route en het beste moment om te vertrekken.",

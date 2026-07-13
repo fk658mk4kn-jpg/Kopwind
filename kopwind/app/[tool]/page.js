@@ -79,6 +79,18 @@ export default function ToolPagina({ params }) {
       <AdSlot plek="onder-tool" />
 
       <section className="seotekst">
+        <details className="stadlijst boven">
+          <summary>{tool.naam.replace("?", "")} per stad</summary>
+          <p>Direct beginnen met je eigen plaats vooraf ingevuld? Kies je stad:</p>
+          <div className="stadlinks">
+            {STEDEN.map((s) => (
+              <Link key={s.slug} href={`/${tool.slug}/${s.slug}`}>
+                {s.naam}
+              </Link>
+            ))}
+          </div>
+        </details>
+
         {inhoud.blokken.map((b) => (
           <div key={b.kop}>
             <h2>{b.kop}</h2>
@@ -93,18 +105,6 @@ export default function ToolPagina({ params }) {
             <p>{f.a}</p>
           </div>
         ))}
-
-        <details className="stadlijst">
-          <summary>{tool.naam.replace("?", "")} per stad</summary>
-          <p>Direct beginnen met je eigen plaats vooraf ingevuld? Kies je stad:</p>
-          <div className="stadlinks">
-            {STEDEN.map((s) => (
-              <Link key={s.slug} href={`/${tool.slug}/${s.slug}`}>
-                {s.naam}
-              </Link>
-            ))}
-          </div>
-        </details>
       </section>
 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(appJsonLd) }} />
