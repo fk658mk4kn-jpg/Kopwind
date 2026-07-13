@@ -124,6 +124,36 @@ git tag -a v3.1.0 -m "Chinook"
 git push origin v2.2.0
 ```
 
+## Engelse site (v3.2.0 "Sirocco")
+
+Eén codebase, twee sites. De taal wordt bij de build gebakken via een
+env-var; er is geen runtime-taalwissel. De Nederlandse site draait
+zonder extra configuratie (nl is de standaard).
+
+Engelse deployment ("Good day for it?"):
+
+1. Maak een tweede Vercel-project op dezelfde repository.
+2. Zet daar de env-vars:
+   - `NEXT_PUBLIC_SITE_LOCALE=en`
+   - `NEXT_PUBLIC_SITE_URL=https://jouwengelsedomein.com`
+   - `NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX` (eigen GA4-property; de fallback
+     in de code is het Nederlandse meet-ID, dus zonder eigen ID meet je
+     de Engelse site in de Nederlandse property)
+3. Optioneel hreflang: zet op beide projecten
+   `NEXT_PUBLIC_ALTERNATE_LOCALE_URL` naar het domein van de zustersite.
+
+Wat er per taal meegaat: merk (lib/brand.js), toolslugs en alle
+registerteksten (T-blok per tool), gegenereerde zinnen (wind, meldingen,
+kompasstreken, decimalen), UI-strings (lib/strings/), content
+(content/en/ plus selectors voor hub, uitleg en versies), paden
+(/explainers, /about via rewrites in next.config.mjs, links altijd via
+`PAD` uit lib/i18n/paden.js), sitemap, manifest en llms.txt. Het
+route-parencluster (/van/.../naar/...) is bewust Nederlands-only.
+
+Nieuwe teksten? Gebruik `kies({ nl, en })` uit lib/i18n/locale.js of
+voeg keys toe aan lib/strings/. Nooit een kale Nederlandse string in een
+component laten staan.
+
 ## Een nieuwe locatie-tool bouwen (overlay-contract)
 
 Een nieuwe check is sinds v2.2.0 een overlay plus content, geen herbouw:
@@ -137,6 +167,12 @@ Een nieuwe check is sinds v2.2.0 een overlay plus content, geen herbouw:
 3. Voeg de tool toe aan `TOOLS` in `lib/tools/index.js`. Klaar: de toolpagina,
    35 stad-pagina's, de sitemap, de instellingen-tab, de meldingen en de
    cron-briefing volgen automatisch uit het register.
+
+Sinds Sirocco is elke tool tweetalig: zet alle teksten (slug, naam,
+zinnen als templatefuncties) in een `const T = kies({ nl: {...}, en:
+{...} })` bovenin het toolbestand; zie lib/tools/barbecue.js als
+voorbeeld. Vergeet de Engelse content in content/en/ en de registratie
+in content/index.js niet.
 
 ## Nav-deeplinks
 

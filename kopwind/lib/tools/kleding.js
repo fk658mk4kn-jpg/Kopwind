@@ -15,6 +15,86 @@
 import { clamp, lerp, maakScore, adviesVoorScore } from "../engine/score.js";
 import { bouwBasis, basisPerDag, dagKeyVan, BASIS_VELDEN } from "../engine/weerbasis.js";
 
+import { kies } from "../i18n/locale.js";
+
+/** Alle teksten van de kledingcheck, per taal. */
+const T = kies({
+  nl: {
+    slug: "wat-trek-ik-aan",
+    naam: "Wat trek ik vandaag aan?",
+    korteVraag: "Wat trek ik vandaag aan?",
+    meldingKort: "Kledingcheck",
+    cta: "Check je outfit",
+    navLabel: "Aankleden",
+    diepte: "Gewoon praktisch advies voor buiten.",
+    locatieHint: "Zoek je stad, dat is genoeg...",
+    schaalLabels: { ideaal: "Makkelijke keuze", goed: "Vrij makkelijk", twijfelachtig: "Laagjesdag", matig: "Lastige dag", "zeer-slecht": "Gure dag" },
+    adviesLabels: { goed: "makkelijke keuze", matig: "laagjesdag", slecht: "gure dag" },
+    legenda: { links: "guur", rechts: "aangenaam" },
+    lagen: [
+      { advies: "korte broek en T-shirt", item: "een T-shirt" },
+      { advies: "T-shirt, met een dun laagje voor de schaduw", item: "een dun laagje" },
+      { advies: "trui of vest", item: "een trui" },
+      { advies: "jas erbij", item: "een jas" },
+      { advies: "winterjas, en een sjaal kan geen kwaad", item: "je winterjas" },
+    ],
+    vandaagPrefix: (advies) => `Vandaag: ${advies}`,
+    vanavond: "vanavond",
+    vanochtend: "vanochtend vroeg",
+    neemMee: (item, wanneer, g) => `. Neem ${item} mee: ${wanneer} is het gevoel ${g} graden`,
+    regenjas: (uur) => `. En de regenjas of paraplu: buien rond ${uur}:00`,
+    redenRegen: (uur) => `regen rond ${uur}:00`,
+    redenSpreiding: (min, max) => `groot verschil over de dag (gevoel ${min} tot ${max} graden)`,
+    redenGuur: "de hele dag guur",
+    metric: (min, max) => `Gevoelstemperatuur vandaag: ${min} tot ${max} graden.`,
+    instWarmVraag: "Wanneer begint T-shirt-weer voor jou?",
+    instKoudVraag: "Wanneer wil je een trui of meer?",
+    instKeuzes: ["Warmbloedig", "Gemiddeld", "Koukleum"],
+    instDagStart: "Dag begint om",
+    instDagEind: "Dag eindigt om",
+    instUur: "uur",
+    instUitleg:
+      "Het woord zegt hoe makkelijk de keuze is: Ideaal of Goed is een laag en klaar, Twijfelachtig een laagjesdag, Matig of slechter guur en nat. Het advies zelf staat er altijd in gewone taal bij.",
+  },
+  en: {
+    slug: "what-to-wear",
+    naam: "What should I wear today?",
+    korteVraag: "What should I wear today?",
+    meldingKort: "Outfit check",
+    cta: "Check your outfit",
+    navLabel: "What to wear",
+    diepte: "Practical advice for heading outside.",
+    locatieHint: "Search your town, that's enough...",
+    schaalLabels: { ideaal: "Easy choice", goed: "Fairly easy", twijfelachtig: "Layer day", matig: "Tricky day", "zeer-slecht": "Bleak day" },
+    adviesLabels: { goed: "easy choice", matig: "layer day", slecht: "bleak day" },
+    legenda: { links: "bleak", rechts: "pleasant" },
+    lagen: [
+      { advies: "shorts and a T-shirt", item: "a T-shirt" },
+      { advies: "a T-shirt, with a thin layer for the shade", item: "a thin layer" },
+      { advies: "a jumper or cardigan", item: "a jumper" },
+      { advies: "add a jacket", item: "a jacket" },
+      { advies: "winter coat, and a scarf won't hurt", item: "your winter coat" },
+    ],
+    vandaagPrefix: (advies) => `Today: ${advies}`,
+    vanavond: "tonight",
+    vanochtend: "early this morning",
+    neemMee: (item, wanneer, g) => `. Bring ${item}: ${wanneer} the feels-like is ${g} degrees`,
+    regenjas: (uur) => `. And the rain jacket or umbrella: showers around ${uur}:00`,
+    redenRegen: (uur) => `rain around ${uur}:00`,
+    redenSpreiding: (min, max) => `big swing across the day (feels like ${min} to ${max} degrees)`,
+    redenGuur: "bleak all day",
+    metric: (min, max) => `Feels-like today: ${min} to ${max} degrees.`,
+    instWarmVraag: "When does T-shirt weather start for you?",
+    instKoudVraag: "When do you want a jumper or more?",
+    instKeuzes: ["Warm-blooded", "Average", "I feel the cold"],
+    instDagStart: "Day starts at",
+    instDagEind: "Day ends at",
+    instUur: "h",
+    instUitleg:
+      "The word says how easy the choice is: Ideal or Good means one layer and done, Iffy is a layer day, Poor or worse is bleak and wet. The advice itself is always spelled out in plain words.",
+  },
+});
+
 export const KLEDING_DEFAULTS = {
   warmGrens: 16, // T-shirt kan vanaf dit gevoel
   koudGrens: 11, // onder dit gevoel wil je een trui of meer
@@ -22,13 +102,15 @@ export const KLEDING_DEFAULTS = {
   dagEind: 23,
 };
 
-const LAGEN = [
-  { min: (i) => i.warmGrens + 5, advies: "korte broek en T-shirt", item: "een T-shirt" },
-  { min: (i) => i.warmGrens, advies: "T-shirt, met een dun laagje voor de schaduw", item: "een dun laagje" },
-  { min: (i) => i.koudGrens, advies: "trui of vest", item: "een trui" },
-  { min: (i) => i.koudGrens - 6, advies: "jas erbij", item: "een jas" },
-  { min: () => -99, advies: "winterjas, en een sjaal kan geen kwaad", item: "je winterjas" },
+const GRENZEN = [
+  (i) => i.warmGrens + 5,
+  (i) => i.warmGrens,
+  (i) => i.koudGrens,
+  (i) => i.koudGrens - 6,
+  () => -99,
 ];
+
+const LAGEN = GRENZEN.map((min, i) => ({ min, ...T.lagen[i] }));
 
 export function laagVoor(gevoel, inst = KLEDING_DEFAULTS) {
   const idx = LAGEN.findIndex((l) => gevoel >= l.min(inst));
@@ -88,20 +170,15 @@ export function overlay(hourly, nu = new Date(), instellingen = KLEDING_DEFAULTS
       { punten: Math.round(clamp(gemAfwijking * 4, 0, 42)), reden: null },
       {
         punten: Math.round(lerp(fractieNat, 0.05, 0.6, 0, 30)),
-        reden: natUren.length
-          ? `regen rond ${String(natUren[0].uur).padStart(2, "0")}:00`
-          : null,
+        reden: natUren.length ? T.redenRegen(String(natUren[0].uur).padStart(2, "0")) : null,
       },
       {
         punten: spreiding >= 7 ? Math.round(lerp(spreiding, 7, 14, 6, 16)) : 0,
-        reden:
-          spreiding >= 7
-            ? `groot verschil over de dag (gevoel ${Math.round(minG)} tot ${Math.round(maxG)} graden)`
-            : null,
+        reden: spreiding >= 7 ? T.redenSpreiding(Math.round(minG), Math.round(maxG)) : null,
       },
       {
         punten: maxG < 8 ? 10 : 0,
-        reden: maxG < 8 ? "de hele dag guur" : null,
+        reden: maxG < 8 ? T.redenGuur : null,
       },
     ];
     const { score, redenen } = maakScore(factoren);
@@ -114,18 +191,18 @@ export function overlay(hourly, nu = new Date(), instellingen = KLEDING_DEFAULTS
     const avond = dagdeel(uren, 18, inst.dagEind);
 
     const hoofd = laagVoor(middag?.min ?? minG, inst);
-    let zin = `Vandaag: ${hoofd.advies}`;
+    let zin = T.vandaagPrefix(hoofd.advies);
     const koudsteAndere = [ochtend, avond]
       .filter(Boolean)
       .map((d) => ({ ...d, laag: laagVoor(d.min, inst) }))
       .filter((d) => d.laag.index > hoofd.index)
       .sort((a, b) => b.laag.index - a.laag.index)[0];
     if (koudsteAndere) {
-      const wanneer = koudsteAndere === avond ? "vanavond" : "vanochtend vroeg";
-      zin += `. Neem ${koudsteAndere.laag.item} mee: ${wanneer} is het gevoel ${Math.round(koudsteAndere.min)} graden`;
+      const wanneer = koudsteAndere === avond ? T.vanavond : T.vanochtend;
+      zin += T.neemMee(koudsteAndere.laag.item, wanneer, Math.round(koudsteAndere.min));
     }
     if (natUren.length) {
-      zin += `. En de regenjas of paraplu: buien rond ${String(natUren[0].uur).padStart(2, "0")}:00`;
+      zin += T.regenjas(String(natUren[0].uur).padStart(2, "0"));
     }
     zin += ".";
 
@@ -157,39 +234,33 @@ export function overlay(hourly, nu = new Date(), instellingen = KLEDING_DEFAULTS
       },
       uren: uren.map((u) => ({ uur: u.uur, score: u.score, nat: u.nat })),
       venster,
-      metric: { zin: `Gevoelstemperatuur vandaag: ${Math.round(minG)} tot ${Math.round(maxG)} graden.` },
+      metric: { zin: T.metric(Math.round(minG), Math.round(maxG)) },
       conditie,
       status: { soort: "info", zin },
     };
   });
 
   return {
-    legenda: { links: "guur", rechts: "aangenaam" },
+    legenda: T.legenda,
     dagen: dagenUit,
   };
 }
 
 export const kleding = {
   id: "wat-trek-ik-aan",
-  slug: "wat-trek-ik-aan",
-  naam: "Wat trek ik vandaag aan?",
-  meldingKort: "Kledingcheck",
-  korteVraag: "Wat trek ik vandaag aan?",
-  cta: "Check je outfit",
-  navLabel: "Aankleden",
+  slug: T.slug,
+  naam: T.naam,
+  meldingKort: T.meldingKort,
+  korteVraag: T.korteVraag,
+  cta: T.cta,
+  navLabel: T.navLabel,
   kleur: "#57794E",
-  locatieHint: "Zoek je stad, dat is genoeg...",
+  locatieHint: T.locatieHint,
   icoon: "shirt",
   groep: "Elke dag",
-  diepte: "Gewoon praktisch advies voor buiten.",
+  diepte: T.diepte,
   soort: "advies",
-  schaalLabels: {
-    ideaal: "Makkelijke keuze",
-    goed: "Vrij makkelijk",
-    twijfelachtig: "Laagjesdag",
-    matig: "Lastige dag",
-    "zeer-slecht": "Gure dag",
-  },
+  schaalLabels: T.schaalLabels,
   patroon: "A",
   inputType: "locatie",
   weerVelden: BASIS_VELDEN,
@@ -202,33 +273,28 @@ export const kleding = {
       {
         type: "keuze",
         id: "warm",
-        vraag: "Wanneer begint T-shirt-weer voor jou?",
+        vraag: T.instWarmVraag,
         keuzes: [
-          { label: "Warmbloedig", zet: { warmGrens: 14 } },
-          { label: "Gemiddeld", zet: { warmGrens: 16 } },
-          { label: "Koukleum", zet: { warmGrens: 18 } },
+          { label: T.instKeuzes[0], zet: { warmGrens: 14 } },
+          { label: T.instKeuzes[1], zet: { warmGrens: 16 } },
+          { label: T.instKeuzes[2], zet: { warmGrens: 18 } },
         ],
       },
       {
         type: "keuze",
         id: "koud",
-        vraag: "Wanneer wil je een trui of meer?",
+        vraag: T.instKoudVraag,
         keuzes: [
-          { label: "Warmbloedig", zet: { koudGrens: 8 } },
-          { label: "Gemiddeld", zet: { koudGrens: 11 } },
-          { label: "Koukleum", zet: { koudGrens: 13 } },
+          { label: T.instKeuzes[0], zet: { koudGrens: 8 } },
+          { label: T.instKeuzes[1], zet: { koudGrens: 11 } },
+          { label: T.instKeuzes[2], zet: { koudGrens: 13 } },
         ],
       },
-      { key: "dagStart", label: "Dag begint om", eenheid: "uur", step: 1, min: 5, max: 10 },
-      { key: "dagEind", label: "Dag eindigt om", eenheid: "uur", step: 1, min: 18, max: 24 },
+      { key: "dagStart", label: T.instDagStart, eenheid: T.instUur, step: 1, min: 5, max: 10 },
+      { key: "dagEind", label: T.instDagEind, eenheid: T.instUur, step: 1, min: 18, max: 24 },
     ],
-    uitleg:
-      "Het woord zegt hoe makkelijk de keuze is: Ideaal of Goed is een laag en klaar, Twijfelachtig een laagjesdag, Matig of slechter guur en nat. Het advies zelf staat er altijd in gewone taal bij.",
+    uitleg: T.instUitleg,
   },
-  adviesLabels: {
-    goed: "makkelijke keuze",
-    matig: "laagjesdag",
-    slecht: "gure dag",
-  },
+  adviesLabels: T.adviesLabels,
   affiliate: null,
 };

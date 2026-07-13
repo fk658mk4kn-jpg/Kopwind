@@ -9,6 +9,8 @@ import NavKnoppen from "@/components/NavKnoppen";
 import { useGebruiker } from "@/components/GebruikerContext";
 import { haalRuweEtappes, stelPlanSamen } from "@/lib/planner";
 import { fmtTijd } from "@/lib/format";
+import { kies } from "@/lib/i18n/locale";
+import { S } from "@/lib/strings";
 
 const MapView = dynamic(() => import("@/components/MapView"), { ssr: false });
 
@@ -86,12 +88,12 @@ export default function FietsTool({ beginStops = null }) {
   const bewaarRoute = () => {
     const gekozen = stops.filter(Boolean);
     if (gekozen.length < stops.length || gekozen.length < 2) {
-      setFout("Vul eerst alle stops in, dan kun je de route bewaren.");
+      setFout(kies({ nl: "Vul eerst alle stops in, dan kun je de route bewaren.", en: "Fill in all stops first, then you can save the route." }));
       return;
     }
     const naam = window.prompt(
-      "Naam voor deze route (bv. Woon-werk, Sportschooldag):",
-      "Woon-werk"
+      kies({ nl: "Naam voor deze route (bv. Woon-werk, Sportschooldag):", en: "Name for this route (e.g. Commute, Gym day):" }),
+      kies({ nl: "Woon-werk", en: "Commute" })
     );
     if (!naam) return;
     const bestaand = g.routes.find((r) => r.naam === naam.trim());
@@ -119,7 +121,7 @@ export default function FietsTool({ beginStops = null }) {
     setFout(null);
     const gekozen = stops.filter(Boolean);
     if (gekozen.length < stops.length || gekozen.length < 2) {
-      setFout("Vul alle stops in (minimaal je vertrekpunt en je werk).");
+      setFout(kies({ nl: "Vul alle stops in (minimaal je vertrekpunt en je werk).", en: "Fill in all stops (at least your start and your work)." }));
       return;
     }
     setBezig(true);
@@ -161,10 +163,10 @@ export default function FietsTool({ beginStops = null }) {
       <div className="werkblad">
         <div className="blok-planner">
           <section className="paneel">
-            <h2 className="paneel-titel">Jouw rit</h2>
+            <h2 className="paneel-titel">{kies({ nl: "Jouw rit", en: "Your ride" })}</h2>
             {g.routes.length > 0 && (
               <div className="chips routechips">
-                <span className="routekeuze-label">Mijn routes:</span>
+                <span className="routekeuze-label">{kies({ nl: "Mijn routes:", en: "My routes:" })}</span>
                 {g.routes.map((r) => (
                   <button
                     key={r.naam}
@@ -187,10 +189,10 @@ export default function FietsTool({ beginStops = null }) {
             />
             <div className="actiebalk">
               <button className="knop primair" onClick={bereken} disabled={bezig}>
-                {bezig ? "Bezig..." : "Check je rit"}
+                {bezig ? S.algemeen.bezig : kies({ nl: "Check je rit", en: "Check your ride" })}
               </button>
               <button className="knop" onClick={bewaarRoute} disabled={bezig}>
-                Bewaar route
+                {kies({ nl: "Bewaar route", en: "Save route" })}
               </button>
             </div>
           </section>
@@ -214,7 +216,7 @@ export default function FietsTool({ beginStops = null }) {
       </div>
 
       {plan ? (
-        <section className="resultaten" aria-label="Ritinformatie">
+        <section className="resultaten" aria-label={kies({ nl: "Ritinformatie", en: "Ride details" })}>
           <DagBanner dag={plan.dag} />
           <NavKnoppen stops={planStops} />
           <div className="legs">
@@ -239,8 +241,10 @@ export default function FietsTool({ beginStops = null }) {
       ) : (
         !fout && (
           <p className="leeg">
-            Vul je vertrekpunt en je werk in (tussenstop zoals de sportschool kan
-            ook) en tik op Check je rit.
+            {kies({
+              nl: "Vul je vertrekpunt en je werk in (tussenstop zoals de sportschool kan ook) en tik op Check je rit.",
+              en: "Fill in your start and your work (a stopover like the gym works too) and tap Check your ride.",
+            })}
           </p>
         )
       )}

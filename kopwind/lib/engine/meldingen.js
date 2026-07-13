@@ -17,6 +17,38 @@ import { toLocalInput, bft, kompas, fmtTijd } from "../format.js";
 import { labelVoor } from "./schaal.js";
 import { APP_KORT } from "../brand.js";
 
+import { kies } from "../i18n/locale.js";
+
+/** Zinnen van meldingen en briefings, per taal. */
+const M = kies({
+  nl: {
+    geenWeer: "Geen weerdata beschikbaar.",
+    droog: "droog",
+    kansOpRegen: (p) => `${p}% kans op regen`,
+    totMm: (mm) => ` (tot ${mm} mm/u)`,
+    weer: (t, gevoel, regen, b, richting) =>
+      `${t} graden (voelt als ${gevoel}), ${regen}, wind ${b} Bft uit ${richting}.`,
+    ochtendbriefing: "ochtendbriefing",
+    geenRoute: "Geen route om door te rekenen. Open de fietscheck en stel je dag samen.",
+    zwaarsteRit: (van, naar, tijd) => `Zwaarste rit ${van} naar ${naar} om ${tijd}:`,
+    overMin: (min, van, naar) => `Over ${min} min: ${van} naar ${naar}`,
+    decimaal: ",",
+  },
+  en: {
+    geenWeer: "No weather data available.",
+    droog: "dry",
+    kansOpRegen: (p) => `${p}% chance of rain`,
+    totMm: (mm) => ` (up to ${mm} mm/h)`,
+    weer: (t, gevoel, regen, b, richting) =>
+      `${t} degrees (feels like ${gevoel}), ${regen}, wind ${b} Bft from the ${richting}.`,
+    ochtendbriefing: "morning briefing",
+    geenRoute: "No route to run the numbers on. Open the bike check and set up your day.",
+    zwaarsteRit: (van, naar, tijd) => `Toughest ride ${van} to ${naar} at ${tijd}:`,
+    overMin: (min, van, naar) => `In ${min} min: ${van} to ${naar}`,
+    decimaal: ".",
+  },
+});
+
 export const DEFAULT_MELDINGEN = {
   ochtend: false,
   ochtendTijd: "07:00",
@@ -141,18 +173,15 @@ export function dueNotifications({ settings, log, times, nu, prefix }) {
 export function weerZin(leg) {
   const w = leg?.segments?.find((s) => s.weer)?.weer;
   const m = leg?.metrics;
-  if (!w || !m) return "Geen weerdata beschikbaar.";
+  if (!w || !m) return M.geenWeer;
   const regen =
     m.neerslagKansMax >= 20
-      ? `${Math.round(m.neerslagKansMax)}% kans op regen` +
+      ? M.kansOpRegen(Math.round(m.neerslagKansMax)) +
         (m.neerslagMmMax >= 0.1
-          ? ` (tot ${m.neerslagMmMax.toFixed(1).replace(".", ",")} mm/u)`
+          ? M.totMm(m.neerslagMmMax.toFixed(1).replace(".", M.decimaal))
           : "")
-      : "droog";
-  return (
-    `${Math.round(w.temp)} graden (voelt als ${Math.round(w.gevoel)}), ${regen}, ` +
-    `wind ${bft(w.windSpeed)} Bft uit ${kompas(w.windFrom)}.`
-  );
+      : M.droog;
+  return M.weer(Math.round(w.temp), Math.round(w.gevoel), regen, bft(w.windSpeed), kompas(w.windFrom));
 }
 
 /** Titel en tekst voor de ochtendbriefing op basis van een berekend plan. */
@@ -160,8 +189,8 @@ export function briefingTekst(plan, routeNaam, schaalLabels = null) {
   const dag = plan?.dag;
   if (!dag) {
     return {
-      title: `${APP_KORT} ochtendbriefing`,
-      body: "Geen route om door te rekenen. Open de fietscheck en stel je dag samen.",
+      title: `${APP_KORT} ${M.ochtendbriefing}`,
+      body: M.geenRoute,
     };
   }
   const leg = plan.legs[dag.worstIdx];
@@ -170,7 +199,7 @@ export function briefingTekst(plan, routeNaam, schaalLabels = null) {
   const kop = routeNaam ? `${APP_KORT} · ${routeNaam}` : APP_KORT;
   return {
     title: `${kop}: ${labelVoor(dag.score, schaalLabels).toLowerCase()}`,
-    body: `Zwaarste rit ${van} naar ${naar} om ${fmtTijd(leg.departure)}: ${leg.samenvatting} ${weerZin(leg)}`,
+    body: `${M.zwaarsteRit(van, naar, fmtTijd(leg.departure))} ${leg.samenvatting} ${weerZin(leg)}`,
   };
 }
 
@@ -179,7 +208,7 @@ export function vertrekTekst(leg, minuten, schaalLabels = null) {
   const van = leg.van.naam.split(",")[0];
   const naar = leg.naar.naam.split(",")[0];
   return {
-    title: `Over ${minuten} min: ${van} naar ${naar}`,
+    title: M.overMin(minuten, van, naar),
     body: `${kapitaal(leg.advies.advies)} (${labelVoor(leg.advies.score, schaalLabels).toLowerCase()}). ${weerZin(leg)}`,
   };
 }

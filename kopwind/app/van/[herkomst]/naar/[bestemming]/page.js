@@ -7,6 +7,7 @@ import { vindTool } from "@/lib/tools";
 import FietsTool from "@/components/tools/FietsTool";
 import Broodkruimel from "@/components/Broodkruimel";
 import AdSlot from "@/components/AdSlot";
+import { IS_EN } from "@/lib/i18n/locale";
 
 /**
  * Route-paar-pagina's (§9), de tactiek van de directe concurrent: per stad
@@ -19,6 +20,7 @@ export const dynamicParams = true;
 export const revalidate = 86400;
 
 export function generateStaticParams() {
+  if (IS_EN) return [];
   const params = [];
   for (const s of STEDEN) {
     for (const b of buurSteden(s, 2)) {

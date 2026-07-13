@@ -2,6 +2,8 @@
 
 import { kleurSequentieel } from "@/lib/engine/kleuren";
 import KleurLegenda from "./KleurLegenda";
+import { S } from "@/lib/strings";
+import { kies } from "@/lib/i18n/locale";
 
 /**
  * De signature-vormtaal toegepast op uren (Zephyr 1b): een gelabelde
@@ -10,7 +12,7 @@ import KleurLegenda from "./KleurLegenda";
  * betekenis) en het aanbevolen blok een duidelijke markering heeft.
  * Tijdlabels bij begin, einde en de venstergrenzen.
  */
-export default function UrenStrip({ uren, venster, legenda, vensterLabel = "beste blok" }) {
+export default function UrenStrip({ uren, venster, legenda, vensterLabel = S.locatieTool.besteBlok }) {
   if (!uren?.length) return null;
   const eerste = uren[0].uur;
   const n = uren.length;
@@ -31,7 +33,7 @@ export default function UrenStrip({ uren, venster, legenda, vensterLabel = "best
               width: `${100 / n}%`,
               background: kleurSequentieel((u.score ?? 0) / 100),
             }}
-            title={`${String(u.uur).padStart(2, "0")}:00 \u00b7 ${u.nat ? "nat" : `score ${u.score}/100`}`}
+            title={`${String(u.uur).padStart(2, "0")}:00 \u00b7 ${u.nat ? kies({ nl: "nat", en: "wet" }) : `${u.score}/100`}`}
           />
         ))}
         {venster && (

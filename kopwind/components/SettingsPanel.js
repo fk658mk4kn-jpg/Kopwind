@@ -1,5 +1,8 @@
 "use client";
 
+import { kies } from "@/lib/i18n/locale";
+import { S } from "@/lib/strings";
+
 import { useState } from "react";
 import { TOOLS, defaultsVoor } from "@/lib/tools";
 
@@ -30,10 +33,10 @@ export default function SettingsPanel({
   return (
     <div className="modalachter" onClick={onClose}>
       <div className="modal" onClick={(e) => e.stopPropagation()}>
-        <h2>Instellingen</h2>
+        <h2>{S.header.instellingen}</h2>
 
-        <h3>Drempels per check</h3>
-        <div className="chips" role="tablist" aria-label="Kies een check">
+        <h3>{kies({ nl: "Drempels per check", en: "Thresholds per check" })}</h3>
+        <div className="chips" role="tablist" aria-label={kies({ nl: "Kies een check", en: "Pick a check" })}>
           {TOOLS.map((t) => (
             <button
               key={t.id}
@@ -76,7 +79,7 @@ export default function SettingsPanel({
           )}
         {meta?.velden?.some((v) => v.geavanceerd) && (
           <details className="geavanceerd">
-            <summary>Geavanceerd</summary>
+            <summary>{kies({ nl: "Geavanceerd", en: "Advanced" })}</summary>
             {meta.velden
               .filter((v) => v.geavanceerd)
               .map((v) => (
@@ -89,18 +92,20 @@ export default function SettingsPanel({
             className="knop klein"
             onClick={() => setThresholds(tool.id, { ...defaultsVoor(tool.id) })}
           >
-            Terug naar standaard
+            {kies({ nl: "Terug naar standaard", en: "Back to defaults" })}
           </button>
         </div>
         {meta?.uitleg && <p className="uitleg">{meta.uitleg}</p>}
 
         {tool.inputType === "route" && (
           <>
-        <h3>Opgeslagen routes</h3>
+        <h3>{kies({ nl: "Opgeslagen routes", en: "Saved routes" })}</h3>
         {(!routes || routes.length === 0) && (
           <p className="uitleg">
-            Nog geen routes. Vul je woon-werkrit in en klik op Route opslaan; dan
-            staat hij morgen met een klik klaar.
+            {kies({
+              nl: "Nog geen routes. Vul je woon-werkrit in en klik op Route opslaan; dan staat hij morgen met een klik klaar.",
+              en: "No routes yet. Fill in your commute and click Save route; tomorrow it's one click away.",
+            })}
           </p>
         )}
         {(routes ?? []).map((r) => (
@@ -120,11 +125,13 @@ export default function SettingsPanel({
           </>
         )}
 
-        <h3>Algemeen: favoriete plekken</h3>
+        <h3>{kies({ nl: "Algemeen: favoriete plekken", en: "General: favourite places" })}</h3>
         {presets.length === 0 && (
           <p className="uitleg">
-            Nog geen favorieten. Kies een locatie in een van de checks en klik op
-            de ster om hem te bewaren.
+            {kies({
+              nl: "Nog geen favorieten. Kies een locatie in een van de checks en klik op de ster om hem te bewaren.",
+              en: "No favourites yet. Pick a location in one of the checks and click the star to save it.",
+            })}
           </p>
         )}
         {presets.map((p) => (
@@ -143,7 +150,7 @@ export default function SettingsPanel({
 
         <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 16 }}>
           <button className="knop primair" onClick={onClose}>
-            Sluiten
+            {S.algemeen.sluiten}
           </button>
         </div>
       </div>

@@ -10,6 +10,7 @@ import AnalyticsPageViews from "@/components/AnalyticsPageViews";
 import { HUB_NAAM, HUB_KORT, HUB_CLAIM } from "@/lib/brand";
 
 import { SITE_URL as SITE } from "@/lib/site";
+import { LOCALE, kies } from "@/lib/i18n/locale";
 
 // Search Console-verificatie: het token staat bij voorkeur in een env-var
 // (NEXT_PUBLIC_GSC_VERIFICATION), met de aangeleverde waarde als fallback
@@ -21,17 +22,26 @@ const GSC_VERIFICATIE =
 
 export const metadata = {
   metadataBase: new URL(SITE),
+  ...(process.env.NEXT_PUBLIC_ALTERNATE_LOCALE_URL
+    ? {
+        alternates: {
+          languages: {
+            [LOCALE === "en" ? "nl" : "en"]: process.env.NEXT_PUBLIC_ALTERNATE_LOCALE_URL,
+          },
+        },
+      }
+    : {}),
   title: {
-    default: `${HUB_NAAM} Fietsen, de was buiten of het terras op`,
+    default: `${HUB_NAAM} ${kies({ nl: "Fietsen, de was buiten of het terras op", en: "Bike, laundry, patio or barbecue" })}`,
     template: `%s | ${HUB_NAAM}`,
   },
   description: HUB_CLAIM,
   openGraph: {
     type: "website",
-    locale: "nl_NL",
+    locale: kies({ nl: "nl_NL", en: "en_GB" }),
     url: "/",
     siteName: HUB_NAAM,
-    title: `${HUB_NAAM} Fietsen, de was buiten of het terras op`,
+    title: `${HUB_NAAM} ${kies({ nl: "Fietsen, de was buiten of het terras op", en: "Bike, laundry, patio or barbecue" })}`,
     description: HUB_CLAIM,
   },
   twitter: {
@@ -52,7 +62,7 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="nl">
+    <html lang={LOCALE}>
       <body>
         <Analytics />
         <Suspense fallback={null}>

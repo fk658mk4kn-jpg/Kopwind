@@ -1,6 +1,7 @@
 "use client";
 
 import { fietsNavUrls } from "@/lib/engine/navigatie";
+import { S } from "@/lib/strings";
 
 /**
  * "Open in je navigatie-app" (Zephyr item 4): na een check open je de
@@ -13,14 +14,14 @@ export default function NavKnoppen({ stops }) {
   return (
     <div className="navknoppen">
       <a className="knop klein" href={urls.google} target="_blank" rel="noopener noreferrer">
-        Open in Google Maps
+        {S.nav.openGoogle}
       </a>
       <a className="knop klein" href={urls.apple} target="_blank" rel="noopener noreferrer">
-        Open in Apple Maps
+        {S.nav.openApple}
       </a>
       {urls.tussenstopsWeggevallen && (
         <span className="uitleg" style={{ margin: 0 }}>
-          Apple Maps kan geen tussenstops aan; daar gaat de route van start naar eind.
+          {S.nav.appleGeenStops}
         </span>
       )}
     </div>

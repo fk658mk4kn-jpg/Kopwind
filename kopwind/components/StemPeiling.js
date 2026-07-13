@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { dagKeyVan } from "@/lib/engine/weerbasis";
+import { S } from "@/lib/strings";
 
 /**
  * Duimpjes onder het advies (het sociale aspect): klopte het vandaag?
@@ -63,15 +64,15 @@ export default function StemPeiling({ toolId }) {
   const toonTotalen = totalen && (keuze !== null || totaal >= 3);
 
   return (
-    <div className="stempeiling" aria-label="Klopte het advies vandaag?">
+    <div className="stempeiling" aria-label={S.stem.vraag}>
       <span className="stem-vraag">
-        {keuze === null ? "Klopte het advies vandaag?" : "Dank je, genoteerd."}
+        {keuze === null ? S.stem.vraag : S.stem.bedankt}
       </span>
       <button
         className={"stemknop" + (keuze === 1 ? " actief" : "")}
         onClick={() => stem(1)}
         disabled={keuze !== null}
-        aria-label="Ja, klopte"
+        aria-label={S.stem.jaLabel}
       >
         {"\u{1F44D}"}
       </button>
@@ -79,7 +80,7 @@ export default function StemPeiling({ toolId }) {
         className={"stemknop" + (keuze === -1 ? " actief" : "")}
         onClick={() => stem(-1)}
         disabled={keuze !== null}
-        aria-label="Nee, klopte niet"
+        aria-label={S.stem.neeLabel}
       >
         {"\u{1F44E}"}
       </button>

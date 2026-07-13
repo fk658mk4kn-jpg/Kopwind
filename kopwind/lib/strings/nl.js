@@ -1,9 +1,7 @@
 /**
  * lib/strings/nl.js
- *
- * Strings-laag (i18n-naad, §14). De nieuwe en gedeelde UI leest hieruit;
- * bestaande componenten worden stapsgewijs gemigreerd. Bij een VS-port komt
- * er een en.js naast met dezelfde sleutels.
+ * Nederlandse UI-strings. Sleutels spiegelen en.js een op een; de selector
+ * in index.js kiest per deployment.
  */
 
 export const S = {
@@ -35,5 +33,62 @@ export const S = {
     liveOpgehaald: "live opgehaald om",
     bezig: "Bezig...",
     sluiten: "Sluiten",
+    ja: "Ja",
+    nee: "Nee",
+    vandaag: "vandaag",
+    weekdagen: ["zo", "ma", "di", "wo", "do", "vr", "za"],
+  },
+  locatieTool: {
+    jouwPlek: "Jouw plek",
+    kiesEerst: "Kies eerst een plek: zoek een adres, tik een favoriet aan of gebruik je locatie.",
+    zoekStandaard: "Zoek een adres of plaats...",
+    favorietTitel: "Bewaar als favoriet",
+    favorietActief: "Staat bij je favorieten",
+    favorietPrompt: "Naam voor deze plek:",
+    geenData: "Geen bruikbare weerdata ontvangen. Probeer het zo nog eens.",
+    databron: "Weerdata: Open-Meteo uurvoorspelling,",
+    leeg: "Kies je plek en tik op de check: je ziet direct het antwoord voor vandaag en de dagen erna.",
+    lieverNiet: "liever niet",
+    wisselvallig: "wisselvallig",
+    besteBlok: "beste blok",
+  },
+  hub: {
+    waarBenJe: "Waar ben je?",
+    vandaagIn: "Vandaag in",
+    zoekStad: "Zoek je stad...",
+    mijnLocatie: "Gebruik mijn locatie",
+    locatieFout: "Locatie ophalen lukte niet. Zoek je stad hierboven, dat werkt net zo goed.",
+    kiesStad: "Kies je stad hierboven.",
+    laden: "Even naar de lucht kijken...",
+    geenAntwoord: "Nu even geen antwoord. Probeer de check zelf.",
+    binnenkort: "Binnenkort",
+    landnaam: "Nederland",
+    checksVanVandaag: "De checks van vandaag",
+  },
+  stem: {
+    vraag: "Klopte het advies vandaag?",
+    bedankt: "Dank je, genoteerd.",
+    jaLabel: "Ja, klopte",
+    neeLabel: "Nee, klopte niet",
+  },
+  nav: {
+    openGoogle: "Open in Google Maps",
+    openApple: "Open in Apple Maps",
+    appleGeenStops: "Apple Maps kan geen tussenstops aan; daar gaat de route van start naar eind.",
+  },
+  voet: {
+    checks: "Checks",
+    uitleg: "Uitleg",
+    over: "Over",
+    overSite: "Over",
+    bronnen: "Bronnen en data",
+    changelog: "Changelog",
+    privacy: "Privacy",
+    voorwaarden: "Voorwaarden",
+    regel:
+      "Geen weerbericht, maar een antwoord. Voorspellingen blijven voorspellingen: kijk voor je vertrekt ook even naar buiten.",
+  },
+  kruimel: {
+    home: "Home",
   },
 };

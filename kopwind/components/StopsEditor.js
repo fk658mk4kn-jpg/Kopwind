@@ -1,5 +1,7 @@
 "use client";
 
+import { kies } from "@/lib/i18n/locale";
+
 import LocatieZoek from "./LocatieZoek";
 import Icoon from "./Icoon";
 import { isFavoriet } from "@/lib/engine/locatie";
@@ -107,7 +109,7 @@ function StopRow({ index, stop, presets, onChange, onRemove, onSavePreset }) {
             </button>
           </div>
         ) : (
-          <LocatieZoek onKies={onChange} placeholder="Zoek een adres (bv. je werk)..." />
+          <LocatieZoek onKies={onChange} placeholder={kies({ nl: "Zoek een adres (bv. je werk)...", en: "Search an address (e.g. your work)..." })} />
         )}
       </div>
       {stop && (
@@ -152,15 +154,15 @@ function LegTimeRow({ index, opties, onChange }) {
       <select
         value={eerste && opties.mode === "auto" ? "nu" : opties.mode}
         onChange={(e) => onChange({ mode: e.target.value })}
-        aria-label="Tijdmodus"
+        aria-label={kies({ nl: "Tijdmodus", en: "Time mode" })}
       >
         {eerste ? (
-          <option value="nu">vertrekken nu</option>
+          <option value="nu">{kies({ nl: "vertrekken nu", en: "leave now" })}</option>
         ) : (
-          <option value="auto">na vorige stop</option>
+          <option value="auto">{kies({ nl: "na vorige stop", en: "after previous stop" })}</option>
         )}
-        <option value="vertrek">vertrek om</option>
-        <option value="aankomst">aankomst om</option>
+        <option value="vertrek">{kies({ nl: "vertrek om", en: "leave at" })}</option>
+        <option value="aankomst">{kies({ nl: "aankomst om", en: "arrive at" })}</option>
       </select>
       {opties.mode === "auto" && !eerste && (
         <>
@@ -170,9 +172,9 @@ function LegTimeRow({ index, opties, onChange }) {
             step="5"
             value={opties.verblijfMin ?? 45}
             onChange={(e) => onChange({ verblijfMin: Number(e.target.value) })}
-            aria-label="Verblijf in minuten"
+            aria-label={kies({ nl: "Verblijf in minuten", en: "Stay in minutes" })}
           />
-          <span>min verblijf</span>
+          <span>{kies({ nl: "min verblijf", en: "min stay" })}</span>
         </>
       )}
       {(opties.mode === "vertrek" || opties.mode === "aankomst") && (
@@ -180,7 +182,7 @@ function LegTimeRow({ index, opties, onChange }) {
           type="datetime-local"
           value={opties.tijd ?? ""}
           onChange={(e) => onChange({ tijd: e.target.value })}
-          aria-label="Tijdstip"
+          aria-label={kies({ nl: "Tijdstip", en: "Time" })}
         />
       )}
     </div>

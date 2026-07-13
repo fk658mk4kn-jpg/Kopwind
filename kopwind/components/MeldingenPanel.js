@@ -6,7 +6,8 @@ import {
   DEFAULT_TOOL_SCHEMA,
   schemaZin,
 } from "@/lib/engine/meldingen";
-import { S } from "@/lib/strings/nl";
+import { S } from "@/lib/strings";
+import { kies } from "@/lib/i18n/locale";
 import { TOOLS } from "@/lib/tools";
 import {
   pushOndersteund,
@@ -60,7 +61,7 @@ export default function MeldingenPanel({ open, onClose }) {
     setBezig(true);
     setStatus(null);
     const fout = await g.koppelSyncCode(invoer.trim().toUpperCase());
-    setStatus(fout ?? "Gekoppeld. Je routes en instellingen zijn overgenomen.");
+    setStatus(fout ?? kies({ nl: "Gekoppeld. Je routes en instellingen zijn overgenomen.", en: "Linked. Your routes and settings have been carried over." }));
     setBezig(false);
   };
 
@@ -70,7 +71,7 @@ export default function MeldingenPanel({ open, onClose }) {
     const r = await abonneer(g.syncCode);
     if (r.ok) {
       setAbo(true);
-      setStatus("Dit apparaat ontvangt nu meldingen.");
+      setStatus(kies({ nl: "Dit apparaat ontvangt nu meldingen.", en: "This device now receives notifications." }));
     } else {
       setStatus(r.fout);
     }
@@ -81,7 +82,7 @@ export default function MeldingenPanel({ open, onClose }) {
     setBezig(true);
     await zegOp(g.syncCode);
     setAbo(false);
-    setStatus("Meldingen op dit apparaat uitgezet.");
+    setStatus(kies({ nl: "Meldingen op dit apparaat uitgezet.", en: "Notifications turned off on this device." }));
     setBezig(false);
   };
 
@@ -97,11 +98,11 @@ export default function MeldingenPanel({ open, onClose }) {
       const d = await res.json();
       setStatus(
         res.ok
-          ? `Testmelding verstuurd naar ${d.apparaten} apparaat/apparaten.`
-          : d.error ?? "Testmelding mislukt."
+          ? kies({ nl: `Testmelding verstuurd naar ${d.apparaten} apparaat/apparaten.`, en: `Test notification sent to ${d.apparaten} device(s).` })
+          : d.error ?? kies({ nl: "Testmelding mislukt.", en: "Test notification failed." })
       );
     } catch {
-      setStatus("Testmelding mislukt.");
+      setStatus(kies({ nl: "Testmelding mislukt.", en: "Test notification failed." }));
     }
     setBezig(false);
   };
@@ -109,48 +110,55 @@ export default function MeldingenPanel({ open, onClose }) {
   return (
     <div className="modalachter" onClick={onClose}>
       <div className="modal modal-breed" onClick={(e) => e.stopPropagation()}>
-        <h2>Meldingen en apparaten</h2>
+        <h2>{kies({ nl: "Meldingen en apparaten", en: "Notifications and devices" })}</h2>
 
-        <h3>Op je beginscherm</h3>
+        <h3>{kies({ nl: "Op je beginscherm", en: "On your home screen" })}</h3>
         {g.geinstalleerd || standalone ? (
           <p className="uitleg">
-            Deze check staat als app op dit apparaat. Meldingen en snelle
-            toegang werken hiervandaan het best.
+            {kies({
+              nl: "Deze check staat als app op dit apparaat. Meldingen en snelle toegang werken hiervandaan het best.",
+              en: "This check is installed as an app on this device. Notifications and quick access work best from here.",
+            })}
           </p>
         ) : g.installBeschikbaar ? (
           <div className="synccode-rij">
             <button className="knop primair" onClick={g.zetOpBeginscherm}>
-              Zet op beginscherm
+              {S.install.knop}
             </button>
             <span className="uitleg" style={{ margin: 0 }}>
-              Een tik en de check staat als app tussen je andere apps.
+              {kies({ nl: "Een tik en de check staat als app tussen je andere apps.", en: "One tap and the check sits with your other apps." })}
             </span>
           </div>
         ) : ios ? (
           <p className="uitleg">
-            Op iPhone en iPad: tik op de deelknop en kies {"\u201c"}Zet op
-            beginscherm{"\u201d"}. Daarna opent de check als app en kun je
-            hieronder meldingen aanzetten (iOS 16.4 of nieuwer).
+            {kies({
+              nl: "Op iPhone en iPad: tik op de deelknop en kies \u201cZet op beginscherm\u201d. Daarna opent de check als app en kun je hieronder meldingen aanzetten (iOS 16.4 of nieuwer).",
+              en: "On iPhone and iPad: tap the share button and choose \u201cAdd to Home Screen\u201d. The check then opens as an app and you can turn on notifications below (iOS 16.4 or newer).",
+            })}
           </p>
         ) : (
           <p className="uitleg">
-            In Chrome of Edge: open het browsermenu en kies {"\u201c"}App
-            installeren{"\u201d"} of {"\u201c"}Toevoegen aan startscherm{"\u201d"}.
-            In Firefox en Safari op desktop werkt de check gewoon in de
-            browser, inclusief meldingen.
+            {kies({
+              nl: "In Chrome of Edge: open het browsermenu en kies \u201cApp installeren\u201d of \u201cToevoegen aan startscherm\u201d. In Firefox en Safari op desktop werkt de check gewoon in de browser, inclusief meldingen.",
+              en: "In Chrome or Edge: open the browser menu and choose \u201cInstall app\u201d or \u201cAdd to home screen\u201d. In Firefox and Safari on desktop the check simply works in the browser, notifications included.",
+            })}
           </p>
         )}
 
         <p className="uitleg" style={{ marginTop: 0 }}>
-          Zet een seintje aan als je op tijd wilt weten of fietsen, wassen of
-          terrassen slim is. Twee stappen:
+          {kies({
+            nl: "Zet een seintje aan als je op tijd wilt weten of fietsen, wassen of terrassen slim is. Twee stappen:",
+            en: "Turn on a nudge if you want to know in time whether biking, laundry or the patio is smart. Two steps:",
+          })}
         </p>
-        <h3>1. Apparaten koppelen</h3>
+        <h3>{kies({ nl: "1. Apparaten koppelen", en: "1. Link your devices" })}</h3>
         {g.syncCode ? (
           <>
             <p className="uitleg" style={{ marginTop: 0 }}>
-              Jouw synccode. Voer hem in op je andere apparaat, dan zien laptop
-              en telefoon dezelfde routes, favorieten en meldingen.
+              {kies({
+                nl: "Jouw synccode. Voer hem in op je andere apparaat, dan zien laptop en telefoon dezelfde routes, favorieten en meldingen.",
+                en: "Your sync code. Enter it on your other device and laptop and phone share the same routes, favourites and notifications.",
+              })}
             </p>
             <div className="synccode-rij">
               <code className="synccode">{g.syncCode}</code>
@@ -158,7 +166,7 @@ export default function MeldingenPanel({ open, onClose }) {
                 className="knop klein"
                 onClick={() => {
                   navigator.clipboard?.writeText(g.syncCode);
-                  setStatus("Code gekopieerd.");
+                  setStatus(kies({ nl: "Code gekopieerd.", en: "Code copied." }));
                 }}
               >
                 Kopieer
@@ -168,29 +176,32 @@ export default function MeldingenPanel({ open, onClose }) {
               </button>
             </div>
             <p className="uitleg">
-              Bewaar 'm ergens veilig. We werken zonder account, dus deze code
-              kunnen we niet voor je terughalen.
+              {kies({
+                nl: "Bewaar 'm ergens veilig. We werken zonder account, dus deze code kunnen we niet voor je terughalen.",
+                en: "Keep it somewhere safe. We work without accounts, so we can't recover this code for you.",
+              })}
             </p>
           </>
         ) : (
           <>
             <p className="uitleg" style={{ marginTop: 0 }}>
-              Gebruik je dit ook op je telefoon of een ander apparaat? Maak dan
-              je persoonlijke code aan, of vul de code van je andere apparaat
-              in. Geen account of e-mail nodig.
+              {kies({
+                nl: "Gebruik je dit ook op je telefoon of een ander apparaat? Maak dan je persoonlijke code aan, of vul de code van je andere apparaat in. Geen account of e-mail nodig.",
+                en: "Using this on your phone or another device too? Create your personal code, or enter the code from your other device. No account or email needed.",
+              })}
             </p>
             <div className="synccode-rij">
               <button className="knop primair" onClick={maakCode} disabled={bezig}>
-                Maak synccode
+                {kies({ nl: "Maak synccode", en: "Create sync code" })}
               </button>
             </div>
             <div className="synccode-rij">
               <input
                 type="text"
-                placeholder="Bestaande code, bv. K7QX-2MP9"
+                placeholder={kies({ nl: "Bestaande code, bv. K7QX-2MP9", en: "Existing code, e.g. K7QX-2MP9" })}
                 value={invoer}
                 onChange={(e) => setInvoer(e.target.value)}
-                aria-label="Synccode invoeren"
+                aria-label={kies({ nl: "Synccode invoeren", en: "Enter sync code" })}
               />
               <button className="knop" onClick={koppel} disabled={bezig || !invoer.trim()}>
                 Koppel
@@ -199,8 +210,8 @@ export default function MeldingenPanel({ open, onClose }) {
           </>
         )}
 
-        <h3>2. Meldingen op dit apparaat</h3>
-        {!g.syncCode && <p className="uitleg">Koppel eerst je apparaten (stap 1).</p>}
+        <h3>{kies({ nl: "2. Meldingen op dit apparaat", en: "2. Notifications on this device" })}</h3>
+        {!g.syncCode && <p className="uitleg">{kies({ nl: "Koppel eerst je apparaten (stap 1).", en: "Link your devices first (step 1)." })}</p>}
         {g.syncCode && ios && !standalone && (
           <p className="uitleg">
             Op iPhone en iPad: zet de site eerst op je beginscherm (deelknop,
@@ -219,25 +230,27 @@ export default function MeldingenPanel({ open, onClose }) {
             {abo ? (
               <>
                 <button className="knop" onClick={zetPushUit} disabled={bezig}>
-                  Meldingen op dit apparaat uitzetten
+                  {kies({ nl: "Meldingen op dit apparaat uitzetten", en: "Turn off notifications on this device" })}
                 </button>
                 <button className="knop" onClick={testMelding} disabled={bezig}>
-                  Stuur testmelding
+                  {kies({ nl: "Stuur testmelding", en: "Send test notification" })}
                 </button>
               </>
             ) : (
               <button className="knop primair" onClick={zetPushAan} disabled={bezig}>
-                Zet meldingen aan op dit apparaat
+                {kies({ nl: "Zet meldingen aan op dit apparaat", en: "Turn on notifications on this device" })}
               </button>
             )}
           </div>
         )}
 
-        <h3>3. Meldingen per route</h3>
+        <h3>{kies({ nl: "3. Meldingen per route", en: "3. Notifications per route" })}</h3>
         {g.routes.length === 0 && (
           <p className="uitleg">
-            Nog geen opgeslagen routes. Sla in de fietscheck je woon-werkrit op;
-            daarna stel je hier per route in wanneer je een melding wilt.
+            {kies({
+              nl: "Nog geen opgeslagen routes. Sla in de fietscheck je woon-werkrit op; daarna stel je hier per route in wanneer je een melding wilt.",
+              en: "No saved routes yet. Save your commute in the bike check; then set per route here when you want a notification.",
+            })}
           </p>
         )}
         {g.routes.map((r) => (
@@ -259,9 +272,10 @@ export default function MeldingenPanel({ open, onClose }) {
         ))}
 
         <p className="uitleg">
-          De klok kijkt elke 5 minuten, dus een melding kan een paar minuten
-          verschuiven. Vertrekherinneringen gelden voor ritten met een vaste
-          vertrek- of aankomsttijd (niet bij vertrekken nu).
+          {kies({
+            nl: "De klok kijkt elke 5 minuten, dus een melding kan een paar minuten verschuiven. Vertrekherinneringen gelden voor ritten met een vaste vertrek- of aankomsttijd (niet bij vertrekken nu).",
+            en: "The clock checks every 5 minutes, so a notification can shift a few minutes. Departure reminders apply to rides with a fixed departure or arrival time (not for leave now).",
+          })}
         </p>
 
         {status && <p className="uitleg synstatus">{status}</p>}
@@ -284,7 +298,7 @@ function DagenChips({ dagen, onWijzig }) {
     onWijzig([...set].sort((a, b) => a - b));
   };
   return (
-    <div className="chips dagchips" role="group" aria-label="Dagen">
+    <div className="chips dagchips" role="group" aria-label={kies({ nl: "Dagen", en: "Days" })}>
       {S.meldingen.dagen.map((naam, i) => (
         <button
           key={naam}
@@ -320,7 +334,7 @@ function TijdenLijst({ tijden, onWijzig }) {
               type="button"
               className="knop klein"
               onClick={() => onWijzig(lijst.filter((_, j) => j !== i))}
-              aria-label="Tijd verwijderen"
+              aria-label={kies({ nl: "Tijd verwijderen", en: "Remove time" })}
             >
               &times;
             </button>
@@ -347,7 +361,7 @@ function DrempelKeuze({ drempel, richtingGoed, onWijzig }) {
       <select
         value={d.modus}
         onChange={(e) => onWijzig({ ...d, modus: e.target.value })}
-        aria-label="Wanneer melden"
+        aria-label={kies({ nl: "Wanneer melden", en: "When to notify" })}
       >
         <option value="altijd">{S.meldingen.drempelAltijd}</option>
         <option value="slecht">{S.meldingen.drempelSlecht}</option>
@@ -357,7 +371,7 @@ function DrempelKeuze({ drempel, richtingGoed, onWijzig }) {
         <select
           value={String(d.cijfer)}
           onChange={(e) => onWijzig({ ...d, cijfer: Number(e.target.value) })}
-          aria-label="Grens"
+          aria-label={kies({ nl: "Grens", en: "Threshold" })}
         >
           {(richtingGoed
             ? [
@@ -425,14 +439,14 @@ function RouteSchema({ route, onWijzig }) {
               onChange={(e) =>
                 patch({ vertrek: { ...s.vertrek, minuten: Number(e.target.value) } })
               }
-              aria-label="Minuten voor vertrek"
+              aria-label={kies({ nl: "Minuten voor vertrek", en: "Minutes before departure" })}
             />
             <span className="instelhint">{S.meldingen.minVooraf}</span>
           </span>
         )}
       </div>
       <div className="instelrij">
-        <span className="instelhint">Wanneer melden</span>
+        <span className="instelhint">{kies({ nl: "Wanneer melden", en: "When to notify" })}</span>
         <DrempelKeuze
           drempel={s.drempel}
           richtingGoed={false}
@@ -466,7 +480,7 @@ function ToolSchema({ tool, presets, schema, onWijzig }) {
               const p = presets.find((x) => x.naam === e.target.value);
               patch({ locatie: p ? { naam: p.naam, lat: p.lat, lon: p.lon } : null });
             }}
-            aria-label="Locatie voor deze melding"
+            aria-label={kies({ nl: "Locatie voor deze melding", en: "Location for this notification" })}
           >
             <option value="">kies locatie...</option>
             {presets.map((p) => (
@@ -487,11 +501,11 @@ function ToolSchema({ tool, presets, schema, onWijzig }) {
           )}
           <DagenChips dagen={s.dagen} onWijzig={(dagen) => patch({ dagen })} />
           <div className="instelrij">
-            <span className="instelhint">Tijd</span>
+            <span className="instelhint">{kies({ nl: "Tijd", en: "Time" })}</span>
             <TijdenLijst tijden={s.tijden} onWijzig={(tijden) => patch({ tijden })} />
           </div>
           <div className="instelrij">
-            <span className="instelhint">Wanneer melden</span>
+            <span className="instelhint">{kies({ nl: "Wanneer melden", en: "When to notify" })}</span>
             <DrempelKeuze
               drempel={s.drempel}
               richtingGoed

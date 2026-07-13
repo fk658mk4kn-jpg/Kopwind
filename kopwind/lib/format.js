@@ -16,10 +16,14 @@ export function bft(kmh) {
   return b;
 }
 
-const KOMPAS = [
-  "N", "NNO", "NO", "ONO", "O", "OZO", "ZO", "ZZO",
-  "Z", "ZZW", "ZW", "WZW", "W", "WNW", "NW", "NNW",
-];
+import { kies } from "./i18n/locale.js";
+
+const KOMPAS = kies({
+  nl: ["N", "NNO", "NO", "ONO", "O", "OZO", "ZO", "ZZO", "Z", "ZZW", "ZW", "WZW", "W", "WNW", "NW", "NNW"],
+  en: ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"],
+});
+
+const DECIMAAL = kies({ nl: ",", en: "." });
 
 /** Meteorologische windrichting in graden naar kompasrichting. */
 export function kompas(deg) {
@@ -32,7 +36,7 @@ export function kompas(deg) {
 export function fmtKm(meters) {
   const km = meters / 1000;
   const s = km >= 10 ? km.toFixed(0) : km.toFixed(1).replace(/\.0$/, "");
-  return `${s.replace(".", ",")} km`;
+  return `${s.replace(".", DECIMAAL)} km`;
 }
 
 /** Seconden naar "18 min" of "1 u 05". */
@@ -72,6 +76,6 @@ export function afrondOpKwartier(date) {
  */
 export function fmtCijfer(score) {
   const c = Math.max(1, Math.min(10, (100 - score) / 10));
-  const s = (Math.round(c * 10) / 10).toFixed(1).replace(".", ",");
+  const s = (Math.round(c * 10) / 10).toFixed(1).replace(".", DECIMAAL);
   return s.endsWith(",0") ? s.slice(0, -2) : s;
 }

@@ -1,5 +1,7 @@
 "use client";
 
+import { kies } from "@/lib/i18n/locale";
+
 import { useEffect, useRef, useState } from "react";
 import { zoekAdres, huidigeLocatie } from "@/lib/engine/locatie";
 import Icoon from "./Icoon";
@@ -9,7 +11,7 @@ import Icoon from "./Icoon";
  * voor de huidige locatie. Elke tool die om een plek vraagt gebruikt dit;
  * het opgeloste kernpijnpunt blijft zo overal even goed.
  */
-export default function LocatieZoek({ onKies, placeholder = "Zoek een adres..." }) {
+export default function LocatieZoek({ onKies, placeholder = kies({ nl: "Zoek een adres...", en: "Search an address..." }) }) {
   const [tekst, setTekst] = useState("");
   const [suggesties, setSuggesties] = useState([]);
   const [bezig, setBezig] = useState(false);
@@ -54,11 +56,11 @@ export default function LocatieZoek({ onKies, placeholder = "Zoek een adres..." 
         placeholder={placeholder}
         value={tekst}
         onChange={(e) => zoek(e.target.value)}
-        aria-label="Adres zoeken"
+        aria-label={kies({ nl: "Adres zoeken", en: "Search address" })}
       />
       <button
         className="iconknop"
-        title="Huidige locatie gebruiken"
+        title={kies({ nl: "Huidige locatie gebruiken", en: "Use current location" })}
         onClick={gebruikHuidige}
         disabled={bezig}
         type="button"

@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { HUB_NAAM, HUB_CLAIM } from "@/lib/brand";
 import { hub } from "@/content/hub";
+import { kies, LOCALE } from "@/lib/i18n/locale";
+import { PAD } from "@/lib/i18n/paden";
 import HubGrid from "@/components/HubGrid";
 
 export const metadata = {
@@ -28,24 +30,24 @@ export default function HubPagina() {
     "@type": "WebSite",
     name: HUB_NAAM,
     description: HUB_CLAIM,
-    inLanguage: "nl",
+    inLanguage: LOCALE,
   };
 
   return (
     <main>
       <section className="hub-hero compact">
-        <h1>Kan ik vandaag ...</h1>
+        <h1>{kies({ nl: "Kan ik vandaag ...", en: "Good day for ..." })}</h1>
         <p className="hero-zin">{hub.intro}</p>
       </section>
 
       <HubGrid />
 
       <p className="uitleg-verwijzing">
-        Waarom zegt een check wat hij zegt? <Link href="/uitleg">Het weer in gewone taal</Link>.
+        {kies({ nl: "Waarom zegt een check wat hij zegt?", en: "Why does a check say what it says?" })} <Link href={PAD.uitleg}>{kies({ nl: "Het weer in gewone taal", en: "The weather in plain words" })}</Link>.
       </p>
 
       <section className="seotekst compact">
-        <h2>Veelgestelde vragen</h2>
+        <h2>{kies({ nl: "Veelgestelde vragen", en: "Frequently asked questions" })}</h2>
         {hub.faq.map((f) => (
           <div key={f.v} className="faq-item">
             <h3>{f.v}</h3>

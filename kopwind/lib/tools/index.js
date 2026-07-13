@@ -28,8 +28,9 @@ import { fietsNaarWerk } from "./fiets-naar-werk.js";
 import { wasBuitenDrogen } from "./was-buiten-drogen.js";
 import { kleding } from "./kleding.js";
 import { terras } from "./terras.js";
+import { barbecue } from "./barbecue.js";
 
-export const TOOLS = [fietsNaarWerk, wasBuitenDrogen, kleding, terras];
+export const TOOLS = [fietsNaarWerk, wasBuitenDrogen, kleding, terras, barbecue];
 
 export function vindTool(slug) {
   return TOOLS.find((t) => t.slug === slug) ?? null;

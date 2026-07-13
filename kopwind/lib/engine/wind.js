@@ -1,5 +1,35 @@
 import { kleurDivergerend } from "./kleuren.js";
 
+import { kies } from "../i18n/locale.js";
+
+/** Zinnen van de wind-samenvatting, per taal. */
+const W = kies({
+  nl: {
+    decimaal: ",",
+    rugwind: "Overwegend rugwind, lekker meepakken.",
+    weinig: "Weinig windhinder op deze etappe.",
+    stevig: "stevige",
+    merkbaar: "merkbare",
+    heleEtappe: (z) => `Vrijwel de hele etappe ${z} tegenwind.`,
+    plekken: ["aan het begin", "halverwege", "aan het eind"],
+    deel: (km, z, plek) => `${km} km ${z} tegenwind ${plek}`,
+    rest: (n) => ` en nog ${n} korter stuk(ken)`,
+    slot: ", verder rustig.",
+  },
+  en: {
+    decimaal: ".",
+    rugwind: "Mostly tailwind, enjoy the push.",
+    weinig: "Little wind trouble on this leg.",
+    stevig: "strong",
+    merkbaar: "noticeable",
+    heleEtappe: (z) => `Nearly the whole leg has ${z} headwind.`,
+    plekken: ["at the start", "halfway", "near the end"],
+    deel: (km, z, plek) => `${km} km of ${z} headwind ${plek}`,
+    rest: (n) => ` plus ${n} shorter stretch(es)`,
+    slot: ", calm otherwise.",
+  },
+});
+
 /**
  * lib/engine/wind.js
  *
@@ -338,35 +368,30 @@ export function summarizeLegNL(segments, metrics, thresholds) {
 
   if (!stukken.length) {
     if (metrics.meanHead <= -thresholds.tegenwindMatig) {
-      return "Overwegend rugwind, lekker meepakken.";
+      return W.rugwind;
     }
-    return "Weinig windhinder op deze etappe.";
+    return W.weinig;
   }
 
   const totLastKm = stukken.reduce((a, s) => a + (s.tot - s.van), 0) / 1000;
   if (totLastKm / (totaal / 1000) > 0.8) {
     const gem = stukken.reduce((a, s) => a + s.som, 0) /
       stukken.reduce((a, s) => a + s.gewicht, 0);
-    const zwaarte = gem >= thresholds.tegenwindZwaar ? "stevige" : "merkbare";
-    return `Vrijwel de hele etappe ${zwaarte} tegenwind.`;
+    const zwaarte = gem >= thresholds.tegenwindZwaar ? W.stevig : W.merkbaar;
+    return W.heleEtappe(zwaarte);
   }
 
   const fmtKm = (m) =>
-    (m / 1000).toFixed(1).replace(".", ",").replace(/,0$/, "");
+    (m / 1000).toFixed(1).replace(".", W.decimaal).replace(new RegExp(`\\${W.decimaal}0$`), "");
 
   const delen = stukken.slice(0, 2).map((stuk) => {
     const gem = stuk.som / stuk.gewicht;
-    const zwaarte = gem >= thresholds.tegenwindZwaar ? "stevige" : "merkbare";
+    const zwaarte = gem >= thresholds.tegenwindZwaar ? W.stevig : W.merkbaar;
     const midden = (stuk.van + stuk.tot) / 2 / totaal;
-    const plek =
-      midden < 0.33
-        ? "aan het begin"
-        : midden < 0.66
-          ? "halverwege"
-          : "aan het eind";
-    return `${fmtKm(stuk.tot - stuk.van)} km ${zwaarte} tegenwind ${plek}`;
+    const plek = W.plekken[midden < 0.33 ? 0 : midden < 0.66 ? 1 : 2];
+    return W.deel(fmtKm(stuk.tot - stuk.van), zwaarte, plek);
   });
 
-  const rest = stukken.length > 2 ? ` en nog ${stukken.length - 2} korter stuk(ken)` : "";
-  return `${delen.join(", ")}${rest}, verder rustig.`;
+  const rest = stukken.length > 2 ? W.rest(stukken.length - 2) : "";
+  return `${delen.join(", ")}${rest}${W.slot}`;
 }

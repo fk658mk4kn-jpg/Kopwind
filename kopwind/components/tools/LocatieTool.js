@@ -11,6 +11,7 @@ import { haalWeer } from "@/lib/engine/weather";
 import { BASIS_VELDEN } from "@/lib/engine/weerbasis";
 import { isFavoriet } from "@/lib/engine/locatie";
 import { TOOLS } from "@/lib/tools";
+import { S } from "@/lib/strings";
 import { fmtTijd } from "@/lib/format";
 import { schaalVoor, labelVoor, kleurVoorSchaal } from "@/lib/engine/schaal";
 
@@ -22,7 +23,7 @@ import { schaalVoor, labelVoor, kleurVoorSchaal } from "@/lib/engine/schaal";
  * teksten; deze component doet de rest.
  */
 
-const WEEKDAG = ["zo", "ma", "di", "wo", "do", "vr", "za"];
+const WEEKDAG = S.algemeen.weekdagen;
 
 export default function LocatieTool({ toolId, beginLocatie = null }) {
   const tool = TOOLS.find((t) => t.id === toolId);
@@ -53,7 +54,7 @@ export default function LocatieTool({ toolId, beginLocatie = null }) {
 
   const check = async (plek = locatie) => {
     if (!plek) {
-      setFout("Kies eerst een plek: zoek een adres, tik een favoriet aan of gebruik je locatie.");
+      setFout(S.locatieTool.kiesEerst);
       return;
     }
     setBezig(true);
@@ -61,7 +62,7 @@ export default function LocatieTool({ toolId, beginLocatie = null }) {
     try {
       const hourly = await haalWeer(plek.lat, plek.lon, tool.weerVelden ?? BASIS_VELDEN, tool.weerDagen ?? 5);
       const res = tool.overlay(hourly, new Date(), g.thresholdsVoor(toolId));
-      if (!res?.dagen?.length) throw new Error("Geen bruikbare weerdata ontvangen. Probeer het zo nog eens.");
+      if (!res?.dagen?.length) throw new Error(S.locatieTool.geenData);
       setDagen(res.dagen);
       setLegenda(res.legenda ?? null);
       setGekozen(0);
@@ -88,7 +89,7 @@ export default function LocatieTool({ toolId, beginLocatie = null }) {
   return (
     <div>
       <section className="paneel">
-        <h2 className="paneel-titel">Jouw plek</h2>
+        <h2 className="paneel-titel">{S.locatieTool.jouwPlek}</h2>
         {g.presets.length > 0 && (
           <div className="chips">
             {g.presets.map((p) => (
@@ -98,17 +99,17 @@ export default function LocatieTool({ toolId, beginLocatie = null }) {
             ))}
           </div>
         )}
-        <LocatieZoek onKies={kies} placeholder={tool.locatieHint ?? "Zoek een adres of plaats..."} />
+        <LocatieZoek onKies={kies} placeholder={tool.locatieHint ?? S.locatieTool.zoekStandaard} />
         {locatie && (
           <div className="locatie-gekozen">
             <Icoon naam="locatie" vol maat={16} />
             <span className="locatie-naam">{locatie.naam}</span>
             <button
               className="iconknop"
-              title={favoriet ? "Staat bij je favorieten" : "Bewaar als favoriet"}
+              title={favoriet ? S.locatieTool.favorietActief : S.locatieTool.favorietTitel}
               onClick={() => {
                 if (favoriet) return;
-                const naam = window.prompt("Naam voor deze plek:", locatie.naam.split(",")[0]);
+                const naam = window.prompt(S.locatieTool.favorietPrompt, locatie.naam.split(",")[0]);
                 if (naam) g.bewaarPreset({ naam: naam.trim(), lat: locatie.lat, lon: locatie.lon });
               }}
             >
@@ -118,7 +119,7 @@ export default function LocatieTool({ toolId, beginLocatie = null }) {
         )}
         <div className="actiebalk">
           <button className="knop primair" onClick={() => check()} disabled={bezig}>
-            {bezig ? "Bezig..." : tool.cta}
+            {bezig ? S.algemeen.bezig : tool.cta}
           </button>
         </div>
       </section>
@@ -172,7 +173,7 @@ export default function LocatieTool({ toolId, beginLocatie = null }) {
 }
 
 function dagLabel(datum, index) {
-  if (index === 0) return "vandaag";
+  if (index === 0) return S.algemeen.vandaag;
   const d = new Date(`${datum}T12:00:00`);
   return `${WEEKDAG[d.getDay()]} ${d.getDate()}`;
 }
@@ -181,7 +182,7 @@ function dagRegel(d) {
   if (d.venster) {
     return `${String(d.venster.van).padStart(2, "0")}-${String(d.venster.tot).padStart(2, "0")} u`;
   }
-  return d.status?.soort === "nee" ? "liever niet" : "wisselvallig";
+  return d.status?.soort === "nee" ? S.locatieTool.lieverNiet : S.locatieTool.wisselvallig;
 }
 
 function zinnen(redenen) {

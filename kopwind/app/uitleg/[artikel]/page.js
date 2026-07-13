@@ -4,6 +4,8 @@ import { UITLEG, vindArtikel } from "@/content/uitleg";
 import { TOOLS } from "@/lib/tools";
 import { HUB_NAAM } from "@/lib/brand";
 import { SITE_URL } from "@/lib/site";
+import { kies } from "@/lib/i18n/locale";
+import { PAD } from "@/lib/i18n/paden";
 
 export function generateStaticParams() {
   return UITLEG.map((a) => ({ artikel: a.slug }));
@@ -15,7 +17,7 @@ export function generateMetadata({ params }) {
   return {
     title: a.titel,
     description: a.intro,
-    alternates: { canonical: `/uitleg/${a.slug}` },
+    alternates: { canonical: `${PAD.uitleg}/${a.slug}` },
   };
 }
 
@@ -50,14 +52,14 @@ export default function UitlegArtikel({ params }) {
         ))}
         {tool && (
           <p>
-            Zelf checken? <Link href={`/${tool.slug}`}>{tool.naam}</Link> {art.cta}
+            {kies({ nl: "Zelf checken?", en: "Check it yourself?" })} <Link href={`/${tool.slug}`}>{tool.naam}</Link> {art.cta}
           </p>
         )}
-        <h2>Meer uitleg</h2>
+        <h2>{kies({ nl: "Meer uitleg", en: "More explainers" })}</h2>
         <p>
           {anderen.map((x, i) => (
             <span key={x.slug}>
-              <Link href={`/uitleg/${x.slug}`}>{x.vraag}</Link>
+              <Link href={`${PAD.uitleg}/${x.slug}`}>{x.vraag}</Link>
               {i < anderen.length - 1 ? " \u00b7 " : ""}
             </span>
           ))}

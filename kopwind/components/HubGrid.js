@@ -11,6 +11,8 @@ import { schaalVoor, labelVoor, kleurVoorSchaal } from "@/lib/engine/schaal";
 import { huidigeLocatie } from "@/lib/engine/locatie";
 import { STEDEN, dichtstbijzijndeStad } from "@/lib/steden/nl";
 import { TOOLS } from "@/lib/tools";
+import { S } from "@/lib/strings";
+import { kies as kiesTaal } from "@/lib/i18n/locale";
 
 /**
  * De homepage als product (v3.0.0): kies een stad en elke kaart toont
@@ -90,15 +92,15 @@ export default function HubGrid() {
       const s = dichtstbijzijndeStad(hier.lat, hier.lon);
       if (s) kies({ naam: s.naam, lat: s.lat, lon: s.lon });
     } catch {
-      setFout("Locatie ophalen lukte niet. Zoek je stad hierboven, dat werkt net zo goed.");
+      setFout(S.hub.locatieFout);
     }
   };
 
   return (
-    <section className="hubgrid" aria-label="De checks van vandaag">
+    <section className="hubgrid" aria-label={S.hub.checksVanVandaag}>
       <div className="kiesbalk paneel">
         <span className="kiesbalk-label">
-          {stad ? (stad.naam === "Nederland" ? "Vandaag in Nederland" : `Vandaag in ${stad.naam}`) : "Waar ben je?"}
+          {stad ? `${S.hub.vandaagIn} ${stad.naam === "Nederland" ? S.hub.landnaam : stad.naam}` : S.hub.waarBenJe}
         </span>
         <div className="chips">
           {POPULAIR.map((p) => (
@@ -112,9 +114,9 @@ export default function HubGrid() {
           ))}
         </div>
         <div className="kiesbalk-zoek">
-          <LocatieZoek onKies={kies} placeholder="Zoek je stad..." />
+          <LocatieZoek onKies={kies} placeholder={S.hub.zoekStad} />
           <button className="knop klein" onClick={mijnPlek}>
-            Gebruik mijn locatie
+            {S.hub.mijnLocatie}
           </button>
         </div>
       </div>
@@ -149,7 +151,10 @@ export default function HubGrid() {
       </div>
 
       <p className="binnenkort-regel">
-        Binnenkort: Word ik vandaag nat? {"\u00b7"} Moet ik morgen krabben? {"\u00b7"} Kan ik barbecueën?
+        {kiesTaal({
+          nl: "Binnenkort: Word ik vandaag nat? \u00b7 Moet ik morgen krabben?",
+          en: "Coming soon: Will I get wet today? \u00b7 Do I need to scrape tomorrow?",
+        })}
       </p>
     </section>
   );
@@ -159,9 +164,9 @@ function KaartLive({ tool, dag, stad, laden }) {
   if (typeof tool.overlay !== "function") {
     return <p className="kaartregel">{tool.diepte}</p>;
   }
-  if (!stad) return <p className="kaartregel stil">Kies je stad hierboven.</p>;
-  if (laden || dag === undefined) return <p className="kaartregel stil">Even naar de lucht kijken...</p>;
-  if (!dag) return <p className="kaartregel stil">Nu even geen antwoord. Probeer de check zelf.</p>;
+  if (!stad) return <p className="kaartregel stil">{S.hub.kiesStad}</p>;
+  if (laden || dag === undefined) return <p className="kaartregel stil">{S.hub.laden}</p>;
+  if (!dag) return <p className="kaartregel stil">{S.hub.geenAntwoord}</p>;
   const kleur = kleurVoorSchaal(schaalVoor(dag.conditie.score).id);
   return (
     <div className="kaartlive">

@@ -453,3 +453,56 @@ De cron-route gebruikte schaalVoor zonder import: een eerdere patch-guard ("alle
 - De kleurrichting (tinten, accenten) verdient een blik van Martijn op echte schermen; richting bijsturen kan zonder structuurwerk.
 - color-mix vereist een moderne browser (alles vanaf 2023); de kaart valt zonder terug op wit met standaardrand.
 - Instellingen-migratie: bestaande afwijkende drempelwaarden matchen geen keuzeknop en tonen dan geen actieve keuze; de waarden blijven gewoon werken.
+
+## v3.2.0 "Sirocco" - 2026-07-13
+
+**Wat**: de Engelse release plus een nieuwe barbecuecheck.
+
+**Merk en markt**: de Engelse site heet "Good day for it?". "Can I
+today?" is overwogen en afgewezen: het is geen lopend Engels. De
+per-toolvragen gebruiken wel het patroon "Can I ... today?" (bike,
+barbecue), want dat is per werkwoord wel idiomatisch. Doelmarkt is
+dezelfde 35 Nederlandse steden: expats en internationals in NL zoeken in
+het Engels op hetzelfde weer. Zoekvolume is kleiner dan NL maar de
+concurrentie op "bike to work weather netherlands"-achtige vragen is
+vrijwel nul.
+
+**Architectuur**: één codebase, taal gebakken bij de build via
+NEXT_PUBLIC_SITE_LOCALE (lib/i18n/locale.js, helper `kies({ nl, en })`).
+Geen runtime-switch: elke deployment is volledig eentalig, wat SEO
+(één taal per domein), bundelgrootte en eenvoud wint. Tweede
+Vercel-project op dezelfde repo met drie env-vars (locale, site-URL,
+eigen GA-ID). Engelse paden (/explainers, /about, /sources, /terms)
+lopen via rewrites naar de fysieke Nederlandse mappen; interne links en
+canonicals altijd via PAD (lib/i18n/paden.js). llms.txt werd een route
+die per taal uit het register genereert.
+
+**Barbecuecheck**: avondgericht venster (16:00-22:00), droog telt
+zwaarder dan warm (neerslag maakt een uur hard 0), en als uniek element
+het rook-advies: dominante windrichting in het beste blok via
+vectorgemiddelde (zodat 350 en 10 graden noord middelen) en de zin waar
+je de tafel niet neerzet. Juli-timing is bewust: seizoenspiek.
+
+**Meegefixte bug**: stadpagina's van kleding en terras gebruikten de
+was-titeltemplate; er zijn nu templates per tool per taal.
+
+**Valkuilen deze ronde**: (1) naamconflict: HubGrid had al een lokale
+`kies` (plek-kiezer), de i18n-import shadowde en de homepage crashte op
+prerender; import hernoemd naar kiesTaal. Les: bij een generieke
+helpernaam eerst greppen op bestaande lokale namen. (2) Een
+fallback-anker in een patchscript plaatste een kanarie-import die de
+fietstool brak; ankers eerst verifiëren, injecteren na de laatste
+importregel. (3) Substring-collateral: een regex op KLEUR[ raakte ook
+BADGE_KLEUR[.
+
+**Bewust niet gedaan**: het route-parencluster (/van/.../naar/...) is
+NL-only gehouden (op EN niet gebouwd, niet in de sitemap); Engelse
+tegenhanger (/from/.../to/...) is een vervolgstap als de EN-site
+tractie toont. De stemmen-tabel in Supabase wordt gedeeld tussen beide
+sites (zelfde tool_id per check); prima voor nu, splitsen kan later op
+site-kolom.
+
+**Beperkingen**: domein voor de EN-site moet nog gekozen en gekocht
+(gooddayforit.com als eerste kandidaat), een native copyreview van de
+Engelse teksten is aan te raden, en de EN-site heeft een eigen
+GA4-property nodig (anders meet de fallback alles in de NL-property).

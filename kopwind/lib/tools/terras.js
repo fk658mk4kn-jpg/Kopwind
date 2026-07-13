@@ -21,6 +21,90 @@ import { clamp, lerp, maakScore, adviesVoorScore } from "../engine/score.js";
 import { jaVoor } from "../engine/schaal.js";
 import { bouwBasis, basisPerDag, dagKeyVan, BASIS_VELDEN } from "../engine/weerbasis.js";
 
+import { kies } from "../i18n/locale.js";
+
+/** Alle teksten van de terrascheck, per taal. */
+const T = kies({
+  nl: {
+    slug: "terrasweer",
+    naam: "Kan ik vandaag op het terras zitten?",
+    korteVraag: "Kan ik vandaag op het terras?",
+    meldingKort: "Terrascheck",
+    cta: "Check het terras",
+    navLabel: "Terras",
+    diepte: "Zon, wind en temperatuur zonder gedoe.",
+    locatieHint: "Zoek je stad, dat is genoeg...",
+    schaalLabels: { ideaal: "Heerlijk terrasweer", goed: "Prima terrasweer", twijfelachtig: "Prima uit de wind", matig: "Alleen met jas", "zeer-slecht": "Geen terrasdag" },
+    adviesLabels: { goed: "terrasweer", matig: "kan, met een vestje", slecht: "geen terrasweer" },
+    legenda: { links: "binnen blijven", rechts: "terrasweer" },
+    redenNat: "te nat voor het terras",
+    redenFrisMax: (g) => `te fris (gevoel maximaal ${g} graden)`,
+    redenGeenBlok: "geen bruikbaar blok (wind en buienkans zitten dwars)",
+    redenKortBlok: (u) => `maar een kort blok (${u} uur)`,
+    redenFris: (g) => `fris: gevoel komt niet boven de ${g} graden`,
+    redenWind: (w) => `stevige wind (${w} km/u)`,
+    redenBuien: "buien rond het beste blok",
+    metric: (uur, g) => `Lekkerste moment rond ${uur}:00 (gevoel ${g} graden).`,
+    morgenWel: (t) => ` Morgen vanaf ${t}:00 kan het wel.`,
+    metZon: ", met zon",
+    zonVanaf: (t) => `, zon vanaf ${t}:00`,
+    windLigt: ", de wind is dan gaan liggen",
+    statusBeste: (tijd, zon, wind) => `Beste terrasuren: ${tijd}${zon}${wind}.`,
+    statusGeweest: "Het beste terrasweer is voor vandaag geweest.",
+    statusNiks: "Vandaag wordt het niks op het terras.",
+    toekomstBeste: (tijd) => `Beste blok: ${tijd}.`,
+    toekomstGeen: "Geen terrasweer.",
+    instGevoelVraag: "Wanneer vind jij het terrasweer?",
+    instGevoelKeuzes: ["Ik zit er snel", "Gemiddeld", "Mag best warm zijn"],
+    instWindVraag: "Hoeveel wind is ok\u00e9?",
+    instWindKeuzes: ["Mijn plek ligt uit de wind", "Gemiddeld", "Snel te winderig"],
+    instDagStart: "Terras open vanaf",
+    instDagEind: "Terras dicht om",
+    instUur: "uur",
+    instUitleg:
+      "Ideaal is 22 graden gevoel met zon en een zwak windje. Rond de 18 met wat bewolking is Goed, fris of vlagerig wordt Twijfelachtig. De statusregel noemt de beste uren.",
+  },
+  en: {
+    slug: "patio-weather",
+    naam: "Can I sit outside today?",
+    korteVraag: "Can I sit outside today?",
+    meldingKort: "Patio check",
+    cta: "Check the patio",
+    navLabel: "Patio",
+    diepte: "Sun, wind and temperature, no fuss.",
+    locatieHint: "Search your town, that's enough...",
+    schaalLabels: { ideaal: "Perfect patio weather", goed: "Good patio weather", twijfelachtig: "Fine out of the wind", matig: "Coat territory", "zeer-slecht": "Not a patio day" },
+    adviesLabels: { goed: "patio weather", matig: "doable with a cardigan", slecht: "no patio weather" },
+    legenda: { links: "stay inside", rechts: "patio weather" },
+    redenNat: "too wet for sitting outside",
+    redenFrisMax: (g) => `too chilly (feels like ${g} degrees at best)`,
+    redenGeenBlok: "no usable window (wind and shower risk get in the way)",
+    redenKortBlok: (u) => `only a short window (${u} hours)`,
+    redenFris: (g) => `chilly: feels-like tops out at ${g} degrees`,
+    redenWind: (w) => `strong wind (${w} km/h)`,
+    redenBuien: "showers around the best window",
+    metric: (uur, g) => `Nicest moment around ${uur}:00 (feels like ${g} degrees).`,
+    morgenWel: (t) => ` Tomorrow from ${t}:00 works though.`,
+    metZon: ", with sun",
+    zonVanaf: (t) => `, sun from ${t}:00`,
+    windLigt: ", the wind will have died down by then",
+    statusBeste: (tijd, zon, wind) => `Best patio hours: ${tijd}${zon}${wind}.`,
+    statusGeweest: "The best patio weather has been and gone today.",
+    statusNiks: "The patio isn't happening today.",
+    toekomstBeste: (tijd) => `Best window: ${tijd}.`,
+    toekomstGeen: "No patio weather.",
+    instGevoelVraag: "When does it count as patio weather for you?",
+    instGevoelKeuzes: ["I'm out there early", "Average", "I like it properly warm"],
+    instWindVraag: "How much wind is fine?",
+    instWindKeuzes: ["My spot is sheltered", "Average", "Wind bothers me quickly"],
+    instDagStart: "Patio opens at",
+    instDagEind: "Patio closes at",
+    instUur: "h",
+    instUitleg:
+      "Ideal is a feels-like of 22 degrees with sun and a light breeze. Around 18 with some cloud is Good; chilly or gusty comes out Iffy. The status line names the best hours.",
+  },
+});
+
 export const TERRAS_DEFAULTS = {
   minGevoel: 16, // vanaf hier begint het lekker te worden
   maxWind: 22, // km/u, rond de 4 Bft; daarboven waait je biertje om
@@ -111,27 +195,27 @@ export function overlay(hourly, nu = new Date(), instellingen = TERRAS_DEFAULTS)
       factoren.push({
         punten: 72,
         reden: regent
-          ? "te nat voor het terras"
+          ? T.redenNat
           : maxGevoel < inst.minGevoel
-            ? `te fris (gevoel maximaal ${Math.round(maxGevoel)} graden)`
-            : "geen bruikbaar blok (wind en buienkans zitten dwars)",
+            ? T.redenFrisMax(Math.round(maxGevoel))
+            : T.redenGeenBlok,
       });
       if (maxGevoel < inst.minGevoel - 5) factoren.push({ punten: 10, reden: null });
     } else {
       factoren.push({ punten: topPijn(venster.gemiddeld), reden: null });
       factoren.push({
         punten: Math.round(lerp(venster.uren, 6, 2, 0, 20)),
-        reden: venster.uren <= 3 ? `maar een kort blok (${venster.uren} uur)` : null,
+        reden: venster.uren <= 3 ? T.redenKortBlok(venster.uren) : null,
       });
       if (maxGevoel < 18) {
-        factoren.push({ punten: 8, reden: `fris: gevoel komt niet boven de ${Math.round(maxGevoel)} graden` });
+        factoren.push({ punten: 8, reden: T.redenFris(Math.round(maxGevoel)) });
       }
       const gemWind = venster.blok.reduce((a, u) => a + (u.wind ?? 0), 0) / venster.uren;
       if (gemWind > inst.maxWind * 0.8) {
-        factoren.push({ punten: 6, reden: `stevige wind (${Math.round(gemWind)} km/u)` });
+        factoren.push({ punten: 6, reden: T.redenWind(Math.round(gemWind)) });
       }
       if (natUren > 0) {
-        factoren.push({ punten: 5, reden: "buien rond het beste blok" });
+        factoren.push({ punten: 5, reden: T.redenBuien });
       }
     }
     const { score, redenen } = maakScore(factoren);
@@ -157,7 +241,7 @@ export function overlay(hourly, nu = new Date(), instellingen = TERRAS_DEFAULTS)
       uren: uren.map((u) => ({ uur: u.uur, score: u.score, nat: u.nat })),
       venster: venster ? { van: venster.van, tot: venster.tot, uren: venster.uren } : null,
       metric: top
-        ? { zin: `Lekkerste moment rond ${String(top.uur).padStart(2, "0")}:00 (gevoel ${Math.round(top.gevoel)} graden).` }
+        ? { zin: T.metric(String(top.uur).padStart(2, "0"), Math.round(top.gevoel)) }
         : null,
       conditie,
       status,
@@ -166,11 +250,11 @@ export function overlay(hourly, nu = new Date(), instellingen = TERRAS_DEFAULTS)
 
   if (dagenUit[0]?.status?.soort === "nee" && dagenUit[1]?.venster) {
     const v = dagenUit[1].venster;
-    dagenUit[0].status.zin += ` Morgen vanaf ${String(v.van).padStart(2, "0")}:00 kan het wel.`;
+    dagenUit[0].status.zin += T.morgenWel(String(v.van).padStart(2, "0"));
   }
 
   return {
-    legenda: { links: "binnen blijven", rechts: "terrasweer" },
+    legenda: T.legenda,
     dagen: dagenUit,
   };
 }
@@ -178,8 +262,8 @@ export function overlay(hourly, nu = new Date(), instellingen = TERRAS_DEFAULTS)
 function zonStuk(blok) {
   const zonUren = blok.filter((u) => u.dag && u.bewolking != null && u.bewolking <= 50);
   if (!zonUren.length) return "";
-  if (zonUren.length === blok.length) return ", met zon";
-  return `, zon vanaf ${String(zonUren[0].uur).padStart(2, "0")}:00`;
+  if (zonUren.length === blok.length) return T.metZon;
+  return T.zonVanaf(String(zonUren[0].uur).padStart(2, "0"));
 }
 
 function statusVandaag(uren, nu, inst) {
@@ -188,9 +272,9 @@ function statusVandaag(uren, nu, inst) {
   if (!blok) {
     const eerder = besteBlok(uren);
     if (eerder && eerder.tot <= nu.getHours()) {
-      return { soort: "nee", zin: "Het beste terrasweer is voor vandaag geweest." };
+      return { soort: "nee", zin: T.statusGeweest };
     }
-    return { soort: "nee", zin: "Vandaag wordt het niks op het terras." };
+    return { soort: "nee", zin: T.statusNiks };
   }
   const tijd = `${String(Math.max(blok.van, nu.getHours())).padStart(2, "0")}:00-${String(blok.tot).padStart(2, "0")}:00`;
   const windDaalt =
@@ -198,38 +282,32 @@ function statusVandaag(uren, nu, inst) {
     blok.blok.every((u) => (u.wind ?? 0) <= inst.maxWind * 0.8);
   return {
     soort: blok.van <= nu.getHours() ? "nu" : "later",
-    zin: `Beste terrasuren: ${tijd}${zonStuk(blok.blok)}${windDaalt ? ", de wind is dan gaan liggen" : ""}.`,
+    zin: T.statusBeste(tijd, zonStuk(blok.blok), windDaalt ? T.windLigt : ""),
   };
 }
 
 function statusToekomst(venster) {
-  if (!venster) return { soort: "nee", zin: "Geen terrasweer." };
+  if (!venster) return { soort: "nee", zin: T.toekomstGeen };
   return {
     soort: "info",
-    zin: `Beste blok: ${String(venster.van).padStart(2, "0")}:00-${String(venster.tot).padStart(2, "0")}:00.`,
+    zin: T.toekomstBeste(`${String(venster.van).padStart(2, "0")}:00-${String(venster.tot).padStart(2, "0")}:00`),
   };
 }
 
 export const terras = {
   id: "terras",
-  slug: "terrasweer",
-  naam: "Kan ik vandaag op het terras zitten?",
-  meldingKort: "Terrascheck",
-  korteVraag: "Kan ik vandaag op het terras?",
-  cta: "Check het terras",
-  navLabel: "Terras",
+  slug: T.slug,
+  naam: T.naam,
+  meldingKort: T.meldingKort,
+  korteVraag: T.korteVraag,
+  cta: T.cta,
+  navLabel: T.navLabel,
   kleur: "#BF6B3F",
-  locatieHint: "Zoek je stad, dat is genoeg...",
+  locatieHint: T.locatieHint,
   icoon: "parasol",
   groep: "Rondom huis",
-  diepte: "Zon, wind en temperatuur zonder gedoe.",
-  schaalLabels: {
-    ideaal: "Heerlijk terrasweer",
-    goed: "Prima terrasweer",
-    twijfelachtig: "Prima uit de wind",
-    matig: "Alleen met jas",
-    "zeer-slecht": "Geen terrasdag",
-  },
+  diepte: T.diepte,
+  schaalLabels: T.schaalLabels,
   patroon: "A",
   inputType: "locatie",
   weerVelden: BASIS_VELDEN,
@@ -242,33 +320,28 @@ export const terras = {
       {
         type: "keuze",
         id: "gevoel",
-        vraag: "Wanneer vind jij het terrasweer?",
+        vraag: T.instGevoelVraag,
         keuzes: [
-          { label: "Ik zit er snel", zet: { minGevoel: 13 } },
-          { label: "Gemiddeld", zet: { minGevoel: 16 } },
-          { label: "Mag best warm zijn", zet: { minGevoel: 19 } },
+          { label: T.instGevoelKeuzes[0], zet: { minGevoel: 13 } },
+          { label: T.instGevoelKeuzes[1], zet: { minGevoel: 16 } },
+          { label: T.instGevoelKeuzes[2], zet: { minGevoel: 19 } },
         ],
       },
       {
         type: "keuze",
         id: "wind",
-        vraag: "Hoeveel wind is ok\u00e9?",
+        vraag: T.instWindVraag,
         keuzes: [
-          { label: "Mijn plek ligt uit de wind", zet: { maxWind: 30 } },
-          { label: "Gemiddeld", zet: { maxWind: 22 } },
-          { label: "Snel te winderig", zet: { maxWind: 15 } },
+          { label: T.instWindKeuzes[0], zet: { maxWind: 30 } },
+          { label: T.instWindKeuzes[1], zet: { maxWind: 22 } },
+          { label: T.instWindKeuzes[2], zet: { maxWind: 15 } },
         ],
       },
-      { key: "dagStart", label: "Terras open vanaf", eenheid: "uur", step: 1, min: 8, max: 14 },
-      { key: "dagEind", label: "Terras dicht om", eenheid: "uur", step: 1, min: 16, max: 24 },
+      { key: "dagStart", label: T.instDagStart, eenheid: T.instUur, step: 1, min: 8, max: 14 },
+      { key: "dagEind", label: T.instDagEind, eenheid: T.instUur, step: 1, min: 16, max: 24 },
     ],
-    uitleg:
-      "Ideaal is 22 graden gevoel met zon en een zwak windje. Rond de 18 met wat bewolking is Goed, fris of vlagerig wordt Twijfelachtig. De statusregel noemt de beste uren.",
+    uitleg: T.instUitleg,
   },
-  adviesLabels: {
-    goed: "terrasweer",
-    matig: "kan, met een vestje",
-    slecht: "geen terrasweer",
-  },
+  adviesLabels: T.adviesLabels,
   affiliate: null,
 };

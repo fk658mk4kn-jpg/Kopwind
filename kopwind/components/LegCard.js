@@ -1,15 +1,12 @@
 "use client";
 
 import { bft, kompas, fmtKm, fmtDuur, fmtTijd } from "@/lib/format";
-import { labelVoor } from "@/lib/engine/schaal";
+import { labelVoor, schaalVoor, kleurVoorSchaal } from "@/lib/engine/schaal";
+import { kies } from "@/lib/i18n/locale";
 import { fietsNaarWerk } from "@/lib/tools/fiets-naar-werk";
 import KleurLegenda from "@/components/KleurLegenda";
 
-const BADGE_KLEUR = {
-  "prima fietsdag": "groen",
-  "pittige rit": "oranje",
-  "liever niet fietsen": "rood",
-};
+const kleurVoor = (score) => kleurVoorSchaal(schaalVoor(score).id);
 
 /**
  * Kaart voor een etappe. De windstrip is de kern: elk routesegment als
@@ -60,7 +57,7 @@ export default function LegCard({ leg, index, actief, onClick, onKiesRoute }) {
         <span className="route">
           {index + 1}. {leg.van.naam.split(",")[0]} → {leg.naar.naam.split(",")[0]}
         </span>
-        <span className={"badge " + BADGE_KLEUR[a.advies]}>
+        <span className={"badge " + kleurVoor(a.score)}>
           {a.advies} · {labelVoor(a.score, fietsNaarWerk.schaalLabels)}
         </span>
       </div>
@@ -105,7 +102,7 @@ export default function LegCard({ leg, index, actief, onClick, onKiesRoute }) {
           <span className="routekeuze-label">Route:</span>
           {alts.map((alt, j) => {
             const dmin = Math.round((alt.duration - alts[snelsteIdx].duration) / 60);
-            const rol = j === snelsteIdx ? "Snelste" : "Alternatief";
+            const rol = j === snelsteIdx ? kies({ nl: "Snelste", en: "Fastest" }) : kies({ nl: "Alternatief", en: "Alternative" });
             const dtxt = j === snelsteIdx ? "" : ` · ${dmin >= 0 ? "+" : ""}${dmin} min`;
             const minsteWind = j === besteWindIdx && besteWindIdx !== snelsteIdx;
             return (
@@ -144,7 +141,7 @@ export default function LegCard({ leg, index, actief, onClick, onKiesRoute }) {
         <span>start</span>
         <span>aankomst</span>
       </div>
-      <KleurLegenda soort="wind" links="rugwind" rechts="tegenwind" />
+      <KleurLegenda soort="wind" links={kies({ nl: "rugwind", en: "tailwind" })} rechts={kies({ nl: "tegenwind", en: "headwind" })} />
 
       <p className="samenvatting">{leg.samenvatting}</p>
       {a.redenen.length > 0 && (

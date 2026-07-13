@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { S } from "@/lib/strings/nl";
+import { S } from "@/lib/strings";
 import { isIos } from "@/lib/push-client";
 import { useGebruiker } from "./GebruikerContext";
 

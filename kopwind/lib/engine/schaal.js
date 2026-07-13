@@ -8,12 +8,19 @@
  * woorden.
  */
 
+import { kies } from "../i18n/locale.js";
+
+const LABELS = kies({
+  nl: ["Ideaal", "Goed", "Twijfelachtig", "Matig", "Zeer slecht"],
+  en: ["Ideal", "Good", "Iffy", "Poor", "Very poor"],
+});
+
 export const SCHAAL = [
-  { id: "ideaal", label: "Ideaal", totPijn: 12 },
-  { id: "goed", label: "Goed", totPijn: 30 },
-  { id: "twijfelachtig", label: "Twijfelachtig", totPijn: 45 },
-  { id: "matig", label: "Matig", totPijn: 62 },
-  { id: "zeer-slecht", label: "Zeer slecht", totPijn: 101 },
+  { id: "ideaal", label: LABELS[0], totPijn: 12 },
+  { id: "goed", label: LABELS[1], totPijn: 30 },
+  { id: "twijfelachtig", label: LABELS[2], totPijn: 45 },
+  { id: "matig", label: LABELS[3], totPijn: 62 },
+  { id: "zeer-slecht", label: LABELS[4], totPijn: 101 },
 ];
 
 /** Van pijnscore (0..100) naar schaal-item. */

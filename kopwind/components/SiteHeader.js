@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { HUB_NAAM } from "@/lib/brand";
-import { S } from "@/lib/strings/nl";
+import { S } from "@/lib/strings";
 import { TOOLS } from "@/lib/tools";
 import { useGebruiker } from "./GebruikerContext";
 import Icoon from "./Icoon";

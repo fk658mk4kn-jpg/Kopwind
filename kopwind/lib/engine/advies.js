@@ -23,10 +23,10 @@ export function maakOordeel(factoren, labels) {
   };
 }
 
-/** "Prima fietsdag \u00b7 8,9 \u2014 reden, reden." */
+/** "Prima fietsdag \u00b7 goed: reden, reden." */
 import { schaalVoor } from "./schaal.js";
 
 export function oordeelZin(oordeel) {
   const kop = `${oordeel.advies} \u00b7 ${schaalVoor(oordeel.score).label.toLowerCase()}`;
-  return oordeel.redenen.length ? `${kop} \u2014 ${oordeel.redenen.join(", ")}.` : kop;
+  return oordeel.redenen.length ? `${kop}: ${oordeel.redenen.join(", ")}.` : kop;
 }

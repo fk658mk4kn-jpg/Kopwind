@@ -24,6 +24,90 @@ import { jaVoor } from "../engine/schaal.js";
 import { bouwBasis, basisPerDag, dagKeyVan, BASIS_VELDEN } from "../engine/weerbasis.js";
 import { droogsnelheid, geschatteDroogtijd, fmtUren } from "../engine/drogen.js";
 
+import { kies } from "../i18n/locale.js";
+
+/** Alle teksten van de wascheck, per taal. */
+const T = kies({
+  nl: {
+    slug: "was-buiten-drogen",
+    naam: "Kan de was vandaag buiten?",
+    korteVraag: "Kan de was vandaag buiten?",
+    meldingKort: "Wascheck",
+    cta: "Check de was",
+    navLabel: "De was",
+    diepte: "Droogt het echt, en wanneer hang je het best op?",
+    locatieHint: "Zoek je adres of stad...",
+    schaalLabels: { ideaal: "Hang maar op", goed: "Goed droogweer", twijfelachtig: "Kan net", matig: "Wordt lastig", "zeer-slecht": "Binnen houden" },
+    adviesLabels: { goed: "drooghangdag", matig: "kan, met geduld", slecht: "binnen drogen" },
+    legenda: { links: "blijft nat", rechts: "droogt snel" },
+    redenTeNat: "het is te nat: geen bruikbaar droog blok",
+    redenGeenBlok: "geen aaneengesloten droge uren",
+    redenTraag: (u) => `drogen gaat traag bij dit weer (\u00b1${u} u)`,
+    redenNatDeel: (p) => `een flink deel van de dag is nat (${p}%)`,
+    redenBuienRond: "buien rond het droge blok",
+    metric: (u) => `Drogen duurt bij dit weer \u00b1${u} uur.`,
+    morgenGoed: " Hang 'm morgenvroeg op, dan lukt het wel.",
+    morgenSlecht: " Morgen ziet er ook niet best uit; check de dagen erna.",
+    statusNatBinnen: "Vandaag binnen drogen: het blijft nat.",
+    statusVoorbij: "Vandaag zit erop; buiten drogen lukt niet meer.",
+    statusTeKort: "Vandaag binnen drogen: geen droog blok dat lang genoeg is.",
+    statusTraag: (u) => `Buiten wordt 'ie vandaag niet droog: drogen duurt \u00b1${u} uur bij dit weer.`,
+    nu: "nu",
+    vanaf: (tijd) => `vanaf ${tijd}`,
+    statusHang: (wanneer, klaar) => `Hang 'm ${wanneer} op: rond ${klaar} droog.`,
+    statusTeLaat: (uren, droog) => `Vandaag te laat: nog \u00b1${uren} u bruikbaar en drogen duurt \u00b1${droog} u.`,
+    toekomstBinnen: "Binnen drogen.",
+    toekomstTeKort: (tijd) => `Droog blok ${tijd}, maar te kort om alles droog te krijgen.`,
+    toekomstBeste: (tijd, droog) => `Beste blok: ${tijd}, drogen duurt \u00b1${droog} u.`,
+    instDagStart: "Ophangen kan vanaf",
+    instDagEind: "Ophangen kan tot",
+    instUur: "uur",
+    instBuienVraag: "Hoeveel buienrisico wil je nemen?",
+    instBuienKeuzes: ["Risico nemen mag", "Gemiddeld", "Liever zeker droog"],
+    instUitleg:
+      "Ideaal is warm, luchtig en droog. Droog maar koel en vochtig wordt Goed of Twijfelachtig, want drogen gaat dan traag. Nat is Matig of slechter. Of je het nu nog redt staat los daarvan in de statusregel.",
+  },
+  en: {
+    slug: "dry-laundry-outside",
+    naam: "Can I dry laundry outside today?",
+    korteVraag: "Can I dry laundry outside today?",
+    meldingKort: "Laundry check",
+    cta: "Check the laundry",
+    navLabel: "Laundry",
+    diepte: "Does it actually dry, and when should you hang it out?",
+    locatieHint: "Search your address or town...",
+    schaalLabels: { ideaal: "Hang it out", goed: "Good drying weather", twijfelachtig: "Just about", matig: "Tricky", "zeer-slecht": "Keep it inside" },
+    adviesLabels: { goed: "drying day", matig: "doable, with patience", slecht: "dry inside" },
+    legenda: { links: "stays wet", rechts: "dries fast" },
+    redenTeNat: "too wet: no usable dry window",
+    redenGeenBlok: "no consecutive dry hours",
+    redenTraag: (u) => `drying is slow in this weather (about ${u} h)`,
+    redenNatDeel: (p) => `a large part of the day is wet (${p}%)`,
+    redenBuienRond: "showers around the dry window",
+    metric: (u) => `Drying takes about ${u} hours in this weather.`,
+    morgenGoed: " Hang it out early tomorrow and you're fine.",
+    morgenSlecht: " Tomorrow doesn't look great either; check the days after.",
+    statusNatBinnen: "Dry inside today: it stays wet.",
+    statusVoorbij: "That's it for today; outdoor drying won't happen anymore.",
+    statusTeKort: "Dry inside today: no dry window long enough.",
+    statusTraag: (u) => `It won't get dry outside today: drying takes about ${u} hours in this weather.`,
+    nu: "now",
+    vanaf: (tijd) => `from ${tijd}`,
+    statusHang: (wanneer, klaar) => `Hang it out ${wanneer}: dry around ${klaar}.`,
+    statusTeLaat: (uren, droog) => `Too late today: about ${uren} h left and drying takes about ${droog} h.`,
+    toekomstBinnen: "Dry inside.",
+    toekomstTeKort: (tijd) => `Dry window ${tijd}, but too short to get everything dry.`,
+    toekomstBeste: (tijd, droog) => `Best window: ${tijd}, drying takes about ${droog} h.`,
+    instDagStart: "Hanging out possible from",
+    instDagEind: "Hanging out possible until",
+    instUur: "h",
+    instBuienVraag: "How much shower risk are you willing to take?",
+    instBuienKeuzes: ["I will take a chance", "Average", "Rather safely dry"],
+    instUitleg:
+      "Ideal is warm, breezy and dry. Dry but cool and humid comes out Good or Iffy, because drying goes slowly. Wet is Poor or worse. Whether you can still make it today is a separate status line.",
+  },
+});
+
 export const WAS_VELDEN = BASIS_VELDEN;
 
 export const WAS_DEFAULTS = {
@@ -137,22 +221,19 @@ export function overlay(hourly, nu = new Date(), instellingen = WAS_DEFAULTS) {
       const regent = uren.some((u) => u.nat);
       factoren.push({
         punten: 78,
-        reden: regent ? "het is te nat: geen bruikbaar droog blok" : "geen aaneengesloten droge uren",
+        reden: regent ? T.redenTeNat : T.redenGeenBlok,
       });
     } else {
       factoren.push({
         punten: droogtijdPijn(droogtijd),
-        reden: droogtijd >= 5 ? `drogen gaat traag bij dit weer (\u00b1${fmtUren(droogtijd)} u)` : null,
+        reden: droogtijd >= 5 ? T.redenTraag(fmtUren(droogtijd)) : null,
       });
       factoren.push({
         punten: natPijn(fractieNat),
-        reden:
-          fractieNat >= 0.4
-            ? `een flink deel van de dag is nat (${Math.round(fractieNat * 100)}%)`
-            : null,
+        reden: fractieNat >= 0.4 ? T.redenNatDeel(Math.round(fractieNat * 100)) : null,
       });
       if (uren.some((u) => u.nat && (u.uur < venster.van || u.uur >= venster.tot))) {
-        factoren.push({ punten: 4, reden: "buien rond het droge blok" });
+        factoren.push({ punten: 4, reden: T.redenBuienRond });
       }
     }
     let { score, redenen } = maakScore(factoren);
@@ -186,9 +267,7 @@ export function overlay(hourly, nu = new Date(), instellingen = WAS_DEFAULTS) {
       uren: uren.map((u) => ({ uur: u.uur, score: u.kracht, nat: u.nat })),
       venster,
       droogtijd,
-      metric: droogtijd
-        ? { zin: `Drogen duurt bij dit weer \u00b1${fmtUren(droogtijd)} uur.` }
-        : null,
+      metric: droogtijd ? { zin: T.metric(fmtUren(droogtijd)) } : null,
       conditie,
       status,
     };
@@ -198,13 +277,11 @@ export function overlay(hourly, nu = new Date(), instellingen = WAS_DEFAULTS) {
   if (dagenUit[0]?.status?.soort === "te-laat" && dagenUit[1]) {
     const morgen = dagenUit[1];
     dagenUit[0].status.zin +=
-      morgen.venster && morgen.conditie.score < 50
-        ? " Hang 'm morgenvroeg op, dan lukt het wel."
-        : " Morgen ziet er ook niet best uit; check de dagen erna.";
+      morgen.venster && morgen.conditie.score < 50 ? T.morgenGoed : T.morgenSlecht;
   }
 
   return {
-    legenda: { links: "blijft nat", rechts: "droogt snel" },
+    legenda: T.legenda,
     dagen: dagenUit,
   };
 }
@@ -216,44 +293,42 @@ function statusVandaag(uren, nu, dagLengte, inst) {
     const regende = uren.some((u) => u.nat);
     return {
       soort: "nee",
-      zin: regende
-        ? "Vandaag binnen drogen: het blijft nat."
-        : "Vandaag zit erop; buiten drogen lukt niet meer.",
+      zin: regende ? T.statusNatBinnen : T.statusVoorbij,
     };
   }
   const blokNu = besteBlok(resterend, 1);
   if (blokNu.uren < MIN_VENSTER_UREN) {
-    return { soort: "nee", zin: "Vandaag binnen drogen: geen droog blok dat lang genoeg is." };
+    return { soort: "nee", zin: T.statusTeKort };
   }
   const droogtijdNu = geschatteDroogtijd(blokNu.gemiddeld);
   if (droogtijdNu != null && droogtijdNu > dagLengte) {
     return {
       soort: "traag",
-      zin: `Buiten wordt 'ie vandaag niet droog: drogen duurt \u00b1${fmtUren(droogtijdNu)} uur bij dit weer.`,
+      zin: T.statusTraag(fmtUren(droogtijdNu)),
     };
   }
   if (droogtijdNu != null && blokNu.uren >= droogtijdNu) {
     const start = Math.max(blokNu.van, nu.getHours());
     const klaar = fmtTijdUit(start + droogtijdNu);
-    const wanneer = blokNu.van <= nu.getHours() ? "nu" : `vanaf ${String(blokNu.van).padStart(2, "0")}:00`;
+    const wanneer = blokNu.van <= nu.getHours() ? T.nu : T.vanaf(`${String(blokNu.van).padStart(2, "0")}:00`);
     return {
       soort: blokNu.van <= nu.getHours() ? "nu" : "later",
-      zin: `Hang 'm ${wanneer} op: rond ${klaar} droog.`,
+      zin: T.statusHang(wanneer, klaar),
     };
   }
   return {
     soort: "te-laat",
-    zin: `Vandaag te laat: nog \u00b1${blokNu.uren} u bruikbaar en drogen duurt \u00b1${fmtUren(droogtijdNu)} u.`,
+    zin: T.statusTeLaat(blokNu.uren, fmtUren(droogtijdNu)),
   };
 }
 
 function statusToekomst(venster, droogtijd) {
-  if (!venster) return { soort: "nee", zin: "Binnen drogen." };
+  if (!venster) return { soort: "nee", zin: T.toekomstBinnen };
   const tijd = `${String(venster.van).padStart(2, "0")}:00-${String(venster.tot).padStart(2, "0")}:00`;
   if (droogtijd != null && droogtijd > venster.uren) {
-    return { soort: "te-laat", zin: `Droog blok ${tijd}, maar te kort om alles droog te krijgen.` };
+    return { soort: "te-laat", zin: T.toekomstTeKort(tijd) };
   }
-  return { soort: "info", zin: `Beste blok: ${tijd}, drogen duurt \u00b1${fmtUren(droogtijd)} u.` };
+  return { soort: "info", zin: T.toekomstBeste(tijd, fmtUren(droogtijd)) };
 }
 
 /** Back-compat naam: geeft direct de dagenlijst van de overlay terug. */
@@ -263,24 +338,18 @@ export function berekenDroogdagen(hourly, nu = new Date(), instellingen = WAS_DE
 
 export const wasBuitenDrogen = {
   id: "was-buiten-drogen",
-  slug: "was-buiten-drogen",
-  naam: "Kan de was vandaag buiten?",
-  meldingKort: "Wascheck",
-  korteVraag: "Kan de was vandaag buiten?",
-  cta: "Check de was",
-  navLabel: "De was",
+  slug: T.slug,
+  naam: T.naam,
+  meldingKort: T.meldingKort,
+  korteVraag: T.korteVraag,
+  cta: T.cta,
+  navLabel: T.navLabel,
   kleur: "#2E7D74",
-  locatieHint: "Zoek je adres of stad...",
+  locatieHint: T.locatieHint,
   icoon: "druppel",
   groep: "Rondom huis",
-  diepte: "Droogt het echt, en wanneer hang je het best op?",
-  schaalLabels: {
-    ideaal: "Hang maar op",
-    goed: "Goed droogweer",
-    twijfelachtig: "Kan net",
-    matig: "Wordt lastig",
-    "zeer-slecht": "Binnen houden",
-  },
+  diepte: T.diepte,
+  schaalLabels: T.schaalLabels,
   patroon: "A",
   inputType: "locatie",
   weerVelden: WAS_VELDEN,
@@ -290,26 +359,21 @@ export const wasBuitenDrogen = {
   instellingen: {
     defaults: WAS_DEFAULTS,
     velden: [
-      { key: "dagStart", label: "Ophangen kan vanaf", eenheid: "uur", step: 1, min: 5, max: 12 },
-      { key: "dagEind", label: "Ophangen kan tot", eenheid: "uur", step: 1, min: 14, max: 23 },
+      { key: "dagStart", label: T.instDagStart, eenheid: T.instUur, step: 1, min: 5, max: 12 },
+      { key: "dagEind", label: T.instDagEind, eenheid: T.instUur, step: 1, min: 14, max: 23 },
       {
         type: "keuze",
         id: "buien",
-        vraag: "Hoeveel buienrisico wil je nemen?",
+        vraag: T.instBuienVraag,
         keuzes: [
-          { label: "Risico nemen mag", zet: { buiKans: 70 } },
-          { label: "Gemiddeld", zet: { buiKans: 55 } },
-          { label: "Liever zeker droog", zet: { buiKans: 40 } },
+          { label: T.instBuienKeuzes[0], zet: { buiKans: 70 } },
+          { label: T.instBuienKeuzes[1], zet: { buiKans: 55 } },
+          { label: T.instBuienKeuzes[2], zet: { buiKans: 40 } },
         ],
       },
     ],
-    uitleg:
-      "Ideaal is warm, luchtig en droog. Droog maar koel en vochtig wordt Goed of Twijfelachtig, want drogen gaat dan traag. Nat is Matig of slechter. Of je het nu nog redt staat los daarvan in de statusregel.",
+    uitleg: T.instUitleg,
   },
-  adviesLabels: {
-    goed: "drooghangdag",
-    matig: "kan, met geduld",
-    slecht: "binnen drogen",
-  },
+  adviesLabels: T.adviesLabels,
   affiliate: null,
 };

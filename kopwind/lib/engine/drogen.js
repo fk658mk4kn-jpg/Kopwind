@@ -37,8 +37,13 @@ export function geschatteDroogtijd(gemiddeldeKracht) {
   return clamp(DROOG_BUDGET / Math.max(gemiddeldeKracht, 12), 1.5, 24);
 }
 
-/** Weergave: 3.4142 -> "3,4", 3.0 -> "3". */
+import { kies } from "../i18n/locale.js";
+
+const DECIMAAL = kies({ nl: ",", en: "." });
+
+/** Weergave: 3.4142 -> "3,4" (nl) of "3.4" (en), 3.0 -> "3". */
 export function fmtUren(uren) {
   if (uren == null) return "";
-  return uren.toFixed(1).replace(".", ",").replace(/,0$/, "");
+  const s = uren.toFixed(1).replace(".", DECIMAAL);
+  return s.endsWith(DECIMAAL + "0") ? s.slice(0, -2) : s;
 }
