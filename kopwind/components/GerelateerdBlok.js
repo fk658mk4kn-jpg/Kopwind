@@ -10,6 +10,8 @@ import Icoon from "./Icoon";
  * links helpen bezoekers en zoekmachines dezelfde kant op.
  */
 const RELATIES = {
+  "regen-timing": ["paraplu", "was-buiten-drogen", "fiets-naar-werk"],
+  "paraplu": ["regen-timing", "fiets-naar-werk", "wat-trek-ik-aan"],
   "fiets-naar-werk": ["wat-trek-ik-aan", "zonkracht", "was-buiten-drogen"],
   "was-buiten-drogen": ["hooikoorts", "terras", "wat-trek-ik-aan"],
   "wat-trek-ik-aan": ["zonkracht", "fiets-naar-werk", "terras"],

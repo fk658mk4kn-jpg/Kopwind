@@ -321,6 +321,7 @@ export const barbecue = {
   locatieHint: T.locatieHint,
   icoon: "bbq",
   groep: "Rondom huis",
+  categorieId: "buiten",
   diepte: T.diepte,
   schaalLabels: T.schaalLabels,
   patroon: "A",

@@ -95,6 +95,20 @@ export async function haalHourly(lat, lon, velden = STANDAARD_VELDEN, dagen = 4)
  * als in de browser.
  */
 /** Pollen-uurreeksen van de Open-Meteo Air Quality API (CAMS Europa). */
+/** 15-minuten neerslagreeks (DWD ICON-D2 / Meteo-France AROME voor NL). */
+export async function haalMinutely(lat, lon, dagen = 1) {
+  const d = Math.min(2, Math.max(1, Number(dagen) || 1));
+  const velden = "precipitation,precipitation_probability";
+  const url =
+    `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}` +
+    `&minutely_15=${encodeURIComponent(velden)}` +
+    `&timezone=Europe%2FAmsterdam&forecast_days=${d}`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`Open-Meteo (minutely) gaf ${res.status}`);
+  const data = await res.json();
+  return data.minutely_15;
+}
+
 export async function haalLuchtHourly(lat, lon, velden, dagen = 5) {
   const v = (velden?.length ? velden : ["grass_pollen", "birch_pollen", "alder_pollen"]).join(",");
   const d = Math.min(7, Math.max(1, Number(dagen) || 5));

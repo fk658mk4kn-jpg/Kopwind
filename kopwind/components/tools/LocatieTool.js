@@ -9,6 +9,8 @@ import Icoon from "@/components/Icoon";
 import OutfitFiguur from "@/components/OutfitFiguur";
 import { haalWeer } from "@/lib/engine/weather";
 import { haalLucht } from "@/lib/engine/lucht";
+import { factorenVoor } from "@/lib/engine/factoren";
+import FactorBalken from "@/components/FactorBalken";
 import { BASIS_VELDEN } from "@/lib/engine/weerbasis";
 import { isFavoriet } from "@/lib/engine/locatie";
 import { TOOLS } from "@/lib/tools";
@@ -32,6 +34,7 @@ export default function LocatieTool({ toolId, beginLocatie = null }) {
   const [locatie, setLocatie] = useState(beginLocatie);
   const [dagen, setDagen] = useState(null);
   const [legenda, setLegenda] = useState(null);
+  const [hourly, setHourly] = useState(null);
   const [gekozen, setGekozen] = useState(0);
   const [checkTijd, setCheckTijd] = useState(null);
   const [bezig, setBezig] = useState(false);
@@ -77,6 +80,7 @@ export default function LocatieTool({ toolId, beginLocatie = null }) {
       const res = tool.overlay(hourly, new Date(), g.thresholdsVoor(toolId));
       if (!res?.dagen?.length) throw new Error(S.locatieTool.geenData);
       setDagen(res.dagen);
+      setHourly(hourly);
       setLegenda(res.legenda ?? null);
       setGekozen(0);
       setCheckTijd(new Date());
@@ -84,6 +88,7 @@ export default function LocatieTool({ toolId, beginLocatie = null }) {
       g.meldInteractie();
     } catch (e) {
       setDagen(null);
+      setHourly(null);
       setFout(e.message ?? String(e));
     } finally {
       setBezig(false);
@@ -159,6 +164,9 @@ export default function LocatieTool({ toolId, beginLocatie = null }) {
             {dag.outfit && <OutfitFiguur outfit={dag.outfit} />}
             <p className="status-regel">{dag.status.zin}</p>
             {dag.metric?.zin && <p className="metric-zin">{dag.metric.zin}</p>}
+            {hourly && (
+              <FactorBalken factoren={factorenVoor(tool.id, hourly, gekozen, dag.venster)?.factoren} />
+            )}
 
             <div className="dagkiezer">
               {dagen.map((d, i) => (

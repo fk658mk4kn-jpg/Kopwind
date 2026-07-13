@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { TOOLS } from "@/lib/tools";
+import { CATEGORIEEN } from "@/lib/categorieen";
 import { S } from "@/lib/strings";
 import { PAD } from "@/lib/i18n/paden";
 import Icoon from "./Icoon";
@@ -12,13 +13,13 @@ import Icoon from "./Icoon";
  * het groep-veld uit het register, daaronder uitleg en over, en de
  * taalwissel als de zustersite geconfigureerd is.
  */
-const GROEP_VOLGORDE = ["Elke dag", "Rondom huis", "Onderweg"];
-
 export default function MenuPaneel({ open, onClose }) {
   if (!open) return null;
-  const groepen = GROEP_VOLGORDE.map((g) => ({
-    naam: S.menu.groepen[g] ?? g,
-    tools: TOOLS.filter((t) => t.groep === g),
+  const groepen = CATEGORIEEN.map((c) => ({
+    id: c.id,
+    slug: c.slug,
+    naam: c.titel,
+    tools: TOOLS.filter((t) => t.categorieId === c.id),
   })).filter((g) => g.tools.length);
   const zuster = process.env.NEXT_PUBLIC_ALTERNATE_LOCALE_URL;
 
@@ -36,8 +37,10 @@ export default function MenuPaneel({ open, onClose }) {
           </button>
         </div>
         {groepen.map((g) => (
-          <div key={g.naam} className="menugroep">
-            <span className="menugroep-titel">{g.naam}</span>
+          <div key={g.id} className="menugroep">
+            <Link href={`/${g.slug}`} className="menugroep-titel menugroep-link" onClick={onClose}>
+              {g.naam}
+            </Link>
             {g.tools.map((t) => (
               <Link key={t.id} href={`/${t.slug}`} className="menulink" onClick={onClose}>
                 <span className="menulink-icoon" style={{ color: t.kleur }}>

@@ -1725,6 +1725,49 @@ a.merk { text-decoration: none; }
   .sticky-venster { font-size: 13px; font-weight: 700; color: var(--inkt-zacht); }
 }
 
+.factorbalken {
+  margin: 14px 0 4px;
+  padding: 14px 0 4px;
+  border-top: 1px solid var(--lijn);
+}
+
+.factorbalken-kop {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: var(--inkt);
+  margin: 0 0 10px;
+}
+
+.factorbalken-lijst { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+
+.factorbalk {
+  display: grid;
+  grid-template-columns: 96px 1fr 40px;
+  align-items: center;
+  gap: 10px;
+}
+
+.factorbalk-naam { font-size: 13px; color: var(--inkt); }
+
+.factorbalk-spoor {
+  height: 8px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--wolk) 70%, #e6e6e6);
+  overflow: hidden;
+}
+
+.factorbalk-vulling { display: block; height: 100%; border-radius: 999px; transition: width 0.3s ease; }
+
+.factorbalk-gewicht { font-size: 12px; font-weight: 700; color: var(--inkt-zacht); text-align: right; }
+
+.factorbalken-uitleg { font-size: 12px; color: var(--inkt-zacht); margin: 10px 0 0; }
+
+@media (max-width: 640px) {
+  .factorbalk { grid-template-columns: 84px 1fr 36px; gap: 8px; }
+  .factorbalk-naam { font-size: 12.5px; }
+}
+
 /* Mobiel: checks als vierkante tegels in twee kolommen (Ponente) */
 @media (max-width: 640px) {
   .checkgrid {
@@ -1943,6 +1986,67 @@ a.checkkaart:hover .kaartknop { background: var(--geel); }
 .menupaneel-titel { font-weight: 800; font-size: 17px; }
 
 .menugroep { display: flex; flex-direction: column; gap: 2px; }
+
+.menugroep-link { text-decoration: none; color: var(--leisteen); }
+.menugroep-link:hover { text-decoration: underline; }
+
+.categorie-varianten { margin-top: 24px; }
+
+.storefront-koptekst { font-size: 16px; margin: 0 0 12px; }
+
+.storefront-tekst { margin-top: 30px; }
+
+.storefront-punten { margin: 0 0 8px; padding-left: 20px; display: flex; flex-direction: column; gap: 8px; }
+.storefront-punten li { line-height: 1.5; }
+
+.storefront-situaties {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
+  margin: 4px 0 8px;
+}
+
+.storefront-situatie {
+  border: 1px solid var(--lijn);
+  border-radius: var(--radius-s);
+  padding: 13px 15px;
+  background: var(--wolk);
+}
+
+.storefront-situatie h3 { margin: 0 0 5px; font-size: 14.5px; }
+.storefront-situatie p { margin: 0; font-size: 13.5px; color: var(--inkt-zacht); line-height: 1.45; }
+
+.timing-paneel, .paraplu-paneel { display: flex; flex-direction: column; gap: 14px; }
+
+.timing-kern, .paraplu-antwoord {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  border-radius: var(--radius-s);
+  font-size: 17px;
+}
+
+.timing-kern.nat, .paraplu-antwoord.rood { background: color-mix(in srgb, var(--rood, #B3261E) 12%, #fff); color: var(--rood, #B3261E); }
+.timing-kern.droog, .paraplu-antwoord.groen { background: color-mix(in srgb, var(--groen) 14%, #fff); color: var(--groen); }
+.paraplu-antwoord.oranje { background: color-mix(in srgb, var(--oranje, #C25E00) 14%, #fff); color: var(--oranje, #C25E00); }
+
+.timing-lijst { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.timing-lijst li { display: flex; align-items: center; gap: 9px; font-size: 14.5px; color: var(--inkt); }
+
+.timing-dagdelen { display: flex; gap: 8px; }
+.timing-dagdeel {
+  flex: 1;
+  text-align: center;
+  padding: 10px 8px;
+  border-radius: var(--radius-s);
+  border: 1px solid var(--lijn);
+}
+.timing-dagdeel.droog { background: color-mix(in srgb, var(--groen) 10%, #fff); }
+.timing-dagdeel.bui { background: color-mix(in srgb, var(--rood, #B3261E) 9%, #fff); }
+.timing-dagdeel-naam { display: block; font-weight: 700; font-size: 13px; }
+.timing-dagdeel-status { display: block; font-size: 12.5px; color: var(--inkt-zacht); margin-top: 2px; }
+.categorie-varianten h2 { font-size: 16px; margin: 0 0 10px; }
 
 .menugroep-titel {
   font-size: 12px;

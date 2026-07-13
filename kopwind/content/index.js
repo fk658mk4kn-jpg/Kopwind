@@ -17,6 +17,8 @@ import * as hooikoorts from "./hooikoorts.js";
 import * as korteBroek from "./korte-broek-weer.js";
 import * as jasAan from "./jas-aan-of-uit.js";
 import * as tShirt from "./t-shirt-weer.js";
+import * as wanneerRegen from "./wanneer-gaat-het-regenen.js";
+import * as parapluMee from "./paraplu-mee.js";
 
 import * as bikeToWork from "./en/bike-to-work.js";
 import * as dryLaundryOutside from "./en/dry-laundry-outside.js";
@@ -28,6 +30,8 @@ import * as hayFever from "./en/hay-fever.js";
 import * as shorts from "./en/shorts-weather.js";
 import * as coat from "./en/coat-or-no-coat.js";
 import * as tShirtEn from "./en/t-shirt-weather.js";
+import * as whenRain from "./en/when-will-it-rain.js";
+import * as umbrella from "./en/umbrella-today.js";
 
 const PER_SLUG =
   LOCALE === "en"
@@ -42,6 +46,8 @@ const PER_SLUG =
         "shorts-weather": shorts,
         "coat-or-no-coat": coat,
         "t-shirt-weather": tShirtEn,
+        "when-will-it-rain": whenRain,
+        "umbrella-today": umbrella,
       }
     : {
         "fietsen-naar-werk": fietsenNaarWerk,
@@ -54,6 +60,8 @@ const PER_SLUG =
         "korte-broek-weer": korteBroek,
         "jas-aan-of-uit": jasAan,
         "t-shirt-weer": tShirt,
+        "wanneer-gaat-het-regenen": wanneerRegen,
+        "paraplu-mee": parapluMee,
       };
 
 export function inhoudVoorTool(slug) {

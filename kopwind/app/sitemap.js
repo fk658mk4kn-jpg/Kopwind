@@ -6,6 +6,7 @@ import { SITE_URL as SITE } from "@/lib/site";
 import { UITLEG } from "@/content/uitleg";
 import { PAD } from "@/lib/i18n/paden";
 import { VARIANTEN } from "@/lib/varianten";
+import { CATEGORIEEN } from "@/lib/categorieen";
 import { IS_EN } from "@/lib/i18n/locale";
 
 /** Sitemap automatisch uit register maal steden plus route-paren (§9). */
@@ -30,6 +31,10 @@ export default function sitemap() {
         priority: 0.7,
       });
     }
+  }
+
+  for (const c of CATEGORIEEN) {
+    urls.push({ url: `${SITE}/${c.slug}`, lastModified: nu, changeFrequency: "weekly", priority: 0.8 });
   }
 
   for (const v of VARIANTEN) {

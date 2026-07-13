@@ -31,9 +31,11 @@ import { terras } from "./terras.js";
 import { barbecue } from "./barbecue.js";
 import { zonkracht } from "./zonkracht.js";
 import { hooikoorts } from "./hooikoorts.js";
+import { regenTiming } from "./regen-timing.js";
+import { paraplu } from "./paraplu.js";
 import { VARIANTEN, maakPseudoTool } from "../varianten.js";
 
-export const TOOLS = [fietsNaarWerk, wasBuitenDrogen, kleding, terras, barbecue, zonkracht, hooikoorts];
+export const TOOLS = [fietsNaarWerk, wasBuitenDrogen, kleding, terras, barbecue, zonkracht, hooikoorts, regenTiming, paraplu];
 
 export function vindTool(slug) {
   const direct = TOOLS.find((t) => t.slug === slug);
@@ -100,4 +102,9 @@ export function valideerRegister(tools = TOOLS) {
     }
   }
   return fouten;
+}
+
+/** Alle tools (geen varianten) die tot een categorie horen. */
+export function toolsInCategorie(categorieId) {
+  return TOOLS.filter((t) => t.categorieId === categorieId);
 }

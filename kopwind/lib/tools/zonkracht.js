@@ -198,6 +198,7 @@ export const zonkracht = {
   locatieHint: T.locatieHint,
   icoon: "zon",
   groep: "Elke dag",
+  categorieId: "gezondheid",
   soort: "advies",
   diepte: T.diepte,
   schaalLabels: T.schaalLabels,

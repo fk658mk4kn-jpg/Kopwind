@@ -267,6 +267,7 @@ export const hooikoorts = {
   locatieHint: T.locatieHint,
   icoon: "bloem",
   groep: "Elke dag",
+  categorieId: "gezondheid",
   soort: "advies",
   diepte: T.diepte,
   schaalLabels: T.schaalLabels,

@@ -6,6 +6,18 @@
 
 export const VERSIES = [
   {
+    versie: "3.6.0",
+    codenaam: "Bora",
+    datum: "2026-07-13",
+    zin: "De storefronts staan: elke categorie is nu een eigen rankbare pagina op de root (regen-en-droog, kleding, buiten-vrije-tijd, sport-beweging, huis-tuin-auto, zon-lucht-hooikoorts, winter-veiligheid) met beslislogica, situaties, seizoenscontext en FAQ. De eerste storefront Regen en droog is volledig uitgewerkt, met twee nieuwe checks: wanneer gaat het regenen (op 15-minuten neerslagdata) en paraplu mee.",
+  },
+  {
+    versie: "3.5.0",
+    codenaam: "Tramontane",
+    datum: "2026-07-13",
+    zin: "Fundament voor de storefronts: elke check hoort nu bij een categorie (buiten, kleding, huis en tuin, onderweg, gezondheid) met een eigen overzichtspagina, klaar om later etalage te worden. Onder elk antwoord staan weerfactoren-balken die tonen wat het oordeel bepaalt (temperatuur, wind, vocht, zon), en de pushmeldingen worden nu echt op tijd verstuurd.",
+  },
+  {
     versie: "3.4.0",
     codenaam: "Ponente",
     datum: "2026-07-13",

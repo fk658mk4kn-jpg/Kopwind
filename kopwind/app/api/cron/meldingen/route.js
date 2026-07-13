@@ -53,7 +53,11 @@ export const maxDuration = 60;
 
 export async function GET(request) {
   const secret = process.env.CRON_SECRET;
+  // Vercel Cron stuurt "Authorization: Bearer <CRON_SECRET>"; een externe
+  // cron (bv. cron-job.org) kan x-cron-secret of ?secret= gebruiken.
+  const bearer = request.headers.get("authorization")?.replace(/^Bearer\s+/i, "");
   const gegeven =
+    bearer ??
     request.headers.get("x-cron-secret") ??
     new URL(request.url).searchParams.get("secret");
   if (!secret || gegeven !== secret) {

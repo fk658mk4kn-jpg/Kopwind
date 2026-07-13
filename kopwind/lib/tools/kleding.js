@@ -263,6 +263,7 @@ export const kleding = {
   locatieHint: T.locatieHint,
   icoon: "shirt",
   groep: "Elke dag",
+  categorieId: "kleding",
   diepte: T.diepte,
   soort: "advies",
   schaalLabels: T.schaalLabels,

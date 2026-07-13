@@ -5,6 +5,18 @@
 
 export const VERSIES = [
   {
+    versie: "3.6.0",
+    codenaam: "Bora",
+    datum: "2026-07-13",
+    zin: "The storefronts are live: every category is now its own rankable page on the root (rain-or-dry, clothing, outdoors-leisure, sport-exercise, home-garden-car, sun-air-hayfever, winter-safety) with decision logic, situations, seasonal context and FAQ. The first storefront, rain or dry, is fully built, with two new checks: when will it rain (on 15-minute rain data) and umbrella today.",
+  },
+  {
+    versie: "3.5.0",
+    codenaam: "Tramontane",
+    datum: "2026-07-13",
+    zin: "Foundation for the storefronts: every check now belongs to a category (outdoors, clothing, home and garden, on the move, health) with its own overview page, ready to become a storefront later. Under every answer sit weather-factor bars showing what drives the verdict (temperature, wind, humidity, sun), and push notifications are now actually sent on time.",
+  },
+  {
     versie: "3.4.0",
     codenaam: "Ponente",
     datum: "2026-07-13",

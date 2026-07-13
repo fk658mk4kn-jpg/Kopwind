@@ -311,6 +311,7 @@ export const terras = {
   locatieHint: T.locatieHint,
   icoon: "parasol",
   groep: "Rondom huis",
+  categorieId: "buiten",
   diepte: T.diepte,
   schaalLabels: T.schaalLabels,
   patroon: "A",

@@ -34,6 +34,9 @@ test("migreerThresholds: oud plat fiets-object wordt per-tool, per-tool blijft",
 
 test("instellingen: elke tool declareert zijn eigen drempels met defaults", () => {
   for (const t of TOOLS) {
+    // Tools met een eigen client-component (nowcast-checks zoals
+    // regentiming en paraplu) hebben geen instelbare drempels.
+    if (t.eigenComponent) continue;
     assert.ok(t.instellingen?.velden?.length >= 3, `${t.id} heeft instelvelden`);
     for (const v of t.instellingen.velden) {
       if (v.type === "keuze") {

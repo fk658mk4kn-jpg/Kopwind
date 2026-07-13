@@ -174,6 +174,51 @@ zinnen als templatefuncties) in een `const T = kies({ nl: {...}, en:
 voorbeeld. Vergeet de Engelse content in content/en/ en de registratie
 in content/index.js niet.
 
+## Categorie-storefronts (v3.6.0 "Bora")
+
+Elke categorie is een rankbare storefront op de root (/regen-en-droog
+etc.), niet /c/. Ze lopen via de /[tool]-route: die checkt eerst
+vindCategorie (dan <Storefront>), anders de toolpagina. Zo staan
+categorie en tool op de root zonder Next.js-routeconflict; botsende
+slugs worden door valideerRegister afgevangen. Storefront-content
+(beslislogica, situaties, seizoen, FAQ-anchors) staat in
+content/storefronts.js; alleen ingevulde categorien tonen die secties,
+de rest toont enkel de tool-kaarten.
+
+## Derde databron: 15-minuten neerslag (minutely)
+
+De regen-timing- en paraplu-check draaien op minutely_15 (Open-Meteo,
+DWD ICON-D2 en Meteo-France AROME voor Centraal-Europa). Laag:
+lib/engine/minutely.js (haalMinutely plus analyseerMinutely),
+app/api/minutely/route.js, haalMinutely in externe.js. Deze tools
+declareren databron "minutely" en een eigenComponent
+(RegenTimingTool/ParapluTool), want hun UI is nowcast, geen 5-daagse
+dagkiezer. De gedeelde useLocatie-hook levert de plek-logica.
+
+## Categorie-taxonomie en cannibalisatie
+
+De zeven categorien en welke vraag een eigen pagina wordt versus een
+anchor/FAQ staan in BACKLOG.md (taxonomie-sprint). Kernregel: een hub
+vangt de brede zoekintentie, alleen echt aparte intenties (timing,
+actie) krijgen een eigen URL. Zo voorkom je dat varianten van dezelfde
+vraag om hetzelfde zoekwoord concurreren.
+
+## Categorieen (oude opzet, v3.5)
+
+lib/categorieen.js is de categorie-laag boven het register: elke tool
+heeft een categorieId, elke categorie een eigen route (/c en /c/<slug>).
+Nu overzichtspagina's; in v3.6 worden dit storefronts (etalage met
+gidsen en FAQ), in v3.7 komt affiliate op twee niveaus (breed op de
+categorie, specifiek op de tool). Zie BACKLOG.md voor het plan.
+
+## Weerfactoren-balken
+
+lib/engine/factoren.js toont wat een oordeel bepaalt, als 0-100 balken
+per factor. BEWUST losgekoppeld van de overlays (die het echte oordeel
+berekenen en getest zijn): deze laag leest dezelfde inputs en geeft een
+uitlegbare benadering. Een nieuwe tool krijgt balken door een profiel
+toe te voegen aan PROFIELEN; geen profiel betekent geen balken.
+
 ## Vraagpagina's (varianten) en tweede databron
 
 Een vraagpagina (bv. "korte broek aan?") is een lichte variant op een

@@ -7,12 +7,16 @@ import { STEDEN } from "@/lib/steden/nl";
 import { HUB_NAAM } from "@/lib/brand";
 import FietsTool from "@/components/tools/FietsTool";
 import LocatieTool from "@/components/tools/LocatieTool";
+import RegenTimingTool from "@/components/tools/RegenTimingTool";
+import ParapluTool from "@/components/tools/ParapluTool";
 import Broodkruimel from "@/components/Broodkruimel";
 import StemPeiling from "@/components/StemPeiling";
 import AdSlot from "@/components/AdSlot";
 import GerelateerdBlok from "@/components/GerelateerdBlok";
 import { S } from "@/lib/strings";
 import { LOCALE } from "@/lib/i18n/locale";
+import { CATEGORIEEN, vindCategorie } from "@/lib/categorieen";
+import Storefront from "@/components/Storefront";
 
 /**
  * Dynamische toolpagina uit het register (§6): de tool bovenaan, de
@@ -23,10 +27,26 @@ export const dynamicParams = false;
 export const revalidate = 86400;
 
 export function generateStaticParams() {
-  return alleToolSlugs().map((slug) => ({ tool: slug }));
+  return [
+    ...alleToolSlugs().map((slug) => ({ tool: slug })),
+    ...CATEGORIEEN.map((c) => ({ tool: c.slug })),
+  ];
 }
 
 export function generateMetadata({ params }) {
+  const categorie = vindCategorie(params.tool);
+  if (categorie) {
+    const titel =
+      LOCALE === "en"
+        ? `${categorie.titel}: today's checks`
+        : `${categorie.titel} vandaag: alle checks`;
+    return {
+      title: titel,
+      description: categorie.intro,
+      alternates: { canonical: `/${categorie.slug}` },
+      openGraph: { title: `${titel} | ${HUB_NAAM}`, description: categorie.intro, url: `/${categorie.slug}` },
+    };
+  }
   const tool = vindTool(params.tool);
   const inhoud = inhoudVoorTool(params.tool);
   if (!tool || !inhoud) return {};
@@ -43,6 +63,9 @@ export function generateMetadata({ params }) {
 }
 
 export default function ToolPagina({ params }) {
+  const categorie = vindCategorie(params.tool);
+  if (categorie) return <Storefront categorie={categorie} />;
+
   const tool = vindTool(params.tool);
   const inhoud = inhoudVoorTool(params.tool);
   if (!tool || !inhoud) notFound();
@@ -76,7 +99,15 @@ export default function ToolPagina({ params }) {
         <p>{inhoud.seo.intro}</p>
       </section>
 
-      {tool.inputType === "route" ? <FietsTool /> : <LocatieTool toolId={tool.id} />}
+      {tool.eigenComponent === "RegenTimingTool" ? (
+        <RegenTimingTool />
+      ) : tool.eigenComponent === "ParapluTool" ? (
+        <ParapluTool />
+      ) : tool.inputType === "route" ? (
+        <FietsTool />
+      ) : (
+        <LocatieTool toolId={tool.id} />
+      )}
 
       <StemPeiling toolId={tool.id} />
       <AdSlot plek="onder-tool" />

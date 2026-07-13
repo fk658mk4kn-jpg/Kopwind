@@ -632,3 +632,129 @@ vierkante tegels en sticky balk zijn niet op echte devices getest.
 **Afspraak**: hierna de nulmeting plus installatie-audit (API's,
 meldingen, GA, Search Console, env-vars) in een aparte sessie.
 
+## v3.5.0 "Tramontane" - 2026-07-13
+
+**Wat**: het fundament voor de storefront-strategie, plus twee concrete
+verbeteringen (weerfactoren-balken, cron-fix). Affiliate bewust nog niet;
+eerst de structuur.
+
+**Storefront-besluit (met Martijn)**: de CATEGORIE wordt de storefront,
+niet de losse tool. Twee affiliate-lagen (later): breed op de categorie,
+specifiek op de toolpagina. Een domein, een engine. Zie BACKLOG.md voor
+de volledige redenering, categorie-indeling en vraagvariant-lijst.
+
+**Categorie-architectuur**: lib/categorieen.js definieert vijf
+categorieen (buiten, kleding, huis-tuin, onderweg, gezondheid), elk met
+slug, intro, icoon en kleur. Elke tool kreeg een categorieId in zijn
+config; toolsInCategorie() verzamelt ze. Routes: /c (overzicht) en
+/c/<slug> (detail met de tools plus bijbehorende varianten). In het menu
+is de groepskop nu een klikbare categorielink, en de categorien staan in
+de sitemap. Dit is bewust nog een nette overzichtspagina, geen etalage:
+in v3.6 groeit /c/<slug> uit tot de storefront met gidsen en FAQ, in
+v3.7 komt de affiliate.
+
+**Waarom /c/ als prefix**: houdt de categorie-namespace gescheiden van
+de tool-slugs (die op de root staan, /terrasweer etc.), zodat een
+categorie en een tool nooit botsen.
+
+**Weerfactoren-balken**: lib/engine/factoren.js is een BEWUST aparte
+uitleg-laag, los van de overlays. De overlays berekenen het echte,
+zwaar geteste oordeel; deze module leest dezelfde ruwe uurdata en geeft
+per factor een 0-100 gunstigheidsscore plus een gewicht, voor de balken
+onder het antwoord. Per tool een weegprofiel (terras weegt temp 45 /
+wind 25 / zon 20 / droog 10, was weegt vocht 40 / wind 30, etc.). De
+balken rekenen over het beste blok als dat er is, anders de daglichturen.
+Kleine afwijkingen van het exacte oordeel zijn acceptabel: dit is
+toelichting, geen tweede waarheid. Hooikoorts heeft geen profiel (eigen
+databron, eigen uitleg) en toont dus geen balken.
+
+**Cron-fix (het echte gat uit de nulmeting)**: er was een
+meldingen-route maar geen vercel.json, dus de cron draaide nergens
+vandaan en pushmeldingen werden nooit verstuurd. Toegevoegd: vercel.json
+met een */5-schedule. De route accepteert nu ook Vercels standaard
+"Authorization: Bearer <CRON_SECRET>" naast de bestaande x-cron-secret
+header, zodat zowel Vercel Cron als een externe cron werkt.
+
+**Nulmeting uitgevoerd**: zie het antwoord in de chat en straks AUDIT.md
+(v3.6). Kort: 7 tools, 2 databronnen, alle fallbacks netjes. Env-vars
+die Martijn moet zetten voor volledige werking: Supabase (stemmen),
+VAPID (push), plus expliciete SITE_URL/GA/GSC. Cron-gat nu gedicht.
+
+**Beperkingen**: factorbalken en categoriepagina's niet op echte devices
+getest; de balk-benadering kan licht afwijken van het exacte oordeel
+(bedoeld); cron pas te verifieren op Vercel na het zetten van
+CRON_SECRET.
+
+**Backlog verplaatst naar BACKLOG.md** (levend document): volledige
+categorie- en vraagvariant-lijst, gefaseerd affiliate-plan (v3.7+),
+storefront-content-template (v3.6), en de geparkeerde items (voetbal,
+stroomprijs-tools).
+
+## v3.6.0 "Bora" - 2026-07-13
+
+**Wat**: de taxonomie-sprint verwerkt en de eerste storefronts gebouwd.
+De categorie IS de storefront (rankbare hub), niet de losse tool.
+
+**Taxonomie-sprint (in de chat, met externe SEO-feedback)**: de grootste
+valkuil bleek cannibalisatie, niet techniek. Cannibalisatie-matrix
+gemaakt: veel regenvragen ("blijft het droog", "word ik nat", "regenjas
+aan") zijn dezelfde zoekintentie en worden dus GEEN losse pagina's maar
+anchors en FAQ op een sterke hub. Uitkomst: zeven categorien met
+beschrijvende root-slugs, hub vangt de brede intentie, alleen echt
+aparte intenties (timing, paraplu) krijgen een eigen pagina.
+
+**Zeven categorien op de root**: regen-en-droog, kleding,
+buiten-vrije-tijd, sport-beweging, huis-tuin-auto, zon-lucht-hooikoorts,
+winter-veiligheid (EN: rain-or-dry, clothing, outdoors-leisure,
+sport-exercise, home-garden-car, sun-air-hayfever, winter-safety). Root
+in plaats van /c/ voor SEO-kracht; slug-botsing met tools afgevangen
+doordat categorie- en toolslugs een namespace delen (valideerRegister).
+
+**Routing-truc**: twee dynamische root-segmenten kan Next.js niet
+(/[tool] en /[categorie] botsen). Opgelost door categorie-slugs mee te
+laten lopen via de bestaande /[tool]-route: die checkt eerst
+vindCategorie en rendert dan <Storefront>, anders de toolpagina.
+generateStaticParams levert tool-, variant- EN categorie-slugs.
+
+**Storefront-component**: rankbare hub met tool-kaarten, beslislogica in
+gewone taal, situaties per weertype, seizoenscontext en FAQ met
+id-anchors (waar de samengevoegde long-tail landt). Categorien zonder
+uitgewerkte content tonen alleen de kaarten; alleen Regen en droog is nu
+volledig (content/storefronts.js).
+
+**Regen-timing-check** (/wanneer-gaat-het-regenen): eerste tool op een
+DERDE databron, de 15-minuten neerslagreeks (minutely_15). Geverifieerd
+dat Open-Meteo dit voor Centraal-Europa op DWD ICON-D2 en Meteo-France
+AROME levert (echte nowcast, geen interpolatie, Nederland valt hierin).
+Nieuwe laag: lib/engine/minutely.js (client-helper plus analyseerMinutely
+die eerstvolgende bui, piek, eerstvolgend droog blok en binnen-een-uur
+bepaalt), app/api/minutely/route.js, haalMinutely in externe.js. Eigen
+client-component RegenTimingTool met dagdeel-samenvatting.
+
+**Paraplu-check** (/paraplu-mee): actie-check die de neerslag naar een
+ja/nee-beslissing vertaalt met instelbare buitentijd (kort, uurtje, hele
+dag). Eigen component ParapluTool. Draait op dezelfde minutely-laag.
+
+**Gedeelde useLocatie-hook**: de plek-logica (laden uit localStorage,
+auto-run, opslaan) is uit LocatieTool getrokken zodat de nieuwe
+componenten haar hergebruiken zonder duplicatie.
+
+**Register**: nieuwe tools declareren databron "minutely" en
+eigenComponent; de toolpagina kiest daarop de juiste UI. Ze hebben bewust
+geen instellingen (nowcast-checks), dus de instellingen-test slaat tools
+met eigenComponent over.
+
+**Bouwvolgorde gevolgd** (advies externe AI): eerst hub plus anchors,
+daarna de leaf pages. De hub /regen-en-droog is zelf de brede
+answer-page; /blijft-het-droog is bewust NIET als losse pagina gebouwd
+in fase 1 (zou de hub kannibaliseren), kan later op GSC-data.
+
+**Beperkingen**: minutely_15 is in de sandbox niet te bereiken, dus de
+timing- en paraplu-check zijn met mockdata getest (parser) maar live pas
+op Vercel; de storefronts van de andere zes categorien tonen nu alleen
+kaarten (content volgt); stad-pagina's blijven NL-only.
+
+**Volgende**: tweede storefront Huis, tuin en auto (was bestaat al,
+sterkste affiliate-fit), daarna de overige categorien vullen, bijsturen
+op GSC-data zodra die binnenkomt. Affiliate blijft fase 5.
+

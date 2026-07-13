@@ -348,6 +348,7 @@ export const wasBuitenDrogen = {
   locatieHint: T.locatieHint,
   icoon: "druppel",
   groep: "Rondom huis",
+  categorieId: "huis-tuin",
   diepte: T.diepte,
   schaalLabels: T.schaalLabels,
   patroon: "A",
