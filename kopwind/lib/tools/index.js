@@ -30,11 +30,27 @@ import { kleding } from "./kleding.js";
 import { terras } from "./terras.js";
 import { barbecue } from "./barbecue.js";
 import { zonkracht } from "./zonkracht.js";
+import { hooikoorts } from "./hooikoorts.js";
+import { VARIANTEN, maakPseudoTool } from "../varianten.js";
 
-export const TOOLS = [fietsNaarWerk, wasBuitenDrogen, kleding, terras, barbecue, zonkracht];
+export const TOOLS = [fietsNaarWerk, wasBuitenDrogen, kleding, terras, barbecue, zonkracht, hooikoorts];
 
 export function vindTool(slug) {
-  return TOOLS.find((t) => t.slug === slug) ?? null;
+  const direct = TOOLS.find((t) => t.slug === slug);
+  if (direct) return direct;
+  // Vraagpagina's (varianten) verschijnen op /slug als pseudo-tool op
+  // hun oudertool: eigen slug, titel en content, gedeelde engine.
+  const variant = VARIANTEN.find((v) => v.slug === slug);
+  if (variant) {
+    const ouder = TOOLS.find((t) => t.id === variant.ouderId);
+    if (ouder) return maakPseudoTool(variant, ouder);
+  }
+  return null;
+}
+
+/** Alle slugs die als /slug-pagina bestaan: tools plus varianten. */
+export function alleToolSlugs() {
+  return [...TOOLS.map((t) => t.slug), ...VARIANTEN.map((v) => v.slug)];
 }
 
 export function vindToolOpId(id) {

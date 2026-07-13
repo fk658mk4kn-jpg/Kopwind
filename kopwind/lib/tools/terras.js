@@ -40,6 +40,7 @@ const T = kies({
     redenNat: "te nat voor het terras",
     redenFrisMax: (g) => `te fris (gevoel maximaal ${g} graden)`,
     redenGeenBlok: "geen bruikbaar blok (wind en buienkans zitten dwars)",
+    redenMatigBlok: (g, w) => `het beste blok is maar matig (gevoel rond ${g} graden, wind ${w} km/u)`,
     redenKortBlok: (u) => `maar een kort blok (${u} uur)`,
     redenFris: (g) => `fris: gevoel komt niet boven de ${g} graden`,
     redenWind: (w) => `stevige wind (${w} km/u)`,
@@ -79,6 +80,7 @@ const T = kies({
     redenNat: "too wet for sitting outside",
     redenFrisMax: (g) => `too chilly (feels like ${g} degrees at best)`,
     redenGeenBlok: "no usable window (wind and shower risk get in the way)",
+    redenMatigBlok: (g, w) => `the best window is only so-so (feels like ${g} degrees, wind ${w} km/h)`,
     redenKortBlok: (u) => `only a short window (${u} hours)`,
     redenFris: (g) => `chilly: feels-like tops out at ${g} degrees`,
     redenWind: (w) => `strong wind (${w} km/h)`,
@@ -202,7 +204,10 @@ export function overlay(hourly, nu = new Date(), instellingen = TERRAS_DEFAULTS)
       });
       if (maxGevoel < inst.minGevoel - 5) factoren.push({ punten: 10, reden: null });
     } else {
-      factoren.push({ punten: topPijn(venster.gemiddeld), reden: null });
+      const blokGevoel = Math.round(venster.blok.reduce((a, u) => a + (u.gevoel ?? u.temp ?? 0), 0) / venster.uren);
+      const blokWind = Math.round(venster.blok.reduce((a, u) => a + (u.wind ?? 0), 0) / venster.uren);
+      const kwaliteit = topPijn(venster.gemiddeld);
+      factoren.push({ punten: kwaliteit, reden: kwaliteit >= 18 ? T.redenMatigBlok(blokGevoel, blokWind) : null });
       factoren.push({
         punten: Math.round(lerp(venster.uren, 6, 2, 0, 20)),
         reden: venster.uren <= 3 ? T.redenKortBlok(venster.uren) : null,

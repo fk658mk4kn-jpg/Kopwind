@@ -16,7 +16,6 @@ export default function StemPeiling({ toolId }) {
   const dag = dagKeyVan(new Date());
   const [keuze, setKeuze] = useState(null);
   const [totalen, setTotalen] = useState(null);
-  const [weg, setWeg] = useState(false);
   const [gedeeld, setGedeeld] = useState(false);
 
   useEffect(() => {
@@ -30,13 +29,14 @@ export default function StemPeiling({ toolId }) {
     fetch(`/api/stem?tool=${encodeURIComponent(toolId)}&dag=${dag}`)
       .then((r) => (r.ok ? r.json() : Promise.reject()))
       .then((t) => actief && setTotalen(t))
-      .catch(() => actief && setWeg(true));
+      .catch(() => {
+        // Geen database of hikkende fetch: knoppen blijven, alleen de
+        // teller ontbreekt. De stem zelf blijft altijd lokaal bewaard.
+      });
     return () => {
       actief = false;
     };
   }, [toolId, dag]);
-
-  if (weg) return null;
 
   const stem = async (waarde) => {
     if (keuze !== null) return;

@@ -124,47 +124,35 @@ git tag -a v3.1.0 -m "Chinook"
 git push origin v2.2.0
 ```
 
-## Engelse site (v3.2.0 "Sirocco")
+## Engelse site onder /en (v3.4.0 "Ponente")
 
-Eén codebase, twee sites. De taal wordt bij de build gebakken via een
-env-var; er is geen runtime-taalwissel. De Nederlandse site draait
-zonder extra configuratie (nl is de standaard).
+Een codebase, twee builds, een domein. De taal wordt bij de build
+gebakken via NEXT_PUBLIC_SITE_LOCALE; de Engelse site leeft op
+kanhetvandaag.nl/en/ via een multi-zone opzet.
 
-Engelse deployment ("Good day for it?"):
+Opzet:
 
-1. Maak een tweede Vercel-project op dezelfde repository.
-2. Zet daar de env-vars:
-   - `NEXT_PUBLIC_SITE_LOCALE=en`
-   - `NEXT_PUBLIC_SITE_URL=https://jouwengelsedomein.com`
-   - `NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX` (eigen GA4-property; de fallback
-     in de code is het Nederlandse meet-ID, dus zonder eigen ID meet je
-     de Engelse site in de Nederlandse property)
-3. Optioneel hreflang: zet op beide projecten
-   `NEXT_PUBLIC_ALTERNATE_LOCALE_URL` naar het domein van de zustersite.
+1. Nederlands project (bestaand): zet `EN_ZONE_URL` naar de deploy-URL
+   van het Engelse project. Alles onder /en wordt daarheen doorgestuurd
+   (rewrites in next.config.mjs).
+2. Engels project (tweede Vercel-project, zelfde repo): zet
+   - `NEXT_PUBLIC_SITE_LOCALE=en` (activeert basePath /en)
+   - `NEXT_PUBLIC_SITE_URL=https://kanhetvandaag.nl/en`
+   - `NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX` (eigen property, anders meet de
+     fallback in de NL-property)
+3. Optioneel hreflang: `NEXT_PUBLIC_ALTERNATE_LOCALE_URL` op beide
+   projecten naar de zustertaal. De taalwissel-link (menu en footer)
+   verschijnt zodra die gezet is.
+
+De EN-build draait dus met basePath /en, zodat alle interne links,
+assets en API-routes automatisch onder /en vallen. Engelse pretty-paths
+(/en/explainers, /en/about) lopen via rewrites naar de fysieke NL-mappen.
 
 Wat er per taal meegaat: merk (lib/brand.js), toolslugs en alle
-registerteksten (T-blok per tool), gegenereerde zinnen (wind, meldingen,
-kompasstreken, decimalen), UI-strings (lib/strings/), content
-(content/en/ plus selectors voor hub, uitleg en versies), paden
-(/explainers, /about via rewrites in next.config.mjs, links altijd via
-`PAD` uit lib/i18n/paden.js), sitemap, manifest en llms.txt. Het
-route-parencluster (/van/.../naar/...) is bewust Nederlands-only.
-
-Nieuwe teksten? Gebruik `kies({ nl, en })` uit lib/i18n/locale.js of
-voeg keys toe aan lib/strings/. Nooit een kale Nederlandse string in een
-component laten staan.
-
-## v3.3.0 "Meltemi" in het kort
-
-Hub-kaarten volgen een vast stramien (korteVraag plus badge plus
-twee-regel-toelichting plus CTA); nieuwe tools hoeven alleen korteVraag,
-cta en een overlay met antwoord.zin te leveren en zien er automatisch
-hetzelfde uit. De topnav is een hamburger-paneel (components/MenuPaneel.js)
-op de registergroepen. Elke tool heeft een `bijgewerkt`-datum in het
-register: bump die bij inhoudelijke wijzigingen, hij voedt de zichtbare
-laatst-bijgewerkt-regel. De taalwissel-link in menu en footer verschijnt
-zodra NEXT_PUBLIC_ALTERNATE_LOCALE_URL gezet is (advies: de Engelse
-build op en.kanhetvandaag.nl als tweede Vercel-project).
+registerteksten (T-blok per tool), gegenereerde zinnen, UI-strings
+(lib/strings/), content (content/en/ plus selectors), varianten
+(lib/varianten.js), paden (lib/i18n/paden.js), sitemap, manifest en
+llms.txt.
 
 ## Een nieuwe locatie-tool bouwen (overlay-contract)
 
@@ -185,6 +173,19 @@ zinnen als templatefuncties) in een `const T = kies({ nl: {...}, en:
 {...} })` bovenin het toolbestand; zie lib/tools/barbecue.js als
 voorbeeld. Vergeet de Engelse content in content/en/ en de registratie
 in content/index.js niet.
+
+## Vraagpagina's (varianten) en tweede databron
+
+Een vraagpagina (bv. "korte broek aan?") is een lichte variant op een
+bestaande tool: definieer hem in lib/varianten.js (ouderId, slug, vraag)
+en schrijf content/<slug>.js plus de EN-variant. vindTool lost de slug
+op naar een pseudo-tool; de engine van de ouder doet het rekenwerk. Geen
+enginewijziging nodig.
+
+Een tool op een andere databron dan het weer (zoals hooikoorts op
+pollen) declareert `databron` plus de veldnamen; LocatieTool kiest op dat
+veld de juiste client-helper. Zie lib/engine/lucht.js en
+app/api/lucht/route.js als blauwdruk voor een nieuwe bron.
 
 ## Nav-deeplinks
 

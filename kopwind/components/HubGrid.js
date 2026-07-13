@@ -13,6 +13,7 @@ import { STEDEN, dichtstbijzijndeStad } from "@/lib/steden/nl";
 import { TOOLS } from "@/lib/tools";
 import { S } from "@/lib/strings";
 import { kies as kiesTaal } from "@/lib/i18n/locale";
+import { PAD } from "@/lib/i18n/paden";
 
 /**
  * De homepage als product (v3.0.0): kies een stad en elke kaart toont
@@ -146,7 +147,7 @@ export default function HubGrid() {
             </span>
             <KaartRegel tool={t} dag={dagen?.[t.id]} stad={stad} laden={laden} />
             <span className="kaart-cta">
-              {t.cta} <Icoon naam="pijl" maat={13} />
+              <span className="kaart-cta-tekst">{t.cta}</span> <Icoon naam="pijl" maat={13} />
             </span>
           </Link>
         ))}
@@ -154,9 +155,10 @@ export default function HubGrid() {
 
       <p className="binnenkort-regel">
         {kiesTaal({
-          nl: "Binnenkort: Word ik vandaag nat? \u00b7 Moet ik morgen krabben?",
-          en: "Coming soon: Will I get wet today? \u00b7 Do I need to scrape tomorrow?",
+          nl: "Meer vragen? ",
+          en: "More questions? ",
         })}
+        <Link href={PAD.alleChecks}>{S.menu.alle}</Link>
       </p>
     </section>
   );

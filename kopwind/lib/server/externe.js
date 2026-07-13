@@ -94,6 +94,20 @@ export async function haalHourly(lat, lon, velden = STANDAARD_VELDEN, dagen = 4)
  * roept de externe diensten direct aan. Zo draait exact dezelfde pijplijn
  * als in de browser.
  */
+/** Pollen-uurreeksen van de Open-Meteo Air Quality API (CAMS Europa). */
+export async function haalLuchtHourly(lat, lon, velden, dagen = 5) {
+  const v = (velden?.length ? velden : ["grass_pollen", "birch_pollen", "alder_pollen"]).join(",");
+  const d = Math.min(7, Math.max(1, Number(dagen) || 5));
+  const url =
+    `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${lat}&longitude=${lon}` +
+    `&hourly=${encodeURIComponent(v)}` +
+    `&timezone=Europe%2FAmsterdam&forecast_days=${d}`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`Air Quality API gaf ${res.status}`);
+  const data = await res.json();
+  return data.hourly;
+}
+
 export function serverFetch() {
   return async (url, opts) => {
     try {

@@ -5,6 +5,12 @@
 
 export const VERSIES = [
   {
+    versie: "3.4.0",
+    codenaam: "Ponente",
+    datum: "2026-07-13",
+    zin: "An explanation under every verdict (a why line with the decisive reason), and with a known place every check shows its answer straight away without an extra tap. New hay fever check on its own pollen source (CAMS) with the calmest window of the day, plus three clothing question pages (shorts, coat, T-shirt weather). New overview page with all weather decisions and search, feedback buttons that no longer flash away, and on mobile square tiles plus a sticky answer bar.",
+  },
+  {
     versie: "3.3.0",
     codenaam: "Meltemi",
     datum: "2026-07-13",

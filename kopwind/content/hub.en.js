@@ -9,7 +9,7 @@ export const hub = {
   faq: [
     {
       v: "What is Good day for it?",
-      a: "Six free checks that turn live weather into an answer: bike to work, dry laundry outside, sit outside, what to wear, barbecue tonight and do I need sunscreen. You get an answer in plain words, the best moment and the reason. No account.",
+      a: "Seven free checks that turn live weather and pollen into an answer: bike to work, dry laundry outside, sit outside, what to wear, barbecue tonight, do I need sunscreen and will I get hay fever. You get an answer in plain words, the best moment and the reason. No account.",
     },
     {
       v: "How fresh is the answer?",
@@ -21,7 +21,7 @@ export const hub = {
     },
     {
       v: "Are more checks coming?",
-      a: "Yes: rain timing, hay fever and frost scraping are on the list. Same idea every time: a concrete question, a concrete answer.",
+      a: "Yes: rain timing and frost scraping are on the list. Same idea every time: a concrete question, a concrete answer.",
     },
   ],
 };

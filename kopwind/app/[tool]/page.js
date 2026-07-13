@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import Icoon from "@/components/Icoon";
 import Link from "next/link";
-import { TOOLS, vindTool } from "@/lib/tools";
+import { TOOLS, vindTool, alleToolSlugs } from "@/lib/tools";
 import { inhoudVoorTool } from "@/content";
 import { STEDEN } from "@/lib/steden/nl";
 import { HUB_NAAM } from "@/lib/brand";
@@ -23,7 +23,7 @@ export const dynamicParams = false;
 export const revalidate = 86400;
 
 export function generateStaticParams() {
-  return TOOLS.map((t) => ({ tool: t.slug }));
+  return alleToolSlugs().map((slug) => ({ tool: slug }));
 }
 
 export function generateMetadata({ params }) {
@@ -64,7 +64,7 @@ export default function ToolPagina({ params }) {
     applicationCategory: "UtilitiesApplication",
     operatingSystem: "Web",
     offers: { "@type": "Offer", price: "0", priceCurrency: "EUR" },
-    inLanguage: "nl",
+    inLanguage: LOCALE,
   };
 
   return (

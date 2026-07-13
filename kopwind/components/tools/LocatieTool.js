@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useGebruiker } from "@/components/GebruikerContext";
 import LocatieZoek from "@/components/LocatieZoek";
 import VerdictBadge from "@/components/VerdictBadge";
@@ -8,6 +8,7 @@ import UrenStrip from "@/components/UrenStrip";
 import Icoon from "@/components/Icoon";
 import OutfitFiguur from "@/components/OutfitFiguur";
 import { haalWeer } from "@/lib/engine/weather";
+import { haalLucht } from "@/lib/engine/lucht";
 import { BASIS_VELDEN } from "@/lib/engine/weerbasis";
 import { isFavoriet } from "@/lib/engine/locatie";
 import { TOOLS } from "@/lib/tools";
@@ -37,6 +38,7 @@ export default function LocatieTool({ toolId, beginLocatie = null }) {
   const [fout, setFout] = useState(null);
 
   const lsSleutel = `kopwind.locatie.${toolId}`;
+  const autoRan = useRef(false);
 
   // Laatst gebruikte plek terugzetten (met de oude was-sleutel als erfenis).
   useEffect(() => {
@@ -45,7 +47,15 @@ export default function LocatieTool({ toolId, beginLocatie = null }) {
       const l =
         JSON.parse(localStorage.getItem(lsSleutel) ?? "null") ??
         JSON.parse(localStorage.getItem("kopwind.wasLocatie") ?? "null");
-      if (l?.lat) setLocatie(l);
+      if (l?.lat) {
+        setLocatie(l);
+        // Plek bekend: meteen de uitslag laten zien, zonder extra tik
+        // op de checkknop (v3.4.0 "Ponente").
+        if (!autoRan.current) {
+          autoRan.current = true;
+          check(l);
+        }
+      }
     } catch {
       // Kapotte localStorage negeren.
     }
@@ -60,7 +70,10 @@ export default function LocatieTool({ toolId, beginLocatie = null }) {
     setBezig(true);
     setFout(null);
     try {
-      const hourly = await haalWeer(plek.lat, plek.lon, tool.weerVelden ?? BASIS_VELDEN, tool.weerDagen ?? 5);
+      const hourly =
+        tool.databron === "lucht"
+          ? await haalLucht(plek.lat, plek.lon, tool.luchtVelden, tool.weerDagen ?? 5)
+          : await haalWeer(plek.lat, plek.lon, tool.weerVelden ?? BASIS_VELDEN, tool.weerDagen ?? 5);
       const res = tool.overlay(hourly, new Date(), g.thresholdsVoor(toolId));
       if (!res?.dagen?.length) throw new Error(S.locatieTool.geenData);
       setDagen(res.dagen);
@@ -127,6 +140,19 @@ export default function LocatieTool({ toolId, beginLocatie = null }) {
       {fout && <div className="fout">{fout}</div>}
 
       {dagen && dag && (
+        <div className="sticky-antwoord" aria-hidden="true">
+          <span className={"badge " + kleurVoorSchaal(schaalVoor(dag.conditie.score).id)}>
+            {labelVoor(dag.conditie.score, tool.schaalLabels)}
+          </span>
+          {dag.venster && (
+            <span className="sticky-venster">
+              {String(dag.venster.van).padStart(2, "0")}-{String(dag.venster.tot).padStart(2, "0")} u
+            </span>
+          )}
+        </div>
+      )}
+
+      {dagen && dag && (
         <section className="resultaten" aria-label="Resultaat">
           <div className="paneel">
             <VerdictBadge score={dag.conditie.score} labels={tool.schaalLabels} />
@@ -152,7 +178,7 @@ export default function LocatieTool({ toolId, beginLocatie = null }) {
             </div>
 
             <UrenStrip uren={dag.uren} venster={dag.venster} legenda={legenda} />
-            {dag.conditie.redenen.length > 0 && <p className="uitleg">{zinnen(dag.conditie.redenen)}</p>}
+            {dag.conditie.redenen.length > 0 && <p className="uitleg waarom">{S.locatieTool.waarom} {zinnen(dag.conditie.redenen)}</p>}
 
             {checkTijd && (
               <p className="databron">

@@ -49,6 +49,7 @@ export const S = {
     leeg: "Pick your place and tap the check: you'll see the answer for today and the days ahead.",
     lieverNiet: "rather not",
     wisselvallig: "mixed",
+    waarom: "Why:",
     besteBlok: "best window",
   },
   hub: {
@@ -69,6 +70,11 @@ export const S = {
     bedankt: "Thanks, noted.",
     jaLabel: "Yes, it was right",
     neeLabel: "No, it wasn't",
+  },
+  beslissingen: {
+    zoekPlaceholder: "Search: coat, rain, bbq...",
+    zoekLabel: "Search a weather decision",
+    geenTreffers: "Nothing found. Try another word, or browse the list above.",
   },
   menu: {
     knop: "Menu",

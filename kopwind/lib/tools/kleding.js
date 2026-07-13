@@ -43,6 +43,7 @@ const T = kies({
     vanochtend: "vanochtend vroeg",
     neemMee: (item, wanneer, g) => `. Neem ${item} mee: ${wanneer} is het gevoel ${g} graden`,
     regenjas: (uur) => `. En de regenjas of paraplu: buien rond ${uur}:00`,
+    redenSchommel: (a, b) => `flinke schommel door de dag (gevoel ${a} tot ${b} graden)`,
     redenRegen: (uur) => `regen rond ${uur}:00`,
     redenSpreiding: (min, max) => `groot verschil over de dag (gevoel ${min} tot ${max} graden)`,
     redenGuur: "de hele dag guur",
@@ -80,6 +81,7 @@ const T = kies({
     vanochtend: "early this morning",
     neemMee: (item, wanneer, g) => `. Bring ${item}: ${wanneer} the feels-like is ${g} degrees`,
     regenjas: (uur) => `. And the rain jacket or umbrella: showers around ${uur}:00`,
+    redenSchommel: (a, b) => `quite a swing through the day (feels like ${a} to ${b} degrees)`,
     redenRegen: (uur) => `rain around ${uur}:00`,
     redenSpreiding: (min, max) => `big swing across the day (feels like ${min} to ${max} degrees)`,
     redenGuur: "bleak all day",
@@ -167,7 +169,10 @@ export function overlay(hourly, nu = new Date(), instellingen = KLEDING_DEFAULTS
     // Comfortcijfer: hoe makkelijk is de keuze vandaag.
     const gemAfwijking = gevoelens.reduce((a, g) => a + Math.abs(g - 18), 0) / gevoelens.length;
     const factoren = [
-      { punten: Math.round(clamp(gemAfwijking * 4, 0, 42)), reden: null },
+      {
+        punten: Math.round(clamp(gemAfwijking * 4, 0, 42)),
+        reden: spreiding >= 7 ? T.redenSchommel(Math.round(minG), Math.round(maxG)) : null,
+      },
       {
         punten: Math.round(lerp(fractieNat, 0.05, 0.6, 0, 30)),
         reden: natUren.length ? T.redenRegen(String(natUren[0].uur).padStart(2, "0")) : null,

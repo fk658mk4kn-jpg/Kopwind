@@ -1656,6 +1656,130 @@ a.merk { text-decoration: none; }
 
 .bijgewerkt-regel { margin: 18px 0 0; font-size: 12.5px; color: var(--inkt-zacht); }
 
+.beslissingen-zoek input {
+  width: 100%;
+  max-width: 460px;
+  padding: 11px 14px;
+  border: 1px solid var(--rand);
+  border-radius: var(--radius-s);
+  font: inherit;
+  font-size: 15px;
+}
+
+.beslissingen-groep { margin-top: 22px; }
+
+.beslissingen-groep h2 { font-size: 17px; margin: 0 0 8px; }
+
+.beslissingen-lijst {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 6px 14px;
+}
+
+.beslissing-link {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 10px;
+  border-radius: var(--radius-s);
+  font-weight: 600;
+  font-size: 14.5px;
+  color: var(--inkt);
+  text-decoration: none;
+}
+
+.beslissing-link:hover { background: var(--wolk); }
+
+.beslissing-binnenkort {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 10px;
+  font-size: 14.5px;
+  color: var(--inkt-zacht);
+}
+
+.badge.stil { background: var(--wolk); color: var(--inkt-zacht); }
+
+.sticky-antwoord { display: none; }
+
+@media (max-width: 640px) {
+  .sticky-antwoord {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 -16px 12px;
+    padding: 9px 16px;
+    background: color-mix(in srgb, var(--wolk) 88%, #ffffff);
+    border-bottom: 1px solid var(--lijn);
+    backdrop-filter: blur(6px);
+  }
+
+  .sticky-venster { font-size: 13px; font-weight: 700; color: var(--inkt-zacht); }
+}
+
+/* Mobiel: checks als vierkante tegels in twee kolommen (Ponente) */
+@media (max-width: 640px) {
+  .checkgrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 9px;
+  }
+
+  .checkkaart {
+    aspect-ratio: 1 / 1;
+    padding: 11px 11px 10px;
+    gap: 6px;
+  }
+
+  .kaart-rij1 {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 7px;
+    min-height: 0;
+  }
+
+  .kaart-rij1 .icon-chip.klein { order: 0; }
+
+  .kaart-rij1 .badge {
+    order: 2;
+    font-size: 10.5px;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .kaart-vraag {
+    order: 1;
+    font-size: 14px;
+    line-height: 1.2;
+  }
+
+  .kaartregel.klem {
+    font-size: 12px;
+    -webkit-line-clamp: 2;
+    min-height: 0;
+  }
+
+  .kaart-cta { align-self: flex-end; }
+
+  .kaart-cta-tekst {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+
+  .kaart-watermerk { opacity: 0.07; right: -14px; bottom: -16px; }
+}
+
 .seotekst.compact { margin-top: 24px; }
 
 details.faq-item { border-bottom: 1px solid var(--lijn); padding: 2px 0; }

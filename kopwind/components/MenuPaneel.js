@@ -50,6 +50,9 @@ export default function MenuPaneel({ open, onClose }) {
         ))}
         <div className="menugroep">
           <span className="menugroep-titel">{S.menu.meer}</span>
+          <Link href={PAD.alleChecks} className="menulink" onClick={onClose}>
+            {S.menu.alle}
+          </Link>
           <Link href={PAD.uitleg} className="menulink" onClick={onClose}>
             {S.voet.uitleg}
           </Link>

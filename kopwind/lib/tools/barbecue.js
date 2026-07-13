@@ -36,6 +36,7 @@ const T = kies({
     redenNat: "te nat: natte kolen en natte gasten",
     redenFris: (g) => `frisse avond (gevoel maximaal ${g} graden)`,
     redenGeenBlok: "geen bruikbaar avondblok",
+    redenMatigBlok: (g, w) => `het avondblok is maar matig (gevoel rond ${g} graden, wind ${w} km/u)`,
     redenWind: (w) => `stevige wind (${w} km/u): vonken en omvallende borden`,
     redenKort: (u) => `maar een kort blok (${u} uur)`,
     redenBuien: "buien rond het beste blok",
@@ -73,6 +74,7 @@ const T = kies({
     redenNat: "too wet: wet coals and wet guests",
     redenFris: (g) => `chilly evening (feels like ${g} degrees at best)`,
     redenGeenBlok: "no usable evening window",
+    redenMatigBlok: (g, w) => `the evening window is only so-so (feels like ${g} degrees, wind ${w} km/h)`,
     redenWind: (w) => `strong wind (${w} km/h): sparks and toppling plates`,
     redenKort: (u) => `only a short window (${u} hours)`,
     redenBuien: "showers around the best window",
@@ -225,7 +227,10 @@ export function overlay(hourly, nu = new Date(), instellingen = BBQ_DEFAULTS) {
               : T.redenGeenBlok,
       });
     } else {
-      factoren.push({ punten: topPijn(venster.gemiddeld), reden: null });
+      const blokGevoel = Math.round(venster.blok.reduce((a, u) => a + (u.gevoel ?? u.temp ?? 0), 0) / venster.uren);
+      const blokWind = Math.round(venster.blok.reduce((a, u) => a + (u.wind ?? 0), 0) / venster.uren);
+      const kwaliteit = topPijn(venster.gemiddeld);
+      factoren.push({ punten: kwaliteit, reden: kwaliteit >= 18 ? T.redenMatigBlok(blokGevoel, blokWind) : null });
       factoren.push({
         punten: Math.round(lerp(venster.uren, 5, 2, 0, 16)),
         reden: venster.uren <= 2 ? T.redenKort(venster.uren) : null,

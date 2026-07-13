@@ -53,6 +53,11 @@ const STAD_TEMPLATES = kies({
       description: `Kan ik vandaag op het terras in ${s}? Zie de beste terrasuren: gevoelstemperatuur, wind en zon per uur, vijf dagen vooruit. Gratis.`,
       h1: `Vandaag op het terras in ${s}?`,
     }),
+    "hooikoorts": (s) => ({
+      title: `Hooikoorts in ${s}: pollen vandaag per uur`,
+      description: `Krijg ik vandaag hooikoorts in ${s}? Zie gras-, berk- en elspollen per uur en het rustigste blok van de dag. Gratis.`,
+      h1: `Hooikoorts vandaag in ${s}?`,
+    }),
     "zonkracht": (s) => ({
       title: `Zonkracht in ${s}: verbrand ik vandaag?`,
       description: `Moet ik vandaag smeren in ${s}? Zie de zonkracht per uur, het smeervenster en hoe snel jouw huidtype verbrandt. Gratis.`,
@@ -84,6 +89,11 @@ const STAD_TEMPLATES = kies({
       title: `Patio weather in ${s}: the best outdoor hours today`,
       description: `Can I sit outside in ${s} today? See the best patio hours: feels-like temperature, wind and sun per hour, five days ahead. Free.`,
       h1: `Sit outside in ${s} today?`,
+    }),
+    "hooikoorts": (s) => ({
+      title: `Hay fever in ${s}: today's pollen per hour`,
+      description: `Will I get hay fever in ${s} today? See grass, birch and alder pollen per hour and the calmest window of the day. Free.`,
+      h1: `Hay fever in ${s} today?`,
     }),
     "zonkracht": (s) => ({
       title: `UV index in ${s}: will I burn today?`,

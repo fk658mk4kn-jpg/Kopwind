@@ -5,6 +5,7 @@ import { buurSteden } from "@/lib/steden/teksten";
 import { SITE_URL as SITE } from "@/lib/site";
 import { UITLEG } from "@/content/uitleg";
 import { PAD } from "@/lib/i18n/paden";
+import { VARIANTEN } from "@/lib/varianten";
 import { IS_EN } from "@/lib/i18n/locale";
 
 /** Sitemap automatisch uit register maal steden plus route-paren (§9). */
@@ -31,6 +32,10 @@ export default function sitemap() {
     }
   }
 
+  for (const v of VARIANTEN) {
+    urls.push({ url: `${SITE}/${v.slug}`, lastModified: nu, changeFrequency: "daily", priority: 0.7 });
+  }
+
   for (const s of IS_EN ? [] : STEDEN) {
     for (const b of buurSteden(s, 2)) {
       urls.push({
@@ -42,6 +47,7 @@ export default function sitemap() {
     }
   }
 
+  urls.push({ url: `${SITE}${PAD.alleChecks}`, lastModified: nu, changeFrequency: "weekly", priority: 0.6 });
   urls.push({ url: `${SITE}${PAD.uitleg}`, lastModified: nu, changeFrequency: "monthly", priority: 0.5 });
   for (const a of UITLEG) {
     urls.push({

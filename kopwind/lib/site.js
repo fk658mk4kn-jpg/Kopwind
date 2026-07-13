@@ -16,7 +16,7 @@ import { kies } from "./i18n/locale.js";
 
 export const LIVE_DOMEIN = kies({
   nl: "https://kanhetvandaag.nl",
-  en: "https://gooddayforit.com",
+  en: "https://kanhetvandaag.nl/en",
 });
 
 export function siteUrl(raw = process.env.NEXT_PUBLIC_SITE_URL) {

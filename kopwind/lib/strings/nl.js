@@ -50,6 +50,7 @@ export const S = {
     leeg: "Kies je plek en tik op de check: je ziet direct het antwoord voor vandaag en de dagen erna.",
     lieverNiet: "liever niet",
     wisselvallig: "wisselvallig",
+    waarom: "Waarom:",
     besteBlok: "beste blok",
   },
   hub: {
@@ -73,6 +74,11 @@ export const S = {
     teller: (ja, totaal) => `Klopte vandaag voor ${ja} van de ${totaal}`,
     delen: "Deel deze check",
     gekopieerd: "Link gekopieerd",
+  },
+  beslissingen: {
+    zoekPlaceholder: "Zoek: jas, regen, bbq...",
+    zoekLabel: "Zoek een weerbeslissing",
+    geenTreffers: "Niets gevonden. Probeer een ander woord, of kijk in de lijst hierboven.",
   },
   menu: {
     knop: "Menu",

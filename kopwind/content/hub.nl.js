@@ -9,7 +9,7 @@ export const hub = {
   faq: [
     {
       v: "Wat is Kan het vandaag?",
-      a: "Zes gratis checks die live weer omzetten in een antwoord: fiets ik naar werk, kan de was buiten drogen, wordt het terrasweer, wat trek ik aan, kan de barbecue aan en moet ik smeren. Je krijgt een antwoord in gewone woorden, het beste moment en de reden erbij. Zonder account.",
+      a: "Zeven gratis checks die live weer en pollen omzetten in een antwoord: fiets ik naar werk, kan de was buiten drogen, wordt het terrasweer, wat trek ik aan, kan de barbecue aan, moet ik smeren en krijg ik hooikoorts. Je krijgt een antwoord in gewone woorden, het beste moment en de reden erbij. Zonder account.",
     },
     {
       v: "Hoe actueel is het antwoord?",
@@ -21,7 +21,7 @@ export const hub = {
     },
     {
       v: "Komen er meer checks bij?",
-      a: "Ja: regen-timing, hooikoorts en gladheid staan op de rol. Zelfde opzet: een concrete vraag, een concreet antwoord.",
+      a: "Ja: regen-timing en gladheid staan op de rol. Zelfde opzet: een concrete vraag, een concreet antwoord.",
     },
   ],
 };

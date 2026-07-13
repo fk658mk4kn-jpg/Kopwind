@@ -11,11 +11,12 @@ import Icoon from "./Icoon";
  */
 const RELATIES = {
   "fiets-naar-werk": ["wat-trek-ik-aan", "zonkracht", "was-buiten-drogen"],
-  "was-buiten-drogen": ["terras", "wat-trek-ik-aan", "barbecue"],
+  "was-buiten-drogen": ["hooikoorts", "terras", "wat-trek-ik-aan"],
   "wat-trek-ik-aan": ["zonkracht", "fiets-naar-werk", "terras"],
   "terras": ["barbecue", "zonkracht", "was-buiten-drogen"],
   "barbecue": ["terras", "zonkracht", "was-buiten-drogen"],
-  "zonkracht": ["terras", "wat-trek-ik-aan", "barbecue"],
+  "zonkracht": ["terras", "hooikoorts", "barbecue"],
+  "hooikoorts": ["was-buiten-drogen", "zonkracht", "fiets-naar-werk"],
 };
 
 export default function GerelateerdBlok({ toolId }) {

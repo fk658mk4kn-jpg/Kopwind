@@ -565,3 +565,70 @@ naar sporten, eten en camperen/buitenactiviteiten, drie
 kleding-vraagpagina's (korte broek, jas, T-shirtweer) met stad-uitrol,
 sticky antwoordbalk op mobiel.
 
+## v3.4.0 "Ponente" - 2026-07-13
+
+**Wat**: de vervolgronde na Meltemi. Vijf feedbackpunten van Martijn plus
+de v3.4-backlog (hooikoorts, /alle-checks, kledingvraagpagina's).
+
+**Toelichting bij elk oordeel**: de redenen werden al gerenderd, maar
+sommige overlays gaven bij hun hoofdfactor `reden: null` (terras,
+barbecue, kleding), waardoor een oordeel zonder uitleg kon verschijnen.
+Nu heeft elke tak een leesbare reden: matig blok met gevoel en wind bij
+terras/barbecue, flinke dagschommel bij kleding. De regel staat als
+"Waarom: ..." onder het antwoord.
+
+**Auto-run**: bij een bekende plek (uit localStorage) draait de check
+direct bij het openen, zonder tweede tik. Guard via een useRef zodat
+React strict mode hem niet dubbel vuurt. Alleen locatietools; de
+routetool (fiets) blijft handmatig, want daar moet je eerst stops
+invullen.
+
+**Feedbackbug**: StemPeiling verborg zichzelf (`return null`) zodra de
+totalen-fetch faalde, en zonder geconfigureerde Supabase faalt die
+altijd, vandaar het wegflitsen. De knoppen blijven nu staan; alleen de
+teller ontbreekt als er geen database is. De stem blijft altijd lokaal
+bewaard.
+
+**Hooikoorts**: eerste tool op een tweede databron. lib/engine/lucht.js
+plus app/api/lucht/route.js praten met de Open-Meteo Air Quality API
+(CAMS Europa, 11 km, gras/berk/els). De tool declareert
+`databron: "lucht"` en LocatieTool kiest op dat veld de juiste helper.
+Het venster is omgekeerd (rustigste blok, niet beste), klassegrenzen
+zijn vuistregels per soort, buiten het seizoen zegt de check eerlijk
+"geen pollen". Geen medisch advies, staat in de FAQ.
+
+**Kledingvraagpagina's**: lib/varianten.js definieert lichte varianten
+op een oudertool (eigen slug, titel, content, bijgewerkt-datum; gedeelde
+engine). vindTool lost een variant-slug op naar een pseudo-tool via
+maakPseudoTool, en generateStaticParams gebruikt alleToolSlugs(). Zo
+zijn /korte-broek-weer, /jas-aan-of-uit en /t-shirt-weer eigen
+SEO-landingspagina's zonder engine-duplicatie. Bewust nog geen
+stad-uitrol voor varianten (dat verdriedubbelt de paginacount; kan in
+3.5 als ze ranken).
+
+**/alle-checks**: content/beslissingen.js is de catalogus met zes
+categorieen (regen, kleding, buiten, sport, huis, onderweg), elk met
+live checks (klikbaar) en geplande vragen (grijs, wel in de DOM voor
+SEO). BeslissingenLijst filtert client-side op vraag plus synoniemen.
+De categorieen zijn bewust breder dan het aanbod zodat sport, eten en
+buitenactiviteiten hier later in groeien, zonder NoorYES exact te
+kopieren.
+
+**Engels onder een domein**: besluit met Martijn uitgevoerd. Geen apart
+.com meer: de EN-build draait met basePath /en (eigen Vercel-project),
+en het NL-project stuurt /en via multi-zone rewrites (EN_ZONE_URL) naar
+dat project. Zo staat de Engelse site op kanhetvandaag.nl/en/, met eigen
+URL's voor indexering. SITE_URL-default voor EN is nu kanhetvandaag.nl/en.
+
+**Mobiel**: checks als vierkante tegels in twee kolommen (aspect-ratio
+1/1, CTA verborgen want de hele tegel is klikbaar), en een sticky
+antwoordbalk die na een check bovenin blijft met verdict plus venster.
+
+**Beperkingen**: pollendata is alleen gevuld in het seizoen (CAMS geeft
+buiten het seizoen nul, de tool vangt dat op); de Air Quality API is in
+de sandbox niet bereikbaar, dus live pollen pas op Vercel te testen;
+vierkante tegels en sticky balk zijn niet op echte devices getest.
+
+**Afspraak**: hierna de nulmeting plus installatie-audit (API's,
+meldingen, GA, Search Console, env-vars) in een aparte sessie.
+

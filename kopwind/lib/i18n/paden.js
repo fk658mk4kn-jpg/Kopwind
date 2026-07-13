@@ -11,6 +11,7 @@ import { kies } from "./locale.js";
 export const PAD = kies({
   nl: {
     uitleg: "/uitleg",
+    alleChecks: "/alle-checks",
     over: "/over",
     bronnen: "/bronnen",
     privacy: "/privacy",
@@ -19,6 +20,7 @@ export const PAD = kies({
   },
   en: {
     uitleg: "/explainers",
+    alleChecks: "/all-checks",
     over: "/about",
     bronnen: "/sources",
     privacy: "/privacy",

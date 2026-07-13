@@ -13,6 +13,10 @@ import * as watTrekIkAan from "./wat-trek-ik-aan.js";
 import * as terras from "./terras.js";
 import * as barbecueweer from "./barbecueweer.js";
 import * as zonkracht from "./zonkracht.js";
+import * as hooikoorts from "./hooikoorts.js";
+import * as korteBroek from "./korte-broek-weer.js";
+import * as jasAan from "./jas-aan-of-uit.js";
+import * as tShirt from "./t-shirt-weer.js";
 
 import * as bikeToWork from "./en/bike-to-work.js";
 import * as dryLaundryOutside from "./en/dry-laundry-outside.js";
@@ -20,6 +24,10 @@ import * as whatToWear from "./en/what-to-wear.js";
 import * as patioWeather from "./en/patio-weather.js";
 import * as bbqWeather from "./en/bbq-weather.js";
 import * as sunscreen from "./en/sunscreen.js";
+import * as hayFever from "./en/hay-fever.js";
+import * as shorts from "./en/shorts-weather.js";
+import * as coat from "./en/coat-or-no-coat.js";
+import * as tShirtEn from "./en/t-shirt-weather.js";
 
 const PER_SLUG =
   LOCALE === "en"
@@ -30,6 +38,10 @@ const PER_SLUG =
         "patio-weather": patioWeather,
         "bbq-weather": bbqWeather,
         "sunscreen": sunscreen,
+        "hay-fever": hayFever,
+        "shorts-weather": shorts,
+        "coat-or-no-coat": coat,
+        "t-shirt-weather": tShirtEn,
       }
     : {
         "fietsen-naar-werk": fietsenNaarWerk,
@@ -38,6 +50,10 @@ const PER_SLUG =
         "terrasweer": terras,
         "barbecueweer": barbecueweer,
         "zonkracht": zonkracht,
+        "hooikoorts": hooikoorts,
+        "korte-broek-weer": korteBroek,
+        "jas-aan-of-uit": jasAan,
+        "t-shirt-weer": tShirt,
       };
 
 export function inhoudVoorTool(slug) {

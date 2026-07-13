@@ -6,6 +6,12 @@
 
 export const VERSIES = [
   {
+    versie: "3.4.0",
+    codenaam: "Ponente",
+    datum: "2026-07-13",
+    zin: "Toelichting bij elk oordeel (waarom-regel met de doorslaggevende reden), en bij een bekende plek toont elke check meteen de uitslag zonder extra tik. Nieuwe hooikoortscheck op een eigen pollenbron (CAMS) met het rustigste blok van de dag, en drie kledingvraagpagina's (korte broek, jas, T-shirtweer). Nieuwe overzichtspagina met alle weerbeslissingen en zoekfunctie, de feedbackknoppen die niet meer wegflitsen, en op mobiel vierkante tegels plus een sticky antwoordbalk.",
+  },
+  {
     versie: "3.3.0",
     codenaam: "Meltemi",
     datum: "2026-07-13",
