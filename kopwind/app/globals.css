@@ -1701,3 +1701,53 @@ a.checkkaart:hover .kaartknop { background: var(--geel); }
 .checkkaart h2 { color: var(--inkt); }
 
 .watermerk { opacity: 0.1; }
+
+/* v3.1.0 "Chinook": tool-labels, dashboard-kaarten, mensentaal-instellingen */
+.icon-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 11px;
+  flex: 0 0 auto;
+}
+
+.tooltag {
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--inkt-zacht);
+  border: 1px solid var(--rand);
+  border-radius: 999px;
+  padding: 2px 8px;
+  margin-left: auto;
+}
+
+.checkkaart .kaart-top { align-items: center; }
+
+.kaartlive .badge { font-size: 13.5px; padding: 6px 12px; }
+
+.binnenkort-regel {
+  margin: 16px 2px 0;
+  font-size: 13px;
+  color: var(--inkt-zacht);
+}
+
+.dagkaart .dagwoord { font-size: 12.5px; line-height: 1.15; font-weight: 700; }
+
+.dagkiezer { grid-template-columns: repeat(auto-fit, minmax(104px, 1fr)); }
+
+.keuzerij { flex-direction: column; align-items: flex-start; gap: 6px; }
+
+.keuze-vraag { font-weight: 600; font-size: 14px; }
+
+details.geavanceerd { margin-top: 14px; }
+
+details.geavanceerd summary {
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--inkt-zacht);
+  font-weight: 600;
+}

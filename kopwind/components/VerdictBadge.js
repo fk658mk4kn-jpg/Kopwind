@@ -1,20 +1,14 @@
 "use client";
 
-import { schaalVoor, kleurVoorSchaal } from "@/lib/engine/schaal";
+import { schaalVoor, labelVoor, kleurVoorSchaal } from "@/lib/engine/schaal";
 
 /**
- * Het verdict in woorden (v3.0.0): eerst Ja of Nee, dan het schaalwoord
- * (Zeer slecht, Matig, Twijfelachtig, Goed, Ideaal) in een kleurbadge.
- * Voor tools zonder kan-vraag (ja is null) alleen het schaalwoord.
- * De pijnscore blijft intern de motor; hij komt alleen niet meer in beeld.
+ * Het verdict in de eigen woorden van de tool (v3.1.0): "Hang maar op",
+ * "Goed te doen", "Heerlijk terrasweer". Het label is het antwoord; een
+ * losse Ja/Nee-badge ervoor was dubbelop. De vijfschaal blijft de motor
+ * eronder en bepaalt de kleur.
  */
-export default function VerdictBadge({ score, ja = null }) {
-  const s = schaalVoor(score);
-  const kleur = kleurVoorSchaal(s.id);
-  return (
-    <span className={"badge " + kleur}>
-      {ja === null ? s.label : ja ? "Ja" : "Nee"}
-      {ja !== null && <span className="badge-woord">{s.label}</span>}
-    </span>
-  );
+export default function VerdictBadge({ score, labels }) {
+  const kleur = kleurVoorSchaal(schaalVoor(score).id);
+  return <span className={"badge " + kleur}>{labelVoor(score, labels)}</span>;
 }

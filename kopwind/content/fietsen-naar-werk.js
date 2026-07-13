@@ -7,7 +7,7 @@ export const seo = {
   title: "Vandaag op de fiets naar werk? Fietsweer, wind en reistijd check",
   description:
     "Kan ik vandaag fietsen naar werk? Check je woon-werkrit: reistijd, fietsweer, wind tegen per deel van de route, regen en temperatuur. Gratis, direct advies.",
-  h1: "Vandaag op de fiets naar werk?",
+  h1: "Kan ik vandaag fietsen naar werk?",
   intro:
     "Check in een oogopslag of fietsen naar werk vandaag een goed idee is: reistijd, wind (en waar op de route je die tegen hebt), regen en temperatuur voor jouw woon-werkrit. Gratis, zonder account, met meldingen op je telefoon.",
 };

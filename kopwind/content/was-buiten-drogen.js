@@ -4,7 +4,7 @@ export const seo = {
   title: "Vandaag de was buiten drogen? Droogvenster, wind en regen check",
   description:
     "Kan de was vandaag buiten? Zie per uur wanneer je was goed droogt, hoe lang het duurt en het beste ophangmoment. Vijf dagen vooruit. Gratis.",
-  h1: "Vandaag de was buiten?",
+  h1: "Kan de was vandaag buiten?",
   intro:
     "Hang je 'm nu op, of wordt het morgenvroeg? De check kijkt per uur naar vocht, wind, temperatuur en buien en zegt het gewoon: ja of nee, het beste blok en hoe lang drogen duurt.",
 };

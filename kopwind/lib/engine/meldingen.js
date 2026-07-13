@@ -14,7 +14,7 @@
  */
 
 import { toLocalInput, bft, kompas, fmtTijd } from "../format.js";
-import { schaalVoor } from "./schaal.js";
+import { labelVoor } from "./schaal.js";
 import { APP_KORT } from "../brand.js";
 
 export const DEFAULT_MELDINGEN = {
@@ -156,7 +156,7 @@ export function weerZin(leg) {
 }
 
 /** Titel en tekst voor de ochtendbriefing op basis van een berekend plan. */
-export function briefingTekst(plan, routeNaam) {
+export function briefingTekst(plan, routeNaam, schaalLabels = null) {
   const dag = plan?.dag;
   if (!dag) {
     return {
@@ -169,18 +169,18 @@ export function briefingTekst(plan, routeNaam) {
   const naar = leg.naar.naam.split(",")[0];
   const kop = routeNaam ? `${APP_KORT} · ${routeNaam}` : APP_KORT;
   return {
-    title: `${kop}: ${dag.advies} (${schaalVoor(dag.score).label.toLowerCase()})`,
+    title: `${kop}: ${labelVoor(dag.score, schaalLabels).toLowerCase()}`,
     body: `Zwaarste rit ${van} naar ${naar} om ${fmtTijd(leg.departure)}: ${leg.samenvatting} ${weerZin(leg)}`,
   };
 }
 
 /** Titel en tekst voor een vertrekherinnering voor een etappe. */
-export function vertrekTekst(leg, minuten) {
+export function vertrekTekst(leg, minuten, schaalLabels = null) {
   const van = leg.van.naam.split(",")[0];
   const naar = leg.naar.naam.split(",")[0];
   return {
     title: `Over ${minuten} min: ${van} naar ${naar}`,
-    body: `${kapitaal(leg.advies.advies)} (${schaalVoor(leg.advies.score).label.toLowerCase()}). ${weerZin(leg)}`,
+    body: `${kapitaal(leg.advies.advies)} (${labelVoor(leg.advies.score, schaalLabels).toLowerCase()}). ${weerZin(leg)}`,
   };
 }
 

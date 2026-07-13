@@ -6,6 +6,12 @@
 
 export const VERSIES = [
   {
+    versie: "3.1.0",
+    codenaam: "Chinook",
+    datum: "2026-07-13",
+    zin: "Elke check antwoordt nu in zijn eigen woorden: Hang maar op, Goed te doen, Heerlijk terrasweer. De homepage opent met live antwoorden voor heel Nederland (of jouw stad), de instellingen praten mensentaal met keuzeknoppen, en de kaarten kregen kleur en karakter.",
+  },
+  {
     versie: "3.0.0",
     codenaam: "Levante",
     datum: "2026-07-13",

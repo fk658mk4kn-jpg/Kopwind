@@ -2,7 +2,8 @@
 
 import { useEffect, useRef } from "react";
 import { fmtTijd, fmtKm, bft, kompas } from "@/lib/format";
-import { schaalVoor } from "@/lib/engine/schaal";
+import { labelVoor } from "@/lib/engine/schaal";
+import { fietsNaarWerk } from "@/lib/tools/fiets-naar-werk";
 import { legWindSummary } from "@/lib/engine/wind";
 
 /**
@@ -147,7 +148,7 @@ export default function MapView({
           }).addTo(layer);
           lijn.on("click", () => kiesRef.current?.(i, alt.index));
           lijn.bindTooltip(
-            `Alternatief: ${schaalVoor(alt.advies.score).label.toLowerCase()}, ${fmtKm(alt.distance)}` +
+            `Alternatief: ${labelVoor(alt.advies.score, fietsNaarWerk.schaalLabels).toLowerCase()}, ${fmtKm(alt.distance)}` +
               ` (${dmin >= 0 ? "+" : ""}${dmin} min). Klik om te kiezen.`,
             { sticky: true }
           );

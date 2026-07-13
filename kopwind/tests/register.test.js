@@ -36,7 +36,24 @@ test("instellingen: elke tool declareert zijn eigen drempels met defaults", () =
   for (const t of TOOLS) {
     assert.ok(t.instellingen?.velden?.length >= 3, `${t.id} heeft instelvelden`);
     for (const v of t.instellingen.velden) {
-      assert.ok(v.key in t.instellingen.defaults, `${t.id}.${v.key} heeft een default`);
+      if (v.type === "keuze") {
+        // Mensentaal-veld: elke keuze zet bestaande drempel-keys.
+        assert.ok(v.vraag && v.keuzes?.length >= 2, `${t.id}.${v.id}: vraag en keuzes`);
+        for (const k of v.keuzes) {
+          for (const key of Object.keys(k.zet)) {
+            assert.ok(key in t.instellingen.defaults, `${t.id}.${v.id}: ${key} heeft een default`);
+          }
+        }
+      } else {
+        assert.ok(v.key in t.instellingen.defaults, `${t.id}.${v.key} heeft een default`);
+      }
+    }
+    // Precies een keuze per keuze-veld matcht de defaults (de middenstand).
+    for (const v of t.instellingen.velden.filter((x) => x.type === "keuze")) {
+      const past = v.keuzes.filter((k) =>
+        Object.entries(k.zet).every(([key, w]) => t.instellingen.defaults[key] === w)
+      );
+      assert.equal(past.length, 1, `${t.id}.${v.id}: een keuze hoort de standaard te zijn`);
     }
   }
 });

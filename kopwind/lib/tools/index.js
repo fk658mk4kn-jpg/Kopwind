@@ -65,7 +65,7 @@ export function migreerThresholds(oud) {
 export function valideerRegister(tools = TOOLS) {
   const fouten = [];
   const slugs = new Set();
-  const VERPLICHT = ["id", "slug", "naam", "korteVraag", "patroon", "inputType", "adviesLabels"];
+  const VERPLICHT = ["id", "slug", "naam", "korteVraag", "patroon", "inputType", "adviesLabels", "cta", "navLabel", "kleur", "schaalLabels"];
   for (const t of tools) {
     for (const v of VERPLICHT) {
       if (!t[v]) fouten.push(`${t.id ?? "?"}: veld ${v} ontbreekt`);
@@ -76,6 +76,9 @@ export function valideerRegister(tools = TOOLS) {
     if (!["route", "locatie"].includes(t.inputType)) fouten.push(`${t.id}: onbekend inputType`);
     for (const k of ["goed", "matig", "slecht"]) {
       if (!t.adviesLabels?.[k]) fouten.push(`${t.id}: adviesLabel ${k} ontbreekt`);
+    }
+    for (const s of ["ideaal", "goed", "twijfelachtig", "matig", "zeer-slecht"]) {
+      if (!t.schaalLabels?.[s]) fouten.push(`${t.id}: schaalLabel ${s} ontbreekt`);
     }
   }
   return fouten;

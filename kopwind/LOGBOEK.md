@@ -424,3 +424,32 @@ VerdictBadge-API is nu { score, ja }. Overlay-dagen hebben een antwoord-veld ({ 
 ### Tweede fietscheck-crash (KleurLegenda) plus een vangnet
 - **Oorzaak:** LegCard (de rit-kaart in de fietscheck) rendert een KleurLegenda voor de windschaal, maar de import ontbrak. Zelfde klasse fout als de schaalVoor-crash: onzichtbaar in de build, hard client-side bij interactie. Import toegevoegd.
 - **Vangnet toegevoegd** zodat deze fout niet meer ongemerkt in een zip belandt: scripts/check-jsx-imports.mjs scant components/ en app/ en faalt als een <Hoofdletter-component niet geimporteerd of lokaal gedefinieerd is. Draait via `npm run check:imports` en hoort vanaf nu bij de release-check, naast `npm test` en `npm run build`. Een brede scan bevestigde dat dit de laatste ontbrekende import was.
+
+## v3.1.0 "Chinook" - 2026-07-13
+
+### Waarom
+De vervolgbrief met concrete copy- en UI-voorstellen: tool-eigen resultaatwoorden in plaats van generieke schalen, "Kan ik vandaag ..." consequent doorgetrokken, Nederland als standaardlocatie, instellingen in mensentaal, warmere sync-copy en een minder template-achtige kaartstijl. Plus een venijnige vondst tijdens het bouwen.
+
+### Wat
+- **Tool-eigen verdictwoorden.** Elke check heeft nu vijf eigen schaalwoorden in het register (schaalLabels), gemapt op de interne vijfschaal: de was zegt "Hang maar op" tot "Binnen houden", fietsen "Ideale fietsdag" tot "Beter van niet", terras "Heerlijk terrasweer" tot "Geen terrasdag", kleding "Makkelijke keuze" tot "Gure dag". De losse Ja/Nee-badge is vervallen: het label is het antwoord (de aangeleverde resultaatstijlen tonen ook geen Ja/Nee), de status-zin blijft het wanneer en hoe vertellen. Doorgevoerd in badge, dagkiezer, fietsbanner, rit- en kaartpopups en pushmeldingen; de meldingsdrempel-woorden blijven generiek. De vier aangeleverde labels per tool zijn aangevuld met een vijfde tussenwoord in dezelfde toon.
+- **Nederland als startpunt.** Wie de homepage opent zonder eerdere keuze ziet direct live antwoorden voor Nederland (De Bilt als landelijk referentiepunt), met vaste chips Nederland, Amsterdam, Rotterdam, Utrecht en Den Haag. Persoonlijke presets blijven in de checks zelf.
+- **Nieuwe vraagnamen.** "Kan ik vandaag fietsen?", "Kan de was vandaag buiten?", "Wat trek ik vandaag aan?" (met advies-tag), "Kan ik vandaag op het terras zitten?", doorgetrokken in kaarten, h1's, footer en subregels ("Zon, wind en temperatuur zonder gedoe").
+- **Instellingen in mensentaal.** Nieuw veldmodel: keuzeknoppen met een vraag ("Hoe gevoelig ben je voor wind?" met Nauwelijks/Gemiddeld/Best snel) die intern de bestaande drempels zetten; technische velden zoals segmentlengte staan achter een Geavanceerd-uitklap. Een registertest bewaakt dat elke keuze-set een middenstand heeft die exact de standaardwaarden is.
+- **Warmere copy** voor synccode ("We werken zonder account, dus deze code kunnen we niet voor je terughalen") en een meldingen-intro in gewone taal. Hero werd "Kan ik vandaag ..." met een regel eronder; de binnenkort-vakken zijn nu een regel tekst.
+- **Kaartstijl.** De dunne kleurstreepjes en fletse watermerkjes zijn vervangen: elke kaart heeft een lichte tintachtergrond in de toolkleur, een icoon-chip en een groot watermerk met aanwezigheid. De hele kaart is en blijft klikbaar.
+
+### Gevangen tijdens het bouwen
+De cron-route gebruikte schaalVoor zonder import: een eerdere patch-guard ("alleen importeren als schaalVoor nog niet voorkomt") keek per ongeluk na de title-replace en sloeg de import over. Elke tool-briefing zou serverside zijn gecrasht. Gefixt, en het vangnet is uitgebreid: check-jsx-imports controleert nu naast JSX-componenten ook een lijst gedeelde helperfuncties (schaalVoor, labelVoor, fmt-functies, enzovoort) op gebruik zonder import. De nieuwe check vond de bug zelf terug voordat de fix erin zat.
+
+### Keuzes
+- Engels is bewust doorgeschoven naar een eigen release (routing, vertaalde content, hreflang; half Engels is erger dan geen Engels).
+- Logo-richting staat open tot Martijn een kant kiest; de kaartstijl is de eerste stap weg van het template-gevoel.
+- Nederland is technisch De Bilt; eerlijk benoemd in de code.
+
+### Tests
+80 groen, inclusief de nieuwe middenstand-check op keuze-velden en labelVoor via de bestaande schaaltests.
+
+### Bekende beperkingen
+- De kleurrichting (tinten, accenten) verdient een blik van Martijn op echte schermen; richting bijsturen kan zonder structuurwerk.
+- color-mix vereist een moderne browser (alles vanaf 2023); de kaart valt zonder terug op wit met standaardrand.
+- Instellingen-migratie: bestaande afwijkende drempelwaarden matchen geen keuzeknop en tonen dan geen actieve keuze; de waarden blijven gewoon werken.

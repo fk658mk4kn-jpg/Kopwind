@@ -1,7 +1,8 @@
 "use client";
 
 import { bft, kompas, fmtKm, fmtDuur, fmtTijd } from "@/lib/format";
-import { schaalVoor } from "@/lib/engine/schaal";
+import { labelVoor } from "@/lib/engine/schaal";
+import { fietsNaarWerk } from "@/lib/tools/fiets-naar-werk";
 import KleurLegenda from "@/components/KleurLegenda";
 
 const BADGE_KLEUR = {
@@ -60,7 +61,7 @@ export default function LegCard({ leg, index, actief, onClick, onKiesRoute }) {
           {index + 1}. {leg.van.naam.split(",")[0]} → {leg.naar.naam.split(",")[0]}
         </span>
         <span className={"badge " + BADGE_KLEUR[a.advies]}>
-          {a.advies} · {schaalVoor(a.score).label}
+          {a.advies} · {labelVoor(a.score, fietsNaarWerk.schaalLabels)}
         </span>
       </div>
 
@@ -112,9 +113,9 @@ export default function LegCard({ leg, index, actief, onClick, onKiesRoute }) {
                 key={j}
                 className={"routechip" + (j === leg.gekozenIndex ? " actief" : "")}
                 onClick={() => onKiesRoute(index, alt.index)}
-                title={`${schaalVoor(alt.advies.score).label}, ${fmtKm(alt.distance)}`}
+                title={`${labelVoor(alt.advies.score, fietsNaarWerk.schaalLabels)}, ${fmtKm(alt.distance)}`}
               >
-                {rol} · {schaalVoor(alt.advies.score).label}
+                {rol} · {labelVoor(alt.advies.score, fietsNaarWerk.schaalLabels)}
                 {dtxt}
                 {minsteWind && <span className="minstewind"> minste wind</span>}
               </button>

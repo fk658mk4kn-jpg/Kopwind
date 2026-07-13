@@ -120,6 +120,7 @@ node scripts/maak-og-font.mjs.
 ```
 git tag -a v2.2.0 -m "Zephyr"
 git tag -a v3.0.0 -m "Levante"
+git tag -a v3.1.0 -m "Chinook"
 git push origin v2.2.0
 ```
 
@@ -182,3 +183,14 @@ GA4 laadt via `components/Analytics.js` met meet-ID uit `NEXT_PUBLIC_GA_ID`
 en `G-DRGGM053ZK` als fallback, zodat de tag ook zonder Vercel-env in de
 HTML staat (vereist voor Google's tagcontrole). Pageviews stuurt
 `AnalyticsPageViews` zelf, inclusief App Router-routewissels.
+
+## Tool-eigen verdictwoorden (v3.1.0)
+
+Elke tool levert `schaalLabels` met vijf woorden (ideaal, goed, twijfelachtig,
+matig, zeer-slecht). `labelVoor(score, tool.schaalLabels)` uit
+`lib/engine/schaal.js` vertaalt de interne score naar het toolwoord; zonder
+labels valt hij terug op de generieke schaal. Instellingen-velden kennen twee
+vormen: een nummerveld (`key`, `label`, `eenheid`) of een keuzeveld
+(`type: "keuze"`, `vraag`, `keuzes: [{ label, zet: {...} }]`) waarvan een
+keuze exact de defaults hoort te zijn; `geavanceerd: true` verplaatst een veld
+naar het uitklapblok.

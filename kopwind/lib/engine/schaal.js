@@ -26,6 +26,16 @@ export function jaVoor(scorePijn) {
   return scorePijn < 45;
 }
 
+/**
+ * Het schaalwoord in de eigen woorden van een tool: geef de schaalLabels
+ * van de tool mee ({ ideaal, goed, twijfelachtig, matig, "zeer-slecht" })
+ * en je krijgt "Hang maar op" in plaats van het generieke "Ideaal".
+ */
+export function labelVoor(scorePijn, labels) {
+  const s = schaalVoor(scorePijn);
+  return labels?.[s.id] ?? s.label;
+}
+
 /** Badgekleur bij een schaal: groen, oranje of rood. */
 export function kleurVoorSchaal(schaalId) {
   if (schaalId === "ideaal" || schaalId === "goed") return "groen";

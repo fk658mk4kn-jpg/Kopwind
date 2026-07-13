@@ -12,7 +12,7 @@ import { BASIS_VELDEN } from "@/lib/engine/weerbasis";
 import { isFavoriet } from "@/lib/engine/locatie";
 import { TOOLS } from "@/lib/tools";
 import { fmtTijd } from "@/lib/format";
-import { schaalVoor, kleurVoorSchaal } from "@/lib/engine/schaal";
+import { schaalVoor, labelVoor, kleurVoorSchaal } from "@/lib/engine/schaal";
 
 /**
  * Gedeelde UI voor elke locatie-tool (het overlay-contract): kies je plek,
@@ -128,7 +128,7 @@ export default function LocatieTool({ toolId, beginLocatie = null }) {
       {dagen && dag && (
         <section className="resultaten" aria-label="Resultaat">
           <div className="paneel">
-            <VerdictBadge score={dag.conditie.score} ja={dag.antwoord?.ja ?? null} />
+            <VerdictBadge score={dag.conditie.score} labels={tool.schaalLabels} />
             {dag.outfit && <OutfitFiguur outfit={dag.outfit} />}
             <p className="status-regel">{dag.status.zin}</p>
             {dag.metric?.zin && <p className="metric-zin">{dag.metric.zin}</p>}
@@ -143,11 +143,7 @@ export default function LocatieTool({ toolId, beginLocatie = null }) {
                 >
                   <span className="dagnaam">{dagLabel(d.datum, i)}</span>
                   <span className="dagwoord">
-                    {d.antwoord?.ja == null
-                      ? schaalVoor(d.conditie.score).label
-                      : d.antwoord.ja
-                        ? "Ja"
-                        : "Nee"}
+                    {labelVoor(d.conditie.score, tool.schaalLabels)}
                   </span>
                   <span className="dagregel">{dagRegel(d)}</span>
                 </button>

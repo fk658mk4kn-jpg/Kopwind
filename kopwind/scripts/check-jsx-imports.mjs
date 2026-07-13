@@ -38,7 +38,36 @@ function controleer(pad) {
   }
 }
 
+// Tweede pas: gedeelde helper-functies die zonder import gebruikt worden.
+// Vangt de cron-klasse bugs (schaalVoor zonder import) die de JSX-pas mist.
+const HELPERS = [
+  "schaalVoor", "labelVoor", "jaVoor", "kleurVoorSchaal",
+  "fmtCijfer", "fmtTijd", "fmtKm", "fmtDuur", "fmtUren",
+  "kleurSequentieel", "tekstKleurVoor", "bft", "kompas",
+  "droogsnelheid", "geschatteDroogtijd", "dagKeyVan", "bouwBasis",
+];
+
+function controleerHelpers(pad) {
+  const src = stripCommentaar(readFileSync(pad, "utf8"));
+  for (const h of HELPERS) {
+    const gebruikt = new RegExp(`\\b${h}\\s*\\(`).test(src);
+    if (!gebruikt) continue;
+    const gedekt = new RegExp(`import[^;\\n]*\\b${h}\\b|function ${h}\\b|const ${h}\\s*=`).test(src);
+    if (!gedekt) fouten.push(`${pad}: ${h}() wordt gebruikt maar niet geimporteerd`);
+  }
+}
+
+function loopHelpers(dir) {
+  for (const naam of readdirSync(dir)) {
+    const pad = join(dir, naam);
+    const st = statSync(pad);
+    if (st.isDirectory()) loopHelpers(pad);
+    else if (naam.endsWith(".js") && !pad.includes("lib/format") && !pad.includes("lib/engine")) controleerHelpers(pad);
+  }
+}
+
 for (const m of mappen) loop(m);
+for (const m of ["components", "app", "lib/tools", "lib/server"]) loopHelpers(m);
 if (fouten.length) {
   console.error("Ontbrekende component-imports:\n" + fouten.map((f) => "  " + f).join("\n"));
   process.exit(1);

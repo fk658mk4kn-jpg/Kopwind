@@ -141,6 +141,10 @@ export default function MeldingenPanel({ open, onClose }) {
           </p>
         )}
 
+        <p className="uitleg" style={{ marginTop: 0 }}>
+          Zet een seintje aan als je op tijd wilt weten of fietsen, wassen of
+          terrassen slim is. Twee stappen:
+        </p>
         <h3>1. Apparaten koppelen</h3>
         {g.syncCode ? (
           <>
@@ -164,15 +168,16 @@ export default function MeldingenPanel({ open, onClose }) {
               </button>
             </div>
             <p className="uitleg">
-              Bewaar de code ergens veilig: hij is je enige sleutel, er is geen
-              wachtwoordherstel.
+              Bewaar 'm ergens veilig. We werken zonder account, dus deze code
+              kunnen we niet voor je terughalen.
             </p>
           </>
         ) : (
           <>
             <p className="uitleg" style={{ marginTop: 0 }}>
-              Maak een synccode aan (geen account of e-mail nodig) of voer de
-              code van je andere apparaat in.
+              Gebruik je dit ook op je telefoon of een ander apparaat? Maak dan
+              je persoonlijke code aan, of vul de code van je andere apparaat
+              in. Geen account of e-mail nodig.
             </p>
             <div className="synccode-rij">
               <button className="knop primair" onClick={maakCode} disabled={bezig}>

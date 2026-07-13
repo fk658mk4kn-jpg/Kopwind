@@ -26,6 +26,8 @@
  * de server in UTC.
  */
 
+import { labelVoor } from "@/lib/engine/schaal";
+import { fietsNaarWerk } from "@/lib/tools/fiets-naar-werk";
 import { dbGeconfigureerd, dbSelect, dbInsert, dbPatch, dbDelete } from "@/lib/server/db";
 import { verstuurNaarAbos, pushGeconfigureerd } from "@/lib/server/push";
 import { serverFetch, haalRoutes, haalHourly, nuAmsterdam } from "@/lib/server/externe";
@@ -154,7 +156,7 @@ export async function GET(request) {
                 continue;
               }
               tekst = plan
-                ? briefingTekst(plan, route.naam)
+                ? briefingTekst(plan, route.naam, fietsNaarWerk.schaalLabels)
                 : {
                     title: `Fietscheck \u00b7 ${route.naam}`,
                     body: "Kon het weer niet ophalen. Open de fietscheck voor je advies van vandaag.",
@@ -162,7 +164,7 @@ export async function GET(request) {
             } else {
               const leg = plan?.legs?.[item.legIdx];
               tekst = leg
-                ? vertrekTekst(leg, schema.vertrek.minuten ?? 15)
+                ? vertrekTekst(leg, schema.vertrek.minuten ?? 15, fietsNaarWerk.schaalLabels)
                 : {
                     title: `Bijna vertrekken \u00b7 ${route.naam}`,
                     body: "Je volgende rit staat gepland. Open de fietscheck voor het actuele weer.",
@@ -262,7 +264,7 @@ async function toolBriefing(tool, schema, nu, perTool = {}) {
   if (!vandaag) return null;
   if (!drempelLaatDoor(schema.drempel, vandaag.conditie.score)) return null;
   return {
-    title: `${tool.meldingKort}: ${vandaag.antwoord?.ja === false ? "nee" : "ja"}, ${schaalVoor(vandaag.conditie.score).label.toLowerCase()}`,
+    title: `${tool.meldingKort}: ${labelVoor(vandaag.conditie.score, tool.schaalLabels)}`,
     body: `${vandaag.status.zin} Voor ${schema.locatie.naam.split(",")[0]}.`,
   };
 }

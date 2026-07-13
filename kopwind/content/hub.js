@@ -5,7 +5,7 @@
 
 export const hub = {
   intro:
-    "Fietsen, de was buiten, het terras op? Kies je stad en je ziet het meteen. Met het beste moment erbij.",
+    "Kies je plek en je ziet meteen of fietsen, de was of het terras vandaag slim is. Met het beste moment erbij.",
   faq: [
     {
       v: "Wat is Kan het vandaag?",

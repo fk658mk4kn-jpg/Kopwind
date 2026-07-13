@@ -7,9 +7,9 @@ import LocatieZoek from "@/components/LocatieZoek";
 import Icoon from "@/components/Icoon";
 import { haalWeer } from "@/lib/engine/weather";
 import { BASIS_VELDEN } from "@/lib/engine/weerbasis";
-import { schaalVoor, kleurVoorSchaal } from "@/lib/engine/schaal";
+import { schaalVoor, labelVoor, kleurVoorSchaal } from "@/lib/engine/schaal";
 import { huidigeLocatie } from "@/lib/engine/locatie";
-import { dichtstbijzijndeStad } from "@/lib/steden/nl";
+import { STEDEN, dichtstbijzijndeStad } from "@/lib/steden/nl";
 import { TOOLS } from "@/lib/tools";
 
 /**
@@ -19,10 +19,18 @@ import { TOOLS } from "@/lib/tools";
  * je exacte adres hoeft alleen waar het er echt toe doet (de route).
  */
 
-const TEASERS = [
-  { naam: "Vandaag barbecue?", zin: "Het beste blok vanavond, en waar je 'm neerzet met deze wind." },
-  { naam: "Word ik nat?", zin: "Wanneer de buien vallen op jouw dag." },
-  { naam: "Moet ik krabben?", zin: "Vorst- en ijzelrisico voor morgenochtend." },
+/**
+ * "Nederland" als plek: De Bilt, het KNMI-referentiepunt, als landelijk
+ * gemiddelde. Wie binnenkomt zonder keuze ziet zo meteen live antwoorden.
+ */
+const NEDERLAND = { naam: "Nederland", lat: 52.11, lon: 5.181 };
+
+const POPULAIR = [
+  NEDERLAND,
+  ...["amsterdam", "rotterdam", "utrecht", "den-haag"]
+    .map((slug) => STEDEN.find((s) => s.slug === slug))
+    .filter(Boolean)
+    .map((s) => ({ naam: s.naam, lat: s.lat, lon: s.lon })),
 ];
 
 export default function HubGrid() {
@@ -35,9 +43,9 @@ export default function HubGrid() {
   useEffect(() => {
     try {
       const l = JSON.parse(localStorage.getItem("kopwind.hubLocatie") ?? "null");
-      if (l?.lat) setStad(l);
+      setStad(l?.lat ? l : NEDERLAND);
     } catch {
-      // Kapotte localStorage negeren.
+      setStad(NEDERLAND);
     }
   }, []);
 
@@ -89,16 +97,20 @@ export default function HubGrid() {
   return (
     <section className="hubgrid" aria-label="De checks van vandaag">
       <div className="kiesbalk paneel">
-        <span className="kiesbalk-label">{stad ? `Vandaag in ${stad.naam}` : "Waar ben je?"}</span>
-        {g.presets.length > 0 && (
-          <div className="chips">
-            {g.presets.slice(0, 4).map((p) => (
-              <button key={p.naam} className="chip" onClick={() => kies(p)}>
-                {p.naam}
-              </button>
-            ))}
-          </div>
-        )}
+        <span className="kiesbalk-label">
+          {stad ? (stad.naam === "Nederland" ? "Vandaag in Nederland" : `Vandaag in ${stad.naam}`) : "Waar ben je?"}
+        </span>
+        <div className="chips">
+          {POPULAIR.map((p) => (
+            <button
+              key={p.naam}
+              className={"chip" + (stad?.naam === p.naam ? " actief" : "")}
+              onClick={() => kies(p)}
+            >
+              {p.naam}
+            </button>
+          ))}
+        </div>
         <div className="kiesbalk-zoek">
           <LocatieZoek onKies={kies} placeholder="Zoek je stad..." />
           <button className="knop klein" onClick={mijnPlek}>
@@ -115,16 +127,20 @@ export default function HubGrid() {
             key={t.id}
             href={`/${t.slug}`}
             className="checkkaart"
-            style={{ borderTop: `3px solid ${t.kleur}` }}
+            style={{
+              background: `color-mix(in srgb, ${t.kleur} 6%, #ffffff)`,
+              borderColor: `color-mix(in srgb, ${t.kleur} 28%, #ffffff)`,
+            }}
           >
             <span className="kaart-watermerk" aria-hidden="true" style={{ color: t.kleur }}>
-              <Icoon naam={t.icoon} maat={96} />
+              <Icoon naam={t.icoon} maat={132} />
             </span>
             <span className="kaart-top">
-              <span className="kaart-icoon" style={{ color: t.kleur }}>
-                <Icoon naam={t.icoon} maat={20} />
+              <span className="icon-chip" style={{ background: `color-mix(in srgb, ${t.kleur} 15%, #ffffff)`, color: t.kleur }}>
+                <Icoon naam={t.icoon} maat={22} />
               </span>
               <h2>{t.naam}</h2>
+              {t.soort === "advies" && <span className="tooltag">advies</span>}
             </span>
             <KaartLive tool={t} dag={dagen?.[t.id]} stad={stad} laden={laden} />
             <span className="knop klein kaartknop">{t.cta}</span>
@@ -132,15 +148,9 @@ export default function HubGrid() {
         ))}
       </div>
 
-      <div className="binnenkort-rij" aria-label="Binnenkort">
-        {TEASERS.map((t) => (
-          <div key={t.naam} className="binnenkort-kaart">
-            <span className="badge klein">Binnenkort</span>
-            <strong>{t.naam}</strong>
-            <span>{t.zin}</span>
-          </div>
-        ))}
-      </div>
+      <p className="binnenkort-regel">
+        Binnenkort: Word ik vandaag nat? {"\u00b7"} Moet ik morgen krabben? {"\u00b7"} Kan ik barbecueën?
+      </p>
     </section>
   );
 }
@@ -152,15 +162,10 @@ function KaartLive({ tool, dag, stad, laden }) {
   if (!stad) return <p className="kaartregel stil">Kies je stad hierboven.</p>;
   if (laden || dag === undefined) return <p className="kaartregel stil">Even naar de lucht kijken...</p>;
   if (!dag) return <p className="kaartregel stil">Nu even geen antwoord. Probeer de check zelf.</p>;
-  const s = schaalVoor(dag.conditie.score);
-  const kleur = kleurVoorSchaal(s.id);
-  const ja = dag.antwoord?.ja ?? null;
+  const kleur = kleurVoorSchaal(schaalVoor(dag.conditie.score).id);
   return (
     <div className="kaartlive">
-      <span className={"badge " + kleur}>
-        {ja === null ? s.label : ja ? "Ja" : "Nee"}
-        {ja !== null && <span className="badge-woord">{s.label}</span>}
-      </span>
+      <span className={"badge " + kleur}>{labelVoor(dag.conditie.score, tool.schaalLabels)}</span>
       <p className="kaartregel">{eersteZin(dag.antwoord?.zin ?? dag.status.zin)}</p>
     </div>
   );

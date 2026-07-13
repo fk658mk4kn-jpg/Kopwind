@@ -172,7 +172,7 @@ export function overlay(hourly, nu = new Date(), instellingen = KLEDING_DEFAULTS
 export const kleding = {
   id: "wat-trek-ik-aan",
   slug: "wat-trek-ik-aan",
-  naam: "Wat trek ik aan?",
+  naam: "Wat trek ik vandaag aan?",
   meldingKort: "Kledingcheck",
   korteVraag: "Wat trek ik vandaag aan?",
   cta: "Check je outfit",
@@ -181,7 +181,15 @@ export const kleding = {
   locatieHint: "Zoek je stad, dat is genoeg...",
   icoon: "shirt",
   groep: "Elke dag",
-  diepte: "Wat je aantrekt, en wat je meeneemt voor vanavond.",
+  diepte: "Gewoon praktisch advies voor buiten.",
+  soort: "advies",
+  schaalLabels: {
+    ideaal: "Makkelijke keuze",
+    goed: "Vrij makkelijk",
+    twijfelachtig: "Laagjesdag",
+    matig: "Lastige dag",
+    "zeer-slecht": "Gure dag",
+  },
   patroon: "A",
   inputType: "locatie",
   weerVelden: BASIS_VELDEN,
@@ -191,8 +199,26 @@ export const kleding = {
   instellingen: {
     defaults: KLEDING_DEFAULTS,
     velden: [
-      { key: "warmGrens", label: "T-shirt kan vanaf gevoels-", eenheid: "graden", step: 1, min: 12, max: 22 },
-      { key: "koudGrens", label: "Trui of meer onder gevoels-", eenheid: "graden", step: 1, min: 4, max: 16 },
+      {
+        type: "keuze",
+        id: "warm",
+        vraag: "Wanneer begint T-shirt-weer voor jou?",
+        keuzes: [
+          { label: "Warmbloedig", zet: { warmGrens: 14 } },
+          { label: "Gemiddeld", zet: { warmGrens: 16 } },
+          { label: "Koukleum", zet: { warmGrens: 18 } },
+        ],
+      },
+      {
+        type: "keuze",
+        id: "koud",
+        vraag: "Wanneer wil je een trui of meer?",
+        keuzes: [
+          { label: "Warmbloedig", zet: { koudGrens: 8 } },
+          { label: "Gemiddeld", zet: { koudGrens: 11 } },
+          { label: "Koukleum", zet: { koudGrens: 13 } },
+        ],
+      },
       { key: "dagStart", label: "Dag begint om", eenheid: "uur", step: 1, min: 5, max: 10 },
       { key: "dagEind", label: "Dag eindigt om", eenheid: "uur", step: 1, min: 18, max: 24 },
     ],

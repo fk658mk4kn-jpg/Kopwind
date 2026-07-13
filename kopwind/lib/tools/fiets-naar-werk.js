@@ -12,16 +12,23 @@ import { DEFAULT_THRESHOLDS } from "../advice.js";
 export const fietsNaarWerk = {
   id: "fiets-naar-werk",
   slug: "fietsen-naar-werk",
-  naam: "Vandaag op de fiets?",
+  naam: "Kan ik vandaag fietsen?",
   meldingKort: "Fietscheck",
   cta: "Check je rit",
   navLabel: "Fietsen",
   kleur: "#3D6E96",
   icoon: "fiets",
   groep: "Onderweg",
-  diepte: "Wind per stuk route en het beste moment om te vertrekken.",
+  diepte: "Wind, regen en het beste vertrekmoment voor jouw rit.",
+  schaalLabels: {
+    ideaal: "Ideale fietsdag",
+    goed: "Goed te doen",
+    twijfelachtig: "Twijfelachtig",
+    matig: "Liever later",
+    "zeer-slecht": "Beter van niet",
+  },
   vervoer: ["fiets"],
-  korteVraag: "Kan ik vandaag naar werk fietsen?",
+  korteVraag: "Kan ik vandaag fietsen naar werk?",
   patroon: "A",
   inputType: "route",
   weerVelden: [
@@ -37,15 +44,40 @@ export const fietsNaarWerk = {
   instellingen: {
     defaults: DEFAULT_THRESHOLDS,
     velden: [
-      { key: "tegenwindMatig", label: "Tegenwind merkbaar vanaf", eenheid: "km/u", step: 1 },
-      { key: "tegenwindZwaar", label: "Tegenwind zwaar vanaf", eenheid: "km/u", step: 1 },
-      { key: "neerslagKans", label: "Neerslagkans genoemd vanaf", eenheid: "%", step: 5 },
-      { key: "neerslagMm", label: "Neerslag zwaar vanaf", eenheid: "mm/u", step: 0.1 },
-      { key: "gevoelMin", label: "Te koud onder gevoels-", eenheid: "graden", step: 1 },
-      { key: "segmentLengte", label: "Segmentlengte", eenheid: "m", step: 50 },
+      {
+        type: "keuze",
+        id: "wind",
+        vraag: "Hoe gevoelig ben je voor wind?",
+        keuzes: [
+          { label: "Nauwelijks", zet: { tegenwindMatig: 18, tegenwindZwaar: 30 } },
+          { label: "Gemiddeld", zet: { tegenwindMatig: 12, tegenwindZwaar: 22 } },
+          { label: "Best snel", zet: { tegenwindMatig: 8, tegenwindZwaar: 16 } },
+        ],
+      },
+      {
+        type: "keuze",
+        id: "regen",
+        vraag: "Wanneer is regen voor jou te veel?",
+        keuzes: [
+          { label: "Paar druppels prima", zet: { neerslagKans: 75, neerslagMm: 1.6 } },
+          { label: "Motregen is ok\u00e9", zet: { neerslagKans: 60, neerslagMm: 1.0 } },
+          { label: "Ik wil droog blijven", zet: { neerslagKans: 45, neerslagMm: 0.5 } },
+        ],
+      },
+      {
+        type: "keuze",
+        id: "kou",
+        vraag: "Wanneer is het te koud?",
+        keuzes: [
+          { label: "Ik fiets altijd door", zet: { gevoelMin: -8 } },
+          { label: "Onder nul wordt het guur", zet: { gevoelMin: 0 } },
+          { label: "Snel te koud", zet: { gevoelMin: 5 } },
+        ],
+      },
+      { key: "segmentLengte", label: "Segmentlengte", eenheid: "m", step: 50, geavanceerd: true },
     ],
     uitleg:
-      "Elke rit krijgt een rapportcijfer voor het fietsweer: rond de 7 is merkbare tegenwind maar droog, rond de 5 stevige tegenwind of serieuze buienkans, onder de 4 raden we fietsen af. Deze drempels bepalen waar merkbaar en zwaar voor jou beginnen.",
+      "Goed te doen is droog met hooguit merkbare tegenwind; Liever later betekent stevige wind of serieuze buienkans. Met deze keuzes bepaal je waar die grenzen voor jou liggen.",
   },
   adviesLabels: {
     goed: "prima fietsdag",

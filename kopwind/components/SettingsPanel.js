@@ -47,27 +47,43 @@ export default function SettingsPanel({
           ))}
         </div>
 
-        {meta?.velden?.map((v) => (
-          <div className="instelrij" key={v.key}>
-            <label htmlFor={"inst-" + tool.id + "-" + v.key}>
-              {v.label} ({v.eenheid})
-            </label>
-            <input
-              id={"inst-" + tool.id + "-" + v.key}
-              type="number"
-              step={v.step ?? 1}
-              min={v.min}
-              max={v.max}
-              value={waarden[v.key]}
-              onChange={(e) =>
-                setThresholds(tool.id, {
-                  ...waarden,
-                  [v.key]: Number(e.target.value),
-                })
-              }
-            />
-          </div>
-        ))}
+        {meta?.velden
+          ?.filter((v) => !v.geavanceerd)
+          .map((v) =>
+            v.type === "keuze" ? (
+              <div className="instelrij keuzerij" key={v.id}>
+                <span className="keuze-vraag">{v.vraag}</span>
+                <div className="chips">
+                  {v.keuzes.map((k) => {
+                    const actief = Object.entries(k.zet).every(
+                      ([key, w]) => waarden[key] === w
+                    );
+                    return (
+                      <button
+                        key={k.label}
+                        className={"chip" + (actief ? " actief" : "")}
+                        onClick={() => setThresholds(tool.id, { ...waarden, ...k.zet })}
+                      >
+                        {k.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            ) : (
+              <NummerRij key={v.key} tool={tool} v={v} waarden={waarden} setThresholds={setThresholds} />
+            )
+          )}
+        {meta?.velden?.some((v) => v.geavanceerd) && (
+          <details className="geavanceerd">
+            <summary>Geavanceerd</summary>
+            {meta.velden
+              .filter((v) => v.geavanceerd)
+              .map((v) => (
+                <NummerRij key={v.key} tool={tool} v={v} waarden={waarden} setThresholds={setThresholds} />
+              ))}
+          </details>
+        )}
         <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
           <button
             className="knop klein"
@@ -131,6 +147,30 @@ export default function SettingsPanel({
           </button>
         </div>
       </div>
+    </div>
+  );
+}
+
+function NummerRij({ tool, v, waarden, setThresholds }) {
+  return (
+    <div className="instelrij">
+      <label htmlFor={"inst-" + tool.id + "-" + v.key}>
+        {v.label} ({v.eenheid})
+      </label>
+      <input
+        id={"inst-" + tool.id + "-" + v.key}
+        type="number"
+        step={v.step ?? 1}
+        min={v.min}
+        max={v.max}
+        value={waarden[v.key]}
+        onChange={(e) =>
+          setThresholds(tool.id, {
+            ...waarden,
+            [v.key]: Number(e.target.value),
+          })
+        }
+      />
     </div>
   );
 }

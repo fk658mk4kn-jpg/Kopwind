@@ -4,7 +4,7 @@ export const seo = {
   title: "Terrasweer vandaag: de beste terrasuren voor jouw stad",
   description:
     "Kan ik vandaag op het terras? Zie de beste uren, of de zon er dan bij is en wanneer de wind gaat liggen. Vijf dagen vooruit. Gratis.",
-  h1: "Vandaag op het terras?",
+  h1: "Kan ik vandaag op het terras zitten?",
   intro:
     "Wordt het wat op het terras? Je ziet de beste uren van vandaag, of de zon er dan bij is en wanneer de wind gaat liggen. Kies je stad, meer is niet nodig.",
 };

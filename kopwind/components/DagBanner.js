@@ -1,6 +1,7 @@
 "use client";
 
-import { schaalVoor, jaVoor } from "@/lib/engine/schaal";
+import { labelVoor } from "@/lib/engine/schaal";
+import { fietsNaarWerk } from "@/lib/tools/fiets-naar-werk";
 
 const KLEUR = {
   "prima fietsdag": "groen",
@@ -19,11 +20,7 @@ export default function DagBanner({ dag }) {
   if (!dag) return null;
   return (
     <div className={"dagbanner " + KLEUR[dag.advies]}>
-      <h2>
-        {jaVoor(dag.score) ? "Ja: " : "Nee: "}
-        {TITEL[dag.advies].toLowerCase()}{" "}
-        <span className="dagcijfer">{"\u00b7"} {schaalVoor(dag.score).label}</span>
-      </h2>
+      <h2>{labelVoor(dag.score, fietsNaarWerk.schaalLabels)}</h2>
       <p>{dag.uitleg}</p>
       <p className="noot">
         Heen en terug tellen allebei mee: de zwaarste rit van je dag bepaalt het
