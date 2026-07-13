@@ -8,7 +8,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test": "node --test"
+    "test": "node --test",
+    "check:imports": "node scripts/check-jsx-imports.mjs"
   },
   "dependencies": {
     "@fontsource-variable/bricolage-grotesque": "^5.2.10",

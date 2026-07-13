@@ -2,6 +2,7 @@
 
 import { bft, kompas, fmtKm, fmtDuur, fmtTijd } from "@/lib/format";
 import { schaalVoor } from "@/lib/engine/schaal";
+import KleurLegenda from "@/components/KleurLegenda";
 
 const BADGE_KLEUR = {
   "prima fietsdag": "groen",

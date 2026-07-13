@@ -420,3 +420,7 @@ VerdictBadge-API is nu { score, ja }. Overlay-dagen hebben een antwoord-veld ({ 
 - **Privacy noemt de duimpjes:** wat we bewaren (check, datum, stem, random apparaatcode), waarom, en wat er niet aan vastzit.
 - **Kleuren:** elke check heeft nu een eigen gedempte accentkleur (fietsen staalblauw, was teal, kleding katoengroen, terras terracotta) op kaartrand, icoon en watermerk; dat doorbreekt het leisteen-geel-monotone zonder het palet om te gooien.
 - **Homepage-kaarten volledig klikbaar** met het tool-watermerk als visualisatie in de kaart; de CTA-knop is een visueel element binnen de link geworden.
+
+### Tweede fietscheck-crash (KleurLegenda) plus een vangnet
+- **Oorzaak:** LegCard (de rit-kaart in de fietscheck) rendert een KleurLegenda voor de windschaal, maar de import ontbrak. Zelfde klasse fout als de schaalVoor-crash: onzichtbaar in de build, hard client-side bij interactie. Import toegevoegd.
+- **Vangnet toegevoegd** zodat deze fout niet meer ongemerkt in een zip belandt: scripts/check-jsx-imports.mjs scant components/ en app/ en faalt als een <Hoofdletter-component niet geimporteerd of lokaal gedefinieerd is. Draait via `npm run check:imports` en hoort vanaf nu bij de release-check, naast `npm test` en `npm run build`. Een brede scan bevestigde dat dit de laatste ontbrekende import was.
