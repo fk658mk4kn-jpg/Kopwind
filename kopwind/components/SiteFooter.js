@@ -36,6 +36,9 @@ export default function SiteFooter() {
           <Link href={PAD.changelog}>{S.voet.changelog}</Link>
           <Link href={PAD.privacy}>{S.voet.privacy}</Link>
           <Link href={PAD.voorwaarden}>{S.voet.voorwaarden}</Link>
+          {process.env.NEXT_PUBLIC_ALTERNATE_LOCALE_URL && (
+            <a href={process.env.NEXT_PUBLIC_ALTERNATE_LOCALE_URL}>{S.menu.taalwissel}</a>
+          )}
         </div>
       </div>
       <p className="voet-regel">

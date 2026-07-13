@@ -12,12 +12,14 @@ import * as wasBuitenDrogen from "./was-buiten-drogen.js";
 import * as watTrekIkAan from "./wat-trek-ik-aan.js";
 import * as terras from "./terras.js";
 import * as barbecueweer from "./barbecueweer.js";
+import * as zonkracht from "./zonkracht.js";
 
 import * as bikeToWork from "./en/bike-to-work.js";
 import * as dryLaundryOutside from "./en/dry-laundry-outside.js";
 import * as whatToWear from "./en/what-to-wear.js";
 import * as patioWeather from "./en/patio-weather.js";
 import * as bbqWeather from "./en/bbq-weather.js";
+import * as sunscreen from "./en/sunscreen.js";
 
 const PER_SLUG =
   LOCALE === "en"
@@ -27,6 +29,7 @@ const PER_SLUG =
         "what-to-wear": whatToWear,
         "patio-weather": patioWeather,
         "bbq-weather": bbqWeather,
+        "sunscreen": sunscreen,
       }
     : {
         "fietsen-naar-werk": fietsenNaarWerk,
@@ -34,6 +37,7 @@ const PER_SLUG =
         "wat-trek-ik-aan": watTrekIkAan,
         "terrasweer": terras,
         "barbecueweer": barbecueweer,
+        "zonkracht": zonkracht,
       };
 
 export function inhoudVoorTool(slug) {

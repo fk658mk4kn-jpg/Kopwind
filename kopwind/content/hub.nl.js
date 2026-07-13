@@ -5,11 +5,11 @@
 
 export const hub = {
   intro:
-    "Kies je plek en je ziet meteen of fietsen, de was of het terras vandaag slim is. Met het beste moment erbij.",
+    "Kies je plek en je ziet meteen of fietsen, de was, het terras, de barbecue of smeren vandaag slim is. Met het beste moment erbij.",
   faq: [
     {
       v: "Wat is Kan het vandaag?",
-      a: "Vier gratis checks die live weer omzetten in een antwoord: fiets ik naar werk, kan de was buiten drogen, wordt het terrasweer en wat trek ik aan. Je krijgt ja of nee, een schaalwoord van Zeer slecht tot Ideaal, en het beste moment. Zonder account.",
+      a: "Zes gratis checks die live weer omzetten in een antwoord: fiets ik naar werk, kan de was buiten drogen, wordt het terrasweer, wat trek ik aan, kan de barbecue aan en moet ik smeren. Je krijgt een antwoord in gewone woorden, het beste moment en de reden erbij. Zonder account.",
     },
     {
       v: "Hoe actueel is het antwoord?",
@@ -21,7 +21,7 @@ export const hub = {
     },
     {
       v: "Komen er meer checks bij?",
-      a: "Ja: barbecue, regen-timing en gladheid staan op de rol. Zelfde opzet: een concrete vraag, een concreet antwoord.",
+      a: "Ja: regen-timing, hooikoorts en gladheid staan op de rol. Zelfde opzet: een concrete vraag, een concreet antwoord.",
     },
   ],
 };

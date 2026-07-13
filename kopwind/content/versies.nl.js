@@ -6,6 +6,12 @@
 
 export const VERSIES = [
   {
+    versie: "3.3.0",
+    codenaam: "Meltemi",
+    datum: "2026-07-13",
+    zin: "Compacter en consistenter: elke hub-kaart volgt nu een vast stramien (vraag, verdictbadge rechts, toelichting van twee regels, eigen CTA) met het watermerk als achtergrond. Nieuwe zonkrachtcheck met huidtype en verbrandtijd. De tekstlinks verhuisden naar een uitklapmenu, de FAQ klapt in, en onder elk advies staan nu een stemmenteller, een deelknop, gerelateerde checks en een laatst-bijgewerkt-regel.",
+  },
+  {
     versie: "3.2.0",
     codenaam: "Sirocco",
     datum: "2026-07-13",

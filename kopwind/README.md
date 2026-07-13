@@ -154,6 +154,18 @@ Nieuwe teksten? Gebruik `kies({ nl, en })` uit lib/i18n/locale.js of
 voeg keys toe aan lib/strings/. Nooit een kale Nederlandse string in een
 component laten staan.
 
+## v3.3.0 "Meltemi" in het kort
+
+Hub-kaarten volgen een vast stramien (korteVraag plus badge plus
+twee-regel-toelichting plus CTA); nieuwe tools hoeven alleen korteVraag,
+cta en een overlay met antwoord.zin te leveren en zien er automatisch
+hetzelfde uit. De topnav is een hamburger-paneel (components/MenuPaneel.js)
+op de registergroepen. Elke tool heeft een `bijgewerkt`-datum in het
+register: bump die bij inhoudelijke wijzigingen, hij voedt de zichtbare
+laatst-bijgewerkt-regel. De taalwissel-link in menu en footer verschijnt
+zodra NEXT_PUBLIC_ALTERNATE_LOCALE_URL gezet is (advies: de Engelse
+build op en.kanhetvandaag.nl als tweede Vercel-project).
+
 ## Een nieuwe locatie-tool bouwen (overlay-contract)
 
 Een nieuwe check is sinds v2.2.0 een overlay plus content, geen herbouw:

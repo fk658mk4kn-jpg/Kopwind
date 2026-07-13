@@ -3,9 +3,10 @@
 import Link from "next/link";
 import { HUB_NAAM } from "@/lib/brand";
 import { S } from "@/lib/strings";
-import { TOOLS } from "@/lib/tools";
 import { useGebruiker } from "./GebruikerContext";
 import Icoon from "./Icoon";
+import MenuPaneel from "./MenuPaneel";
+import { useState } from "react";
 
 /**
  * Vaste kop (Zephyr item 1): merk links, een rustige tool-switcher in het
@@ -14,19 +15,13 @@ import Icoon from "./Icoon";
  */
 export default function SiteHeader() {
   const g = useGebruiker();
+  const [menuOpen, setMenuOpen] = useState(false);
   return (
     <header className="kop">
       <Link href="/" className="merk" aria-label={HUB_NAAM}>
         <span className="merk-mark" aria-hidden="true" />
         <span className="merk-naam">{HUB_NAAM.toLowerCase()}</span>
       </Link>
-      <nav className="hoofdnav" aria-label={S.header.alleTools}>
-        {TOOLS.map((t) => (
-          <Link key={t.slug} href={`/${t.slug}`} className="navlink">
-            {t.navLabel}
-          </Link>
-        ))}
-      </nav>
       <span className="spacer" />
       <button
         className="iconknop kop-icoon"
@@ -45,6 +40,15 @@ export default function SiteHeader() {
       >
         <Icoon naam="tandwiel" maat={19} />
       </button>
+      <button
+        className="iconknop kop-icoon"
+        onClick={() => setMenuOpen(true)}
+        aria-label={S.menu.knop}
+        title={S.menu.knop}
+      >
+        <Icoon naam="menu" maat={19} />
+      </button>
+      <MenuPaneel open={menuOpen} onClose={() => setMenuOpen(false)} />
     </header>
   );
 }

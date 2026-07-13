@@ -343,5 +343,6 @@ export const terras = {
     uitleg: T.instUitleg,
   },
   adviesLabels: T.adviesLabels,
+  bijgewerkt: "2026-07-13",
   affiliate: null,
 };

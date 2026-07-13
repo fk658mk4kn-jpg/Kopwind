@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { dagKeyVan } from "@/lib/engine/weerbasis";
 import { S } from "@/lib/strings";
+import Icoon from "./Icoon";
 
 /**
  * Duimpjes onder het advies (het sociale aspect): klopte het vandaag?
@@ -16,6 +17,7 @@ export default function StemPeiling({ toolId }) {
   const [keuze, setKeuze] = useState(null);
   const [totalen, setTotalen] = useState(null);
   const [weg, setWeg] = useState(false);
+  const [gedeeld, setGedeeld] = useState(false);
 
   useEffect(() => {
     try {
@@ -61,7 +63,23 @@ export default function StemPeiling({ toolId }) {
   };
 
   const totaal = (totalen?.omhoog ?? 0) + (totalen?.omlaag ?? 0);
-  const toonTotalen = totalen && (keuze !== null || totaal >= 3);
+  const toonTotalen = totalen && totaal > 0 && (keuze !== null || totaal >= 3);
+
+  const deel = async () => {
+    const url = typeof window !== "undefined" ? window.location.href : "";
+    const titel = typeof document !== "undefined" ? document.title : "";
+    try {
+      if (typeof navigator !== "undefined" && navigator.share) {
+        await navigator.share({ title: titel, url });
+        return;
+      }
+      await navigator.clipboard.writeText(url);
+      setGedeeld(true);
+      setTimeout(() => setGedeeld(false), 2500);
+    } catch {
+      // Delen afgebroken of clipboard dicht: stil laten.
+    }
+  };
 
   return (
     <div className="stempeiling" aria-label={S.stem.vraag}>
@@ -85,10 +103,12 @@ export default function StemPeiling({ toolId }) {
         {"\u{1F44E}"}
       </button>
       {toonTotalen && (
-        <span className="stem-totalen">
-          {"\u{1F44D}"} {totalen.omhoog} {"\u00b7"} {"\u{1F44E}"} {totalen.omlaag}
-        </span>
+        <span className="stem-totalen">{S.stem.teller(totalen.omhoog, totaal)}</span>
       )}
+      <span className="spacer" />
+      <button className="stemknop deelknop" onClick={deel} aria-label={S.stem.delen} title={S.stem.delen}>
+        {gedeeld ? <span className="deel-ok">{S.stem.gekopieerd}</span> : <Icoon naam="deel" maat={16} />}
+      </button>
     </div>
   );
 }

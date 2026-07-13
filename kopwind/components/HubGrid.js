@@ -135,17 +135,19 @@ export default function HubGrid() {
             }}
           >
             <span className="kaart-watermerk" aria-hidden="true" style={{ color: t.kleur }}>
-              <Icoon naam={t.icoon} maat={132} />
+              <Icoon naam={t.icoon} maat={96} />
             </span>
-            <span className="kaart-top">
-              <span className="icon-chip" style={{ background: `color-mix(in srgb, ${t.kleur} 15%, #ffffff)`, color: t.kleur }}>
-                <Icoon naam={t.icoon} maat={22} />
+            <span className="kaart-rij1">
+              <span className="icon-chip klein" style={{ background: `color-mix(in srgb, ${t.kleur} 15%, #ffffff)`, color: t.kleur }}>
+                <Icoon naam={t.icoon} maat={16} />
               </span>
-              <h2>{t.naam}</h2>
-              {t.soort === "advies" && <span className="tooltag">advies</span>}
+              <h2 className="kaart-vraag">{t.korteVraag}</h2>
+              <KaartBadge tool={t} dag={dagen?.[t.id]} stad={stad} />
             </span>
-            <KaartLive tool={t} dag={dagen?.[t.id]} stad={stad} laden={laden} />
-            <span className="knop klein kaartknop">{t.cta}</span>
+            <KaartRegel tool={t} dag={dagen?.[t.id]} stad={stad} laden={laden} />
+            <span className="kaart-cta">
+              {t.cta} <Icoon naam="pijl" maat={13} />
+            </span>
           </Link>
         ))}
       </div>
@@ -160,20 +162,30 @@ export default function HubGrid() {
   );
 }
 
-function KaartLive({ tool, dag, stad, laden }) {
-  if (typeof tool.overlay !== "function") {
-    return <p className="kaartregel">{tool.diepte}</p>;
-  }
-  if (!stad) return <p className="kaartregel stil">{S.hub.kiesStad}</p>;
-  if (laden || dag === undefined) return <p className="kaartregel stil">{S.hub.laden}</p>;
-  if (!dag) return <p className="kaartregel stil">{S.hub.geenAntwoord}</p>;
+function KaartBadge({ tool, dag, stad }) {
+  if (typeof tool.overlay !== "function" || !stad || !dag) return null;
   const kleur = kleurVoorSchaal(schaalVoor(dag.conditie.score).id);
-  return (
-    <div className="kaartlive">
-      <span className={"badge " + kleur}>{labelVoor(dag.conditie.score, tool.schaalLabels)}</span>
-      <p className="kaartregel">{eersteZin(dag.antwoord?.zin ?? dag.status.zin)}</p>
-    </div>
-  );
+  return <span className={"badge " + kleur}>{labelVoor(dag.conditie.score, tool.schaalLabels)}</span>;
+}
+
+function KaartRegel({ tool, dag, stad, laden }) {
+  let tekst;
+  let stil = false;
+  if (typeof tool.overlay !== "function") {
+    tekst = tool.diepte;
+  } else if (!stad) {
+    tekst = S.hub.kiesStad;
+    stil = true;
+  } else if (laden || dag === undefined) {
+    tekst = S.hub.laden;
+    stil = true;
+  } else if (!dag) {
+    tekst = S.hub.geenAntwoord;
+    stil = true;
+  } else {
+    tekst = eersteZin(dag.antwoord?.zin ?? dag.status.zin);
+  }
+  return <p className={"kaartregel klem" + (stil ? " stil" : "")}>{tekst}</p>;
 }
 
 function eersteZin(tekst) {

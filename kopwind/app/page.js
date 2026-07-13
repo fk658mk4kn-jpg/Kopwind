@@ -49,10 +49,10 @@ export default function HubPagina() {
       <section className="seotekst compact">
         <h2>{kies({ nl: "Veelgestelde vragen", en: "Frequently asked questions" })}</h2>
         {hub.faq.map((f) => (
-          <div key={f.v} className="faq-item">
-            <h3>{f.v}</h3>
+          <details key={f.v} className="faq-item">
+            <summary><h3>{f.v}</h3></summary>
             <p>{f.a}</p>
-          </div>
+          </details>
         ))}
       </section>
 

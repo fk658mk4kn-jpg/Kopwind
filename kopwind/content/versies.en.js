@@ -5,6 +5,12 @@
 
 export const VERSIES = [
   {
+    versie: "3.3.0",
+    codenaam: "Meltemi",
+    datum: "2026-07-13",
+    zin: "Tighter and more consistent: every hub card now follows a fixed layout (question, verdict badge on the right, two-line explainer, its own CTA) with the watermark as backdrop. New UV check with skin type and burn time. The text links moved into a slide-out menu, the FAQ collapses, and every advice now carries a vote counter, a share button, related checks and a last-updated line.",
+  },
+  {
     versie: "3.2.0",
     codenaam: "Sirocco",
     datum: "2026-07-13",

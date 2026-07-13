@@ -83,5 +83,6 @@ export const fietsNaarWerk = {
     nl: { goed: "prima fietsdag", matig: "pittige rit", slecht: "liever niet fietsen" },
     en: { goed: "fine bike day", matig: "tough ride", slecht: "rather not bike" },
   }),
+  bijgewerkt: "2026-07-13",
   affiliate: null,
 };

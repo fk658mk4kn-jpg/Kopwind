@@ -70,7 +70,21 @@ export const S = {
     bedankt: "Dank je, genoteerd.",
     jaLabel: "Ja, klopte",
     neeLabel: "Nee, klopte niet",
+    teller: (ja, totaal) => `Klopte vandaag voor ${ja} van de ${totaal}`,
+    delen: "Deel deze check",
+    gekopieerd: "Link gekopieerd",
   },
+  menu: {
+    knop: "Menu",
+    alle: "Alle checks",
+    meer: "Meer",
+    taalwissel: "English",
+    groepen: { "Elke dag": "Elke dag", "Rondom huis": "Rondom huis", "Onderweg": "Onderweg" },
+  },
+  gerelateerd: {
+    kop: "Ook handig vandaag",
+  },
+  bijgewerkt: (datum) => `Laatst bijgewerkt: ${datum}. Weerdata wordt bij elke check live opgehaald.`,
   nav: {
     openGoogle: "Open in Google Maps",
     openApple: "Open in Apple Maps",

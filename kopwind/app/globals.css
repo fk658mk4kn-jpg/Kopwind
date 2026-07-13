@@ -88,9 +88,9 @@ h3 {
 }
 
 .container {
-  max-width: 1280px;
+  max-width: 1024px;
   margin: 0 auto;
-  padding: 22px 20px 64px;
+  padding: 16px 16px 56px;
 }
 
 /* Header */
@@ -921,13 +921,13 @@ a.merk { text-decoration: none; }
   border: 1px solid var(--lijn);
   border-radius: var(--radius);
   box-shadow: var(--schaduw);
-  padding: 34px 30px 28px;
-  margin-bottom: 22px;
+  padding: 20px 22px 16px;
+  margin-bottom: 14px;
 }
 
 .hub-hero h1 {
-  margin: 0 0 10px;
-  font-size: clamp(30px, 5vw, 44px);
+  margin: 0 0 6px;
+  font-size: clamp(26px, 4.5vw, 36px);
 }
 
 .hub-hero p {
@@ -1523,7 +1523,7 @@ a.merk { text-decoration: none; }
 
 .hub-hero.compact { padding-bottom: 4px; }
 
-.hero-zin { font-size: 17px; max-width: 620px; }
+.hero-zin { font-size: 15px; max-width: 620px; margin-bottom: 4px; }
 
 .kiesbalk { display: flex; flex-direction: column; gap: 10px; }
 
@@ -1544,13 +1544,60 @@ a.merk { text-decoration: none; }
   background: #fff;
   border: 1px solid var(--rand);
   border-radius: var(--radius);
-  padding: 16px;
+  padding: 13px 14px 12px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
+  position: relative;
+  overflow: hidden;
 }
 
-.checkkaart h2 { margin: 0; font-size: 17.5px; }
+.kaart-rij1 {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 28px;
+}
+
+.kaart-vraag {
+  flex: 1;
+  min-width: 0;
+  font-size: 15.5px;
+  line-height: 1.25;
+}
+
+.kaart-rij1 .badge {
+  flex: 0 0 auto;
+  white-space: nowrap;
+  font-size: 11.5px;
+}
+
+.icon-chip.klein {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+}
+
+.kaartregel.klem {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: calc(2 * 1.4em);
+  line-height: 1.4;
+}
+
+.kaart-cta {
+  margin-top: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--leisteen);
+}
+
+.checkkaart h2 { margin: 0; }
 
 .kaartlive { display: flex; flex-direction: column; gap: 7px; align-items: flex-start; }
 
@@ -1583,9 +1630,60 @@ a.merk { text-decoration: none; }
 
 .binnenkort-kaart .badge { align-self: flex-start; background: var(--wolk); color: var(--inkt-zacht); }
 
-.uitleg-verwijzing { margin: 22px 0 0; font-size: 14px; color: var(--inkt-zacht); }
+.uitleg-verwijzing { margin: 16px 0 0; font-size: 14px; color: var(--inkt-zacht); }
 
-.seotekst.compact { margin-top: 30px; }
+.gerelateerd { margin-top: 26px; }
+
+.gerelateerd h2 { font-size: 16px; margin: 0 0 10px; }
+
+.gerelateerd-rij { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.gerelateerd-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 13px;
+  border: 1px solid var(--rand);
+  border-radius: 999px;
+  background: #fff;
+  font-weight: 600;
+  font-size: 13.5px;
+  color: var(--inkt);
+  text-decoration: none;
+}
+
+.gerelateerd-link:hover { background: var(--wolk); }
+
+.bijgewerkt-regel { margin: 18px 0 0; font-size: 12.5px; color: var(--inkt-zacht); }
+
+.seotekst.compact { margin-top: 24px; }
+
+details.faq-item { border-bottom: 1px solid var(--lijn); padding: 2px 0; }
+
+details.faq-item summary {
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 0;
+}
+
+details.faq-item summary::-webkit-details-marker { display: none; }
+
+details.faq-item summary::before {
+  content: "+";
+  font-weight: 800;
+  color: var(--inkt-zacht);
+  width: 14px;
+  flex: 0 0 auto;
+}
+
+details.faq-item[open] summary::before { content: "\2212"; }
+
+details.faq-item summary h3 { margin: 0; font-size: 15px; }
+
+details.faq-item > p { margin: 0 0 12px 22px; }
 
 .dagkaart .dagwoord { font-weight: 800; font-size: 15px; }
 
@@ -1690,13 +1788,62 @@ a.checkkaart:hover .kaartknop { background: var(--geel); }
 
 .kaart-watermerk {
   position: absolute;
-  right: -16px;
-  bottom: -20px;
+  right: -10px;
+  bottom: -14px;
   opacity: 0.09;
   pointer-events: none;
 }
 
 .kaart-icoon { display: inline-flex; }
+
+.menuachter { justify-content: flex-end; align-items: stretch; }
+
+.menupaneel {
+  align-self: stretch;
+  overflow-y: auto;
+  max-width: 380px;
+  width: calc(100% - 32px);
+  margin-left: auto;
+  padding: 16px 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.menupaneel-kop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.menupaneel-titel { font-weight: 800; font-size: 17px; }
+
+.menugroep { display: flex; flex-direction: column; gap: 2px; }
+
+.menugroep-titel {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--inkt-zacht);
+  margin-bottom: 4px;
+}
+
+.menulink {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 8px;
+  border-radius: var(--radius-s);
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--inkt);
+  text-decoration: none;
+}
+
+.menulink:hover { background: var(--wolk); }
+
+.menulink-icoon { display: inline-flex; flex: 0 0 auto; }
 
 .checkkaart h2 { color: var(--inkt); }
 

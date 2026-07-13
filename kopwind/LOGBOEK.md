@@ -506,3 +506,62 @@ site-kolom.
 (gooddayforit.com als eerste kandidaat), een native copyreview van de
 Engelse teksten is aan te raden, en de EN-site heeft een eigen
 GA4-property nodig (anders meet de fallback alles in de NL-property).
+
+## v3.3.0 "Meltemi" - 2026-07-13
+
+**Wat**: de UX- en consistentieronde na de NoorYES-benchmark, plus de
+zonkrachtcheck als zesde tool.
+
+**Benchmark-conclusies (samengevat)**: NoorYES wint op vraag-per-URL-SEO,
+dagdeel- en situatie-advies en consequente interne links; wij winnen op
+de per-uur engine met persoonlijke drempels, de routegebaseerde
+fietscheck, tijdvensters als antwoord, meldingen/PWA en stad-pagina's.
+Volledige analyse in de chat van deze datum; de v3.4-backlog volgt eruit.
+
+**Kaartstramien**: elke hub-kaart is nu identiek opgebouwd: rij 1 met
+icoon-chip, korteVraag en de verdictbadge rechts; rij 2 een toelichting
+uit de engine, geklemd op exact twee regels (min-height, line-clamp);
+rij 3 de tool-eigen CTA als tekstlink. Drie CTA's per kaart is bewust
+afgewezen (prikkerij op mobiel); de hele kaart is klikbaar. Het
+watermerk blijft op Martijns verzoek en zit rechtsonder achter de
+tekst, weg van de badge.
+
+**Zonkracht**: score is een omgekeerde as (veel uv = hoge pijnscore =
+rode badge als waarschuwing). Antwoord beantwoordt "moet ik smeren?"
+met ja vanaf zonkracht 3 (GGD/KWF-grens). Verbrandtijd is een
+transparante vuistregel (basisminuten per huidtype gedeeld door de
+zonkracht) en de FAQ zegt eerlijk dat smeren eigenlijk altijd
+verstandig is; de check vertelt wanneer het dringend is. uv_index zat
+al in BASIS_VELDEN, dus geen architectuurwijziging.
+
+**Navigatie**: topnav-tekstlinks weg; hamburger opent een zijpaneel met
+de registergroepen (Elke dag, Rondom huis, Onderweg), uitleg, over en
+de taalwissel. Groepslabels lopen via S.menu.groepen zodat de Engelse
+site meeschakelt.
+
+**Taal onder een domein**: besluit met Martijn: geen apart .com-domein
+maar en.kanhetvandaag.nl als tweede Vercel-project op dezelfde repo.
+Een runtime-taalknop is afgewezen: elke taal heeft eigen URL's nodig
+voor indexering en de architectuur bakt de taal bewust bij de build.
+De taallink in menu en footer leest NEXT_PUBLIC_ALTERNATE_LOCALE_URL.
+
+**Laatst bijgewerkt**: bewust een echte datum (register-veld
+`bijgewerkt`, handmatig bumpen bij inhoudelijke wijzigingen), geen
+dagelijks ververste nepdatum; Google herkent dat en de
+weerdata-versheid tonen we al per check.
+
+**Beperkingen**: het kaartstramien is in de sandbox niet visueel
+getest op echte devices; de deelknop gebruikt Web Share en is alleen
+op https te testen; de stemmenteller toont pas iets bij echte stemmen
+in Supabase.
+
+**Afspraak**: na v3.4 volgt een nulmeting plus installatie-audit
+(API's, meldingen, GA, Search Console) in een aparte sessie.
+
+**v3.4-backlog (akkoord)**: hooikoortscheck op de Open-Meteo Air
+Quality API (CAMS, gras/berk/els, eerlijk "geen pollen" buiten het
+seizoen), /alle-checks met zoek en categorieen die later uitbreiden
+naar sporten, eten en camperen/buitenactiviteiten, drie
+kleding-vraagpagina's (korte broek, jas, T-shirtweer) met stad-uitrol,
+sticky antwoordbalk op mobiel.
+

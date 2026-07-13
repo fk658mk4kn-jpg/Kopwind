@@ -10,6 +10,9 @@ import LocatieTool from "@/components/tools/LocatieTool";
 import Broodkruimel from "@/components/Broodkruimel";
 import StemPeiling from "@/components/StemPeiling";
 import AdSlot from "@/components/AdSlot";
+import GerelateerdBlok from "@/components/GerelateerdBlok";
+import { S } from "@/lib/strings";
+import { LOCALE } from "@/lib/i18n/locale";
 
 /**
  * Dynamische toolpagina uit het register (§6): de tool bovenaan, de
@@ -100,15 +103,27 @@ export default function ToolPagina({ params }) {
 
         <h2>Veelgestelde vragen</h2>
         {inhoud.faq.map((f) => (
-          <div key={f.v} className="faq-item">
-            <h3>{f.v}</h3>
+          <details key={f.v} className="faq-item">
+            <summary><h3>{f.v}</h3></summary>
             <p>{f.a}</p>
-          </div>
+          </details>
         ))}
       </section>
 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(appJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      {tool.bijgewerkt && (
+        <p className="bijgewerkt-regel">
+          {S.bijgewerkt(
+            new Intl.DateTimeFormat(LOCALE === "en" ? "en-GB" : "nl-NL", {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            }).format(new Date(tool.bijgewerkt))
+          )}
+        </p>
+      )}
+      <GerelateerdBlok toolId={tool.id} />
     </main>
   );
 }

@@ -70,6 +70,17 @@ export const S = {
     jaLabel: "Yes, it was right",
     neeLabel: "No, it wasn't",
   },
+  menu: {
+    knop: "Menu",
+    alle: "All checks",
+    meer: "More",
+    taalwissel: "Nederlands",
+    groepen: { "Elke dag": "Every day", "Rondom huis": "Around the house", "Onderweg": "On the move" },
+  },
+  gerelateerd: {
+    kop: "Also handy today",
+  },
+  bijgewerkt: (datum) => `Last updated: ${datum}. Weather data is fetched live with every check.`,
   nav: {
     openGoogle: "Open in Google Maps",
     openApple: "Open in Apple Maps",
