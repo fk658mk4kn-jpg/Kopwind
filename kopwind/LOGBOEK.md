@@ -758,3 +758,138 @@ kaarten (content volgt); stad-pagina's blijven NL-only.
 sterkste affiliate-fit), daarna de overige categorien vullen, bijsturen
 op GSC-data zodra die binnenkomt. Affiliate blijft fase 5.
 
+## v3.7.0 "Etesian" - 2026-07-13
+
+**Wat**: feedbackronde op de live site plus een belangrijke
+productie-diagnose. Tools verder uitgebouwd en SEO merkbreed aangescherpt.
+
+**Feedback en delen (huisstijl)**: StemPeiling gebruikt nu eigen
+SVG-duimen in plaats van emoji. Alleen positieve stemmen worden geteld en
+getoond (het aantal naast de duim omhoog); een negatieve stem geeft enkel
+"Bedankt voor je feedback", geen zichtbaar aantal. De teller telt op
+zodra je zelf omhoog stemt. De deelknop is uit de stempeiling getrokken
+naar een eigen knop in de huisstijl (Web Share op mobiel, klembord als
+fallback).
+
+**Instellingenpaneel opnieuw opgebouwd**: drie secties met eigen kop en
+uitleg zodat een leek het meteen snapt. (1) "Stel de checks op jou af":
+de toolkiezer staat los, de keuzes eronder in een omkaderd blok met
+uitleg wanneer de check op ja/nee springt. (2) "Mijn plekken": favorieten
+en routes met verwijderen. (3) "Meenemen naar je andere apparaten": de
+koppelcode, met aanmaken, kopieren, invullen en ontkoppelen. De
+sync-acties bestonden al in GebruikerContext maar werden nergens getoond;
+nu wel.
+
+**Cross-device sync werkt (mits Supabase staat)**: de logica in
+GebruikerContext leest bij laden en schrijft debounced weg. Zodra
+/api/sync niet meer 502't, staat je telefoon-instelling automatisch op de
+computer. De koppelcode in het instellingenpaneel is de ontbrekende
+schakel die dit bedienbaar maakt.
+
+**Productie-diagnose (502 op /api/stem en /api/sync)**: de logs toonden
+502, wat betekent dat de env-vars deels stonden maar de Supabase-call
+faalde. Oorzaak: de tabellen (stemmen, en vooral profielen) bestonden nog
+niet. /api/stem logt nu de detailfout. AUDIT.md bevat de volledige SQL
+voor beide tabellen plus de complete env- en verificatiechecklist. Dit is
+een configuratiestap aan Martijns kant; de code valt correct terug.
+
+**Header sticky**: de leisteen-kopbalk blijft bovenaan bij scrollen
+(position sticky, top 8, met schaduw). De mobiele sticky-antwoordbalk
+schuift eronder (top 66) zodat ze niet overlappen.
+
+**Visuele afscheiding**: de footer heeft een dikkere leisteen-lijn (2px)
+in plaats van de subtiele randkleur. De blokken in /alle-checks hebben nu
+kaart-randen: live checks een volle rand met hover-schaduw, geplande
+vragen een streepjesrand op wolk-achtergrond, zodat het onderscheid
+zichtbaar is.
+
+**Merkbrede SEO-sweep**: tool-titels naar de "Kan het vandaag"-vorm (Kan
+het vandaag op het terras, Kan het vandaag barbecueen, Kan het vandaag
+fietsen naar werk), en de homepage-H1 plus meta van "Kan ik vandaag" naar
+"Kan het vandaag". FAQ-vragen herschreven met het zoekwoord voorin: de
+zwakke "Waarom heb ik 's ochtends meer last" werd "Waarom is hooikoorts
+'s ochtends of 's avonds erger", en zo ook bij zonkracht en kleding.
+
+**Beperkingen**: de sticky header en de nieuwe instel-secties zijn niet
+op echte devices getest; de sync- en stemfuncties werken pas na de
+Supabase-setup uit AUDIT.md (in de sandbox niet te verifieren).
+
+**Volgende**: tweede storefront Huis, tuin en auto (was bestaat al,
+sterkste affiliate-fit), overige categorien vullen, en bijsturen op
+GSC-data. Affiliate blijft fase 5.
+
+## v3.7.1 "Etesian patch" - 2026-07-14
+
+**Wat**: Broodkruimel-JSON-LD gefixt na een Search Console-melding
+("Ongeldige URL in veld id" in itemListElement.item). components/
+Broodkruimel.js levert nu schone absolute URL's (geen dubbele slash,
+basePath-veilig) en de laatste crumb zonder href krijgt geen item meer.
+Detail-logging toegevoegd op /api/stem (regel "stem GET faalde:") voor de
+productie-502. Verificatie in Search Console loopt nog (kan dagen duren).
+
+## v3.7.2 "Etesian patch 2" - 2026-07-14
+
+**Waarom**: Overname van het project door een nieuwe sessie. Eerst een
+kritische diagnose van de twee productieproblemen (502 op /api/stem, geen
+pushmeldingen) en de rommelige fietstool-output, daarna pas bouwen. Martijn
+bevestigde de diagnose op alle punten en gaf akkoord op de fietstool-fixes
+(optie B voor de kilometers) en op de cron-aanpak.
+
+**Diagnose 502 /api/stem (nog te sluiten met de probes)**: 502 = de
+Supabase-call gaf non-2xx, niet de terugval (503) of validatie (400).
+Belangrijk: een anon-key verklaart een 502 op een GET niet, want een SELECT
+met RLS aan zonder policies geeft 200 met een lege lijst. Kandidaten:
+schema-cache of ontbrekende tabel (404 PGRST205), afwijkende kolom (400),
+verminkte key (401), of trailing slash in SUPABASE_URL (dubbele slash). De
+gedeployde build stond waarschijnlijk nog op onder v3.7.1 (de response
+miste het detail-veld). Martijn pusht v3.7.1 en levert de detail-regel plus
+de uitkomst van /api/sync (GET) aan; dan is de oorzaak exact te benoemen.
+
+**Diagnose pushmeldingen (twee oorzaken, allebei bevestigd)**: de
+testmelding werkt omdat die direct via push_abos verstuurt, zonder klok,
+zonder melding_log, zonder het schema uit profielen.data. De geplande
+meldingen hangen aan alle drie. (1) Tabelnaam: de code en supabase/
+schema.sql gebruiken melding_log (enkelvoud); Martijn had meldingen_log
+(meervoud). De cron-dedupe-insert in die tabel faalt dan met 404, wordt per
+route gevangen en in fouten gestopt, dus er vertrekt niets. Martijn hernoemt
+de tabel. (2) Klok: het LOGBOEK schreef al een externe cron voor omdat
+Vercel Hobby maar 1x per dag draait, maar er stond later een vercel.json met
+*/5 in, wat op Hobby bij de deploy faalt (bevestigd via Vercels eigen docs).
+Martijn zit op Hobby en had geen externe cron. Besluit: vercel.json crons
+leeggemaakt en cron-job.org wordt de enige klok met de x-cron-secret-header.
+Sluiten zodra de handmatige cron-curl {gecheckt,verzonden,fouten} laat zien.
+
+**Fietstool opgeschoond (drie bevestigde bugs)**:
+- Dubbel verdictlabel: LegCard toonde in de legkop zowel a.advies ("prima
+  fietsdag") als het schaalwoord ("Ideale fietsdag"). Overal elders
+  (DagBanner, VerdictBadge, route-chips, kaartpopups) staat alleen het
+  schaalwoord. Nu de legkop ook: a.advies weg, alleen labelVoor(...).
+- Tegenstrijdige kilometers (optie B, bij de bron): painScore emitteerde "X
+  km merkbare tegenwind op de route" (de som, matigMeters) terwijl de
+  windsamenvatting (summarizeLegNL) de stukken los toont (0,3 km begin, 2 km
+  eind). 2,3 tegenover 0,3 plus 2 las tegenstrijdig. De som-reden is
+  verwijderd; de samenvatting is nu de enige bron voor het windverhaal. Het
+  cijfer verandert niet (de fracMatig/fracZwaar-bijdrage blijft). De
+  dagbanner gebruikt voortaan de windsamenvatting van de zwaarste rit
+  (dagAdvies.uitleg), met een nette terugval als er geen samenvatting is
+  (handmatige test-legs). advice.test.js aangepast: de reden-op-tekst-check
+  verviel, een test voor de nieuwe dagAdvies-uitleg toegevoegd.
+- "Cijfer gedrukt door" (verwees naar een cijfer dat we niet tonen) is nu
+  "Wat telt tegen".
+
+**Bewust niet gedaan**: de "gemiddeld X km/u wind tegen"- en "piek"-redenen
+blijven staan (kwantitatief, botsen niet met de kwalitatieve samenvatting).
+De fietsadvies-laag blijft NL-only qua redenen en labels, consistent met de
+huidige staat en het backlog-item "Engels bijtrekken". De grotere
+fietstool-herindeling (ja/nee plus zwaarste rit bovenaan, drempels
+expliciet) is fase 2. De kale Maps-URL uit de review reproduceert niet:
+NavKnoppen rendert al nette knoppen (het was de RSC-payload).
+
+**Beperkingen**: de sandbox heeft geen netwerk naar Open-Meteo of Supabase,
+dus de fietstool-UI en de meldingen zijn hier niet end-to-end getest; alleen
+de tests, de import-check en beide builds (NL en EN) zijn groen. De
+meldingen worden gesloten zodra Martijn de probe-output aanlevert.
+
+**Volgende**: probes van Martijn (502-detail, sync-GET, cron-curl), dan de
+502 en de cron sluiten. Daarna fase 2 fietstool, of de tweede storefront
+Huis-tuin-auto. Affiliate blijft fase 5.

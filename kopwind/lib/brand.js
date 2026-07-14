@@ -10,7 +10,7 @@ import { kies } from "./i18n/locale.js";
 export const HUB_NAAM = kies({ nl: "Kan het vandaag?", en: "Good day for it?" });
 export const HUB_KORT = kies({ nl: "Kan het?", en: "Good day?" });
 export const HUB_CLAIM = kies({
-  nl: "Kan ik vandaag fietsen, de was buiten hangen of het terras op? Live antwoord voor jouw stad, met het beste moment erbij.",
+  nl: "Kan het vandaag fietsen, de was buiten of het terras op? Live antwoord voor jouw stad, met het beste moment erbij.",
   en: "Can I bike to work, dry laundry outside or fire up the barbecue today? A live answer for your city, with the best time window included.",
 });
 

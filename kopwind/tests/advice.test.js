@@ -36,8 +36,10 @@ test("painScore: zware tegenwind kantelt naar liever niet fietsen", () => {
 
 test("painScore: korte tegenwindstukken drukken het cijfer wel, maar mild", () => {
   // De situatie uit de praktijk: ritgemiddelde laag (7 km/u), maar wel
-  // 1,9 km van de route met merkbare tegenwind. Vroeger gaf dit score 0
-  // naast een tekst over tegenwind; nu telt het mee.
+  // 1,9 km van de route met merkbare tegenwind. Het stuk telt mee in het
+  // cijfer; waar en hoeveel wind er is staat sinds v3.7.2 in de
+  // windsamenvatting (summarizeLegNL, getest in wind.test.js), niet meer
+  // als losse reden hier. Zo tellen we die kilometers niet dubbel.
   const m = {
     ...basisMetrics,
     meanPosHead: 7,
@@ -45,13 +47,9 @@ test("painScore: korte tegenwindstukken drukken het cijfer wel, maar mild", () =
     matigMeters: 1900,
     fracMatig: 1900 / 6500,
   };
-  const { score, redenen } = painScore(m, T);
+  const { score } = painScore(m, T);
   assert.ok(score > 0 && score < 30, `mild maar niet nul, kreeg ${score}`);
   assert.equal(legAdvies(m, T).advies, "prima fietsdag");
-  assert.ok(
-    redenen.some((r) => r.includes("1,9 km") && r.includes("tegenwind")),
-    `reden benoemt het stuk, kreeg: ${redenen.join(" | ")}`
-  );
 });
 
 test("painScore: 80% regenkans geeft een pittige rit", () => {
@@ -102,4 +100,19 @@ test("dagAdvies: pakt de zwaarste rit van de keten", () => {
   assert.equal(dag.advies, "liever niet fietsen");
   assert.equal(dag.worstIdx, 1);
   assert.ok(dag.uitleg.includes("Sportschool"), dag.uitleg);
+});
+
+test("dagAdvies: gebruikt de windsamenvatting van de zwaarste rit", () => {
+  const legs = [
+    {
+      van: { naam: "Thuis" },
+      naar: { naam: "Werk" },
+      samenvatting: "2 km merkbare tegenwind aan het eind, verder rustig.",
+      advies: { score: 40, redenen: ["60% kans op neerslag"], advies: "pittige rit" },
+    },
+  ];
+  const dag = dagAdvies(legs);
+  assert.ok(dag.uitleg.includes("2 km merkbare tegenwind"), dag.uitleg);
+  assert.ok(dag.uitleg.includes("60% kans op neerslag"), dag.uitleg);
+  assert.ok(!dag.uitleg.includes("tegenwind op de route"), `geen dubbele km-reden meer: ${dag.uitleg}`);
 });

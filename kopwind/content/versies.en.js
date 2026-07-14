@@ -5,6 +5,24 @@
 
 export const VERSIES = [
   {
+    versie: "3.7.2",
+    codenaam: "Etesian patch 2",
+    datum: "2026-07-14",
+    zin: "The bike check has been tidied up: each ride now shows a single verdict word (no more double label), the contradictory kilometres are gone because the wind summary is now the only place that tells you where and how much headwind there is, and the day banner uses that summary of the toughest ride. Behind the scenes the push notifications run on an external clock, so they go out on time even on the free hosting plan.",
+  },
+  {
+    versie: "3.7.1",
+    codenaam: "Etesian patch",
+    datum: "2026-07-14",
+    zin: "A technical fix for how pages appear in Google: the breadcrumbs (the path line at the top of a page) now always provide clean, complete addresses, after a Search Console warning.",
+  },
+  {
+    versie: "3.7.0",
+    codenaam: "Etesian",
+    datum: "2026-07-13",
+    zin: "Feedback and sharing have been redesigned in the house style: two thumbs, only the count of confirmations next to the thumb up, a negative vote gets just a thank you. The settings menu is split into clear sections with the link code to keep your phone and computer in sync. The header now stays fixed at the top, the footer and the blocks in All checks have clear borders, and tool titles plus FAQ questions have been sharpened brand-wide.",
+  },
+  {
     versie: "3.6.0",
     codenaam: "Bora",
     datum: "2026-07-13",

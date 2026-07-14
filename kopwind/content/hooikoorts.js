@@ -33,15 +33,15 @@ export const faq = [
     a: "Grofweg februari tot en met augustus, in golven: els en hazelaar in de late winter, berk in april, gras van mei tot augustus. Buiten het seizoen zegt de check gewoon dat er niets in de lucht zit. Warme, droge en winderige dagen zijn de zwaarste; regen geeft tijdelijk lucht.",
   },
   {
-    v: "Waarom heb ik 's ochtends of juist 's avonds meer last?",
+    v: "Waarom is hooikoorts 's ochtends of 's avonds erger?",
     a: "Pollen worden overdag door opstijgende warme lucht omhoog gebracht en dalen in de avond weer neer. In de stad piekt de overlast daardoor vaak 's avonds, op het platteland juist in de ochtend als het gras bloeit. De urenstrip laat het verloop voor jouw plek zien.",
   },
   {
-    v: "Helpt het om de was binnen te drogen?",
+    v: "Helpt was binnen drogen tegen hooikoorts?",
     a: "Op pollendagen wel: buiten hangend wasgoed vangt pollen, die je daarna mee naar binnen neemt. De wascheck en deze check versterken elkaar dus: is het droogweer maar pollenpiek, overweeg dan het rek binnen. Zelfde verhaal voor het luchten van de slaapkamer: doe dat in het rustigste blok.",
   },
   {
-    v: "Is dit medisch advies?",
+    v: "Is deze hooikoortscheck medisch advies?",
     a: "Nee. De check vertaalt modeldata naar een praktisch dagbeeld en is geen vervanging van je huisarts of apotheker. Heb je veel last, begin dan tijdig met je medicatie (die werkt vaak beter preventief) en bespreek aanhoudende klachten met een professional.",
   },
 ];

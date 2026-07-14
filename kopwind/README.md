@@ -267,6 +267,10 @@ create table if not exists stemmen (
 alter table stemmen enable row level security;
 ```
 
+Voor synchronisatie tussen apparaten (koppelcode) is er een tweede tabel
+`profielen`; de volledige SQL plus de rest van de installatie staat in
+AUDIT.md.
+
 De service key omzeilt RLS; zonder policies is de tabel dicht voor directe
 client-toegang. `@supabase/supabase-js` en `@supabase/ssr` zijn bewust niet
 geinstalleerd: die zijn voor sessies en auth, en duimpjes zijn anoniem.

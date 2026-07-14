@@ -13,7 +13,7 @@ import { DEFAULT_THRESHOLDS } from "../advice.js";
 export const fietsNaarWerk = {
   id: "fiets-naar-werk",
   slug: kies({ nl: "fietsen-naar-werk", en: "bike-to-work" }),
-  naam: kies({ nl: "Kan ik vandaag fietsen?", en: "Can I bike today?" }),
+  naam: kies({ nl: "Kan het vandaag fietsen?", en: "Can I bike today?" }),
   meldingKort: kies({ nl: "Fietscheck", en: "Bike check" }),
   cta: kies({ nl: "Check je rit", en: "Check your ride" }),
   navLabel: kies({ nl: "Fietsen", en: "Cycling" }),
@@ -27,7 +27,7 @@ export const fietsNaarWerk = {
     en: { ideaal: "Ideal bike day", goed: "Good to go", twijfelachtig: "Iffy", matig: "Better later", "zeer-slecht": "Give it a miss" },
   }),
   vervoer: ["fiets"],
-  korteVraag: kies({ nl: "Kan ik vandaag fietsen naar werk?", en: "Can I bike to work today?" }),
+  korteVraag: kies({ nl: "Kan het vandaag fietsen naar werk?", en: "Can I bike to work today?" }),
   patroon: "A",
   inputType: "route",
   weerVelden: [

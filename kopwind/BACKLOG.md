@@ -139,7 +139,37 @@ bepalen: nieuwe tool, variant, of onderdeel van een bredere tool.
 - v3.6 "Bora": taxonomie-sprint verwerkt (cannibalisatie-matrix,
   root-slugs, zeven categorien), storefront-model gebouwd, eerste
   storefront Regen en droog volledig met de checks regen-timing en
-  paraplu. AUDIT.md staat nog open.
+  paraplu.
+- v3.7.0/3.7.1 "Etesian": feedback- en deel-huisstijl, instellingen in
+  drie secties, sticky header, merkbrede SEO-sweep, AUDIT.md toegevoegd,
+  502-detaillogging op /api/stem, Broodkruimel-JSON-LD gefixt.
+- v3.7.2 "Etesian patch 2": fietstool-opschoning (dubbel verdictlabel weg,
+  tegenstrijdige kilometers weg via de windsamenvatting als enige bron,
+  dagbanner gebruikt die samenvatting, "Wat telt tegen" i.p.v. "Cijfer
+  gedrukt door"). vercel.json crons leeggemaakt (Hobby: */5 faalt bij
+  deploy), meldingen draaien voortaan op een externe cron. AUDIT.md
+  gecorrigeerd (anon-key-notitie) en aangevuld (push_abos + melding_log,
+  externe-cron-stappen).
+
+### In behandeling (sluit zodra Martijn de probes aanlevert)
+- **/api/stem 502**: oorzaak wordt bepaald uit het detail-veld en de
+  log-regel na de v3.7.1-deploy. Meest waarschijnlijk schema-cache, kolom,
+  key of URL (geen anon-key: die geeft op een GET lege data, geen 502).
+  Openstaand: faalt /api/sync (GET) ook? Dan DB-breed, anders
+  stemmen-specifiek.
+- **Pushmeldingen**: twee oorzaken bevestigd. (1) Tabelnaam: meldingen_log
+  moet melding_log worden (hernoemen in Supabase, Martijn doet dit). (2)
+  Klok: Hobby draait vercel.json */5 niet; externe cron (cron-job.org met
+  x-cron-secret) wordt de enige klok. Sluiten zodra de handmatige
+  cron-curl {gecheckt,verzonden,fouten} laat zien.
+
+### Fase 2 fietstool (na de drie bugs, akkoord Martijn)
+- Herindeling: bovenaan ja/nee plus zwaarste rit plus 2-3 redenen,
+  routebuilder daaronder; score-drempels expliciet tonen (welke thresholds,
+  waarom is 27% neerslag nog "Ideaal", waarom is X km tegenwind acceptabel).
+- De Maps-knoppen zijn al nette knoppen (NavKnoppen); de "kale URL" uit de
+  review was de RSC-payload, geen echte bug. Apple-fallback bij
+  tussenstops toont al een uitlegregel; eventueel later verbeteren.
 
 ### v3.5 "Tramontane" (af) - fundament
 - **Cron-fix**: vercel.json met cron-schedule plus CRON_SECRET, zodat

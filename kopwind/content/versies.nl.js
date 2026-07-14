@@ -6,6 +6,24 @@
 
 export const VERSIES = [
   {
+    versie: "3.7.2",
+    codenaam: "Etesian patch 2",
+    datum: "2026-07-14",
+    zin: "De fietscheck is opgeschoond: per rit staat nog maar een oordeelwoord (geen dubbel label meer), de tegenstrijdige kilometers zijn weg doordat de windsamenvatting nu de enige plek is die vertelt waar en hoeveel tegenwind er is, en de dagbanner gebruikt die samenvatting van de zwaarste rit. \"Cijfer gedrukt door\" heet nu \"Wat telt tegen\". Achter de schermen draaien de pushmeldingen op een externe klok, zodat ze ook op het gratis hostingplan op tijd vertrekken.",
+  },
+  {
+    versie: "3.7.1",
+    codenaam: "Etesian patch",
+    datum: "2026-07-14",
+    zin: "Technische fix voor de weergave in Google: de broodkruimels (de padregel bovenaan een pagina) leveren nu altijd nette, volledige adressen aan, na een melding van Search Console.",
+  },
+  {
+    versie: "3.7.0",
+    codenaam: "Etesian",
+    datum: "2026-07-13",
+    zin: "Feedback en delen zijn opnieuw vormgegeven in de huisstijl: twee duimen, alleen het aantal bevestigingen naast de duim omhoog, een negatieve stem krijgt enkel een bedankje. Het instellingenmenu is opgedeeld in heldere secties met de koppelcode om je telefoon en computer gelijk te houden. De header blijft nu vast bovenaan, de footer en de blokken in Alle checks hebben duidelijke randen, en tool-titels plus FAQ-vragen zijn merkbreed aangescherpt op de vraag Kan het vandaag.",
+  },
+  {
     versie: "3.6.0",
     codenaam: "Bora",
     datum: "2026-07-13",

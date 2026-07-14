@@ -39,7 +39,6 @@ export function painScore(metrics, thresholds = DEFAULT_THRESHOLDS) {
   let score = 0;
   const redenen = [];
   const rond = (n) => Math.round(n);
-  const km = (m) => (m / 1000).toFixed(1).replace(".", ",");
 
   // Ankers (v2.1.0 "Mistral"): 10 = rugwind of luw, droog en mild;
   // 7 = merkbare tegenwind (rond de matig-drempel) maar droog;
@@ -59,16 +58,15 @@ export function painScore(metrics, thresholds = DEFAULT_THRESHOLDS) {
   }
 
   // Tegenwindstukken: het deel van de route met merkbare of stevige
-  // tegenwind telt mee, ook als het ritgemiddelde laag blijft.
+  // tegenwind telt mee in het cijfer, ook als het ritgemiddelde laag
+  // blijft. De losse "X km tegenwind op de route"-reden staat hier bewust
+  // NIET meer: de windsamenvatting (summarizeLegNL) vertelt al waar en
+  // hoeveel wind er is, per stuk. Die twee naast elkaar tonen (som versus
+  // losse stukken, bv. 2,3 km tegenover 0,3 km plus 2 km) las tegenstrijdig.
   const fracMatig = metrics.fracMatig ?? 0;
   const fracZwaar = metrics.fracZwaar ?? 0;
   if (fracMatig > 0) score += fracMatig * 10;
   if (fracZwaar > 0) score += fracZwaar * 8;
-  if ((metrics.zwaarMeters ?? 0) >= 300) {
-    redenen.push(`${km(metrics.zwaarMeters)} km stevige tegenwind op de route`);
-  } else if ((metrics.matigMeters ?? 0) >= 300) {
-    redenen.push(`${km(metrics.matigMeters)} km merkbare tegenwind op de route`);
-  }
 
   // Piek: een kort maar heftig stuk telt extra.
   if (metrics.maxHead >= thresholds.tegenwindZwaar) {
@@ -149,15 +147,34 @@ export function dagAdvies(legs) {
   }
   const worst = legs[worstIdx];
   const score = worst.advies.score;
-  const redenen = worst.advies.redenen;
+  const redenen = worst.advies.redenen ?? [];
   const label = `${worst.van?.naam ?? "rit " + (worstIdx + 1)} naar ${worst.naar?.naam ?? ""}`.trim();
-  const uitleg = redenen.length
-    ? `Zwaarste rit: ${label} (${redenen.join(", ")}).`
-    : `Alle ritten zijn goed te doen.`;
+
+  // De windsamenvatting van de zwaarste rit is de bron voor het
+  // windverhaal (summarizeLegNL); de overige redenen (regen, kou, stoten,
+  // gemiddelde of piekwind) vullen aan. Zo vertelt de dagbanner hetzelfde
+  // verhaal als de kaart eronder, zonder de kilometers dubbel te tellen.
+  const wind = typeof worst.samenvatting === "string" ? worst.samenvatting.trim() : "";
+  const extra = redenen.length ? ` ${hoofdletter(redenen.join(", "))}.` : "";
+
+  let uitleg;
+  if (!wind && !redenen.length) {
+    uitleg = "Alle ritten zijn goed te doen.";
+  } else if (!wind) {
+    // Geen samenvatting beschikbaar (bv. handmatige legs in een test): oude vorm.
+    uitleg = `Zwaarste rit: ${label} (${redenen.join(", ")}).`;
+  } else {
+    uitleg = `Zwaarste rit: ${label}. ${wind}${extra}`;
+  }
+
   return {
     score,
     advies: adviesVoorScore(score),
     worstIdx,
     uitleg,
   };
+}
+
+function hoofdletter(s) {
+  return s ? s.charAt(0).toUpperCase() + s.slice(1) : s;
 }

@@ -33,15 +33,15 @@ export const faq = [
     a: "Het zegt hoe makkelijk de keuze vandaag is. Ideaal of Goed: een laag en klaar. Twijfelachtig is een laagjesdag met flinke verschillen tussen ochtend en avond. Matig of Zeer slecht is guur en nat: dikke jas en doorlopen.",
   },
   {
-    v: "Waarom wijkt het advies af van de temperatuur in mijn weerapp?",
+    v: "Waarom wijkt het kledingadvies af van de temperatuur in mijn weerapp?",
     a: "Omdat wij met gevoelstemperatuur rekenen: temperatuur plus wind en vocht. Bij wind voelt het al snel 3 tot 5 graden kouder dan de thermometer zegt, en daar kleed je je op.",
   },
   {
-    v: "Ik heb het snel koud. Kan ik de grenzen aanpassen?",
+    v: "Ik heb het snel koud. Kan ik het kledingadvies aanpassen?",
     a: "Ja. In de instellingen zet je zelf vanaf welk gevoel een T-shirt kan en onder welk gevoel je een trui of meer wilt. Stel het in zoals jij het voelt.",
   },
   {
-    v: "Krijg ik het advies voor ik de deur uitga?",
+    v: "Krijg ik het kledingadvies voor ik de deur uitga?",
     a: "Ja. Zet de kledingcheck op je beginscherm en kies bij meldingen je dagen en tijd, bijvoorbeeld elke werkdag om 7:00. Dan staat het advies klaar voor je je kast opentrekt.",
   },
 ];

@@ -36,7 +36,7 @@ export default function HubPagina() {
   return (
     <main>
       <section className="hub-hero compact">
-        <h1>{kies({ nl: "Kan ik vandaag ...", en: "Good day for ..." })}</h1>
+        <h1>{kies({ nl: "Kan het vandaag ...?", en: "Good day for ...?" })}</h1>
         <p className="hero-zin">{hub.intro}</p>
       </section>
 

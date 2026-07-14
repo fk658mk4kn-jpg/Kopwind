@@ -29,19 +29,19 @@ export const blokken = [
 
 export const faq = [
   {
-    v: "Moet ik eigenlijk niet altijd smeren?",
+    v: "Moet ik me eigenlijk niet altijd insmeren tegen de zon?",
     a: "Eerlijk antwoord: ja, eigenlijk wel. Insmeren kan geen kwaad en huidschade stapelt op. Deze check is er niet om je toestemming te geven het over te slaan, maar om te laten zien wanneer het echt dringend is: hoe hoog de piek is, hoe lang het venster duurt en hoe snel jouw huid verbrandt. Bij twijfel: smeren.",
   },
   {
-    v: "Kan ik verbranden als het bewolkt is?",
+    v: "Kan ik verbranden door de zon als het bewolkt is?",
     a: "Ja. Tot zo'n tachtig procent van de uv komt door lichte bewolking heen. De zonkracht in deze check is al gecorrigeerd voor de verwachte bewolking, dus als er 4 staat op een grijze dag, is het echt 4.",
   },
   {
-    v: "Wat betekenen de huidtypes?",
+    v: "Wat betekenen de huidtypes voor verbranden in de zon?",
     a: "We gebruiken vier herkenbare types. Zeer licht: verbrandt altijd, wordt niet bruin; denk aan rood haar en sproeten. Licht: verbrandt snel, wordt langzaam bruin; het meest voorkomende type in Nederland. Getint: verbrandt soms, wordt makkelijk bruin. Donker: verbrandt zelden, maar onzichtbare huidschade ontstaat ook dan; smeren blijft verstandig bij hoge zonkracht.",
   },
   {
-    v: "Geldt dit ook voor kinderen?",
+    v: "Geldt het zonkracht- en smeeradvies ook voor kinderen?",
     a: "Extra streng zelfs. Kinderhuid is dunner en verbrandt sneller, en verbranding op jonge leeftijd weegt zwaarder voor het risico later. Houd voor kinderen minimaal factor 30 aan, smeer elke twee uur en direct na het zwemmen, en zet ze bij zonkracht 6 of hoger tussen 12:00 en 15:00 zoveel mogelijk in de schaduw.",
   },
   {

@@ -58,7 +58,7 @@ export default function LegCard({ leg, index, actief, onClick, onKiesRoute }) {
           {index + 1}. {leg.van.naam.split(",")[0]} → {leg.naar.naam.split(",")[0]}
         </span>
         <span className={"badge " + kleurVoor(a.score)}>
-          {a.advies} · {labelVoor(a.score, fietsNaarWerk.schaalLabels)}
+          {labelVoor(a.score, fietsNaarWerk.schaalLabels)}
         </span>
       </div>
 
@@ -145,7 +145,7 @@ export default function LegCard({ leg, index, actief, onClick, onKiesRoute }) {
 
       <p className="samenvatting">{leg.samenvatting}</p>
       {a.redenen.length > 0 && (
-        <p className="redenen">Cijfer gedrukt door: {a.redenen.join(", ")}.</p>
+        <p className="redenen">Wat telt tegen: {a.redenen.join(", ")}.</p>
       )}
       {leg.warning && <p className="waarschuwing">{leg.warning}</p>}
     </div>

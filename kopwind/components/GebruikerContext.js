@@ -268,6 +268,10 @@ export default function GebruikerProvider({ children }) {
         onDeletePreset={verwijderPreset}
         routes={routes}
         onDeleteRoute={(naam) => zetRoutes(routes.filter((r) => r.naam !== naam))}
+        syncCode={syncCode}
+        onMaakSyncCode={maakSyncCode}
+        onKoppelSyncCode={koppelSyncCode}
+        onOntkoppel={ontkoppel}
       />
       <MeldingenPanel
         open={meldingenOpen}

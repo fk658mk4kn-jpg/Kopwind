@@ -29,7 +29,12 @@ function url(pad) {
 /** SELECT: pad is bv. "profielen?code_hash=eq.abc&select=data". */
 export async function dbSelect(pad) {
   const res = await fetch(url(pad), { headers: headers(), cache: "no-store" });
-  if (!res.ok) throw new Error(`Database select gaf ${res.status}`);
+  if (!res.ok) {
+    // De Supabase-body bevat de echte reden (ontbrekende kolom, schema,
+    // RLS). Meenemen in de fout zodat de log bruikbaar is.
+    const body = await res.text().catch(() => "");
+    throw new Error(`Database select gaf ${res.status}: ${body.slice(0, 300)}`);
+  }
   return res.json();
 }
 

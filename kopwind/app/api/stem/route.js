@@ -47,8 +47,11 @@ export async function GET(req) {
   }
   try {
     return Response.json(await totalen(tool, dag));
-  } catch {
-    return Response.json({ error: "Stemmen ophalen mislukt." }, { status: 502 });
+  } catch (e) {
+    // Detail in de log helpt bij de eerste setup (ontbrekende tabel,
+    // verkeerde key). Zie AUDIT.md.
+    console.error("stem GET faalde:", e);
+    return Response.json({ error: "Stemmen ophalen mislukt.", detail: String(e) }, { status: 502 });
   }
 }
 

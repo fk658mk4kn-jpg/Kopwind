@@ -6,17 +6,16 @@ import { S } from "@/lib/strings";
 import Icoon from "./Icoon";
 
 /**
- * Duimpjes onder het advies (het sociale aspect): klopte het vandaag?
- * Anoniem, een stem per apparaat per tool per dag. Totalen verschijnen
- * na je eigen stem, of zodra er drie of meer stemmen zijn (een teller
- * op "1" oogt leger dan geen teller). Zonder database of bij een
- * haperende fetch rendert dit stil niets.
+ * Klopte het advies vandaag? (v3.7.0 "Etesian"). Twee duimen in de
+ * huisstijl (eigen SVG, geen emoji). Alleen positieve stemmen worden
+ * geteld en getoond, naast de duim omhoog; een negatieve stem levert
+ * enkel een bedankje op, geen zichtbaar aantal. Zonder database blijven
+ * de knoppen werken (de stem staat lokaal); alleen de teller ontbreekt.
  */
 export default function StemPeiling({ toolId }) {
   const dag = dagKeyVan(new Date());
   const [keuze, setKeuze] = useState(null);
-  const [totalen, setTotalen] = useState(null);
-  const [gedeeld, setGedeeld] = useState(false);
+  const [positief, setPositief] = useState(null);
 
   useEffect(() => {
     try {
@@ -28,10 +27,9 @@ export default function StemPeiling({ toolId }) {
     let actief = true;
     fetch(`/api/stem?tool=${encodeURIComponent(toolId)}&dag=${dag}`)
       .then((r) => (r.ok ? r.json() : Promise.reject()))
-      .then((t) => actief && setTotalen(t))
+      .then((t) => actief && setPositief(t.omhoog ?? 0))
       .catch(() => {
-        // Geen database of hikkende fetch: knoppen blijven, alleen de
-        // teller ontbreekt. De stem zelf blijft altijd lokaal bewaard.
+        // Geen database of hikkende fetch: knoppen blijven werken.
       });
     return () => {
       actief = false;
@@ -41,6 +39,7 @@ export default function StemPeiling({ toolId }) {
   const stem = async (waarde) => {
     if (keuze !== null) return;
     setKeuze(waarde);
+    if (waarde === 1 && positief !== null) setPositief(positief + 1);
     try {
       localStorage.setItem(`kopwind.stem.${toolId}.${dag}`, String(waarde));
       let apparaat = localStorage.getItem("kopwind.stemId");
@@ -56,59 +55,41 @@ export default function StemPeiling({ toolId }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ tool: toolId, dag, stem: waarde, apparaat }),
       });
-      if (res.ok) setTotalen(await res.json());
+      if (res.ok) {
+        const t = await res.json();
+        setPositief(t.omhoog ?? 0);
+      }
     } catch {
       // Stil laten: de keuze blijft lokaal staan.
     }
   };
 
-  const totaal = (totalen?.omhoog ?? 0) + (totalen?.omlaag ?? 0);
-  const toonTotalen = totalen && totaal > 0 && (keuze !== null || totaal >= 3);
-
-  const deel = async () => {
-    const url = typeof window !== "undefined" ? window.location.href : "";
-    const titel = typeof document !== "undefined" ? document.title : "";
-    try {
-      if (typeof navigator !== "undefined" && navigator.share) {
-        await navigator.share({ title: titel, url });
-        return;
-      }
-      await navigator.clipboard.writeText(url);
-      setGedeeld(true);
-      setTimeout(() => setGedeeld(false), 2500);
-    } catch {
-      // Delen afgebroken of clipboard dicht: stil laten.
-    }
-  };
+  const bedankt = keuze !== null;
 
   return (
     <div className="stempeiling" aria-label={S.stem.vraag}>
-      <span className="stem-vraag">
-        {keuze === null ? S.stem.vraag : S.stem.bedankt}
-      </span>
-      <button
-        className={"stemknop" + (keuze === 1 ? " actief" : "")}
-        onClick={() => stem(1)}
-        disabled={keuze !== null}
-        aria-label={S.stem.jaLabel}
-      >
-        {"\u{1F44D}"}
-      </button>
-      <button
-        className={"stemknop" + (keuze === -1 ? " actief" : "")}
-        onClick={() => stem(-1)}
-        disabled={keuze !== null}
-        aria-label={S.stem.neeLabel}
-      >
-        {"\u{1F44E}"}
-      </button>
-      {toonTotalen && (
-        <span className="stem-totalen">{S.stem.teller(totalen.omhoog, totaal)}</span>
-      )}
-      <span className="spacer" />
-      <button className="stemknop deelknop" onClick={deel} aria-label={S.stem.delen} title={S.stem.delen}>
-        {gedeeld ? <span className="deel-ok">{S.stem.gekopieerd}</span> : <Icoon naam="deel" maat={16} />}
-      </button>
+      <span className="stem-vraag">{bedankt ? S.stem.bedankt : S.stem.vraag}</span>
+      <div className="stem-knoppen">
+        <button
+          className={"stemknop op" + (keuze === 1 ? " actief" : "")}
+          onClick={() => stem(1)}
+          disabled={bedankt}
+          aria-label={S.stem.jaLabel}
+          aria-pressed={keuze === 1}
+        >
+          <Icoon naam="duim_op" maat={17} />
+          {positief !== null && positief > 0 && <span className="stem-aantal">{positief}</span>}
+        </button>
+        <button
+          className={"stemknop neer" + (keuze === -1 ? " actief" : "")}
+          onClick={() => stem(-1)}
+          disabled={bedankt}
+          aria-label={S.stem.neeLabel}
+          aria-pressed={keuze === -1}
+        >
+          <Icoon naam="duim_neer" maat={17} />
+        </button>
+      </div>
     </div>
   );
 }

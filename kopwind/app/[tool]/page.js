@@ -11,6 +11,7 @@ import RegenTimingTool from "@/components/tools/RegenTimingTool";
 import ParapluTool from "@/components/tools/ParapluTool";
 import Broodkruimel from "@/components/Broodkruimel";
 import StemPeiling from "@/components/StemPeiling";
+import DeelKnop from "@/components/DeelKnop";
 import AdSlot from "@/components/AdSlot";
 import GerelateerdBlok from "@/components/GerelateerdBlok";
 import { S } from "@/lib/strings";
@@ -109,7 +110,10 @@ export default function ToolPagina({ params }) {
         <LocatieTool toolId={tool.id} />
       )}
 
-      <StemPeiling toolId={tool.id} />
+      <div className="feedback-rij">
+        <StemPeiling toolId={tool.id} />
+        <DeelKnop />
+      </div>
       <AdSlot plek="onder-tool" />
 
       <section className="seotekst">
