@@ -5,6 +5,12 @@
 
 export const VERSIES = [
   {
+    versie: "3.7.3",
+    codenaam: "Etesian patch 3",
+    datum: "2026-07-14",
+    zin: "Technical fix: the thumbs under a check were not loading their counts in production because of a small mistake in the address the site uses to call the database (a double slash). That address is now cleaned up automatically, so the counter and the push notifications that use the same connection work again.",
+  },
+  {
     versie: "3.7.2",
     codenaam: "Etesian patch 2",
     datum: "2026-07-14",

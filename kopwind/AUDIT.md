@@ -21,6 +21,16 @@ loggen beide routes de detailfout en geven ze detail mee in de body; kijk
 in Vercel > je project > Logs naar de regel "stem GET faalde: ..." of open
 de API-URL en lees het detail-veld. Die regel wijst de oorzaak exact aan.
 
+**Update v3.7.3 (bevestigd):** met de detail-logging live gaf /api/stem
+`PGRST125: Invalid path specified in request URL`. Dat is precies het
+pad-geval hierboven: een trailing slash in SUPABASE_URL maakt "//rest/v1/..."
+en de Supabase-gateway weigert dat pad (het is dus geen ontbrekende tabel en
+geen key-fout). De code is gehard: `restUrl()` in lib/server/db.js strip nu
+elke trailing slash van SUPABASE_URL, zodat die dubbele slash niet meer kan
+ontstaan. Alle DB-routes (stemmen, sync, de meldingen-cron) delen die helper.
+Controleer voor de zekerheid alsnog dat SUPABASE_URL in Vercel exact
+`https://xxxx.supabase.co` is, zonder iets achter `.co`.
+
 ---
 
 ## 1. Supabase (stemmen en sync) - KRITIEK
@@ -31,7 +41,9 @@ komen niet op de computer (en andersom).
 ### 1a. Env-vars in Vercel
 Zet bij beide Vercel-projecten (NL en EN) onder Settings > Environment
 Variables:
-- `SUPABASE_URL` = https://xxxx.supabase.co (Project URL uit Supabase)
+- `SUPABASE_URL` = https://xxxx.supabase.co (Project URL uit Supabase),
+  zonder trailing slash en zonder pad erachter. Sinds v3.7.3 strip de code
+  een trailing slash weg als vangnet, maar houd de waarde zelf ook schoon.
 - `SUPABASE_SERVICE_ROLE_KEY` = de **service_role** key, NIET de anon key
   (Supabase > Project Settings > API > service_role, secret)
 

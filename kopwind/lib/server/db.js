@@ -22,13 +22,18 @@ function headers(extra = {}) {
   };
 }
 
-function url(pad) {
-  return `${process.env.SUPABASE_URL}/rest/v1/${pad}`;
+export function restUrl(pad) {
+  // Strip een eventuele trailing slash van SUPABASE_URL. Anders wordt het
+  // pad "//rest/v1/...", en de Supabase-gateway weigert dat met PGRST125
+  // ("Invalid path specified in request URL"). Zo kan die dubbele slash
+  // nooit meer terugkomen, ongeacht hoe de env-var is ingevuld.
+  const basis = (process.env.SUPABASE_URL ?? "").replace(/\/+$/, "");
+  return `${basis}/rest/v1/${pad}`;
 }
 
 /** SELECT: pad is bv. "profielen?code_hash=eq.abc&select=data". */
 export async function dbSelect(pad) {
-  const res = await fetch(url(pad), { headers: headers(), cache: "no-store" });
+  const res = await fetch(restUrl(pad), { headers: headers(), cache: "no-store" });
   if (!res.ok) {
     // De Supabase-body bevat de echte reden (ontbrekende kolom, schema,
     // RLS). Meenemen in de fout zodat de log bruikbaar is.
@@ -43,7 +48,7 @@ export async function dbInsert(tabel, rows, { negeerDuplicaten = false } = {}) {
   const prefer = negeerDuplicaten
     ? "resolution=ignore-duplicates,return=representation"
     : "return=representation";
-  const res = await fetch(url(tabel), {
+  const res = await fetch(restUrl(tabel), {
     method: "POST",
     headers: headers({ Prefer: prefer }),
     body: JSON.stringify(rows),
@@ -54,7 +59,7 @@ export async function dbInsert(tabel, rows, { negeerDuplicaten = false } = {}) {
 
 /** UPSERT op de primary key. */
 export async function dbUpsert(tabel, rows) {
-  const res = await fetch(url(tabel), {
+  const res = await fetch(restUrl(tabel), {
     method: "POST",
     headers: headers({ Prefer: "resolution=merge-duplicates,return=representation" }),
     body: JSON.stringify(rows),
@@ -65,7 +70,7 @@ export async function dbUpsert(tabel, rows) {
 
 /** PATCH: pad met filter, bv. "profielen?code_hash=eq.abc". */
 export async function dbPatch(pad, patch) {
-  const res = await fetch(url(pad), {
+  const res = await fetch(restUrl(pad), {
     method: "PATCH",
     headers: headers({ Prefer: "return=minimal" }),
     body: JSON.stringify(patch),
@@ -75,7 +80,7 @@ export async function dbPatch(pad, patch) {
 
 /** DELETE: pad met filter. */
 export async function dbDelete(pad) {
-  const res = await fetch(url(pad), {
+  const res = await fetch(restUrl(pad), {
     method: "DELETE",
     headers: headers({ Prefer: "return=minimal" }),
   });

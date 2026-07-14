@@ -890,6 +890,77 @@ dus de fietstool-UI en de meldingen zijn hier niet end-to-end getest; alleen
 de tests, de import-check en beide builds (NL en EN) zijn groen. De
 meldingen worden gesloten zodra Martijn de probe-output aanlevert.
 
+**Bevestigd na de diagnose (deze ronde)**: Martijn gaf expliciet akkoord op
+alle drie de fietstool-fixes, bevestigde dat hij de Supabase-tabel
+meldingen_log naar melding_log hernoemt (oorzaak 2), en koos ervoor de */5
+uit vercel.json te halen en volledig op de externe cron te leunen. Mijn
+advies daarop: eruit halen is de juiste keuze, want op Hobby is een cron
+vaker dan 1x per dag niet toegestaan en blokkeert de deploy. Dus schadelijk,
+niet slechts genegeerd. vercel.json staat al op { "crons": [] }. Aan Martijn
+is een stap-voor-stap-instructie voor een leek meegegeven (tabel hernoemen,
+v3.7.1 pushen en de detail-JSON ophalen, cron-job.org opzetten, de lege
+vercel.json via GitHub Desktop syncen, de cron-curl draaien, /api/sync
+checken).
+
 **Volgende**: probes van Martijn (502-detail, sync-GET, cron-curl), dan de
 502 en de cron sluiten. Daarna fase 2 fietstool, of de tweede storefront
 Huis-tuin-auto. Affiliate blijft fase 5.
+
+## v3.7.3 "Etesian patch 3" - 2026-07-14
+
+**Waarom**: Martijn leverde de probes. De detail-logging staat live en gaf op
+/api/stem?tool=terras&dag=2026-07-14 dit terug: PGRST125 "Invalid path
+specified in request URL". Daarmee is de 502-oorzaak eindelijk exact te
+benoemen in plaats van te gokken.
+
+**Wat PGRST125 is (geverifieerd)**: een pad-probleem. PostgREST krijgt een
+pad dat het niet als geldige resource herkent. Het is dus NIET een ontbrekende
+tabel (dat is PGRST205, "Could not find the table in the schema cache"), NIET
+een kolomfout en NIET auth (dat is 401). lib/server/db.js plakte
+SUPABASE_URL en /rest/v1/ direct aan elkaar (`${SUPABASE_URL}/rest/v1/${pad}`),
+zonder normalisatie. Een trailing slash in SUPABASE_URL maakt daardoor
+"//rest/v1/...", en de Supabase-gateway (die /rest/v1 hoort te strippen)
+weigert dat pad. Dit was al de nummer-1-kandidaat uit de eerste diagnose.
+
+**Eerlijke wrijving die ik heb benoemd**: de testmelding leest push_abos via
+exact dezelfde url-helper en werkte bij Martijn. Als de basis-URL kapot was,
+zou die lezing net zo hard vallen. Dus of de testmelding is niet opnieuw
+getest sinds de env-var veranderde, of de basis-URL is schoon en er speelt
+iets anders. Om dat te sluiten heb ik Martijn gevraagd de exacte vorm van
+SUPABASE_URL te bevestigen (eindigt hij op een slash?) en na de deploy /api/stem
+opnieuw te openen. Als de fout dan verandert naar PGRST205, bestaat de
+stemmen-tabel niet (de SQL staat alleen in de README, niet in schema.sql) en
+moet die alsnog worden aangemaakt.
+
+**Fix (bij de bron, hardening)**: de interne url-helper is hernoemd naar het
+geexporteerde restUrl() en strip nu elke trailing slash van SUPABASE_URL met
+`.replace(/\/+$/, "")`. Zo kan de dubbele slash niet meer ontstaan, ongeacht
+hoe de env-var is ingevuld; harmloos als de waarde al schoon is. tests/db.test.js
+toegevoegd als regressie (schone basis, een slash, meerdere slashes, en de
+check dat er geen // na de host meer staat). Alle DB-routes delen restUrl, dus
+dit raakt stemmen, sync en de meldingen-cron in een keer.
+
+**Meldingen, stand na de probes**: nog niet gesloten. De cron-curl liep nog
+niet, want cron-job.org gaf 401 "Geen toegang" (onze eigen secret-check).
+Oorzaak: OF CRON_SECRET staat niet in Vercel, OF de header x-cron-secret die
+cron-job.org stuurt matcht de waarde niet (verkeerd veld, spatie, of niet
+opgeslagen). Advies aan Martijn: CRON_SECRET in Vercel controleren en als
+robuuste route ?secret=<waarde> aan de cron-URL hangen (de route accepteert
+naast de header ook de query-param), of zelf de curl draaien om te isoleren.
+Pas als de auth klopt zegt de {gecheckt,verzonden,fouten}-output iets, en dan
+zien we ook of de tabelhernoeming (oorzaak 2) en deze restUrl-fix (oorzaak 3)
+de meldingen samen rechttrekken.
+
+**Bewust niet gedaan**: geen leading-slash-normalisatie op het pad-argument
+zelf (alle aanroepers geven een schoon pad; dat afvangen zou echte bugs later
+maskeren). Geen extra logging van de volle URL in de foutmelding (zou de
+Supabase-ref lekken); de PGRST-code plus de env-check volstaan.
+
+**Beperkingen**: de sandbox heeft geen netwerk naar Supabase, dus de echte
+bevestiging (stem geeft weer een telling, cron verstuurt) komt uit Martijns
+productie na de deploy. Tests, import-check en beide builds zijn hier groen.
+
+**Volgende**: Martijn deployt v3.7.3, bevestigt de SUPABASE_URL-vorm en hertest
+/api/stem; fixt de cron-auth en draait de curl in een open meldingsvenster.
+Dan de 502 en de meldingen definitief sluiten. Daarna fase 2 fietstool of de
+tweede storefront Huis-tuin-auto. Affiliate blijft fase 5.

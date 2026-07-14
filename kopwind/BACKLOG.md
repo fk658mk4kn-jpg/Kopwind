@@ -150,18 +150,29 @@ bepalen: nieuwe tool, variant, of onderdeel van een bredere tool.
   deploy), meldingen draaien voortaan op een externe cron. AUDIT.md
   gecorrigeerd (anon-key-notitie) en aangevuld (push_abos + melding_log,
   externe-cron-stappen).
+- v3.7.3 "Etesian patch 3": 502-oorzaak bevestigd via de detail-logging
+  (PGRST125, een pad-probleem). restUrl() strip nu een trailing slash van
+  SUPABASE_URL zodat de dubbele slash niet meer kan ontstaan, met een
+  regressietest (tests/db.test.js). Raakt alle DB-routes, dus ook de
+  pushmeldingen.
 
 ### In behandeling (sluit zodra Martijn de probes aanlevert)
-- **/api/stem 502**: oorzaak wordt bepaald uit het detail-veld en de
-  log-regel na de v3.7.1-deploy. Meest waarschijnlijk schema-cache, kolom,
-  key of URL (geen anon-key: die geeft op een GET lege data, geen 502).
-  Openstaand: faalt /api/sync (GET) ook? Dan DB-breed, anders
-  stemmen-specifiek.
-- **Pushmeldingen**: twee oorzaken bevestigd. (1) Tabelnaam: meldingen_log
-  moet melding_log worden (hernoemen in Supabase, Martijn doet dit). (2)
-  Klok: Hobby draait vercel.json */5 niet; externe cron (cron-job.org met
-  x-cron-secret) wordt de enige klok. Sluiten zodra de handmatige
-  cron-curl {gecheckt,verzonden,fouten} laat zien.
+- **/api/stem 502**: oorzaak bevestigd. De detail-logging gaf PGRST125
+  "Invalid path specified in request URL", een pad-probleem (geen ontbrekende
+  tabel, geen key-fout). Hoogstwaarschijnlijk een trailing slash in
+  SUPABASE_URL (dubbele slash in het pad). Code gehard in v3.7.3 (restUrl
+  strip de slash). Sluiten zodra Martijn (a) bevestigt of SUPABASE_URL een
+  trailing slash had en (b) na de v3.7.3-deploy /api/stem weer een JSON-telling
+  geeft. Kanttekening: /api/sync met een geldige code testen (zonder code geeft
+  het alleen de validatie "code is verplicht"); en let op dat de stemmen-tabel
+  echt bestaat (SQL staat in README, niet in schema.sql) anders volgt PGRST205.
+- **Pushmeldingen**: drie lagen. (1) Tabelnaam: meldingen_log moet melding_log
+  worden (hernoemen in Supabase, Martijn doet dit). (2) Klok: Hobby draait
+  vercel.json */5 niet; externe cron (cron-job.org) wordt de enige klok, maar
+  de cron gaf nog 401 (secret matcht niet of CRON_SECRET niet gezet). (3)
+  Dezelfde restUrl-fix uit v3.7.3 raakt ook de DB-calls van de cron. Sluiten
+  zodra de auth klopt en de handmatige cron-curl {gecheckt,verzonden,fouten}
+  laat zien.
 
 ### Fase 2 fietstool (na de drie bugs, akkoord Martijn)
 - Herindeling: bovenaan ja/nee plus zwaarste rit plus 2-3 redenen,

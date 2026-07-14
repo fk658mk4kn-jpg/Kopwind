@@ -6,6 +6,12 @@
 
 export const VERSIES = [
   {
+    versie: "3.7.3",
+    codenaam: "Etesian patch 3",
+    datum: "2026-07-14",
+    zin: "Technische fix: de duimpjes onder een check haalden in productie de aantallen niet op door een foutje in het adres waarmee de site de database aanroept (een dubbele schuine streep). Dat adres wordt nu automatisch schoongemaakt, zodat de teller en de pushmeldingen die dezelfde verbinding gebruiken weer werken.",
+  },
+  {
     versie: "3.7.2",
     codenaam: "Etesian patch 2",
     datum: "2026-07-14",
