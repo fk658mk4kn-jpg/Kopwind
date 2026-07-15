@@ -196,9 +196,10 @@ export function briefingTekst(plan, routeNaam, schaalLabels = null) {
   const leg = plan.legs[dag.worstIdx];
   const van = leg.van.naam.split(",")[0];
   const naar = leg.naar.naam.split(",")[0];
-  const kop = routeNaam ? `${APP_KORT} · ${routeNaam}` : APP_KORT;
+  // Verdictwoord voorop: dat is het antwoord, de rest is context.
+  const kop = routeNaam ? ` \u00b7 ${routeNaam}` : ` \u00b7 ${APP_KORT}`;
   return {
-    title: `${kop}: ${labelVoor(dag.score, schaalLabels).toLowerCase()}`,
+    title: `${kapitaal(labelVoor(dag.score, schaalLabels))}${kop}`,
     body: `${M.zwaarsteRit(van, naar, fmtTijd(leg.departure))} ${leg.samenvatting} ${weerZin(leg)}`,
   };
 }
@@ -219,7 +220,7 @@ function kapitaal(s) {
 
 
 /* ------------------------------------------------------------------ */
-/* V2: granulaire schema's (dagen, meerdere tijden, drempel)           */
+/* V3: weekplan (per weekdag eigen stuurtijden en een eigen doelmoment) */
 /* ------------------------------------------------------------------ */
 
 /** ISO-weekdag in Nederlandse telling: 1 = maandag ... 7 = zondag. */
@@ -227,9 +228,29 @@ export function isoDag(nu) {
   return ((nu.getDay() + 6) % 7) + 1;
 }
 
+/**
+ * Het weekplan is de kern van het meldingen-format (PLAYBOOK sectie 10):
+ * per weekdag ("1" t/m "7") staat er een dagconfig met
+ * - aan: melden op die dag
+ * - tijden: de stuurtijden (wanneer de melding KOMT)
+ * - het doelmoment (waarover het advies GAAT):
+ *   routes: vertrekTijd ("HH:MM" of null = volg de routeplanning van de keten)
+ *   tools:  doel { soort: "dag" } of { soort: "venster", van, tot }
+ */
+function weekVan(dagen, tijden, extraPerDag) {
+  const week = {};
+  for (let d = 1; d <= 7; d++) {
+    week[String(d)] = {
+      aan: (dagen ?? []).includes(d),
+      tijden: [...(tijden ?? [])],
+      ...structuredClone(extraPerDag),
+    };
+  }
+  return week;
+}
+
 export const DEFAULT_ROUTE_SCHEMA = {
-  dagen: [1, 2, 3, 4, 5],
-  briefing: { aan: false, tijden: ["07:00"] },
+  week: weekVan([1, 2, 3, 4, 5], [], { vertrekTijd: null }),
   vertrek: { aan: false, minuten: 15 },
   drempel: { modus: "altijd", cijfer: 6.5 },
 };
@@ -237,68 +258,136 @@ export const DEFAULT_ROUTE_SCHEMA = {
 export const DEFAULT_TOOL_SCHEMA = {
   aan: false,
   locatie: null,
-  dagen: [1, 2, 3, 4, 5, 6, 7],
-  tijden: ["08:00"],
+  week: weekVan([1, 2, 3, 4, 5, 6, 7], ["08:00"], { doel: { soort: "dag" } }),
   drempel: { modus: "goed", cijfer: 7 },
 };
 
 /**
- * Migreert het v1-meldingenobject van een route ({ochtend, ochtendTijd,
- * vertrek, vertrekMinuten}) naar het v2-schema. V2-objecten gaan er
- * ongewijzigd doorheen; null/undefined wordt een uitgeschakeld schema.
+ * Migreert het meldingenobject van een route naar het v3-weekplan.
+ * v1 = {ochtend, ochtendTijd, vertrek, vertrekMinuten}
+ * v2 = {dagen, briefing:{aan,tijden}, vertrek:{aan,minuten}, drempel}
+ * v3 (heeft .week) gaat er genormaliseerd doorheen; null/undefined wordt
+ * een uitgeschakeld schema.
  */
 export function migreerRouteSchema(oud) {
   if (!oud) return structuredClone(DEFAULT_ROUTE_SCHEMA);
+  if (oud.week) {
+    const uit = structuredClone(DEFAULT_ROUTE_SCHEMA);
+    for (let d = 1; d <= 7; d++) {
+      const e = oud.week[String(d)] ?? {};
+      uit.week[String(d)] = {
+        aan: Boolean(e.aan),
+        tijden: Array.isArray(e.tijden) ? [...e.tijden] : [],
+        vertrekTijd: e.vertrekTijd ?? null,
+      };
+    }
+    uit.vertrek = { ...DEFAULT_ROUTE_SCHEMA.vertrek, ...(oud.vertrek ?? {}) };
+    uit.drempel = { ...DEFAULT_ROUTE_SCHEMA.drempel, ...(oud.drempel ?? {}) };
+    return uit;
+  }
   if (oud.briefing || oud.dagen) {
+    const dagen = Array.isArray(oud.dagen) ? oud.dagen : [1, 2, 3, 4, 5, 6, 7];
+    const tijden = oud.briefing?.aan ? oud.briefing.tijden ?? ["07:00"] : [];
     return {
-      ...structuredClone(DEFAULT_ROUTE_SCHEMA),
-      ...oud,
-      briefing: { ...DEFAULT_ROUTE_SCHEMA.briefing, ...(oud.briefing ?? {}) },
+      week: weekVan(dagen, tijden, { vertrekTijd: null }),
       vertrek: { ...DEFAULT_ROUTE_SCHEMA.vertrek, ...(oud.vertrek ?? {}) },
       drempel: { ...DEFAULT_ROUTE_SCHEMA.drempel, ...(oud.drempel ?? {}) },
     };
   }
   return {
-    dagen: [1, 2, 3, 4, 5, 6, 7],
-    briefing: { aan: Boolean(oud.ochtend), tijden: [oud.ochtendTijd ?? "07:00"] },
+    week: weekVan(
+      [1, 2, 3, 4, 5, 6, 7],
+      oud.ochtend ? [oud.ochtendTijd ?? "07:00"] : [],
+      { vertrekTijd: null }
+    ),
     vertrek: { aan: Boolean(oud.vertrek), minuten: oud.vertrekMinuten ?? 15 },
     drempel: { modus: "altijd", cijfer: 6.5 },
   };
 }
 
 /**
- * Bepaalt welke briefings nu af moeten volgens een v2-schema.
- * Zelfde vensterlogica als v1 (inhaal tot 3 uur), plus dagen-filter en
- * meerdere tijden. Sleutels: "<dag>:<prefix>:briefing:<tijd>".
+ * Migreert het meldingenobject van een locatie-tool naar het v3-weekplan.
+ * v2 = {aan, locatie, dagen, tijden, drempel}; v3 heeft .week.
+ */
+export function migreerToolSchema(oud) {
+  if (!oud) return structuredClone(DEFAULT_TOOL_SCHEMA);
+  if (oud.week) {
+    const uit = structuredClone(DEFAULT_TOOL_SCHEMA);
+    uit.aan = Boolean(oud.aan);
+    uit.locatie = oud.locatie ?? null;
+    for (let d = 1; d <= 7; d++) {
+      const e = oud.week[String(d)] ?? {};
+      uit.week[String(d)] = {
+        aan: Boolean(e.aan),
+        tijden: Array.isArray(e.tijden) ? [...e.tijden] : [],
+        doel:
+          e.doel?.soort === "venster"
+            ? { soort: "venster", van: e.doel.van ?? "08:00", tot: e.doel.tot ?? "18:00" }
+            : { soort: "dag" },
+      };
+    }
+    uit.drempel = { ...DEFAULT_TOOL_SCHEMA.drempel, ...(oud.drempel ?? {}) };
+    return uit;
+  }
+  return {
+    aan: Boolean(oud.aan),
+    locatie: oud.locatie ?? null,
+    week: weekVan(
+      Array.isArray(oud.dagen) ? oud.dagen : [1, 2, 3, 4, 5, 6, 7],
+      oud.tijden ?? ["08:00"],
+      { doel: { soort: "dag" } }
+    ),
+    drempel: { ...DEFAULT_TOOL_SCHEMA.drempel, ...(oud.drempel ?? {}) },
+  };
+}
+
+/**
+ * Bepaalt welke briefings nu af moeten volgens het weekplan. Zelfde
+ * vensterlogica als voorheen (inhaal tot 3 uur). Het item draagt het
+ * doelmoment van de dag mee (vertrekTijd of doel), zodat de verzender weet
+ * waarover het advies moet gaan. Sleutels: "<dag>:<prefix>:briefing:<tijd>".
+ * Neemt zowel v3-schema's (met .week) als oudere vormen aan.
  */
 export function dueBriefings({ schema, log, nu, prefix }) {
   const items = [];
-  if (!schema?.briefing?.aan) return items;
-  if (Array.isArray(schema.dagen) && !schema.dagen.includes(isoDag(nu))) return items;
+  const s = schema?.week ? schema : naarWeek(schema);
+  if (!s) return items;
+  const dagCfg = s.week[String(isoDag(nu))];
+  if (!dagCfg?.aan) return items;
   const dk = dagKey(nu);
   const p = prefix ? `:${String(prefix).replaceAll(":", "_")}` : "";
   const inhaal = 3 * 3600 * 1000;
-  for (const tijd of schema.briefing.tijden ?? []) {
+  for (const tijd of dagCfg.tijden ?? []) {
     const [h, m] = String(tijd).split(":").map(Number);
     if (!Number.isFinite(h)) continue;
     const t = new Date(nu.getTime());
     t.setHours(h, m ?? 0, 0, 0);
     const key = `${dk}${p}:briefing:${tijd}`;
     if (nu >= t && nu.getTime() - t.getTime() <= inhaal && !log[key]) {
-      items.push({ type: "briefing", key, tijd });
+      items.push({
+        type: "briefing",
+        key,
+        tijd,
+        vertrekTijd: dagCfg.vertrekTijd ?? null,
+        doel: dagCfg.doel ?? null,
+      });
     }
   }
   return items;
 }
 
-/** Vertrekherinneringen volgens een v2-schema (dagen-filter plus venster). */
+/**
+ * Vertrekherinneringen volgens het weekplan: de globale vertrek-instelling
+ * (aan, minuten) vuurt alleen op dagen die in het weekplan aan staan.
+ */
 export function dueVertrek({ schema, times, log, nu, prefix }) {
   const items = [];
-  if (!schema?.vertrek?.aan) return items;
-  if (Array.isArray(schema.dagen) && !schema.dagen.includes(isoDag(nu))) return items;
+  const s = schema?.week ? schema : naarWeek(schema);
+  if (!s?.vertrek?.aan) return items;
+  if (!s.week[String(isoDag(nu))]?.aan) return items;
   const dk = dagKey(nu);
   const p = prefix ? `:${String(prefix).replaceAll(":", "_")}` : "";
-  const minuten = Number.isFinite(schema.vertrek.minuten) ? schema.vertrek.minuten : 15;
+  const minuten = Number.isFinite(s.vertrek.minuten) ? s.vertrek.minuten : 15;
   const venster = minuten * 60 * 1000;
   (times ?? []).forEach((t, i) => {
     const d = t?.departure;
@@ -309,6 +398,48 @@ export function dueVertrek({ schema, times, log, nu, prefix }) {
     }
   });
   return items;
+}
+
+/** Oudere schema-vormen (v2) on the fly naar een weekplan tillen. */
+function naarWeek(schema) {
+  if (!schema) return null;
+  if (schema.briefing || schema.dagen) {
+    return schema.tijden ? migreerToolSchema(schema) : migreerRouteSchema(schema);
+  }
+  return null;
+}
+
+/**
+ * Doelmoment voor routes: forceert de eerste rit van de keten naar een
+ * vaste vertrektijd op de dag van nu. De kloktijd komt uit het weekplan,
+ * de datum is altijd die van nu (nooit in het verleden).
+ */
+export function pasVertrekTijdToe(legOptions, vertrekTijd, nu) {
+  if (!vertrekTijd) return legOptions;
+  const [h, m] = String(vertrekTijd).split(":").map(Number);
+  if (!Number.isFinite(h)) return legOptions;
+  const d = new Date(nu.getTime());
+  d.setHours(h, m ?? 0, 0, 0);
+  const uit = (legOptions ?? []).map((o) => ({ ...o }));
+  if (!uit.length) uit.push({});
+  uit[0] = { ...uit[0], mode: "vertrek", tijd: toLocalInput(d) };
+  return uit;
+}
+
+/**
+ * Doelmoment voor locatie-tools: het advies over een tijdvenster in plaats
+ * van de hele dag. Rekent generiek op de uren uit het overlay-contract
+ * ({uur, score, nat}): de gemiddelde score in [van, tot) plus of er natte
+ * uren in zitten. Geeft null als het venster geen uren raakt.
+ */
+export function vensterAdvies(uren, van, tot) {
+  const vanUur = Number(String(van).split(":")[0]);
+  const totUur = Number(String(tot).split(":")[0]);
+  if (!Number.isFinite(vanUur) || !Number.isFinite(totUur)) return null;
+  const inVenster = (uren ?? []).filter((u) => u.uur >= vanUur && u.uur < totUur);
+  if (!inVenster.length) return null;
+  const score = inVenster.reduce((a, u) => a + u.score, 0) / inVenster.length;
+  return { score, uren: inVenster.length, nat: inVenster.some((u) => u.nat) };
 }
 
 /**
@@ -327,26 +458,48 @@ export function drempelLaatDoor(drempel, score) {
   return true;
 }
 
-/** Mensentaal-zin onder een schema in het meldingenpaneel. */
+/** Mensentaal-zin onder een weekplan in het meldingenpaneel. */
 export function schemaZin(schema, soort) {
   const NAMEN = ["ma", "di", "wo", "do", "vr", "za", "zo"];
-  const dagen = (schema.dagen ?? []).map((d) => NAMEN[d - 1]).join(", ") || "geen dagen";
-  const alle = (schema.dagen ?? []).length === 7;
-  const dagTekst = alle ? "elke dag" : `op ${dagen}`;
-  const delen = [];
-  if (soort === "route") {
-    if (schema.briefing?.aan) {
-      delen.push(`${dagTekst} om ${(schema.briefing.tijden ?? []).join(" en ")} een briefing`);
+  const s = schema?.week ? schema : naarWeek(schema);
+  if (!s) return "Geen meldingen ingesteld.";
+
+  // Groepeer opeenvolgende dagen met exact dezelfde dagconfig.
+  const groepen = [];
+  for (let d = 1; d <= 7; d++) {
+    const e = s.week[String(d)];
+    if (!e?.aan || !(e.tijden ?? []).length) continue;
+    const doelTekst = e.vertrekTijd
+      ? `, rit om ${e.vertrekTijd}`
+      : e.doel?.soort === "venster"
+      ? `, over ${e.doel.van} tot ${e.doel.tot}`
+      : "";
+    const handtekening = `${(e.tijden ?? []).join(" en ")}${doelTekst}`;
+    const vorige = groepen[groepen.length - 1];
+    if (vorige && vorige.handtekening === handtekening && vorige.totDag === d - 1) {
+      vorige.totDag = d;
+    } else {
+      groepen.push({ vanDag: d, totDag: d, handtekening });
     }
-    if (schema.vertrek?.aan) {
-      delen.push(`een herinnering ${schema.vertrek.minuten} min voor vertrek`);
-    }
-  } else {
-    delen.push(`${dagTekst} om ${(schema.tijden ?? []).join(" en ")} een check`);
+  }
+
+  const delen = groepen.map((g) => {
+    const dagTekst =
+      g.vanDag === g.totDag
+        ? NAMEN[g.vanDag - 1]
+        : `${NAMEN[g.vanDag - 1]} t/m ${NAMEN[g.totDag - 1]}`;
+    return `${dagTekst} om ${g.handtekening}`;
+  });
+  const alle =
+    groepen.length === 1 && groepen[0].vanDag === 1 && groepen[0].totDag === 7;
+  if (alle) delen[0] = `elke dag om ${groepen[0].handtekening}`;
+
+  if (soort === "route" && s.vertrek?.aan) {
+    delen.push(`een herinnering ${s.vertrek.minuten} min voor vertrek`);
   }
   if (!delen.length) return "Geen meldingen ingesteld.";
-  let zin = `Je krijgt ${delen.join(" en ")}`;
-  const d = schema.drempel;
+  let zin = `Je krijgt een melding ${delen.join("; ")}`;
+  const d = s.drempel;
   if (d?.modus === "slecht") zin += ` (alleen bij cijfer ${String(d.cijfer).replace(".", ",")} of lager)`;
   if (d?.modus === "goed") zin += ` (alleen bij cijfer ${String(d.cijfer).replace(".", ",")} of hoger)`;
   return zin + ".";

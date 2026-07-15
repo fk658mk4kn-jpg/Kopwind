@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import {
   migreerRouteSchema,
-  DEFAULT_TOOL_SCHEMA,
+  migreerToolSchema,
   schemaZin,
 } from "@/lib/engine/meldingen";
 import { S } from "@/lib/strings";
@@ -290,25 +290,116 @@ export default function MeldingenPanel({ open, onClose }) {
   );
 }
 
-function DagenChips({ dagen, onWijzig }) {
-  const toggle = (d) => {
-    const set = new Set(dagen ?? []);
-    if (set.has(d)) set.delete(d);
-    else set.add(d);
-    onWijzig([...set].sort((a, b) => a - b));
+/**
+ * Het weekplan-paneel: per weekdag aan/uit, de stuurtijden (wanneer de
+ * melding komt) en het doelmoment (waarover het advies gaat). Voor routes
+ * is het doelmoment een eigen vertrektijd of "volg de routeplanning";
+ * voor tools de hele dag of een tijdvenster. De kopieerknop zet de
+ * maandag-instelling op alle dagen.
+ */
+function WeekEditor({ week, soort, onWijzig }) {
+  const patchDag = (d, p) => {
+    onWijzig({ ...week, [String(d)]: { ...week[String(d)], ...p } });
   };
+  const kopieerMa = () => {
+    const ma = week["1"];
+    const next = {};
+    for (let d = 1; d <= 7; d++) next[String(d)] = structuredClone(ma);
+    onWijzig(next);
+  };
+  const dagen = [1, 2, 3, 4, 5, 6, 7];
+  const ietsAan = dagen.some((d) => week[String(d)]?.aan);
   return (
-    <div className="chips dagchips" role="group" aria-label={kies({ nl: "Dagen", en: "Days" })}>
-      {S.meldingen.dagen.map((naam, i) => (
-        <button
-          key={naam}
-          type="button"
-          className={"chip" + ((dagen ?? []).includes(i + 1) ? " actief" : "")}
-          onClick={() => toggle(i + 1)}
-        >
-          {naam}
+    <div className="weekplan">
+      <div className="chips dagchips" role="group" aria-label={kies({ nl: "Dagen", en: "Days" })}>
+        {S.meldingen.dagen.map((naam, i) => (
+          <button
+            key={naam}
+            type="button"
+            className={"chip" + (week[String(i + 1)]?.aan ? " actief" : "")}
+            onClick={() => patchDag(i + 1, { aan: !week[String(i + 1)]?.aan })}
+          >
+            {naam}
+          </button>
+        ))}
+        <button type="button" className="knop klein" onClick={kopieerMa}>
+          {S.meldingen.kopieerMa}
         </button>
-      ))}
+      </div>
+      {!ietsAan && <p className="uitleg">{S.meldingen.geenDagen}</p>}
+      {dagen
+        .filter((d) => week[String(d)]?.aan)
+        .map((d) => {
+          const e = week[String(d)];
+          return (
+            <div key={d} className="instelrij weekdagrij">
+              <strong className="weekdag-naam">{S.meldingen.dagen[d - 1]}</strong>
+              <span className="instelhint">{S.meldingen.meldingOm}</span>
+              <TijdenLijst tijden={e.tijden} onWijzig={(tijden) => patchDag(d, { tijden })} />
+              {soort === "route" ? (
+                <span className="instelgroep">
+                  <select
+                    value={e.vertrekTijd ? "tijd" : "route"}
+                    onChange={(ev) =>
+                      patchDag(d, { vertrekTijd: ev.target.value === "tijd" ? "08:30" : null })
+                    }
+                    aria-label={kies({ nl: "Doelmoment", en: "Target moment" })}
+                  >
+                    <option value="route">{S.meldingen.volgRoute}</option>
+                    <option value="tijd">{S.meldingen.eigenVertrek}</option>
+                  </select>
+                  {e.vertrekTijd && (
+                    <input
+                      type="time"
+                      value={e.vertrekTijd}
+                      onChange={(ev) => patchDag(d, { vertrekTijd: ev.target.value })}
+                      aria-label={kies({ nl: "Vertrektijd", en: "Departure time" })}
+                    />
+                  )}
+                </span>
+              ) : (
+                <span className="instelgroep">
+                  <select
+                    value={e.doel?.soort === "venster" ? "venster" : "dag"}
+                    onChange={(ev) =>
+                      patchDag(d, {
+                        doel:
+                          ev.target.value === "venster"
+                            ? { soort: "venster", van: "08:00", tot: "18:00" }
+                            : { soort: "dag" },
+                      })
+                    }
+                    aria-label={kies({ nl: "Doelmoment", en: "Target moment" })}
+                  >
+                    <option value="dag">{S.meldingen.doelDag}</option>
+                    <option value="venster">{S.meldingen.doelVenster}</option>
+                  </select>
+                  {e.doel?.soort === "venster" && (
+                    <>
+                      <input
+                        type="time"
+                        value={e.doel.van}
+                        onChange={(ev) =>
+                          patchDag(d, { doel: { ...e.doel, van: ev.target.value } })
+                        }
+                        aria-label={kies({ nl: "Venster van", en: "Window from" })}
+                      />
+                      <span className="instelhint">{S.meldingen.vensterTot}</span>
+                      <input
+                        type="time"
+                        value={e.doel.tot}
+                        onChange={(ev) =>
+                          patchDag(d, { doel: { ...e.doel, tot: ev.target.value } })
+                        }
+                        aria-label={kies({ nl: "Venster tot", en: "Window to" })}
+                      />
+                    </>
+                  )}
+                </span>
+              )}
+            </div>
+          );
+        })}
     </div>
   );
 }
@@ -403,23 +494,7 @@ function RouteSchema({ route, onWijzig }) {
   return (
     <div className="routemeldingen">
       <strong>{route.naam}</strong>
-      <DagenChips dagen={s.dagen} onWijzig={(dagen) => patch({ dagen })} />
-      <div className="instelrij">
-        <label>
-          <input
-            type="checkbox"
-            checked={s.briefing.aan}
-            onChange={(e) => patch({ briefing: { ...s.briefing, aan: e.target.checked } })}
-          />{" "}
-          {S.meldingen.briefing}
-        </label>
-        {s.briefing.aan && (
-          <TijdenLijst
-            tijden={s.briefing.tijden}
-            onWijzig={(tijden) => patch({ briefing: { ...s.briefing, tijden } })}
-          />
-        )}
-      </div>
+      <WeekEditor week={s.week} soort="route" onWijzig={(week) => patch({ week })} />
       <div className="instelrij">
         <label>
           <input
@@ -459,7 +534,7 @@ function RouteSchema({ route, onWijzig }) {
 }
 
 function ToolSchema({ tool, presets, schema, onWijzig }) {
-  const s = { ...structuredClone(DEFAULT_TOOL_SCHEMA), ...(schema ?? {}) };
+  const s = migreerToolSchema(schema);
   const patch = (p) => onWijzig({ ...s, ...p });
   return (
     <div className="routemeldingen">
@@ -499,11 +574,7 @@ function ToolSchema({ tool, presets, schema, onWijzig }) {
               in een van de tools).
             </p>
           )}
-          <DagenChips dagen={s.dagen} onWijzig={(dagen) => patch({ dagen })} />
-          <div className="instelrij">
-            <span className="instelhint">{kies({ nl: "Tijd", en: "Time" })}</span>
-            <TijdenLijst tijden={s.tijden} onWijzig={(tijden) => patch({ tijden })} />
-          </div>
+          <WeekEditor week={s.week} soort="tool" onWijzig={(week) => patch({ week })} />
           <div className="instelrij">
             <span className="instelhint">{kies({ nl: "Wanneer melden", en: "When to notify" })}</span>
             <DrempelKeuze

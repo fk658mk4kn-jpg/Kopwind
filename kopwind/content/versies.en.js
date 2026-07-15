@@ -5,6 +5,18 @@
 
 export const VERSIES = [
   {
+    versie: "3.9.0",
+    codenaam: "Sirocco",
+    datum: "2026-07-15",
+    zin: "Category pages now help you choose first: a short picker at the top takes you to the right check or answer, followed by the explanation and all checks. The first full page is Home, garden and car, with answers to questions like washing the car, mowing the lawn and painting outside. The bike check now also sits neatly under Sport and exercise.",
+  },
+  {
+    versie: "3.8.0",
+    codenaam: "Mistral",
+    datum: "2026-07-14",
+    zin: "Notifications can now be set per weekday: each day gets its own notification time, plus what the advice covers (your departure time that day, the whole day, or a time window such as 8 to 12). The notification itself is clearer, starts with the answer and opens the right check when you tap it. Saved times always jump to today when you open the check.",
+  },
+  {
     versie: "3.7.7",
     codenaam: "Etesian patch 7",
     datum: "2026-07-14",

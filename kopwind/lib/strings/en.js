@@ -27,6 +27,14 @@ export const S = {
     drempelAltijd: "always notify",
     drempelSlecht: "warn me on bad news",
     drempelGoed: "good news only",
+    meldingOm: "notify at",
+    volgRoute: "follow the route plan",
+    eigenVertrek: "ride departs at",
+    doelDag: "advice for the whole day",
+    doelVenster: "advice for a time window",
+    vensterTot: "to",
+    kopieerMa: "Apply Monday to all days",
+    geenDagen: "Turn on at least one day to receive notifications.",
   },
   algemeen: {
     liveOpgehaald: "fetched live at",
@@ -77,6 +85,8 @@ export const S = {
     bekijk: "View category",
     meerVragen: "More questions in this category",
     directAntwoord: "Direct answer",
+    alleChecks: "All checks in this category",
+    gerelateerdKop: "Related topics",
     faqKop: "Frequently asked questions",
   },
   beslissingen: {

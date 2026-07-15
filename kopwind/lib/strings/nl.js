@@ -28,6 +28,14 @@ export const S = {
     drempelAltijd: "altijd melden",
     drempelSlecht: "waarschuw bij slecht nieuws",
     drempelGoed: "alleen bij goed nieuws",
+    meldingOm: "melding om",
+    volgRoute: "volg de routeplanning",
+    eigenVertrek: "rit vertrekt om",
+    doelDag: "advies over de hele dag",
+    doelVenster: "advies over een tijdvenster",
+    vensterTot: "tot",
+    kopieerMa: "Zet maandag op alle dagen",
+    geenDagen: "Zet minstens een dag aan om meldingen te krijgen.",
   },
   algemeen: {
     liveOpgehaald: "live opgehaald om",
@@ -81,6 +89,8 @@ export const S = {
     bekijk: "Bekijk categorie",
     meerVragen: "Meer vragen in deze categorie",
     directAntwoord: "Direct antwoord",
+    alleChecks: "Alle checks in deze categorie",
+    gerelateerdKop: "Gerelateerde onderwerpen",
     faqKop: "Veelgestelde vragen",
   },
   beslissingen: {

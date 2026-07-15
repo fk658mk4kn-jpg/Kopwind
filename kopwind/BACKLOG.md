@@ -70,23 +70,22 @@ Structureel, niet eenmalig. Elke sprint een stukje.
 
 ---
 
-## Meldingen (verbeteringen, 2026-07-14)
+## Meldingen (verbeteringen, 2026-07-14) - AF in v3.8.0 "Mistral"
 
-- **Route-meldingen fijnmaziger instelbaar.** Nu is per melding de verzendtijd
-  in te stellen; Martijn wil ook kunnen kiezen van welk moment of welke data de
-  melding is (niet alleen hoe laat de melding komt, maar over welke vertrektijd
-  of welk tijdvenster het advies gaat), en dat per dag. Raakt MeldingenPanel en
-  de cron-route (die kent al briefing-tijden plus een vertrekherinnering X
-  minuten voor een geplande vertrektijd; het instelbare deel daarvan uitbreiden
-  en in de UI zetten). Scope eerst in de chat uitwerken voordat we bouwen.
-- **De pushmelding zelf beter**, visueel en qua copy. Nu een kale titel plus
-  regel; rijker en scherper maken (duidelijke kop, kernzin, eventueel het
-  verdictwoord en het venster), binnen wat de Web Push-payload toelaat (title,
-  body, icon, badge). Raakt de tekstopbouw in de cron-route en lib/server/push.
-- **Datum in de planning nooit in het verleden.** Waar een datum gekozen wordt
-  (de meldingsplanning), mag die nooit in het verleden liggen en springt hij bij
-  het openen minimaal naar vandaag; de gekozen tijd blijft staan. Bevestigen op
-  welk scherm dit precies zit als we het bouwen.
+- [af] **Route-meldingen fijnmaziger instelbaar**: het weekplan. Per weekdag
+  eigen stuurtijden en een eigen doelmoment: bij routes een eigen vertrektijd
+  per dag (of volg de routeplanning), bij locatie-checks de hele dag of een
+  tijdvenster. Schema, migraties (v1/v2 naar v3), cron en MeldingenPanel
+  (WeekEditor met kopieerknop) draaien volledig op het weekplan. Format
+  vastgelegd in PLAYBOOK sectie 10.
+- [af] **De pushmelding zelf beter**: verdictwoord voorop in de titel, kernzin
+  plus doelmoment in de body, deep link (url) naar de juiste check bij het
+  aantikken, icoon en badge in de service worker.
+- [af] **Datum in de planning nooit in het verleden**: er bleek nergens een
+  kalenderveld te bestaan; het echte pijnpunt was de fietscheck die bewaarde
+  ketens met een oude datum terugzette. Bij het openen en bij het laden van een
+  route springen tijden nu altijd naar vandaag (kloktijd blijft staan); de cron
+  deed dit al en pasVertrekTijdToe volgt dezelfde regel.
 
 ---
 
@@ -116,18 +115,18 @@ ooit als apart project met eigen domein en een gevalideerde legale bron.
 
 ---
 
-## Categorie-architectuur (te finaliseren voor de storefront-bouw)
+## Categorie-architectuur (format gebouwd in v3.9.0)
 
-De categorien worden de storefronts. De onderstaande indeling is het
-werkvoorstel; finaliseren voordat de template wordt gebouwd. Elke
-categorie krijgt een eigen route, eigen uitleg-intro en (later) eigen
-affiliate. Per categorie staan de tools die live zijn (klikbaar) plus de
-vraagvarianten die nog gebouwd moeten worden.
-
-Let op: sommige vragen zijn een eigen tool (eigen engine-overlay),
-andere zijn een variant op een bestaande tool (eigen SEO-pagina,
-gedeelde engine, zie lib/varianten.js). Bij het finaliseren per vraag
-bepalen: nieuwe tool, variant, of onderdeel van een bredere tool.
+De categorien zijn de storefronts. Het bouwblok-format staat (PLAYBOOK
+sectie 11) en is gebouwd: herbruikbare blokken, configuratie per
+categorie in content/storefronts.js. Uitgewerkt: regen en huis-tuin. De
+vervolg-opdracht is per categorie de storefront-content uitwerken
+(voorWie, keuzehulp, uitleg, FAQ, gerelateerd) en daarna de tools uit de
+vragenlijst hieronder bouwen; de lijst is de voorraad. Per vraag blijft
+de afweging: eigen tool (eigen engine-overlay), variant op een bestaande
+tool (eigen SEO-pagina, gedeelde engine, zie lib/varianten.js), of een
+FAQ-anker op de storefront (long-tail zonder eigen URL, zoals auto
+wassen en grasmaaien nu op /huis-tuin-auto).
 
 ### Regen en nat
 - Ga ik nat worden vandaag?
@@ -253,6 +252,17 @@ bepalen: nieuwe tool, variant, of onderdeel van een bredere tool.
 - v3.7.7 "Etesian patch 7": pakket 3 (nowcast-tools gelijkgetrokken via de
   gedeelde PlekKiezer, actieknop, databron-regel, twee-koloms-layout) plus optie
   2 (per-stad-kop naar navLabel, tool.naam van fiets/terras/barbecue naar "ik").
+- v3.8.0 "Mistral": het meldingen-format in een keer goed (het weekplan): per
+  weekdag eigen stuurtijden en een eigen doelmoment, rijkere push met deep link,
+  en bewaarde tijden nooit in het verleden. Storefront-format vastgelegd in
+  PLAYBOOK sectie 11; de bouw ervan is de volgende sessie (eerste storefront:
+  Huis-tuin-auto).
+- v3.9.0 "Sirocco": het storefront-format gebouwd volgens PLAYBOOK sectie 11:
+  herbruikbare blokken (voor wie, keuzehulp, uitleg, checks, FAQ, gerelateerd),
+  eerste volledige storefront Huis-tuin-auto (keuzehulp plus zeven
+  FAQ-ankers voor de long-tail), regen aangevuld naar hetzelfde format,
+  ItemList-JSON-LD, fiets naar de sport-categorie en categorieId-validatie in
+  het register.
 
 ### Opgelost na de probes (2026-07-14)
 - **/api/stem 502**: DICHT. De restUrl-fix loste het op; Supabase werkt weer.

@@ -22,20 +22,25 @@ self.addEventListener("push", (event) => {
     self.registration.showNotification(data.title ?? "Fietscheck", {
       body: data.body ?? "",
       tag: data.tag,
-      icon: "/icons/icon-192.png",
-      data: { url: "/" },
+      icon: data.icon ?? "/icons/icon-192.png",
+      badge: "/icons/icon-192.png",
+      data: { url: data.url ?? "/" },
     })
   );
 });
 
 self.addEventListener("notificationclick", (event) => {
   event.notification.close();
+  const url = event.notification.data?.url ?? "/";
   event.waitUntil(
     self.clients.matchAll({ type: "window", includeUncontrolled: true }).then((lijst) => {
       for (const client of lijst) {
-        if ("focus" in client) return client.focus();
+        if ("focus" in client) {
+          if ("navigate" in client) client.navigate(url);
+          return client.focus();
+        }
       }
-      return self.clients.openWindow("/");
+      return self.clients.openWindow(url);
     })
   );
 });

@@ -20,7 +20,7 @@ export const fietsNaarWerk = {
   kleur: "#3D6E96",
   icoon: "fiets",
   groep: "Onderweg",
-  categorieId: "onderweg",
+  categorieId: "sport",
   diepte: kies({ nl: "Wind, regen en het beste vertrekmoment voor jouw rit.", en: "Wind, rain and the best time to set off." }),
   schaalLabels: kies({
     nl: { ideaal: "Ideale fietsdag", goed: "Goed te doen", twijfelachtig: "Twijfelachtig", matig: "Liever later", "zeer-slecht": "Beter van niet" },

@@ -25,6 +25,7 @@
  */
 
 import { fietsNaarWerk } from "./fiets-naar-werk.js";
+import { CATEGORIEEN } from "../categorieen.js";
 import { wasBuitenDrogen } from "./was-buiten-drogen.js";
 import { kleding } from "./kleding.js";
 import { terras } from "./terras.js";
@@ -85,7 +86,8 @@ export function migreerThresholds(oud) {
 export function valideerRegister(tools = TOOLS) {
   const fouten = [];
   const slugs = new Set();
-  const VERPLICHT = ["id", "slug", "naam", "korteVraag", "patroon", "inputType", "adviesLabels", "cta", "navLabel", "kleur", "schaalLabels"];
+  const categorieIds = new Set(CATEGORIEEN.map((c) => c.id));
+  const VERPLICHT = ["id", "slug", "naam", "korteVraag", "patroon", "inputType", "adviesLabels", "cta", "navLabel", "kleur", "schaalLabels", "categorieId"];
   for (const t of tools) {
     for (const v of VERPLICHT) {
       if (!t[v]) fouten.push(`${t.id ?? "?"}: veld ${v} ontbreekt`);
@@ -94,6 +96,9 @@ export function valideerRegister(tools = TOOLS) {
     slugs.add(t.slug);
     if (!["A", "B"].includes(t.patroon)) fouten.push(`${t.id}: onbekend patroon`);
     if (!["route", "locatie"].includes(t.inputType)) fouten.push(`${t.id}: onbekend inputType`);
+    if (t.categorieId && !categorieIds.has(t.categorieId)) {
+      fouten.push(`${t.id}: categorieId ${t.categorieId} bestaat niet in CATEGORIEEN`);
+    }
     for (const k of ["goed", "matig", "slecht"]) {
       if (!t.adviesLabels?.[k]) fouten.push(`${t.id}: adviesLabel ${k} ontbreekt`);
     }

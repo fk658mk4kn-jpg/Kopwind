@@ -5,22 +5,24 @@
  * externe gratis cron (bv. cron-job.org) met een geheim:
  *   GET /api/cron/meldingen  met header  x-cron-secret: <CRON_SECRET>
  *
- * V2 (granulair, par. 8): elk schema heeft dagen, een of meer tijden, en
- * een drempel (altijd melden, alleen bij cijfer <= grens, of alleen bij
- * cijfer >= grens). Er zijn twee soorten:
+ * V3 (weekplan): elk schema heeft per weekdag eigen stuurtijden en een
+ * eigen doelmoment, plus een drempel (altijd melden, alleen bij cijfer <=
+ * grens, of alleen bij cijfer >= grens). Er zijn twee soorten:
  *
- * 1. Per opgeslagen ROUTE (fiets): briefing op tijdstippen plus een
- *    vertrekherinnering X minuten voor een geplande vertrektijd. De cron
- *    bepaalt de vertrektijden offline (reistijden uit de cache op de
- *    route; ontbreken ze, dan eenmalig vers ophalen en terugschrijven),
+ * 1. Per opgeslagen ROUTE (fiets): briefing op de stuurtijden van die dag,
+ *    plus een vertrekherinnering X minuten voor een geplande vertrektijd.
+ *    Het doelmoment per dag is een eigen vertrektijd (of: volg de keten).
+ *    De cron bepaalt de vertrektijden offline (reistijden uit de cache op
+ *    de route; ontbreken ze, dan eenmalig vers ophalen en terugschrijven),
  *    dedupliceert via melding_log, en rekent pas daarna het volledige
  *    plan door met actueel weer via dezelfde pijplijn als de browser.
  *    De drempel geldt voor de briefing; een vertrekherinnering gaat
  *    altijd door (die bevat zelf het actuele weer).
  *
- * 2. Per gevolgde LOCATIE-TOOL (zoals de wascheck): een briefing op
- *    tijdstippen voor een vaste plek, met de drempel als filter
- *    ("alleen als het een drooghangdag is").
+ * 2. Per gevolgde LOCATIE-TOOL (zoals de wascheck): een briefing op de
+ *    stuurtijden van die dag voor een vaste plek. Het doelmoment per dag
+ *    is de hele dag of een tijdvenster ("kan de was tussen 8 en 12?"),
+ *    met de drempel als filter ("alleen als het een drooghangdag is").
  *
  * Alles rekent in Nederlandse wandkloktijd (nuAmsterdam), ook al draait
  * de server in UTC.
@@ -38,9 +40,13 @@ import {
   briefingTekst,
   vertrekTekst,
   migreerRouteSchema,
+  migreerToolSchema,
   dueBriefings,
   dueVertrek,
   drempelLaatDoor,
+  pasVertrekTijdToe,
+  vensterAdvies,
+  isoDag,
 } from "@/lib/engine/meldingen";
 import { DEFAULT_THRESHOLDS } from "@/lib/advice";
 import { vindToolOpId, migreerThresholds } from "@/lib/tools";
@@ -94,15 +100,24 @@ export async function GET(request) {
         return abosCache;
       };
 
-      // 1. Routes (fiets): briefing plus vertrekherinnering.
+      // 1. Routes (fiets): briefing plus vertrekherinnering, per weekdag.
       for (const route of Array.isArray(data.routes) ? data.routes : []) {
         const schema = migreerRouteSchema(route.meldingen);
-        if (!schema.briefing.aan && !schema.vertrek.aan) continue;
+        const dagCfg = schema.week[String(isoDag(nu))];
+        const ietsAan =
+          Object.values(schema.week).some((e) => e.aan && (e.tijden ?? []).length) ||
+          schema.vertrek.aan;
+        if (!ietsAan) continue;
         if (!Array.isArray(route.stops) || route.stops.length < 2) continue;
         gecheckt++;
 
         try {
-          const opties = normalizeChainToToday(route.legOptions ?? [], nu);
+          let opties = normalizeChainToToday(route.legOptions ?? [], nu);
+          // Doelmoment van vandaag: een eigen vertrektijd voor deze weekdag
+          // overschrijft de eerste rit van de keten (datum altijd vandaag).
+          if (dagCfg?.aan && dagCfg.vertrekTijd) {
+            opties = pasVertrekTijdToe(opties, dagCfg.vertrekTijd, nu);
+          }
 
           // Reistijden: uit de cache op de route, anders eenmalig vers
           // ophalen en terugschrijven zodat volgende ticks gratis zijn.
@@ -174,24 +189,30 @@ export async function GET(request) {
                     body: "Je volgende rit staat gepland. Open de fietscheck voor het actuele weer.",
                   };
             }
-            verzonden += await verstuurNaarAbos(lijst, { ...tekst, tag: item.key });
+            verzonden += await verstuurNaarAbos(lijst, {
+              ...tekst,
+              tag: item.key,
+              url: `/${fietsNaarWerk.slug}`,
+            });
           }
         } catch (e) {
           fouten.push(`${route.naam}: ${String(e)}`);
         }
       }
 
-      // 2. Locatie-tools (zoals de wascheck): briefing voor een vaste plek.
+      // 2. Locatie-tools (zoals de wascheck): briefing voor een vaste plek,
+      // per weekdag met een eigen doelmoment (hele dag of tijdvenster).
       const toolMeldingen = data.toolMeldingen ?? {};
-      for (const [toolId, schema] of Object.entries(toolMeldingen)) {
-        if (!schema?.aan || !schema?.locatie?.lat) continue;
+      for (const [toolId, ruwSchema] of Object.entries(toolMeldingen)) {
+        const schema = migreerToolSchema(ruwSchema);
+        if (!schema.aan || !schema.locatie?.lat) continue;
         const tool = vindToolOpId(toolId);
         if (!tool) continue;
         gecheckt++;
 
         try {
           const due = dueBriefings({
-            schema: { dagen: schema.dagen, briefing: { aan: true, tijden: schema.tijden } },
+            schema,
             log: {},
             nu,
             prefix: `tool_${toolId}`,
@@ -202,10 +223,14 @@ export async function GET(request) {
           const lijst = await abos();
           if (!lijst.length) continue;
 
-          const tekst = await toolBriefing(tool, schema, nu, perTool);
-          if (!tekst) continue; // Drempel hield hem tegen of data ontbrak.
           for (const item of teSturen) {
-            verzonden += await verstuurNaarAbos(lijst, { ...tekst, tag: item.key });
+            const tekst = await toolBriefing(tool, schema, nu, perTool, item.doel);
+            if (!tekst) continue; // Drempel hield hem tegen of data ontbrak.
+            verzonden += await verstuurNaarAbos(lijst, {
+              ...tekst,
+              tag: item.key,
+              url: `/${tool.slug}`,
+            });
           }
         } catch (e) {
           fouten.push(`${toolId}: ${String(e)}`);
@@ -255,7 +280,7 @@ async function dedupe(codeHash, due) {
  * overlay-functie krijgt hier gratis meldingen. Geeft null terug als de
  * drempel de melding tegenhoudt.
  */
-async function toolBriefing(tool, schema, nu, perTool = {}) {
+async function toolBriefing(tool, schema, nu, perTool = {}, doel = null) {
   if (typeof tool.overlay !== "function") return null;
   const hourly = await haalHourly(
     schema.locatie.lat,
@@ -266,9 +291,25 @@ async function toolBriefing(tool, schema, nu, perTool = {}) {
   const instellingen = { ...(tool.instellingen?.defaults ?? {}), ...(perTool[tool.id] ?? {}) };
   const vandaag = tool.overlay(hourly, nu, instellingen).dagen?.[0];
   if (!vandaag) return null;
+  const plek = schema.locatie.naam.split(",")[0];
+
+  // Doelmoment "venster": het advies gaat over dat tijdvenster, niet de
+  // hele dag. Generiek via de uren uit het overlay-contract.
+  if (doel?.soort === "venster") {
+    const v = vensterAdvies(vandaag.uren, doel.van, doel.tot);
+    if (v) {
+      if (!drempelLaatDoor(schema.drempel, v.score)) return null;
+      return {
+        title: `${labelVoor(v.score, tool.schaalLabels)} \u00b7 ${tool.meldingKort}`,
+        body: `${plek}, tussen ${doel.van} en ${doel.tot}: ${labelVoor(v.score, tool.schaalLabels).toLowerCase()}${v.nat ? ", met kans op een natte periode" : ""}. ${vandaag.status.zin}`,
+      };
+    }
+    // Venster raakt geen uren (bv. nachturen): terugvallen op de dag.
+  }
+
   if (!drempelLaatDoor(schema.drempel, vandaag.conditie.score)) return null;
   return {
-    title: `${tool.meldingKort}: ${labelVoor(vandaag.conditie.score, tool.schaalLabels)}`,
-    body: `${vandaag.status.zin} Voor ${schema.locatie.naam.split(",")[0]}.`,
+    title: `${labelVoor(vandaag.conditie.score, tool.schaalLabels)} \u00b7 ${tool.meldingKort}`,
+    body: `${plek}: ${vandaag.status.zin}${vandaag.metric?.zin ? ` ${vandaag.metric.zin}` : ""}`,
   };
 }

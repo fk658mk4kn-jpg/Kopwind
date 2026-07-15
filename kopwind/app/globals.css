@@ -1208,6 +1208,11 @@ a.merk { text-decoration: none; }
 
 .dagchips { margin: 8px 0 4px; }
 
+/* Weekplan (meldingen per weekdag): een rij per aan-dag met stuurtijden en
+   het doelmoment; de dagnaam vast links zodat het scanbaar blijft. */
+.weekdagrij { flex-wrap: wrap; }
+.weekdag-naam { min-width: 28px; color: var(--inkt-zacht); }
+
 .dagchips .chip { text-transform: none; min-width: 42px; text-align: center; }
 
 .chip.actief {
@@ -2137,6 +2142,32 @@ a.checkkaart:hover .kaartknop { background: var(--geel); }
 .categorie-varianten { margin-top: 24px; }
 
 .storefront-koptekst { font-size: 16px; margin: 0 0 12px; }
+
+/* Storefront blok 2 en 3 (PLAYBOOK sectie 11): voor wie plus keuzehulp.
+   De keuzehulp is een lijst van situatie-rijen die naar een check of een
+   FAQ-anker leiden; hele rij klikbaar, linktekst rechts uitgelijnd. */
+.storefront-voorwie { margin: 18px 0 6px; }
+.storefront-voorwie p { margin: 6px 0; line-height: 1.55; }
+.storefront-keuzehulp { margin: 18px 0 8px; }
+.storefront-keuzehulp h2 { font-size: 16px; margin: 0 0 8px; }
+.keuzehulp-lijst { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+.keuzehulp-rij {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding: 10px 14px;
+  border: 1px solid var(--lijn);
+  border-radius: 10px;
+  background: var(--paneel);
+  text-decoration: none;
+  color: inherit;
+}
+.keuzehulp-rij:hover { border-color: var(--accent); }
+.keuzehulp-situatie { flex: 1 1 240px; line-height: 1.45; }
+.keuzehulp-link { color: var(--accent); font-weight: 600; white-space: nowrap; }
+.gerelateerd-link .stil { font-weight: 400; }
 
 .storefront-tekst { margin-top: 30px; }
 

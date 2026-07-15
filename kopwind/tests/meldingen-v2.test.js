@@ -15,22 +15,25 @@ test("isoDag: maandag is 1, zondag is 7", () => {
   assert.equal(isoDag(new Date(2026, 6, 12)), 7); // zo 12 juli 2026
 });
 
-test("migreerRouteSchema: v1 naar v2", () => {
+test("migreerRouteSchema: v1 naar het weekplan", () => {
   const s = migreerRouteSchema({
     ochtend: true,
     ochtendTijd: "06:45",
     vertrek: true,
     vertrekMinuten: 20,
   });
-  assert.equal(s.briefing.aan, true);
-  assert.deepEqual(s.briefing.tijden, ["06:45"]);
+  // v1 kende geen dagen: elke dag aan, met de ochtendtijd als stuurtijd.
+  for (let d = 1; d <= 7; d++) {
+    assert.equal(s.week[String(d)].aan, true);
+    assert.deepEqual(s.week[String(d)].tijden, ["06:45"]);
+    assert.equal(s.week[String(d)].vertrekTijd, null);
+  }
   assert.equal(s.vertrek.aan, true);
   assert.equal(s.vertrek.minuten, 20);
-  assert.equal(s.dagen.length, 7);
   assert.equal(s.drempel.modus, "altijd");
-  // V2-schema gaat er ongewijzigd doorheen.
-  const v2 = migreerRouteSchema(s);
-  assert.deepEqual(v2.briefing.tijden, ["06:45"]);
+  // Een weekplan gaat er genormaliseerd doorheen.
+  const nogEens = migreerRouteSchema(s);
+  assert.deepEqual(nogEens.week["3"].tijden, ["06:45"]);
 });
 
 test("dueBriefings: dagenfilter blokkeert, meerdere tijden vuren in hun venster", () => {
@@ -94,6 +97,6 @@ test("schemaZin: mensentaal met dagen, tijd en drempel", () => {
     "route"
   );
   assert.match(zin, /07:00/);
-  assert.match(zin, /ma, di, wo, do, vr/);
+  assert.match(zin, /ma t\/m vr/);
   assert.match(zin, /6 of lager/);
 });

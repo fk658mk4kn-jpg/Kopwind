@@ -216,3 +216,91 @@ GerelateerdBlok-relaties + `valideerRegister` groen (vangt dubbele slugs).
 - [ ] Register compleet, `valideerRegister` groen
 - [ ] `npm test`, `npm run check:imports`, NL- en EN-build groen
 - [ ] Geen em-dashes
+
+---
+
+## 10. Meldingen-format (het weekplan, sinds v3.8.0)
+
+Elke melding kent drie dingen: wanneer hij KOMT (de stuurtijd), waarover
+het advies GAAT (het doelmoment), en dat per weekdag apart. Dit heet het
+weekplan en is de standaard voor elke meldbare tool.
+
+Het schema (opgeslagen in het profiel, gemigreerd via migreerRouteSchema
+en migreerToolSchema in lib/engine/meldingen.js):
+
+- **week**: object met "1" (ma) t/m "7" (zo), per dag:
+  - `aan`: melden op deze dag
+  - `tijden`: de stuurtijden (een of meer "HH:MM")
+  - het doelmoment:
+    - routes: `vertrekTijd` ("HH:MM" of null = volg de routeplanning van
+      de opgeslagen keten; de cron forceert de eerste rit die dag naar
+      deze tijd via pasVertrekTijdToe)
+    - tools: `doel` = { soort: "dag" } of { soort: "venster", van, tot }
+      (het advies gaat dan over dat tijdvenster, generiek berekend uit de
+      uren van het overlay-contract via vensterAdvies)
+- **vertrek** (alleen routes): { aan, minuten }, de herinnering X minuten
+  voor een geplande vertrektijd; vuurt alleen op dagen die aan staan.
+- **drempel**: { modus: altijd | slecht | goed, cijfer }.
+
+Regels:
+- **Een gepland moment ligt nooit in het verleden.** Kloktijden lossen
+  altijd op naar de dag van nu (normalizeChainToToday, pasVertrekTijdToe);
+  de FietsTool normaliseert bewaarde ketens ook bij het openen en bij het
+  laden van een route. De kloktijd blijft staan, de datum springt mee.
+- **De push zelf**: titel begint met het verdictwoord (het antwoord),
+  daarna de context (routenaam of check plus plek). De body draagt de
+  kernzin, het doelmoment (vertrektijd of venster) en de metric-zin. De
+  payload heeft een `url` (deep link naar de tool), `tag` (dedupe) en de
+  service worker toont icon en badge.
+- **Oudere schema's** (v1 en v2) migreren automatisch mee; de UI schrijft
+  altijd het weekplan terug.
+- Een nieuwe meldbare tool hoeft alleen het overlay-contract en
+  `meldingKort` te leveren; het weekplan, de cron en de pushopmaak zijn
+  gedeeld.
+
+---
+
+## 11. Storefront-format (vastgelegd juli 2026, gebouwd in v3.9.0)
+
+Een storefront is een begeleidende categorie-landingspagina uit vaste
+bouwblokken: eerst context en keuzehulp, daarna pas de concrete keuze
+(Coolblue-model). Geen kale lijst met checks of producten, maar een pagina
+die de bezoeker eerst helpt begrijpen en kiezen, en daarna doorstuurt.
+Doel: topical authority en SEO op de categorie, plus (fase 5) de plek waar
+affiliate-selecties logisch landen.
+
+Implementatie (v3.9.0): components/Storefront.js orkestreert; de blokken
+staan als herbruikbare componenten in components/storefront/; de inhoud
+per categorie is configuratie in content/storefronts.js (schema in het
+docblock daar). Blokken zijn optioneel: een categorie zonder uitgewerkte
+content valt terug op hero plus kaart-overzicht. De keuzehulp routeert
+naar een live check (toolId) of naar een FAQ-anker op dezelfde pagina
+(long-tail zonder eigen URL). tests/storefronts.test.js dwingt het format
+af; valideerRegister eist dat elke tool aan een bestaande categorie hangt.
+
+De vaste bouwblokken, in deze volgorde (volgorde mag later op data):
+
+1. **Hero**: wat deze categorie beantwoordt, in een zin, met de
+   kernbelofte (beslissing, geen weerbericht).
+2. **Voor wie / waarvoor**: herkenbare situaties (2-3 regels).
+3. **Keuzehulp**: help de bezoeker het juiste segment kiezen ("welke
+   check past bij jouw vraag"), met de checks als keuzes.
+4. **Uitleg-blokken**: waar let je op, de 2-3 onderwerpen die de keuze
+   bepalen (per blok een kopje met het zoekwoord voorin).
+5. **De checks zelf**: de toolkaarten van de categorie (korteVraag,
+   verdict-voorbeeld), doorklik naar de toolpagina's.
+6. **FAQ**: zoekwoord voorin, FAQPage-JSON-LD, inklapbaar.
+7. **Gerelateerd**: 2-3 aangrenzende categorieen of checks.
+8. **(fase 5) Affiliate-selectie**: pas als laatste blok, nooit boven de
+   keuzehulp; producten volgen het advies, niet andersom.
+
+Regels:
+- Eerst helpen, dan kiezen, dan pas (later) verkopen; de volgorde van de
+  blokken bewaakt dat.
+- Elk blok is een herbruikbaar component; een storefront is configuratie
+  (welke blokken, welke inhoud), geen maatwerkpagina.
+- Anti-cannibalisatie: de storefront beantwoordt de brede vraag; de
+  toolpagina's de specifieke. Geen dubbele H1's of dubbele FAQ-vragen
+  tussen storefront en tools.
+- Eerste storefront: Huis-tuin-auto (de wascheck bestaat al, sterkste
+  affiliate-fit later).

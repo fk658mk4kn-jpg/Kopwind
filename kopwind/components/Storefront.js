@@ -1,6 +1,10 @@
-import Link from "next/link";
 import Broodkruimel from "@/components/Broodkruimel";
-import Icoon from "@/components/Icoon";
+import VoorWieBlok from "@/components/storefront/VoorWieBlok";
+import KeuzeHulpBlok from "@/components/storefront/KeuzeHulpBlok";
+import UitlegBlokken from "@/components/storefront/UitlegBlokken";
+import ChecksGrid from "@/components/storefront/ChecksGrid";
+import { CategorieFaq, GerelateerdCategorieen } from "@/components/storefront/FaqEnGerelateerd";
+import Link from "next/link";
 import { toolsInCategorie } from "@/lib/tools";
 import { VARIANTEN } from "@/lib/varianten";
 import { HUB_NAAM } from "@/lib/brand";
@@ -9,11 +13,14 @@ import { PAD } from "@/lib/i18n/paden";
 import { vindStorefront } from "@/content/storefronts";
 
 /**
- * De categorie-storefront (v3.6.0 "Bora"): een rankbare hub, geen
- * linklijst. Toont de tools als kaarten, daaronder beslislogica,
- * situaties per weertype, seizoenscontext en een FAQ die de
- * samengevoegde long-tail-vragen opvangt via anchors. Categorien zonder
- * uitgewerkte storefront-content tonen alleen het kaart-overzicht.
+ * De categorie-storefront volgens het vaste bouwblok-format (PLAYBOOK
+ * sectie 11, gebouwd in v3.9.0): eerst context en keuzehulp, daarna pas
+ * de concrete keuze. Blokvolgorde: hero, voor wie, keuzehulp, uitleg,
+ * de checks, meer vragen (varianten), FAQ, gerelateerd. Elk blok is een
+ * herbruikbaar component; de storefront zelf is configuratie uit
+ * content/storefronts.js. Categorien zonder uitgewerkte content vallen
+ * terug op hero plus kaart-overzicht. Blok 8 (affiliate) volgt pas in
+ * fase 5 en staat bewust niet in deze component.
  */
 export default function Storefront({ categorie }) {
   const tools = toolsInCategorie(categorie.id);
@@ -21,7 +28,7 @@ export default function Storefront({ categorie }) {
   const varianten = VARIANTEN.filter((v) => ouderIds.has(v.ouderId));
   const sf = vindStorefront(categorie.id);
 
-  const jsonLd = sf?.faq?.length
+  const faqJsonLd = sf?.faq?.length
     ? {
         "@context": "https://schema.org",
         "@type": "FAQPage",
@@ -29,6 +36,20 @@ export default function Storefront({ categorie }) {
           "@type": "Question",
           name: f.v,
           acceptedAnswer: { "@type": "Answer", text: f.a },
+        })),
+      }
+    : null;
+
+  const lijstJsonLd = tools.length
+    ? {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        name: categorie.titel,
+        itemListElement: tools.map((t, i) => ({
+          "@type": "ListItem",
+          position: i + 1,
+          name: t.korteVraag,
+          url: `/${t.slug}`,
         })),
       }
     : null;
@@ -42,80 +63,28 @@ export default function Storefront({ categorie }) {
           { naam: categorie.titel },
         ]}
       />
+
+      {/* Blok 1: hero */}
       <section className="tool-hero">
         <h1>{categorie.titel}</h1>
         <p>{categorie.intro}</p>
       </section>
 
-      <section aria-label={S.categorie.directAntwoord}>
-        {tools.length > 0 && <h2 className="storefront-koptekst">{S.categorie.directAntwoord}</h2>}
-        <div className="checkgrid">
-          {tools.map((t) => (
-            <Link
-              key={t.id}
-              href={`/${t.slug}`}
-              className="checkkaart"
-              style={{
-                background: `color-mix(in srgb, ${t.kleur} 6%, #ffffff)`,
-                borderColor: `color-mix(in srgb, ${t.kleur} 28%, #ffffff)`,
-              }}
-            >
-              <span className="kaart-watermerk" aria-hidden="true" style={{ color: t.kleur }}>
-                <Icoon naam={t.icoon} maat={96} />
-              </span>
-              <span className="kaart-rij1">
-                <span className="icon-chip klein" style={{ background: `color-mix(in srgb, ${t.kleur} 15%, #ffffff)`, color: t.kleur }}>
-                  <Icoon naam={t.icoon} maat={16} />
-                </span>
-                <h3 className="kaart-vraag">{t.korteVraag}</h3>
-              </span>
-              <p className="kaartregel klem stil">{t.diepte}</p>
-              <span className="kaart-cta">
-                <span className="kaart-cta-tekst">{t.cta}</span> <Icoon naam="pijl" maat={13} />
-              </span>
-            </Link>
-          ))}
-        </div>
-      </section>
+      {/* Blok 2: voor wie / waarvoor */}
+      <VoorWieBlok blok={sf?.voorWie} />
 
-      {sf && (
-        <section className="seotekst storefront-tekst">
-          <h2>{sf.beslislogica.kop}</h2>
-          <ul className="storefront-punten">
-            {sf.beslislogica.punten.map((p, i) => (
-              <li key={i}>{p}</li>
-            ))}
-          </ul>
+      {/* Blok 3: keuzehulp (met de checks als keuzes) */}
+      <KeuzeHulpBlok blok={sf?.keuzehulp} />
 
-          <h2>{sf.situaties.kop}</h2>
-          <div className="storefront-situaties">
-            {sf.situaties.items.map((s) => (
-              <div key={s.naam} className="storefront-situatie">
-                <h3>{s.naam}</h3>
-                <p>{s.tekst}</p>
-              </div>
-            ))}
-          </div>
+      {/* Blok 4: uitleg (waar let je op) */}
+      <UitlegBlokken sf={sf} />
 
-          <h2>{sf.seizoen.kop}</h2>
-          <div className="storefront-situaties">
-            {sf.seizoen.items.map((s) => (
-              <div key={s.naam} className="storefront-situatie">
-                <h3>{s.naam}</h3>
-                <p>{s.tekst}</p>
-              </div>
-            ))}
-          </div>
-
-          <h2>{S.categorie.faqKop}</h2>
-          {sf.faq.map((f) => (
-            <details key={f.id} id={f.id} className="faq-item">
-              <summary><h3>{f.v}</h3></summary>
-              <p>{f.a}</p>
-            </details>
-          ))}
-        </section>
-      )}
+      {/* Blok 5: de checks zelf. Zonder uitgewerkte content is dit het
+          eerste blok na de hero (fallback) en heet het Direct antwoord. */}
+      <ChecksGrid
+        tools={tools}
+        kop={sf ? S.categorie.alleChecks : S.categorie.directAntwoord}
+      />
 
       {varianten.length > 0 && (
         <section className="categorie-varianten">
@@ -130,8 +99,17 @@ export default function Storefront({ categorie }) {
         </section>
       )}
 
-      {jsonLd && (
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      {/* Blok 6: FAQ */}
+      <CategorieFaq faq={sf?.faq} />
+
+      {/* Blok 7: gerelateerde onderwerpen */}
+      <GerelateerdCategorieen ids={sf?.gerelateerd} />
+
+      {faqJsonLd && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      )}
+      {lijstJsonLd && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(lijstJsonLd) }} />
       )}
     </main>
   );

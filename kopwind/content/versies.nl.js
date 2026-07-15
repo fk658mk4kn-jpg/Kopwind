@@ -6,6 +6,18 @@
 
 export const VERSIES = [
   {
+    versie: "3.9.0",
+    codenaam: "Sirocco",
+    datum: "2026-07-15",
+    zin: "De categoriepagina's helpen je nu eerst kiezen: bovenaan een korte keuzehulp die je bij de juiste check of het juiste antwoord brengt, daarna de uitleg en alle checks. De eerste volledige pagina is Huis, tuin en auto, met antwoorden op vragen als auto wassen, grasmaaien en buiten schilderen. Ook is de fietscheck nu netjes bij Sport en beweging te vinden.",
+  },
+  {
+    versie: "3.8.0",
+    codenaam: "Mistral",
+    datum: "2026-07-14",
+    zin: "Meldingen zijn nu per weekdag in te stellen: op elke dag een eigen tijd voor de melding, en waar het advies over gaat (je vertrektijd die dag, de hele dag, of een tijdvenster zoals tussen 8 en 12). De melding zelf is duidelijker, begint met het antwoord en opent bij het aantikken meteen de juiste check. Bewaarde tijden springen bij het openen altijd naar vandaag.",
+  },
+  {
     versie: "3.7.7",
     codenaam: "Etesian patch 7",
     datum: "2026-07-14",

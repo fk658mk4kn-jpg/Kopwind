@@ -8,6 +8,7 @@ import DagBanner from "@/components/DagBanner";
 import NavKnoppen from "@/components/NavKnoppen";
 import { useGebruiker } from "@/components/GebruikerContext";
 import { haalRuweEtappes, stelPlanSamen } from "@/lib/planner";
+import { normalizeChainToToday } from "@/lib/engine/meldingen";
 import { fmtTijd } from "@/lib/format";
 import { kies } from "@/lib/i18n/locale";
 import { S } from "@/lib/strings";
@@ -60,9 +61,12 @@ export default function FietsTool({ beginStops = null }) {
       const keten = JSON.parse(localStorage.getItem(LS_LAST_CHAIN) ?? "null");
       if (keten?.stops?.length >= 2) {
         setStops(keten.stops);
-        const opts = keten.legOptions ?? [];
+        let opts = keten.legOptions ?? [];
         // Oude ketens met "auto" op de eerste rit worden "vertrekken nu".
         if (opts[0]?.mode === "auto") opts[0] = { mode: "nu" };
+        // Een datum kan nooit in het verleden zitten: bij het openen van de
+        // tool springen bewaarde tijden naar vandaag, de kloktijd blijft.
+        opts = normalizeChainToToday(opts, new Date());
         setLegOptions(opts.length ? opts : [{ mode: "nu" }]);
       }
     } catch {
@@ -113,7 +117,9 @@ export default function FietsTool({ beginStops = null }) {
   const laadRoute = (r) => {
     g.meldInteractie();
     setStops(r.stops);
-    setLegOptions(r.legOptions?.length ? r.legOptions : [{ mode: "nu" }]);
+    // Ook hier: de datum van bewaarde tijden nooit in het verleden.
+    const opts = normalizeChainToToday(r.legOptions ?? [], new Date());
+    setLegOptions(opts.length ? opts : [{ mode: "nu" }]);
     setFout(null);
   };
 

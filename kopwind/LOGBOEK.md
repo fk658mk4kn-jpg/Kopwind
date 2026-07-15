@@ -1199,3 +1199,125 @@ Open: fase 2 fietstool, de meldingen-verbeteringen (route-tijden, rijkere push,
 datum-nooit-in-verleden), en de doorlopende SEO-opdracht. Ook: LocatieTool deelt
 nu PlekKiezer, dus als er nog velden verschillen tussen de tools is dat makkelijk
 verder te harmoniseren.
+
+## v3.8.0 "Mistral" - 2026-07-14
+
+**Wat**: het meldingen-format in een keer goed neergezet, zoals Martijn vroeg:
+niet doorbouwen op een half format en later verbouwen, maar de basis nu vast.
+Drie punten uit de backlog in een sprint: per weekdag instelbaar, de push zelf
+rijker, en tijden nooit in het verleden. Plus het storefront-format vastgelegd
+(PLAYBOOK sectie 11) als standaard voor de volgende bouwsessie.
+
+**Het weekplan (schema v3)**: elke melding kent per weekdag ("1" t/m "7") een
+dagconfig met aan, tijden (de stuurtijden: wanneer de melding komt) en het
+doelmoment (waarover het advies gaat). Bij routes is het doelmoment een eigen
+vertrekTijd per dag (null = volg de routeplanning van de keten); bij
+locatie-checks een doel: hele dag of een tijdvenster (van/tot). De globale
+vertrekherinnering (aan, minuten) blijft per route bestaan maar vuurt alleen op
+dagen die aan staan. Drempel ongewijzigd. Migraties: migreerRouteSchema tilt v1
+(ochtend/ochtendTijd) en v2 (dagen plus briefing.tijden) naar het weekplan;
+migreerToolSchema doet hetzelfde voor toolMeldingen. De due-functies nemen ook
+oude vormen aan via een interne naarWeek-fallback, dus niets breekt tijdens de
+overgang.
+
+**Cron**: de route-branch past per dag een eigen vertrektijd toe via
+pasVertrekTijdToe (forceert de eerste rit van de keten naar die kloktijd op
+vandaag) voordat planTimes en berekenPlan draaien. De tool-branch migreert het
+schema en geeft het doelmoment van de dag door aan toolBriefing; bij een
+venster rekent vensterAdvies generiek op de uren uit het overlay-contract (
+gemiddelde score plus natte uren) en geldt de drempel voor de vensterscore.
+Raakt het venster geen uren, dan valt de briefing terug op de dag.
+
+**Rijkere push**: het verdictwoord staat voorop in de titel (dat is het
+antwoord; routenaam of check erna als context), de body draagt kernzin,
+doelmoment en metric-zin. De payload heeft nu een url; de service worker toont
+icoon plus badge en opent bij het aantikken de juiste check (navigate of
+openWindow op de payload-url).
+
+**Nooit in het verleden**: er bleek nergens een kalenderveld (type="date") in
+de app te bestaan; het echte pijnpunt was de fietscheck die een bewaarde keten
+of route met een oude datum terugzette. Bij het herstellen uit localStorage en
+bij laadRoute normaliseert normalizeChainToToday de tijden nu naar vandaag
+(kloktijd blijft staan). De cron deed dit al; pasVertrekTijdToe volgt dezelfde
+regel.
+
+**UI**: DagenChips is vervangen door de WeekEditor: dagchips togglen een dag
+aan; per aan-dag een rij met stuurtijden (TijdenLijst) en het doelmoment
+(routes: volg de routeplanning of eigen vertrektijd; tools: hele dag of
+venster met van/tot). Een knop "Zet maandag op alle dagen" kopieert de
+maandagconfig naar de hele week. Nieuwe strings NL en EN; kleine CSS voor de
+weekdagrijen.
+
+**Tests**: 121 groen, waarvan 7 nieuw (migraties, per-dag due met doelmoment op
+het item, vertrekherinnering alleen op aan-dagen, pasVertrekTijdToe inclusief
+lege keten, vensterAdvies, schemaZin-groepering). Twee bestaande tests
+bijgewerkt naar de weekplan-verwachtingen (migratie en schemaZin); een eigen
+testfout gecorrigeerd: het 3-uurs inhaalvenster laat een gemiste stuurtijd
+bewust nog vuren.
+
+**Bewust niet gedaan**: de vertrek-minuten per weekdag differentieren (globaal
+per route is genoeg, het weekplan bepaalt de dagen); een venster dat geen uren
+raakt hard laten falen (terugvallen op de dag is vriendelijker).
+
+**Beperkingen**: geen Supabase, push of UI-rendering in de sandbox; de
+end-to-end-controle (paneel opslaan, cron-tick, push met deep link) loopt via
+productie bij Martijn. Tests, import-check en beide builds zijn groen.
+
+**Volgende**: de storefront-bouwsessie volgens PLAYBOOK sectie 11 (eerste:
+Huis-tuin-auto). Open vraag aan Martijn: klopt de lezing van punt 3? Er is
+nergens een datumveld, dus dit is gebouwd als tijden-springen-naar-vandaag bij
+het openen en laden in de fietscheck.
+
+## v3.9.0 "Sirocco" - 2026-07-15
+
+**Wat**: de storefront-bouwsessie, direct na het vastleggen van het format in
+PLAYBOOK sectie 11. De categorie-storefront is omgebouwd van het Bora-model
+(kaarten bovenaan, daarna losse tekstsecties) naar het vaste bouwblok-format:
+eerst context en keuzehulp, daarna pas de concrete keuze.
+
+**Componenten**: components/Storefront.js is nu een orkestrator over losse,
+herbruikbare blokken in components/storefront/: VoorWieBlok (blok 2),
+KeuzeHulpBlok (blok 3, routeert naar een live check via toolId of naar een
+FAQ-anker op dezelfde pagina), UitlegBlokken (blok 4: beslislogica, situaties,
+seizoen), ChecksGrid (blok 5, de bestaande kaartopmaak), CategorieFaq (blok 6)
+en GerelateerdCategorieen (blok 7). Elk blok is optioneel; zonder uitgewerkte
+content valt een categorie terug op hero plus kaart-overzicht (het oude
+gedrag). Blok 8 (affiliate) staat bewust niet in de component: fase 5. Nieuw:
+ItemList-JSON-LD naast de bestaande FAQPage-JSON-LD, en de gridkop heet op
+uitgewerkte storefronts "Alle checks in deze categorie" (de fallback houdt
+"Direct antwoord").
+
+**Content**: content/storefronts.js heeft het nieuwe schema in het docblock.
+Huis-tuin is de eerste volledige storefront: voorWie, een keuzehulp met vijf
+situaties (de was naar de live wascheck; auto wassen, schilderen/beitsen,
+grasmaaien en ramen/luchten naar FAQ-ankers), beslislogica (droog venster,
+wind, felle zon, temperatuur, wat er na de klus gebeurt), vier situaties, vier
+seizoenen, zeven FAQ-vragen uit de vragenlijst als ankers (long-tail zonder
+concurrerende URL's) en gerelateerd (regen, buiten). De regen-storefront is
+aangevuld met voorWie, keuzehulp en gerelateerd zodat beide uitgewerkte
+storefronts hetzelfde format volgen. Alles NL en EN.
+
+**Registerfix**: fiets-naar-werk hing aan categorieId "onderweg", een
+categorie die niet bestaat in de zeven van de taxonomie-sprint, waardoor
+/sport-beweging een lege storefront was. Fiets hangt nu aan "sport" (conform
+de vragenlijst) en valideerRegister eist voortaan een bestaande categorieId,
+zodat dit nooit meer stil misgaat.
+
+**Tests**: 126 groen, waarvan 5 nieuw (tests/storefronts.test.js): elke
+storefront-sleutel is een bestaande categorie, faq-ankers uniek en compleet,
+keuzehulp verwijst naar een bestaande tool of een eigen anker (met linkTekst),
+gerelateerd bevat 2-3 bestaande andere categorieen, en huis-tuin heeft alle
+sectie-11-blokken plus de route naar de wascheck.
+
+**Bewust niet gedaan**: HubGrid en ChecksGrid delen dezelfde kaartopmaak maar
+zijn nog twee componenten; samenvoegen is een aparte kleine refactor. De
+overige vijf categorieen hebben nog geen uitgewerkte content; dat is de
+vervolg-opdracht (zie BACKLOG). Geen affiliate-blok.
+
+**Beperkingen**: geen UI-rendering in de sandbox; de blokvolgorde, de
+keuzehulp-rijen en de anker-navigatie visueel nalopen op productie. Tests,
+import-check en beide builds zijn groen.
+
+**Volgende**: per categorie de storefront-content uitwerken (buiten en sport
+liggen voor de hand: meeste live tools), of nieuwe tools uit de vragenlijst
+bouwen die de storefronts vullen. Afstemmen met Martijn welke eerst.
