@@ -4,7 +4,7 @@ export const seo = {
   title: "Hooikoorts vandaag: pollen per uur en het rustigste blok",
   description:
     "Krijg ik vandaag hooikoorts? Zie gras-, berk- en elspollen per uur, stel je gevoeligheid in en vind het rustigste blok van de dag. Gratis.",
-  h1: "Krijg ik vandaag hooikoorts?",
+  h1: "Heb ik vandaag last van hooikoorts?",
   intro:
     "Twee miljoen Nederlanders voelen aan hun neus wat voor dag het wordt. De check laat per uur zien hoeveel gras-, berk- en elspollen er in de lucht zitten, en wanneer het rustigste blok valt om te luchten, sporten of de was op te hangen.",
 };

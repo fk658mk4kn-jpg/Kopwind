@@ -15,7 +15,7 @@ const T = kies({
   nl: {
     slug: "paraplu-mee",
     naam: "Moet ik vandaag een paraplu meenemen?",
-    korteVraag: "Paraplu mee vandaag?",
+    korteVraag: "Moet ik vandaag een paraplu mee?",
     cta: "Check de paraplu",
     navLabel: "Paraplu mee",
     diepte: "Wel of geen paraplu, op basis van regen, timing en jouw buitentijd.",
@@ -49,6 +49,6 @@ export const paraplu = {
   schaalLabels: { ideaal: "Laat maar thuis", goed: "Waarschijnlijk niet nodig", twijfelachtig: "Voor de zekerheid mee", matig: "Neem hem mee", "zeer-slecht": "Zeker meenemen" },
   adviesLabels: { goed: "thuislaten kan", matig: "twijfelgeval", slecht: "meenemen" },
   eigenComponent: "ParapluTool",
-  bijgewerkt: "2026-07-13",
+  bijgewerkt: "2026-07-14",
   affiliate: null,
 };

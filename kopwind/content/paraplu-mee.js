@@ -4,7 +4,7 @@ export const seo = {
   title: "Moet ik vandaag een paraplu meenemen?",
   description:
     "Direct antwoord of je vandaag een paraplu nodig hebt, op basis van regen, timing en hoe lang je buiten bent. Wel of niet, geen twijfel.",
-  h1: "Paraplu mee vandaag?",
+  h1: "Moet ik vandaag een paraplu mee?",
   intro:
     "Deze check vertaalt het weer niet naar een voorspelling, maar naar een beslissing: wel of geen paraplu. Op basis van de regen per kwartier, de timing en hoe lang jij buiten bent. Stel je buitentijd in en je krijgt een helder ja of nee.",
 };

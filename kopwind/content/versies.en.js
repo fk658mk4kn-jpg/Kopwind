@@ -5,6 +5,30 @@
 
 export const VERSIES = [
   {
+    versie: "3.7.7",
+    codenaam: "Etesian patch 7",
+    datum: "2026-07-14",
+    zin: "The rain and umbrella checks now look like the other checks: the same location picker with favourites, a button to check again, and the source with the fetch time. On a wide screen the answer sits next to your location.",
+  },
+  {
+    versie: "3.7.6",
+    codenaam: "Etesian patch 6",
+    datum: "2026-07-14",
+    zin: "More personal titles: the question above a check is now more often about \"I\" than \"it\". The hay fever, barbecue and umbrella questions read more naturally.",
+  },
+  {
+    versie: "3.7.5",
+    codenaam: "Etesian patch 5",
+    datum: "2026-07-14",
+    zin: "Roomier layout for the answer: on tablet and desktop the answer now sits next to your location instead of below it, with the explanation underneath. On the phone everything stays neatly stacked. The weather factors, day picker and hours strip sit below.",
+  },
+  {
+    versie: "3.7.4",
+    codenaam: "Etesian patch 4",
+    datum: "2026-07-14",
+    zin: "The thumb under a check now shows how many people have ever marked the check as correct, not just today. The thumbs are clearer (up green, down red), the question \"Was today's advice right?\" stands out more, and the share button now catches the eye.",
+  },
+  {
     versie: "3.7.3",
     codenaam: "Etesian patch 3",
     datum: "2026-07-14",

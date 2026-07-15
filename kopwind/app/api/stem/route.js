@@ -23,16 +23,23 @@ function geldigeTool(id) {
 }
 
 async function totalen(tool, dag) {
-  const rijen = await dbSelect(
-    `stemmen?tool_id=eq.${encodeURIComponent(tool)}&dag=eq.${dag}&select=stem`
-  );
+  const geldig = encodeURIComponent(tool);
+  // Twee losse queries, parallel: de dagcijfers zoals altijd, plus een aparte
+  // all-time-telling van de positieve stemmen. Die laatste is wat de gebruiker
+  // ziet naast de duim omhoog (het totaal ooit, niet per dag). Bewust simpel
+  // via de bewezen dbSelect-weg; bij veel volume kan dit later een
+  // count=exact-aggregatie worden zodat er geen rijen meer opgehaald worden.
+  const [dagRijen, positiefRijen] = await Promise.all([
+    dbSelect(`stemmen?tool_id=eq.${geldig}&dag=eq.${dag}&select=stem`),
+    dbSelect(`stemmen?tool_id=eq.${geldig}&stem=eq.1&select=stem`),
+  ]);
   let omhoog = 0;
   let omlaag = 0;
-  for (const r of rijen) {
+  for (const r of dagRijen) {
     if (r.stem === 1) omhoog++;
     else if (r.stem === -1) omlaag++;
   }
-  return { omhoog, omlaag };
+  return { omhoog, omlaag, totaal: positiefRijen.length };
 }
 
 export async function GET(req) {

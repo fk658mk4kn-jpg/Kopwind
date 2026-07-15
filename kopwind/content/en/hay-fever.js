@@ -4,7 +4,7 @@ export const seo = {
   title: "Hay fever today: pollen per hour and the calmest window",
   description:
     "Will I get hay fever today? See grass, birch and alder pollen per hour, set your sensitivity and find the calmest window of the day. Free.",
-  h1: "Will I get hay fever today?",
+  h1: "Will hay fever bother me today?",
   intro:
     "Millions of noses know what kind of day it is before the forecast does. This check shows grass, birch and alder pollen per hour, and when the calmest window falls for airing the house, running or hanging the laundry.",
 };

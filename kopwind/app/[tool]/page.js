@@ -118,7 +118,7 @@ export default function ToolPagina({ params }) {
 
       <section className="seotekst">
         <details className="stadlijst boven">
-          <summary>{tool.naam.replace("?", "")} per stad</summary>
+          <summary>{tool.navLabel} per stad</summary>
           <p>Direct beginnen met je eigen plaats vooraf ingevuld? Kies je stad:</p>
           <div className="stadlinks">
             {STEDEN.map((s) => (

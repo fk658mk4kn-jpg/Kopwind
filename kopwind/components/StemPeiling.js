@@ -6,11 +6,12 @@ import { S } from "@/lib/strings";
 import Icoon from "./Icoon";
 
 /**
- * Klopte het advies vandaag? (v3.7.0 "Etesian"). Twee duimen in de
- * huisstijl (eigen SVG, geen emoji). Alleen positieve stemmen worden
- * geteld en getoond, naast de duim omhoog; een negatieve stem levert
- * enkel een bedankje op, geen zichtbaar aantal. Zonder database blijven
- * de knoppen werken (de stem staat lokaal); alleen de teller ontbreekt.
+ * Klopte het advies vandaag? (v3.7.0 "Etesian", teller all-time sinds
+ * v3.7.4). Twee duimen in de huisstijl (eigen SVG, geen emoji). Alleen
+ * positieve stemmen worden geteld en getoond, naast de duim omhoog, en dat
+ * is het totaal ooit (niet per dag); een negatieve stem levert enkel een
+ * bedankje op, geen zichtbaar aantal. Zonder database blijven de knoppen
+ * werken (de stem staat lokaal); alleen de teller ontbreekt.
  */
 export default function StemPeiling({ toolId }) {
   const dag = dagKeyVan(new Date());
@@ -27,7 +28,7 @@ export default function StemPeiling({ toolId }) {
     let actief = true;
     fetch(`/api/stem?tool=${encodeURIComponent(toolId)}&dag=${dag}`)
       .then((r) => (r.ok ? r.json() : Promise.reject()))
-      .then((t) => actief && setPositief(t.omhoog ?? 0))
+      .then((t) => actief && setPositief(t.totaal ?? 0))
       .catch(() => {
         // Geen database of hikkende fetch: knoppen blijven werken.
       });
@@ -57,7 +58,7 @@ export default function StemPeiling({ toolId }) {
       });
       if (res.ok) {
         const t = await res.json();
-        setPositief(t.omhoog ?? 0);
+        setPositief(t.totaal ?? 0);
       }
     } catch {
       // Stil laten: de keuze blijft lokaal staan.

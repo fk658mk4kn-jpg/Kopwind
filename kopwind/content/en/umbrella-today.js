@@ -4,7 +4,7 @@ export const seo = {
   title: "Do I need an umbrella today?",
   description:
     "A direct answer on whether you need an umbrella today, based on rain, timing and how long you're outside. Yes or no, no doubt.",
-  h1: "Umbrella today?",
+  h1: "Do I need an umbrella today?",
   intro:
     "This check turns the weather into a decision, not a forecast: umbrella or not. Based on the rain per quarter hour, the timing and how long you're outside. Set your time outside and you get a clear yes or no.",
 };

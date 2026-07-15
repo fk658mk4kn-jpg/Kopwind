@@ -6,6 +6,30 @@
 
 export const VERSIES = [
   {
+    versie: "3.7.7",
+    codenaam: "Etesian patch 7",
+    datum: "2026-07-14",
+    zin: "De regen- en paraplucheck zien er nu net zo uit als de andere checks: dezelfde plekkiezer met favorieten, een knop om opnieuw te checken, en de bron met het ophaalmoment. Op een breed scherm staat het antwoord naast je plek.",
+  },
+  {
+    versie: "3.7.6",
+    codenaam: "Etesian patch 6",
+    datum: "2026-07-14",
+    zin: "Persoonlijker titels: de vraag boven een check gaat nu vaker over \"ik\" in plaats van \"het\". \"Krijg ik vandaag hooikoorts?\" is nu \"Heb ik vandaag last van hooikoorts?\", en ook de barbecue- en parapluvraag lezen logischer.",
+  },
+  {
+    versie: "3.7.5",
+    codenaam: "Etesian patch 5",
+    datum: "2026-07-14",
+    zin: "Ruimere indeling van de uitslag: op tablet en desktop staat het antwoord nu naast je plek in plaats van eronder, met de toelichting eronder. Op de telefoon blijft alles netjes onder elkaar. De weerfactoren, de dagkiezer en de urenstrip staan daaronder.",
+  },
+  {
+    versie: "3.7.4",
+    codenaam: "Etesian patch 4",
+    datum: "2026-07-14",
+    zin: "Het duimpje onder een check laat nu zien hoeveel mensen de check ooit als kloppend hebben gemarkeerd, niet meer alleen vandaag. De duimen zijn duidelijker (omhoog groen, omlaag rood), de vraag \"Klopte het advies vandaag?\" is beter zichtbaar en de deelknop springt er nu uit.",
+  },
+  {
     versie: "3.7.3",
     codenaam: "Etesian patch 3",
     datum: "2026-07-14",

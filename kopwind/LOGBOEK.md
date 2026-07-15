@@ -964,3 +964,238 @@ productie na de deploy. Tests, import-check en beide builds zijn hier groen.
 /api/stem; fixt de cron-auth en draait de curl in een open meldingsvenster.
 Dan de 502 en de meldingen definitief sluiten. Daarna fase 2 fietstool of de
 tweede storefront Huis-tuin-auto. Affiliate blijft fase 5.
+
+## Notitie - 2026-07-14 (probes bevestigd, bugs dicht, nieuwe UX-backlog)
+
+**502 dicht.** Na de v3.7.3-deploy meldt Martijn dat Supabase weer werkt. De
+restUrl-fix (trailing slash strippen) was het; de dubbele slash uit een
+trailing slash in SUPABASE_URL veroorzaakte de PGRST125. De stemmen-tabel
+bleek gewoon te bestaan (geen PGRST205).
+
+**Meldingen in de kern opgelost.** De cron via ?secret= gaf
+{"gecheckt":1,"verzonden":0,"fouten":[]}. Duiding: gecheckt:1 = het
+meldingsschema wordt gelezen en geevalueerd, dus sync werkt; fouten:[] = geen
+fouten, dus de hernoeming naar melding_log is gelukt en de DB-calls slagen;
+verzonden:0 = op dat moment was er niets te sturen (geen open meldingsvenster,
+of al gededupliceerd). De pijplijn is gezond. Restpunt is puur timing: een
+keer binnen een echt venster draaien om een binnenkomende push te bevestigen.
+Advies: briefingtijd een paar minuten vooruit zetten, dag aan, drempel op
+altijd melden, en de cron (die elke 5 min vanzelf loopt) het laten oppikken.
+
+**Beveiliging.** Martijn plakte zijn CRON_SECRET in platte tekst in de chat
+(in de ?secret=-URL). Laag risico (ergste geval: iemand triggert de
+meldingen-cron), maar geadviseerd om te roteren: nieuwe waarde in Vercel,
+redeploy, dezelfde waarde in cron-job.org.
+
+**Nieuwe UX- en copy-backlog** (staat uitgewerkt in BACKLOG.md, pakket 1 t/m
+4): totaalteller duim-omhoog (all-time i.p.v. per dag), feedback en delen
+prominenter met duidelijkere duimen, resultaat-layout (antwoord rechts van
+Jouw plek), de twee nieuwste tools (paraplu, regen-timing) gelijktrekken met
+de oude opzet inclusief de ontbrekende herlaad-knop, en een SEO-gevoelige
+titel-herziening (het versus ik, hooikoorts logischer). Titel-richting eerst
+met Martijn afstemmen voordat er code in gaat; bij elke wijziging de
+instellingen en meldingen mee bijwerken.
+
+**Volgende**: richting kiezen op de titels (SEO), en bepalen welk pakket het
+eerst wordt (voorstel: pakket 1, klein en zichtbaar). Fase 2 fietstool blijft
+ook open.
+
+## Notitie - 2026-07-14 (playbook opgeslagen, backlog-audit)
+
+**PLAYBOOK.md toegevoegd** als derde vaste document naast BACKLOG.md en
+LOGBOEK.md, aangeleverd door Martijn: de tool-standaard (vaste opbouw,
+copy-/titelregels, feedback, register-velden, huisstijl, checklist). Neem ik
+voortaan elke sessie mee. Twee accuraatheidscorrecties gedaan ("pas aan waar
+nodig"): sectie 6 aangevuld met de echte registervelden die ontbraken
+(patroon, groep, diepte/locatieHint, en weerVelden/weerDagen/scoreConfig voor
+weertools), en sectie 8 bijgewerkt omdat de fietstool-bugs (dubbel verdict,
+km-optelling) al opgelost zijn in v3.7.2; alleen de fase-2-herindeling staat
+nog open.
+
+**Backlog-audit.** Martijn vroeg terecht of alle eerder genoemde punten in de
+backlog staan. Nagelopen tegen de transcript en de huidige BACKLOG. Stond er
+al in: de UX-/copy-sprint (pakket 1 t/m 4), de nieuwe tools uit de originele
+opdracht (strand, hardlopen, auto wassen, tuinieren, krabben, gladheid, in de
+categorie-vragenlijst), de fietstool-fase-2, en de totaal-teller duim-omhoog
+(pakket 1, ook in PLAYBOOK sectie 4). Twee gaten gevuld: (1) een expliciete
+SEO-sectie als doorlopende opdracht (zoekwoord voorin bij FAQ/H1/meta, plus
+meer vragen beantwoorden voor meer zoektermen), en (2) de bezoekersteller per
+tool als toekomst-item. Ook de storefront-volgorde (Huis-tuin-auto eerst)
+expliciet gemaakt en een verwijzing naar PLAYBOOK.md in de backlog-intro.
+
+**Beantwoord.** Search Console-bug: al gefixt in v3.7.1 (broodkruimel levert
+schone absolute URL's); enige rest is Googles hervalidatie, die Martijn in
+Search Console kan aanzwengelen. Totaal-teller zichtbaar voor gebruikers:
+staat in de backlog (pakket 1). Titels: Martijn akkoord op het voorstel.
+Layout: naast elkaar op desktop/tablet, gestapeld op mobiel, bevestigd.
+
+**Volgende**: klaar om pakket 1 te bouwen (totaal-teller + duidelijkere duimen
+en feedback/deel), tenzij Martijn een ander pakket eerst wil. Bij die bouw de
+titels (pakket 4) en de layout (pakket 2) meenemen zoals afgesproken, en de
+instellingen/meldingen bijwerken.
+
+## v3.7.4 "Etesian patch 4" - 2026-07-14
+
+**Wat**: pakket 1 van de UX-sprint, de feedback onder elke check. Akkoord van
+Martijn om hiermee te starten.
+
+**All-time teller**: de teller naast de duim omhoog toonde het aantal van
+vandaag (t.omhoog). Nu toont hij het totaal ooit. In /api/stem berekent
+totalen() dat via een tweede, parallelle query (Promise.all): de dagcijfers
+zoals altijd, plus stemmen?tool_id=eq.X&stem=eq.1 waarvan we de lengte tellen.
+StemPeiling gebruikt voortaan t.totaal (GET en na een POST), met dezelfde
+optimistische plus-1 bij een positieve stem. Afweging: de all-time-telling
+haalt nu de positieve rijen op en telt de lengte, via de bewezen dbSelect-weg
+(geen live Supabase in de sandbox, dus geen count=exact geriskeerd dat ik niet
+kan testen). Bij groei kan dit een count=exact-aggregatie worden; staat als
+kleine to-do in de backlog onder pakket 1.
+
+**Huisstijl (globals.css)**: de duimen waren pas na het stemmen gekleurd. Nu
+zijn ze in rust al herkenbaar: .stemknop.op groen, .stemknop.neer rood, met de
+bestaande --groen/--rood-variabelen (geen hardcoded hex). Hover verdiept de
+kleur per duim; de generieke leisteen-hover eruit gehaald zodat die de
+groen/rood niet overschreef. De vraag "Klopte het advies vandaag?" van 13,5 px
+600 naar 15 px 700. De deelknop van een neutrale witte knop naar een zachte
+accent-CTA (accent-zacht met accent-diep-rand, zwaarder label). CSS-balans
+gecheckt (0). Geen parallelle stijlen toegevoegd, conform PLAYBOOK sectie 7.
+
+**Bewust niet gedaan**: geen label bij het getal (het aantal naast een groene
+duim is duidelijk genoeg, en een tekstlabel zou een string in beide talen
+vergen); de layout (pakket 2) en de titels (pakket 4) blijven voor hun eigen
+beurt. Instellingen en meldingen niet aangeraakt: dit raakt alleen de gedeelde
+feedback-UI en de stemroute, geen tool (PLAYBOOK sectie 5 dus n.v.t.).
+
+**Beperkingen**: de all-time-telling en de feedback-UI zijn niet end-to-end
+getest (geen Supabase-netwerk in de sandbox); tests, import-check en beide
+builds zijn groen. De echte teller is pas op productie te zien.
+
+**Volgende**: pakket 2 (resultaat-layout: antwoord rechts van de plek op
+desktop/tablet, gestapeld op mobiel) of pakket 4 (titels, akkoord). Daarna
+pakket 3 (nieuwe tools gelijktrekken). Fase 2 fietstool blijft open.
+
+## v3.7.5 "Etesian patch 5" - 2026-07-14
+
+**Wat**: pakket 2 van de UX-sprint, de resultaat-layout van de locatie-checks.
+Akkoord van Martijn (naast elkaar op desktop/tablet, gestapeld op mobiel).
+
+**Layout**: LocatieTool zette de plek-sectie en daaronder het resultaatpaneel
+(met verdict, status, factoren, dagkiezer, uren, waarom, bron) allemaal onder
+elkaar. Nu bovenaan een .tool-top met twee kolommen: links de plek-kaart,
+rechts een nieuwe antwoord-kaart met het verdictwoord, de kernzin (status), de
+metric-zin en de waarom-regel. Daaronder blijft het detailpaneel full-width met
+de weerfactoren-balken, de dagkiezer, de urenstrip en de databron-regel. De
+sticky antwoordbalk voor mobiel blijft.
+
+**CSS**: .tool-top is flex-column met gap (mobiel gestapeld); vanaf 720px wordt
+.tool-top.met-antwoord flex-row (plek 1fr, antwoord 1.2fr, allebei min-width:0
+tegen overflow). De .met-antwoord-klasse staat er alleen als er een antwoord is,
+zodat de plek-kaart zonder resultaat gewoon full-width blijft in plaats van
+half. De factorbalken-scheidingslijn bovenaan is weggehaald als hij het eerste
+kind van het detailpaneel is (die zat er om hem los te maken van de tekst die nu
+in de antwoord-kaart staat). Geen nieuwe kleuren of parallelle stijlen; de twee
+kaarten hergebruiken .paneel. CSS-balans 0.
+
+**Bewust niet gedaan**: de dagkiezer verhuist niet mee naar de antwoord-kaart;
+die blijft bij de details (antwoord bovenaan, andere dagen eronder, leest
+logisch). De nowcast-tools (paraplu, regen-timing) gebruiken hun eigen
+component en krijgen deze opbouw in pakket 3. Instellingen en meldingen niet
+geraakt (geen tool gewijzigd, PLAYBOOK sectie 5 n.v.t.).
+
+**Beperkingen**: niet visueel te testen in de sandbox (geen Open-Meteo-netwerk,
+dus geen live resultaat om te renderen); tests, import-check en beide builds
+zijn groen. De layout is pas op productie of lokaal te zien.
+
+**Volgende**: pakket 4 (titels, akkoord) of pakket 3 (nowcast-tools
+gelijktrekken). Fase 2 fietstool en de meldingen-verbeteringen staan ook open.
+
+## v3.7.6 "Etesian patch 6" - 2026-07-14
+
+**Wat**: pakket 4 van de UX-sprint, de titels. Martijn had het voorstel al
+goedgekeurd. Bij het bouwen bleek de opbouw belangrijk: de zichtbare H1 en de
+meta-titel komen niet uit tool.naam maar uit content/<slug>.js (seo.h1 en
+seo.title). tool.naam voedt alleen de broodkruimel, de structured data en de
+"X per stad"-kop.
+
+**Bevinding**: de meeste H1's waren al persoonlijk (fiets, terras, was, kleding,
+zonkracht, regen). Vergeleken met de goedgekeurde tabel weken er drie af, en die
+zijn aangepast (NL en EN): barbecue seo.h1 "Vandaag barbecueen?" -> "Kan ik
+vandaag barbecueen?", hooikoorts "Krijg ik vandaag hooikoorts?" -> "Heb ik
+vandaag last van hooikoorts?", paraplu "Paraplu mee vandaag?" -> "Moet ik
+vandaag een paraplu mee?". Opvallend: bij hooikoorts en paraplu was tool.naam al
+persoonlijk terwijl juist de zichtbare seo.h1 achterliep.
+
+**Kaartlabels**: korteVraag van fiets, terras, barbecue, hooikoorts en paraplu
+van de "het"- naar de "ik"-vorm gezet (NL; de EN-varianten waren al persoonlijk).
+korteVraag wordt o.a. in SettingsPanel, GerelateerdBlok en de hubgrid gebruikt,
+dus die labels lopen automatisch mee. meldingKort is niet aangeraakt, dus de
+meldingsteksten blijven zoals ze waren (PLAYBOOK sectie 5: niets te syncen, want
+geen tool toegevoegd/gewijzigd, alleen displaycopy op een gedeeld veld).
+
+**seo.title ongemoeid**: die dragen het zoekwoord voorin ("Terrasweer vandaag:
+...", "Hooikoorts vandaag: ...") en zijn goed voor SEO; niet aangeraakt.
+
+**Bewust niet gedaan (afstemmen)**: tool.naam bij fiets ("Kan het vandaag
+fietsen?") en terras ("Kan het vandaag terrasweer zijn?") laat ik staan. Het
+"het" is daar grammaticaal (het verwijst naar de condities/het weer), en naam
+voedt de "{naam} per stad"-kop; een volledige ik-vraag maakt die kop lelijk
+("Kan ik vandaag op het terras zitten per stad"). Barbecue-naam had een echt
+ongelukkig "het" maar dat is even secundair; ik heb barbecue-naam deze ronde
+niet aangepast (alleen H1 en korteVraag). Voorstel aan Martijn: of naam toch
+aligneren, of eerst de "per stad"-kop naar een zelfstandig naamwoord
+refactoren. Staat als restpunt onder pakket 4 in de backlog.
+
+**Overig**: bijgewerkt-datum van barbecue, hooikoorts en paraplu naar
+2026-07-14 (H1 is een inhoudelijke wijziging).
+
+**Beperkingen**: tests, import-check en beide builds groen. De titels zijn pas
+op productie of lokaal in de UI te zien.
+
+**Volgende**: pakket 3 (de nowcast-tools paraplu en regen-timing gelijktrekken
+met de standaardopzet, het grootste stuk), en de tool.naam-afweging. Fase 2
+fietstool en de meldingen-verbeteringen staan ook open.
+
+## v3.7.7 "Etesian patch 7" - 2026-07-14
+
+**Wat**: pakket 3 (nowcast-tools gelijktrekken) plus het titel-restpunt (optie 2).
+Martijn koos optie 2 en gaf pakket 3 vrij.
+
+**Optie 2 (titels afgemaakt)**: de "X per stad"-kop in app/[tool]/page.js
+gebruikte tool.naam.replace("?","") en dwong daarmee tool.naam in een vorm die
+in die kop moest werken. Nu gebruikt de kop tool.navLabel (een zelfstandig
+naamwoord: "Terras per stad", "Fietsen per stad"). Daardoor kon tool.naam van
+fiets ("Kan ik vandaag fietsen naar werk?"), terras ("Kan ik vandaag op het
+terras zitten?") en barbecue ("Kan ik vandaag barbecueen?") naar de persoonlijke
+"ik"-vorm, gelijk aan hun H1. Broodkruimel en structured-data-naam zijn nu
+consistent met de H1.
+
+**Pakket 3 (nowcast gelijkgetrokken)**: nieuwe gedeelde component PlekKiezer
+(components/tools/PlekKiezer.js) met de standaard plek-kiezer: favorieten-chips,
+zoekveld, gekozen plek met ster (inclusief de bewaar-prompt), en de actieknop.
+Losgetrokken uit LocatieTool; LocatieTool gebruikt hem nu ook, dus de plek-kiezer
+is overal identiek (DRY, geen parallelle opmaak). ParapluTool en RegenTimingTool
+zijn herschreven: ze gebruiken PlekKiezer, hebben nu een actie- en herlaadknop
+(die opnieuw ophaalt, nuttig bij nowcast), een databron-regel ("Open-Meteo
+neerslag per kwartier, live opgehaald om ..."), en de twee-koloms-layout uit
+pakket 2 (plek links, antwoord rechts op tablet/desktop, gestapeld op mobiel via
+.tool-top.met-antwoord). De antwoordpanelen kregen de klasse antwoord-paneel. Bij
+paraplu staat de buitentijd-keuze nu als children in het plek-paneel (met een
+scheidingslijn), zodat de linkerkolom netjes de invoer bundelt. Geen 5-daagse
+dagkiezer en geen factorbalken: dat hoort niet bij nowcast (PLAYBOOK sectie 8/9).
+
+**Gedrag**: useLocatie blijft de check auto-runnen bij een gekozen of herstelde
+plek; de nieuwe actieknop draait de check opnieuw (reload). Bewust niet de
+shared hook verbouwd om de flow niet te veranderen. Feedback en delen komen al
+van de toolpagina (feedback-rij), dus die stonden er al.
+
+**Instellingen/meldingen**: niet geraakt. Geen tool toegevoegd of verwijderd;
+alleen de weergave van bestaande nowcast-tools en gedeelde copy/UI.
+
+**Beperkingen**: geen Open-Meteo-netwerk in de sandbox, dus de nowcast-UI en de
+nieuwe layout zijn niet live gerenderd. Tests, import-check en beide builds zijn
+groen. Visuele controle op productie of lokaal.
+
+**Volgende**: de UX-sprint is af (pakket 1 t/m 4 plus de nowcast-gelijktrekking).
+Open: fase 2 fietstool, de meldingen-verbeteringen (route-tijden, rijkere push,
+datum-nooit-in-verleden), en de doorlopende SEO-opdracht. Ook: LocatieTool deelt
+nu PlekKiezer, dus als er nog velden verschillen tussen de tools is dat makkelijk
+verder te harmoniseren.

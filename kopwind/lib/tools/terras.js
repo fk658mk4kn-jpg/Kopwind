@@ -27,8 +27,8 @@ import { kies } from "../i18n/locale.js";
 const T = kies({
   nl: {
     slug: "terrasweer",
-    naam: "Kan het vandaag terrasweer zijn?",
-    korteVraag: "Kan het vandaag op het terras?",
+    naam: "Kan ik vandaag op het terras zitten?",
+    korteVraag: "Kan ik vandaag op het terras?",
     meldingKort: "Terrascheck",
     cta: "Check het terras",
     navLabel: "Terras",

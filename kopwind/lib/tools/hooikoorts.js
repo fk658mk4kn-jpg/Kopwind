@@ -26,7 +26,7 @@ const T = kies({
   nl: {
     slug: "hooikoorts",
     naam: "Heb ik vandaag last van hooikoorts?",
-    korteVraag: "Krijg ik vandaag hooikoorts?",
+    korteVraag: "Heb ik vandaag last van hooikoorts?",
     meldingKort: "Pollencheck",
     cta: "Check de pollen",
     navLabel: "Hooikoorts",
@@ -307,6 +307,6 @@ export const hooikoorts = {
     uitleg: T.instUitleg,
   },
   adviesLabels: T.adviesLabels,
-  bijgewerkt: "2026-07-13",
+  bijgewerkt: "2026-07-14",
   affiliate: null,
 };

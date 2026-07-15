@@ -455,6 +455,45 @@ a {
 /* Ritblokken: compact, naast elkaar, in een oogopslag te scannen */
 .resultaten { margin-bottom: 26px; }
 
+/* Pakket 2: plek en antwoord bovenaan naast elkaar op tablet en desktop,
+   gestapeld op mobiel. De details (factoren, dagen, uren, bron) blijven
+   full-width eronder. Flex met gap werkt in beide richtingen. */
+.tool-top {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+@media (min-width: 720px) {
+  .tool-top.met-antwoord {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+  .tool-top.met-antwoord > .plek-paneel { flex: 1 1 0; min-width: 0; }
+  .tool-top.met-antwoord > .antwoord-paneel { flex: 1.2 1 0; min-width: 0; }
+}
+
+/* In het detailpaneel is de factorbalk het eerste kind; zijn scheidingslijn
+   bovenaan is dan overbodig (die zat er om hem los te maken van de tekst
+   erboven, die nu in het antwoordpaneel staat). */
+.resultaten .paneel > .factorbalken:first-child {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+}
+
+/* Pakket 3: extra invoer (de buitentijd bij paraplu) staat als children in het
+   plek-paneel; netjes scheiden van de gekozen locatie. */
+.plek-paneel > .keuzerij {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--lijn);
+}
+
 .legs {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
@@ -1961,7 +2000,7 @@ details.faq-item > p { margin: 0 0 12px 22px; }
   border-radius: var(--radius-s);
 }
 
-.stem-vraag { font-size: 13.5px; font-weight: 600; color: var(--inkt); }
+.stem-vraag { font-size: 15px; font-weight: 700; color: var(--inkt); letter-spacing: -0.01em; }
 
 .stem-knoppen { display: flex; gap: 8px; margin-left: auto; }
 
@@ -1970,24 +2009,30 @@ details.faq-item > p { margin: 0 0 12px 22px; }
   align-items: center;
   gap: 6px;
   height: 38px;
-  padding: 0 12px;
-  border: 1px solid var(--rand);
+  padding: 0 14px;
+  border: 1.5px solid var(--rand);
   border-radius: 999px;
-  background: var(--wolk);
+  background: #fff;
   color: var(--inkt-zacht);
+  font-weight: 600;
   cursor: pointer;
   transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
 }
 
-.stemknop:hover:not(:disabled) { border-color: var(--leisteen); color: var(--inkt); }
+/* Ruststand al herkenbaar: duim omhoog groen, duim omlaag rood. */
+.stemknop.op { color: var(--groen); border-color: color-mix(in srgb, var(--groen) 35%, var(--rand)); }
+.stemknop.neer { color: var(--rood); border-color: color-mix(in srgb, var(--rood) 32%, var(--rand)); }
+
+.stemknop.op:hover:not(:disabled) { background: var(--groen-zacht); border-color: var(--groen); color: var(--groen); }
+.stemknop.neer:hover:not(:disabled) { background: var(--rood-zacht); border-color: var(--rood); color: var(--rood); }
 
 .stemknop.op.actief { background: color-mix(in srgb, var(--groen) 16%, #fff); border-color: var(--groen); color: var(--groen); }
-.stemknop.neer.actief { background: color-mix(in srgb, var(--rood, #B3261E) 12%, #fff); border-color: var(--rood, #B3261E); color: var(--rood, #B3261E); }
+.stemknop.neer.actief { background: color-mix(in srgb, var(--rood) 12%, #fff); border-color: var(--rood); color: var(--rood); }
 
 .stemknop:disabled { cursor: default; }
 .stemknop:disabled:not(.actief) { opacity: 0.4; }
 
-.stem-aantal { font-size: 13px; font-weight: 800; }
+.stem-aantal { font-size: 14px; font-weight: 800; color: var(--groen); }
 
 .feedback-rij { display: flex; align-items: stretch; gap: 10px; flex-wrap: wrap; }
 .feedback-rij .stempeiling { flex: 1; margin: 18px 0 4px; }
@@ -1996,19 +2041,19 @@ details.faq-item > p { margin: 0 0 12px 22px; }
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 0 16px;
+  padding: 0 18px;
   margin: 18px 0 4px;
-  border: 1px solid var(--rand);
+  border: 1.5px solid var(--accent-diep);
   border-radius: var(--radius-s);
-  background: #fff;
+  background: var(--accent-zacht);
   color: var(--inkt);
   font: inherit;
-  font-size: 13.5px;
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: 700;
   cursor: pointer;
   transition: background 0.15s ease, border-color 0.15s ease;
 }
-.deelknop:hover { background: var(--wolk); border-color: var(--leisteen); }
+.deelknop:hover { background: color-mix(in srgb, var(--accent) 32%, #fff); border-color: var(--accent-diep); }
 
 @media (max-width: 640px) {
   .feedback-rij { flex-direction: column; }

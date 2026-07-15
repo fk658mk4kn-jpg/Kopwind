@@ -2,10 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useGebruiker } from "@/components/GebruikerContext";
-import LocatieZoek from "@/components/LocatieZoek";
+import PlekKiezer from "@/components/tools/PlekKiezer";
 import VerdictBadge from "@/components/VerdictBadge";
 import UrenStrip from "@/components/UrenStrip";
-import Icoon from "@/components/Icoon";
 import OutfitFiguur from "@/components/OutfitFiguur";
 import { haalWeer } from "@/lib/engine/weather";
 import { haalLucht } from "@/lib/engine/lucht";
@@ -106,41 +105,31 @@ export default function LocatieTool({ toolId, beginLocatie = null }) {
 
   return (
     <div>
-      <section className="paneel">
-        <h2 className="paneel-titel">{S.locatieTool.jouwPlek}</h2>
-        {g.presets.length > 0 && (
-          <div className="chips">
-            {g.presets.map((p) => (
-              <button key={p.naam} className="chip" onClick={() => kies(p)}>
-                {p.naam}
-              </button>
-            ))}
-          </div>
+      <div className={"tool-top" + (dagen && dag ? " met-antwoord" : "")}>
+        <PlekKiezer
+          presets={g.presets}
+          locatie={locatie}
+          onKies={kies}
+          onCheck={() => check()}
+          bezig={bezig}
+          cta={tool.cta}
+          locatieHint={tool.locatieHint}
+          favoriet={favoriet}
+          bewaarPreset={g.bewaarPreset}
+        />
+
+        {dagen && dag && (
+          <section className="paneel antwoord-paneel" aria-label="Antwoord">
+            <VerdictBadge score={dag.conditie.score} labels={tool.schaalLabels} />
+            {dag.outfit && <OutfitFiguur outfit={dag.outfit} />}
+            <p className="status-regel">{dag.status.zin}</p>
+            {dag.metric?.zin && <p className="metric-zin">{dag.metric.zin}</p>}
+            {dag.conditie.redenen.length > 0 && (
+              <p className="uitleg waarom">{S.locatieTool.waarom} {zinnen(dag.conditie.redenen)}</p>
+            )}
+          </section>
         )}
-        <LocatieZoek onKies={kies} placeholder={tool.locatieHint ?? S.locatieTool.zoekStandaard} />
-        {locatie && (
-          <div className="locatie-gekozen">
-            <Icoon naam="locatie" vol maat={16} />
-            <span className="locatie-naam">{locatie.naam}</span>
-            <button
-              className="iconknop"
-              title={favoriet ? S.locatieTool.favorietActief : S.locatieTool.favorietTitel}
-              onClick={() => {
-                if (favoriet) return;
-                const naam = window.prompt(S.locatieTool.favorietPrompt, locatie.naam.split(",")[0]);
-                if (naam) g.bewaarPreset({ naam: naam.trim(), lat: locatie.lat, lon: locatie.lon });
-              }}
-            >
-              <Icoon naam="ster" vol={favoriet} maat={17} />
-            </button>
-          </div>
-        )}
-        <div className="actiebalk">
-          <button className="knop primair" onClick={() => check()} disabled={bezig}>
-            {bezig ? S.algemeen.bezig : tool.cta}
-          </button>
-        </div>
-      </section>
+      </div>
 
       {fout && <div className="fout">{fout}</div>}
 
@@ -158,12 +147,8 @@ export default function LocatieTool({ toolId, beginLocatie = null }) {
       )}
 
       {dagen && dag && (
-        <section className="resultaten" aria-label="Resultaat">
+        <section className="resultaten" aria-label="Details">
           <div className="paneel">
-            <VerdictBadge score={dag.conditie.score} labels={tool.schaalLabels} />
-            {dag.outfit && <OutfitFiguur outfit={dag.outfit} />}
-            <p className="status-regel">{dag.status.zin}</p>
-            {dag.metric?.zin && <p className="metric-zin">{dag.metric.zin}</p>}
             {hourly && (
               <FactorBalken factoren={factorenVoor(tool.id, hourly, gekozen, dag.venster)?.factoren} />
             )}
@@ -186,7 +171,6 @@ export default function LocatieTool({ toolId, beginLocatie = null }) {
             </div>
 
             <UrenStrip uren={dag.uren} venster={dag.venster} legenda={legenda} />
-            {dag.conditie.redenen.length > 0 && <p className="uitleg waarom">{S.locatieTool.waarom} {zinnen(dag.conditie.redenen)}</p>}
 
             {checkTijd && (
               <p className="databron">

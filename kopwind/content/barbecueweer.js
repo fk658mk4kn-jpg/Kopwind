@@ -4,7 +4,7 @@ export const seo = {
   title: "Barbecueweer vandaag: het beste avondblok voor jouw stad",
   description:
     "Kan ik vandaag barbecue\u00ebn? Zie het beste avondblok, of het droog blijft en waar de rook heen trekt. Vijf dagen vooruit. Gratis.",
-  h1: "Vandaag barbecue\u00ebn?",
+  h1: "Kan ik vandaag barbecue\u00ebn?",
   intro:
     "Kolen aan of toch de oven? De check kijkt naar je avond: het beste blok, of het droog blijft en uit welke hoek de wind komt, zodat je weet waar je de tafel neerzet.",
 };

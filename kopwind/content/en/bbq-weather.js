@@ -4,7 +4,7 @@ export const seo = {
   title: "BBQ weather today? The best evening window for your town",
   description:
     "Can I barbecue today? See the best evening window, whether it stays dry and where the smoke will drift. Five days ahead. Free.",
-  h1: "Barbecue today?",
+  h1: "Can I barbecue today?",
   intro:
     "Coals or oven? This check reads your evening: the best window, whether it stays dry and which way the wind blows, so you know where to put the table before the guests arrive.",
 };
