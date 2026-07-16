@@ -263,6 +263,28 @@ wassen en grasmaaien nu op /huis-tuin-auto).
   FAQ-ankers voor de long-tail), regen aangevuld naar hetzelfde format,
   ItemList-JSON-LD, fiets naar de sport-categorie en categorieId-validatie in
   het register.
+- v3.10.0 "Levante": de feedbackronde. Een vaste categorie-set overal (de
+  catalogus volgt de zeven categorieen, groep-veld weg), een canonieke titel
+  per check (korteVraag == naam == h1, beide talen), statusstippen met
+  tekstlabel op alle-checks voor de gekozen plek, huis-tuin-vragen klikbaar
+  naar hun storefront-antwoord, geplande vragen gedempt in "In ontwikkeling",
+  een accentkleur per categorie (afgedwongen in het register), storefront-hero
+  met kleurtint en watermerk, Populair-blok in het menu, en de bel-tooltip
+  legt het groene stipje uit.
+
+## Open punten uit de feedbackronde (juli 2026)
+
+- **Afbeeldingen per storefront** (punt 6, deels): het watermerk en de
+  kleurtint staan; echte beelden zijn een licentie- en aanleverkwestie op een
+  faceless site. Twee opties, kiezen met Martijn: eigen SVG-illustraties per
+  categorie (geen licentierisico, past bij de lijn-iconen) of door Martijn
+  aangeleverde gelicenseerde foto's.
+- **HubGrid harmoniseren met useDagVerdicts**: de homepage haalt nog
+  BASIS_VELDEN op, waardoor de hooikoorts-badge daar leeg kan blijven; de
+  nieuwe hook gebruikt de vereniging van alle weerVelden. Homepage op de hook
+  zetten is een kleine refactor.
+- **Fiets-factorbalken** (punt 8): de route-engine levert geen
+  factoren-structuur; meenemen in fietstool fase 2.
 
 ### Opgelost na de probes (2026-07-14)
 - **/api/stem 502**: DICHT. De restUrl-fix loste het op; Supabase werkt weer.

@@ -1321,3 +1321,78 @@ import-check en beide builds zijn groen.
 **Volgende**: per categorie de storefront-content uitwerken (buiten en sport
 liggen voor de hand: meeste live tools), of nieuwe tools uit de vragenlijst
 bouwen die de storefronts vullen. Afstemmen met Martijn welke eerst.
+
+## v3.10.0 "Levante" - 2026-07-15
+
+**Wat**: de feedbackronde van Martijn (negen punten), gebouwd rond punt 1 (de
+vaste categorie-set) omdat de rest daaraan hangt.
+
+**Punt 1, een categorie-set**: de wortel was dat content/beslissingen.js een
+eigen CATEGORIEEN-lijst had (zes groepen, eigen namen, eigen indeling) naast
+de zeven van lib/categorieen.js. De catalogus heet nu BESLISSINGEN, heeft geen
+eigen titels meer en volgt exact de zeven canonieke categorieen; titel, kleur
+en icoon komen uit lib/categorieen. Het dode groep-veld ("Rondom huis",
+"Onderweg", "Elke dag") is uit alle negen toolbestanden verwijderd; het werd
+nergens meer gerenderd. Hooikoorts en zonkracht staan nu bij gezondheid, de
+was bij huis-tuin, sterrenkijken bij buiten, zonnepanelen bij huis-tuin,
+krabben en gladheid bij winter. Een nieuwe testsuite (beslissingen.test.js)
+dwingt af: exact de zeven categorieen, elke live tool in zijn eigen categorie,
+en elke verwijzing bestaat.
+
+**Punt 2, canonieke titels**: regel vastgelegd in PLAYBOOK sectie 2:
+korteVraag == naam == seo.h1 per tool, beide talen. Bijgewerkt: terras
+("...op het terras zitten?"), zonkracht ("Verbrand ik vandaag?"),
+regen-timing ("Wanneer gaat het regenen vandaag?"), paraplu-naam ("...mee?"),
+plus zes EN-gelijktrekkingen (fiets, terras, was, kleding, paraplu,
+zonkracht, regen-timing volgen nu hun EN-h1). De catalogus leidt de vraag af
+uit korteVraag, dus daar kan geen afwijking meer ontstaan. Bewuste
+uitzonderingen: seo.title blijft keyword-first (meta-title, niet zichtbaar op
+de pagina) en navLabel blijft het zelfstandig naamwoord voor koppen.
+
+**Punt 3 en 4, alle-checks**: nieuwe gedeelde hook useDagVerdicts (een
+Open-Meteo-call met de vereniging van alle weerVelden, dan per tool het
+overlay-contract; de plek is dezelfde als de homepage, kopwind.hubLocatie,
+met De Bilt als landelijk beginpunt). BeslissingenLijst herschreven: per
+categorie een klikbare kop naar de storefront in de categorie-kleur, live
+checks bovenaan als rijen met statusstip plus tekstlabel (kleur alleen is
+niet toegankelijk), zeven huis-tuin-vragen linken naar hun FAQ-anker op de
+storefront (geen dood spoor meer), en de geplande vragen staan gedempt als
+chips onder "In ontwikkeling". Route- en nowcast-checks hebben geen overlay
+en dus bewust geen stip. Zoeken filtert over alles, ook de afgeleide vragen.
+
+**Punt 5**: de menugroep-koppen waren al klikbaar naar de storefronts (sinds
+de categorie-routes); nieuw is het Populair-blok bovenaan het menu
+(POPULAIRE_TOOL_IDS: kleding, paraplu, fiets).
+
+**Punt 6**: een accentkleur per categorie. Alle negen toolkleuren zijn
+gelijkgetrokken met hun categorie-kleur en valideerRegister dwingt dit af
+(kleur moet exact de categorie-kleur zijn). De storefront-hero kreeg een
+kleurtint en het categorie-icoon als wazig watermerk rechts (half zichtbaar,
+achter de tekst). Bewust niet gedaan: echte foto's per storefront; dat is een
+licentie- en aanleverkwestie op een faceless site, als open punt in de
+backlog met twee opties (eigen SVG-illustraties of door Martijn aangeleverde
+gelicenseerde beelden).
+
+**Punt 7**: was al af in v3.9.0 (ChecksGrid met de homepage-kaartstijl);
+feedback dateerde vermoedelijk van voor die deploy.
+
+**Punt 8**: de factorbalken staan al op elke locatie-toolpagina (LocatieTool
+rendert ze generiek). Nowcast bewust zonder (geen factorweging, playbook
+sectie 8). De fietscheck mist ze omdat de route-engine geen
+factoren-structuur levert; dat schuift naar fietstool fase 2 (backlog).
+
+**Punt 9**: de header-iconen hadden al title plus aria-label; de bel zegt nu
+ook wat het groene stipje betekent ("Meldingen, apparaat gekoppeld").
+
+**Tests**: 129 groen, waarvan 3 nieuw (beslissingen-catalogus) plus de
+kleurvalidatie in het register.
+
+**Beperkingen**: geen UI-rendering in de sandbox; de statusstippen, het
+watermerk en het Populair-blok visueel nalopen op productie. De
+homepage-HubGrid gebruikt nog BASIS_VELDEN in plaats van de verenigde
+weerVelden (hooikoorts-badge kan daar leeg blijven); harmoniseren met
+useDagVerdicts staat in de backlog.
+
+**Volgende**: open punten uit deze ronde (afbeeldingen per storefront,
+HubGrid-harmonisatie, fiets-factorbalken bij fase 2), daarna de keuze die al
+openstond: storefront-content voor buiten en sport, of nieuwe tools.

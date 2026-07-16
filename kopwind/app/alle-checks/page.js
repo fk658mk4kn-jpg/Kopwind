@@ -1,6 +1,6 @@
 import BeslissingenLijst from "@/components/BeslissingenLijst";
 import Broodkruimel from "@/components/Broodkruimel";
-import { CATEGORIEEN } from "@/content/beslissingen";
+import { BESLISSINGEN } from "@/content/beslissingen";
 import { HUB_NAAM } from "@/lib/brand";
 import { kies } from "@/lib/i18n/locale";
 import { PAD } from "@/lib/i18n/paden";
@@ -32,7 +32,7 @@ export default function AlleChecksPagina() {
         <h1>{T.titel}</h1>
         <p>{T.sub}</p>
       </div>
-      <BeslissingenLijst categorieen={CATEGORIEEN} />
+      <BeslissingenLijst groepen={BESLISSINGEN} />
     </main>
   );
 }

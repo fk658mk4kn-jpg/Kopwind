@@ -7,6 +7,7 @@
 export const S = {
   header: {
     meldingen: "Meldingen",
+    gekoppeld: "apparaat gekoppeld",
     instellingen: "Instellingen",
     alleTools: "Alle tools",
   },
@@ -97,13 +98,14 @@ export const S = {
     zoekPlaceholder: "Zoek: jas, regen, bbq...",
     zoekLabel: "Zoek een weerbeslissing",
     geenTreffers: "Niets gevonden. Probeer een ander woord, of kijk in de lijst hierboven.",
+    inOntwikkeling: "In ontwikkeling",
   },
   menu: {
     knop: "Menu",
     alle: "Alle checks",
     meer: "Meer",
+    populair: "Populair",
     taalwissel: "English",
-    groepen: { "Elke dag": "Elke dag", "Rondom huis": "Rondom huis", "Onderweg": "Onderweg" },
   },
   factoren: {
     kop: "Wat het oordeel bepaalt",

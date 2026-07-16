@@ -5,6 +5,12 @@
 
 export const VERSIES = [
   {
+    versie: "3.10.0",
+    codenaam: "Levante",
+    datum: "2026-07-15",
+    zin: "Everything now has one name everywhere: each check has a single title and each category a fixed name and colour, the same on the homepage, in the menu and on the theme pages. On All checks you see each check's outcome for your location as a coloured dot with a label, and questions in development sit quietly below. Seven home-and-garden questions now link straight to their answer.",
+  },
+  {
     versie: "3.9.0",
     codenaam: "Sirocco",
     datum: "2026-07-15",

@@ -19,7 +19,7 @@ const T = kies({
   nl: {
     slug: "wanneer-gaat-het-regenen",
     naam: "Wanneer gaat het regenen vandaag?",
-    korteVraag: "Wanneer gaat het regenen?",
+    korteVraag: "Wanneer gaat het regenen vandaag?",
     cta: "Bekijk de regentiming",
     navLabel: "Regentiming",
     diepte: "De eerstvolgende bui, de piek en het eerstvolgende droge blok.",
@@ -27,7 +27,7 @@ const T = kies({
   en: {
     slug: "when-will-it-rain",
     naam: "When will it rain today?",
-    korteVraag: "When will it rain?",
+    korteVraag: "When will it rain today?",
     cta: "See the rain timing",
     navLabel: "Rain timing",
     diepte: "The next shower, the peak and the next dry window.",
@@ -43,7 +43,6 @@ export const regenTiming = {
   navLabel: T.navLabel,
   kleur: "#3C7DC4",
   icoon: "druppel",
-  groep: "Elke dag",
   categorieId: "regen",
   soort: "info",
   diepte: T.diepte,

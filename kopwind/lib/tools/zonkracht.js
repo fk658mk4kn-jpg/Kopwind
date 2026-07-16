@@ -25,7 +25,7 @@ const T = kies({
   nl: {
     slug: "zonkracht",
     naam: "Verbrand ik vandaag?",
-    korteVraag: "Moet ik vandaag smeren?",
+    korteVraag: "Verbrand ik vandaag?",
     meldingKort: "Zonkracht",
     cta: "Check de zonkracht",
     navLabel: "Zonkracht",
@@ -57,7 +57,7 @@ const T = kies({
   en: {
     slug: "sunscreen",
     naam: "Will I burn today?",
-    korteVraag: "Do I need sunscreen today?",
+    korteVraag: "Will I burn today?",
     meldingKort: "UV check",
     cta: "Check the UV",
     navLabel: "UV",
@@ -197,7 +197,6 @@ export const zonkracht = {
   kleur: "#D97C1B",
   locatieHint: T.locatieHint,
   icoon: "zon",
-  groep: "Elke dag",
   categorieId: "gezondheid",
   soort: "advies",
   diepte: T.diepte,

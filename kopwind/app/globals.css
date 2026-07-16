@@ -2143,6 +2143,57 @@ a.checkkaart:hover .kaartknop { background: var(--geel); }
 
 .storefront-koptekst { font-size: 16px; margin: 0 0 12px; }
 
+/* Feedbackronde juli 2026 (v3.10.0): statusstip op alle-checks, klikbare
+   categoriekop in de categorie-kleur, gedempte in-ontwikkeling-chips,
+   plekregel naast het zoekveld en het watermerk op de storefront-hero. */
+.beslissingen-zoek { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+.beslissingen-plek { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.beslissingen-kop {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  margin: 18px 0 6px;
+}
+.beslissingen-kop h2 { margin: 0; font-size: 17px; color: inherit; }
+.beslissingen-kop:hover h2 { text-decoration: underline; }
+.beslissing-vraag { flex: 1; }
+.statuslabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.statusstip {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.beslissingen-gepland { margin: 6px 0 2px; }
+.binnenkort-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+.binnenkort-chip {
+  font-size: 12.5px;
+  color: var(--inkt-zacht);
+  background: color-mix(in srgb, var(--inkt-zacht) 7%, #ffffff);
+  border: 1px dashed var(--lijn);
+  border-radius: 999px;
+  padding: 3px 10px;
+}
+.storefront-hero { position: relative; overflow: hidden; border: 1px solid var(--lijn); }
+.storefront-hero h1, .storefront-hero p { position: relative; z-index: 1; }
+.storefront-watermerk {
+  position: absolute;
+  right: -70px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.13;
+  filter: blur(1.5px);
+  pointer-events: none;
+}
+
 /* Storefront blok 2 en 3 (PLAYBOOK sectie 11): voor wie plus keuzehulp.
    De keuzehulp is een lijst van situatie-rijen die naar een check of een
    FAQ-anker leiden; hele rij klikbaar, linktekst rechts uitgelijnd. */

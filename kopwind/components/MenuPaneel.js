@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { TOOLS } from "@/lib/tools";
 import { CATEGORIEEN } from "@/lib/categorieen";
+import { POPULAIRE_TOOL_IDS } from "@/lib/tools";
 import { S } from "@/lib/strings";
 import { PAD } from "@/lib/i18n/paden";
 import Icoon from "./Icoon";
@@ -10,7 +11,7 @@ import Icoon from "./Icoon";
 /**
  * Het uitklapmenu (v3.3.0 "Meltemi"): de tekstlinks verhuisden uit de
  * kopbalk naar een paneel achter een hamburger. Checks gegroepeerd op
- * het groep-veld uit het register, daaronder uitleg en over, en de
+ * de categorie (een bron: lib/categorieen), met een Populair-blok erboven,
  * taalwissel als de zustersite geconfigureerd is.
  */
 export default function MenuPaneel({ open, onClose }) {
@@ -35,6 +36,19 @@ export default function MenuPaneel({ open, onClose }) {
           <button className="iconknop" onClick={onClose} aria-label={S.algemeen.sluiten}>
             <Icoon naam="menu_dicht" maat={18} />
           </button>
+        </div>
+        <div className="menugroep">
+          <span className="menugroep-titel">{S.menu.populair}</span>
+          {POPULAIRE_TOOL_IDS.map((id) => TOOLS.find((t) => t.id === id))
+            .filter(Boolean)
+            .map((t) => (
+              <Link key={t.id} href={`/${t.slug}`} className="menulink" onClick={onClose}>
+                <span className="menulink-icoon" style={{ color: t.kleur }}>
+                  <Icoon naam={t.icoon} maat={17} />
+                </span>
+                {t.korteVraag}
+              </Link>
+            ))}
         </div>
         {groepen.map((g) => (
           <div key={g.id} className="menugroep">

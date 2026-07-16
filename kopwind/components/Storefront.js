@@ -1,4 +1,5 @@
 import Broodkruimel from "@/components/Broodkruimel";
+import Icoon from "@/components/Icoon";
 import VoorWieBlok from "@/components/storefront/VoorWieBlok";
 import KeuzeHulpBlok from "@/components/storefront/KeuzeHulpBlok";
 import UitlegBlokken from "@/components/storefront/UitlegBlokken";
@@ -64,8 +65,17 @@ export default function Storefront({ categorie }) {
         ]}
       />
 
-      {/* Blok 1: hero */}
-      <section className="tool-hero">
+      {/* Blok 1: hero, in de categorie-kleur met het icoon als watermerk */}
+      <section
+        className="tool-hero storefront-hero"
+        style={{
+          background: `color-mix(in srgb, ${categorie.kleur} 7%, #ffffff)`,
+          borderColor: `color-mix(in srgb, ${categorie.kleur} 26%, #ffffff)`,
+        }}
+      >
+        <span className="storefront-watermerk" aria-hidden="true" style={{ color: categorie.kleur }}>
+          <Icoon naam={categorie.icoon} maat={200} />
+        </span>
         <h1>{categorie.titel}</h1>
         <p>{categorie.intro}</p>
       </section>

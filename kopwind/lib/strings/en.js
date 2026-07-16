@@ -6,6 +6,7 @@
 export const S = {
   header: {
     meldingen: "Notifications",
+    gekoppeld: "device linked",
     instellingen: "Settings",
     alleTools: "All checks",
   },
@@ -93,13 +94,14 @@ export const S = {
     zoekPlaceholder: "Search: coat, rain, bbq...",
     zoekLabel: "Search a weather decision",
     geenTreffers: "Nothing found. Try another word, or browse the list above.",
+    inOntwikkeling: "In development",
   },
   menu: {
     knop: "Menu",
     alle: "All checks",
     meer: "More",
+    populair: "Popular",
     taalwissel: "Nederlands",
-    groepen: { "Elke dag": "Every day", "Rondom huis": "Around the house", "Onderweg": "On the move" },
   },
   factoren: {
     kop: "What drives the verdict",

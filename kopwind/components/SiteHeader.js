@@ -26,8 +26,8 @@ export default function SiteHeader() {
       <button
         className="iconknop kop-icoon"
         onClick={g.openMeldingen}
-        aria-label={S.header.meldingen}
-        title={S.header.meldingen}
+        aria-label={g.syncCode ? `${S.header.meldingen} \u00b7 ${S.header.gekoppeld}` : S.header.meldingen}
+        title={g.syncCode ? `${S.header.meldingen} \u00b7 ${S.header.gekoppeld}` : S.header.meldingen}
       >
         <Icoon naam="bel" maat={19} />
         {g.syncCode ? <span className="stip" aria-hidden="true" /> : null}

@@ -99,6 +99,10 @@ export function valideerRegister(tools = TOOLS) {
     if (t.categorieId && !categorieIds.has(t.categorieId)) {
       fouten.push(`${t.id}: categorieId ${t.categorieId} bestaat niet in CATEGORIEEN`);
     }
+    const cat = CATEGORIEEN.find((c) => c.id === t.categorieId);
+    if (cat && t.kleur !== cat.kleur) {
+      fouten.push(`${t.id}: kleur ${t.kleur} wijkt af van categorie-kleur ${cat.kleur} (een accentkleur per categorie)`);
+    }
     for (const k of ["goed", "matig", "slecht"]) {
       if (!t.adviesLabels?.[k]) fouten.push(`${t.id}: adviesLabel ${k} ontbreekt`);
     }
@@ -113,3 +117,9 @@ export function valideerRegister(tools = TOOLS) {
 export function toolsInCategorie(categorieId) {
   return TOOLS.filter((t) => t.categorieId === categorieId);
 }
+
+/**
+ * De meest gebruikte checks, bovenaan het menu als Populair-blok
+ * (feedbackronde juli 2026): kleding, paraplu en de fietscheck.
+ */
+export const POPULAIRE_TOOL_IDS = ["wat-trek-ik-aan", "paraplu", "fiets-naar-werk"];

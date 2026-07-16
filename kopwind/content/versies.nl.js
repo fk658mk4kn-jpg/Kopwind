@@ -6,6 +6,12 @@
 
 export const VERSIES = [
   {
+    versie: "3.10.0",
+    codenaam: "Levante",
+    datum: "2026-07-15",
+    zin: "Alles heet nu overal hetzelfde: elke check heeft een titel en elke categorie een naam en kleur, gelijk op de homepage, in het menu en op de themapagina's. Op Alle checks zie je per check direct de uitkomst voor jouw plek als gekleurd bolletje met label, en vragen in ontwikkeling staan er rustig onder. Zeven huis-tuinvragen linken nu direct naar hun antwoord.",
+  },
+  {
     versie: "3.9.0",
     codenaam: "Sirocco",
     datum: "2026-07-15",

@@ -14,7 +14,7 @@ import { kies } from "../i18n/locale.js";
 const T = kies({
   nl: {
     slug: "paraplu-mee",
-    naam: "Moet ik vandaag een paraplu meenemen?",
+    naam: "Moet ik vandaag een paraplu mee?",
     korteVraag: "Moet ik vandaag een paraplu mee?",
     cta: "Check de paraplu",
     navLabel: "Paraplu mee",
@@ -23,7 +23,7 @@ const T = kies({
   en: {
     slug: "umbrella-today",
     naam: "Do I need an umbrella today?",
-    korteVraag: "Umbrella today?",
+    korteVraag: "Do I need an umbrella today?",
     cta: "Check the umbrella",
     navLabel: "Umbrella",
     diepte: "Umbrella or not, based on rain, timing and your time outside.",
@@ -39,7 +39,6 @@ export const paraplu = {
   navLabel: T.navLabel,
   kleur: "#3C7DC4",
   icoon: "druppel",
-  groep: "Elke dag",
   categorieId: "regen",
   soort: "advies",
   diepte: T.diepte,

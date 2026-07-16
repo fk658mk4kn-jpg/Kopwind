@@ -60,6 +60,14 @@ Het merk is de vraag "kan het vandaag". Maar de titels moeten persoonlijk
 en logisch zijn; puur "Kan het vandaag ..." is soms te onpersoonlijk. De
 regel:
 
+- **Een canonieke titel per check (sinds v3.10.0).** De vraag die de
+  bezoeker ziet is overal exact dezelfde: korteVraag == naam == seo.h1,
+  in beide talen. Kaart, menu, breadcrumb, paginatitel (H1), footer en
+  de catalogus tonen allemaal deze ene vraag (de catalogus leidt hem af
+  uit korteVraag, dus daar kan geen afwijking ontstaan). Twee bewuste
+  uitzonderingen: seo.title (de meta-title voor Google en de browsertab)
+  blijft keyword-first, en navLabel blijft een zelfstandig naamwoord voor
+  koppen zoals "X per stad".
 - **De vraag draait om "ik", niet om "het".** Voorkeur: de gebruiker
   herkent zijn eigen vraag. Dus per tool de meest natuurlijke vorm kiezen,
   niet blind "Kan het vandaag X".
@@ -170,6 +178,11 @@ GerelateerdBlok-relaties + `valideerRegister` groen (vangt dubbele slugs).
 
 ## 7. Huisstijl (overal gelijk)
 
+- **Een accentkleur per categorie (sinds v3.10.0).** De kleur staat op de
+  categorie in `lib/categorieen.js`; elke tool erft exact die kleur in
+  zijn register (valideerRegister dwingt dit af). Categorie, storefront,
+  menugroep en toolkaarten hangen zo visueel samen. Nieuwe tool = kleur
+  van zijn categorie, geen eigen tint.
 - Kleuren, radius, schaduw: via de CSS-variabelen in `app/globals.css`.
   Nooit hardcoded hex buiten het register (tool-kleur mag, want die staat
   in het register).
