@@ -122,7 +122,7 @@ export function generateMetadata({ params }) {
     title: t.title,
     description: t.description,
     alternates: { canonical: `/${tool.slug}/${stad.slug}` },
-    openGraph: { title: t.title, description: t.description, url: `/${tool.slug}/${stad.slug}` },
+    openGraph: { type: "website", title: t.title, description: t.description, url: `/${tool.slug}/${stad.slug}` },
   };
 }
 

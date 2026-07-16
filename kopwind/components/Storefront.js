@@ -5,9 +5,9 @@ import KeuzeHulpBlok from "@/components/storefront/KeuzeHulpBlok";
 import UitlegBlokken from "@/components/storefront/UitlegBlokken";
 import ChecksGrid from "@/components/storefront/ChecksGrid";
 import { CategorieFaq, GerelateerdCategorieen } from "@/components/storefront/FaqEnGerelateerd";
-import Link from "next/link";
 import { toolsInCategorie } from "@/lib/tools";
 import { VARIANTEN } from "@/lib/varianten";
+import { BESLISSINGEN } from "@/content/beslissingen";
 import { HUB_NAAM } from "@/lib/brand";
 import { S } from "@/lib/strings";
 import { PAD } from "@/lib/i18n/paden";
@@ -15,18 +15,25 @@ import { vindStorefront } from "@/content/storefronts";
 
 /**
  * De categorie-storefront volgens het vaste bouwblok-format (PLAYBOOK
- * sectie 11, gebouwd in v3.9.0): eerst context en keuzehulp, daarna pas
- * de concrete keuze. Blokvolgorde: hero, voor wie, keuzehulp, uitleg,
- * de checks, meer vragen (varianten), FAQ, gerelateerd. Elk blok is een
- * herbruikbaar component; de storefront zelf is configuratie uit
- * content/storefronts.js. Categorien zonder uitgewerkte content vallen
- * terug op hero plus kaart-overzicht. Blok 8 (affiliate) volgt pas in
- * fase 5 en staat bewust niet in deze component.
+ * sectie 11). Blokvolgorde: hero, voor wie, keuzehulp, uitleg, alle
+ * checks (live tools, vraagpagina's en geplande checks in een
+ * kaartopmaak), FAQ, gerelateerd. Elke categorie heeft volledige content;
+ * de component rendert configuratie uit content/storefronts.js.
+ *
+ * Visueel (feedbackronde juli 2026): geen gekleurde banner met rand,
+ * maar een subtiele paginabrede tint in de categorie-kleur plus het
+ * categorie-icoon groot en rustig op de achtergrond van de hele pagina.
+ * Blok 8 (affiliate) volgt pas in fase 5 en staat bewust niet in deze
+ * component.
  */
 export default function Storefront({ categorie }) {
   const tools = toolsInCategorie(categorie.id);
   const ouderIds = new Set(tools.map((t) => t.id));
   const varianten = VARIANTEN.filter((v) => ouderIds.has(v.ouderId));
+  const catalogus = BESLISSINGEN.find((g) => g.id === categorie.id);
+  const gepland = (catalogus?.items ?? []).filter(
+    (i) => !i.toolId && !i.variantId && !i.anker
+  );
   const sf = vindStorefront(categorie.id);
 
   const faqJsonLd = sf?.faq?.length
@@ -56,7 +63,19 @@ export default function Storefront({ categorie }) {
     : null;
 
   return (
-    <main>
+    <main className="storefront-pagina">
+      {/* Subtiele paginabrede tint plus het categorie-icoon als rustige
+          achtergrond over de hele pagina (geen banner). */}
+      <div
+        className="storefront-achtergrond"
+        aria-hidden="true"
+        style={{ background: `color-mix(in srgb, ${categorie.kleur} 4%, #ffffff)` }}
+      >
+        <span className="storefront-achtergrond-icoon" style={{ color: categorie.kleur }}>
+          <Icoon naam={categorie.icoon} maat={420} />
+        </span>
+      </div>
+
       <Broodkruimel
         items={[
           { naam: HUB_NAAM, href: "/" },
@@ -65,17 +84,8 @@ export default function Storefront({ categorie }) {
         ]}
       />
 
-      {/* Blok 1: hero, in de categorie-kleur met het icoon als watermerk */}
-      <section
-        className="tool-hero storefront-hero"
-        style={{
-          background: `color-mix(in srgb, ${categorie.kleur} 7%, #ffffff)`,
-          borderColor: `color-mix(in srgb, ${categorie.kleur} 26%, #ffffff)`,
-        }}
-      >
-        <span className="storefront-watermerk" aria-hidden="true" style={{ color: categorie.kleur }}>
-          <Icoon naam={categorie.icoon} maat={200} />
-        </span>
+      {/* Blok 1: hero */}
+      <section className="tool-hero">
         <h1>{categorie.titel}</h1>
         <p>{categorie.intro}</p>
       </section>
@@ -89,25 +99,13 @@ export default function Storefront({ categorie }) {
       {/* Blok 4: uitleg (waar let je op) */}
       <UitlegBlokken sf={sf} />
 
-      {/* Blok 5: de checks zelf. Zonder uitgewerkte content is dit het
-          eerste blok na de hero (fallback) en heet het Direct antwoord. */}
+      {/* Blok 5: alle checks (live, vraagpagina's en gepland) */}
       <ChecksGrid
         tools={tools}
-        kop={sf ? S.categorie.alleChecks : S.categorie.directAntwoord}
+        varianten={varianten}
+        gepland={gepland}
+        kop={S.categorie.alleChecks}
       />
-
-      {varianten.length > 0 && (
-        <section className="categorie-varianten">
-          <h2>{S.categorie.meerVragen}</h2>
-          <div className="gerelateerd-rij">
-            {varianten.map((v) => (
-              <Link key={v.id} href={`/${v.slug}`} className="gerelateerd-link">
-                {v.vraag}
-              </Link>
-            ))}
-          </div>
-        </section>
-      )}
 
       {/* Blok 6: FAQ */}
       <CategorieFaq faq={sf?.faq} />

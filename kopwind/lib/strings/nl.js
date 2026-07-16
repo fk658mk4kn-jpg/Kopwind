@@ -88,7 +88,6 @@ export const S = {
     kop: "Categorieen",
     intro: "Blader per onderwerp en vind de checks die bij je dag horen.",
     bekijk: "Bekijk categorie",
-    meerVragen: "Meer vragen in deze categorie",
     directAntwoord: "Direct antwoord",
     alleChecks: "Alle checks in deze categorie",
     gerelateerdKop: "Gerelateerde onderwerpen",

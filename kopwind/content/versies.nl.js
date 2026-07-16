@@ -6,6 +6,12 @@
 
 export const VERSIES = [
   {
+    versie: "3.11.0",
+    codenaam: "Libeccio",
+    datum: "2026-07-16",
+    zin: "Alle zeven themapagina's zijn nu even compleet: wie de pagina helpt, een keuzehulp, uitleg per situatie en seizoen, alle checks als kaarten en een veelgestelde-vragenblok. Vijftien vragen die eerst 'binnenkort' waren linken nu direct naar hun antwoord, en de pagina's kregen een rustige achtergrond in de kleur van het thema.",
+  },
+  {
     versie: "3.10.0",
     codenaam: "Levante",
     datum: "2026-07-15",

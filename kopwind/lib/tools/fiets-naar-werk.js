@@ -15,7 +15,7 @@ export const fietsNaarWerk = {
   slug: kies({ nl: "fietsen-naar-werk", en: "bike-to-work" }),
   naam: kies({ nl: "Kan ik vandaag fietsen naar werk?", en: "Bike to work today?" }),
   meldingKort: kies({ nl: "Fietscheck", en: "Bike check" }),
-  cta: kies({ nl: "Check je rit", en: "Check your ride" }),
+  cta: kies({ nl: "Check de rit", en: "Check the ride" }),
   navLabel: kies({ nl: "Fietsen", en: "Cycling" }),
   kleur: "#2F7D62",
   icoon: "fiets",

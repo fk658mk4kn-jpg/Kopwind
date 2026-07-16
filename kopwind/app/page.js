@@ -7,7 +7,7 @@ import HubGrid from "@/components/HubGrid";
 
 export const metadata = {
   alternates: { canonical: "/" },
-  openGraph: { url: "/" },
+  openGraph: { type: "website", url: "/" },
 };
 
 /**

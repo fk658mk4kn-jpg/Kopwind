@@ -272,13 +272,20 @@ wassen en grasmaaien nu op /huis-tuin-auto).
   met kleurtint en watermerk, Populair-blok in het menu, en de bel-tooltip
   legt het groene stipje uit.
 
+- v3.11.0 "Libeccio": de template-audit. Alle zeven storefronts volledig op
+  Template A in beide talen, met sjabloon-koppen die de tests afdwingen;
+  FAQ plus FAQPage-JSON-LD overal; canoniek domein met www; og:type en
+  meta-descriptions compleet; het kaartenblok met live tools, varianten en
+  gedempte Binnenkort-kaarten; vijftien catalogusvragen gekoppeld aan hun
+  storefront-antwoord; en het nieuwe rustige achtergrondmodel (paginatint
+  plus categorie-icoon) in plaats van de gekleurde banner.
+
 ## Open punten uit de feedbackronde (juli 2026)
 
-- **Afbeeldingen per storefront** (punt 6, deels): het watermerk en de
-  kleurtint staan; echte beelden zijn een licentie- en aanleverkwestie op een
-  faceless site. Twee opties, kiezen met Martijn: eigen SVG-illustraties per
-  categorie (geen licentierisico, past bij de lijn-iconen) of door Martijn
-  aangeleverde gelicenseerde foto's.
+- **Visuals per storefront**: Martijn laat later per storefront een
+  passende afbeelding of illustratie door AI maken en levert die aan; tot
+  die tijd is het achtergrondmodel (paginatint plus categorie-icoon) de
+  visuele laag. Geen stockfoto's (licenties, faceless).
 - **HubGrid harmoniseren met useDagVerdicts**: de homepage haalt nog
   BASIS_VELDEN op, waardoor de hooikoorts-badge daar leeg kan blijven; de
   nieuwe hook gebruikt de vereniging van alle weerVelden. Homepage op de hook

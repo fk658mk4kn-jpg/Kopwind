@@ -1396,3 +1396,80 @@ useDagVerdicts staat in de backlog.
 **Volgende**: open punten uit deze ronde (afbeeldingen per storefront,
 HubGrid-harmonisatie, fiets-factorbalken bij fase 2), daarna de keuze die al
 openstond: storefront-content voor buiten en sport, of nieuwe tools.
+
+## v3.11.0 "Libeccio" - 2026-07-16
+
+**Wat**: de template-audit van Martijn. Hij inspecteerde alle zeven
+storefronts en vond drie templates naast elkaar: A (rijk: regen,
+huis-tuin), B (kaal met kaarten: kleding, buiten, sport, gezondheid) en C
+(leeg: winter). De diagnose onder de bevinding: het template bestond wel,
+maar vijf categorieen hadden simpelweg geen content, en de component viel
+dan stil terug op een kale variant. De fix is dus tweeledig: alle content
+schrijven en de terugval onmogelijk maken.
+
+**P1, een template**: content/storefronts.js integraal herschreven (793
+regels): alle zeven categorieen volledig op Template A, NL en EN, met de
+vaste blokvolgorde en sjabloon-koppen met invulwoord ("Voor wie is deze
+pagina?", "{X} kiezen: wat wil je weten?", "Waar hangt {x} van af?",
+"Veelvoorkomende situaties", "{X} per seizoen in Nederland"). Winter is
+volledig ingevuld in plaats van noindex: een goede pagina verslaat een
+verstopte, en de gladheids- en krabvragen hebben inhoudelijk sterke
+antwoorden (stralingsnachten, wegdek- versus luchttemperatuur, ijzel).
+tests/storefronts.test.js is nu de afdwinger: elke categorie moet alle
+blokken hebben met minimale omvang, de koppen moeten de sjablonen volgen,
+en elke verwijzing (tool, variant, anker, gerelateerd) moet bestaan. Kale
+varianten kunnen dus niet terugkomen. FAQ plus FAQPage-JSON-LD staat
+daarmee op alle zeven (P1 punt 4); zichtbaar en JSON-LD komen uit dezelfde
+sf.faq-bron, dus punt 5 is per constructie gegarandeerd.
+
+**P1, canoniek domein**: lib/site.js viel terug op het domein zonder www
+terwijl de site op www draait. Fallback en instructie staan nu op
+https://www.kanhetvandaag.nl; interne links zijn relatief en volgen mee.
+De env-var op Vercel en de 301 van non-www naar www zijn acties voor
+Martijn (staan in de slotboodschap).
+
+**P2, metadata**: og:type stond wel in de layout, maar page-level
+openGraph-objecten vervangen het layout-object volledig (shallow merge per
+veld in Next.js); type: "website" staat nu in alle vijf page-level
+objecten. De categorie-intro's (tegelijk de meta-descriptions) zijn
+herschreven naar 120-158 tekens (regen was 193, buiten 111, huis-tuin 113,
+winter 99).
+
+**P2, het kaartenblok**: ChecksGrid toont nu drie kaartsoorten in dezelfde
+opmaak: live tools, vraagpagina's (varianten, met de diepte-regel en cta
+van de oudertool) en geplande checks als gedempte, niet-klikbare
+Binnenkort-kaart uit de catalogus. De losse varianten-pills ("Meer vragen
+in deze categorie") zijn weg, inclusief de string. KeuzeHulpBlok
+ondersteunt nu ook variantId, zodat de kledingkeuzehulp naar de jas-,
+korte-broek- en T-shirtpagina's routeert. CTA-labels volgen overal "Check
+de/het ..." (fiets, kleding en regentiming aangepast, beide talen).
+
+**Catalogus**: vijftien vragen in content/beslissingen.js (regen, kleding,
+buiten, sport, winter; NL en EN dus dertig items) verwijzen nu met
+ankerCategorie plus anker naar hun antwoord op de storefront in plaats van
+dood "in ontwikkeling" te staan. Echt gepland blijven alleen padel/tennis,
+suppen/kajakken en zonnepanelen. Winter heeft daardoor geen gepland-item
+meer en nul tools, dus het checks-grid verdwijnt daar bewust; de
+keuzehulp en FAQ dekken de vragen, en het grid verschijnt vanzelf zodra de
+eerste wintercheck live gaat.
+
+**Visueel**: op verzoek van Martijn is de gekleurde hero-banner met rand
+en watermerk vervangen door een subtiele paginabrede tint
+(color-mix 4 procent categorie-kleur) met het categorie-icoon groot en
+rustig (opacity 0,055) rechts op de achtergrond van de hele pagina, via
+een fixed laag achter de content. AI-gegenereerde visuals per storefront
+staan als latere verrijking in de backlog.
+
+**Tests**: 129 groen; de storefront-suite is herschreven van
+format-controle naar template-afdwinger (de oude zou op de nieuwe
+variantId-keuzes zelfs falen).
+
+**Beperkingen**: geen UI-rendering in de sandbox; het achtergrondmodel,
+de gedempte kaarten en de heading-hierarchie (P3 punt 14) visueel nalopen
+op productie. De Vercel-kant van het canonieke domein (env-var plus 301)
+kan alleen Martijn doen.
+
+**Volgende**: de storefront-content is hiermee af; logische vervolgen zijn
+nieuwe tools uit de vragenlijst (de ankers zijn er al), de
+HubGrid-harmonisatie met useDagVerdicts, of de AI-visuals zodra Martijn
+die aanlevert.

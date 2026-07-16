@@ -45,7 +45,7 @@ export function generateMetadata({ params }) {
       title: titel,
       description: categorie.intro,
       alternates: { canonical: `/${categorie.slug}` },
-      openGraph: { title: `${titel} | ${HUB_NAAM}`, description: categorie.intro, url: `/${categorie.slug}` },
+      openGraph: { type: "website", title: `${titel} | ${HUB_NAAM}`, description: categorie.intro, url: `/${categorie.slug}` },
     };
   }
   const tool = vindTool(params.tool);
@@ -56,6 +56,7 @@ export function generateMetadata({ params }) {
     description: inhoud.seo.description,
     alternates: { canonical: `/${tool.slug}` },
     openGraph: {
+      type: "website",
       title: inhoud.seo.title,
       description: inhoud.seo.description,
       url: `/${tool.slug}`,

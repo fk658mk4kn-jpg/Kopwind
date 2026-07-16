@@ -8,15 +8,16 @@
  * - Fallback is het live domein, niet localhost: ook zonder env-var wijzen
  *   canonicals dan goed.
  * - https wordt geforceerd (behalve op localhost, voor lokaal testen).
- * - Zet in Vercel alsnog NEXT_PUBLIC_SITE_URL=https://kanhetvandaag.nl,
- *   dan is de bron expliciet.
+ * - Het canonieke domein is MET www (daar draait de site); zet in Vercel
+ *   alsnog NEXT_PUBLIC_SITE_URL=https://www.kanhetvandaag.nl, dan is de
+ *   bron expliciet, en redirect kanhetvandaag.nl met een 301 naar www.
  */
 
 import { kies } from "./i18n/locale.js";
 
 export const LIVE_DOMEIN = kies({
-  nl: "https://kanhetvandaag.nl",
-  en: "https://kanhetvandaag.nl/en",
+  nl: "https://www.kanhetvandaag.nl",
+  en: "https://www.kanhetvandaag.nl/en",
 });
 
 export function siteUrl(raw = process.env.NEXT_PUBLIC_SITE_URL) {

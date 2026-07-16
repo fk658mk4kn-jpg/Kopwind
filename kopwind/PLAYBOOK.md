@@ -273,7 +273,7 @@ Regels:
 
 ---
 
-## 11. Storefront-format (vastgelegd juli 2026, gebouwd in v3.9.0)
+## 11. Storefront-format (vastgelegd juli 2026, gebouwd in v3.9.0, een template sinds v3.11.0)
 
 Een storefront is een begeleidende categorie-landingspagina uit vaste
 bouwblokken: eerst context en keuzehulp, daarna pas de concrete keuze
@@ -282,38 +282,58 @@ die de bezoeker eerst helpt begrijpen en kiezen, en daarna doorstuurt.
 Doel: topical authority en SEO op de categorie, plus (fase 5) de plek waar
 affiliate-selecties logisch landen.
 
-Implementatie (v3.9.0): components/Storefront.js orkestreert; de blokken
-staan als herbruikbare componenten in components/storefront/; de inhoud
-per categorie is configuratie in content/storefronts.js (schema in het
-docblock daar). Blokken zijn optioneel: een categorie zonder uitgewerkte
-content valt terug op hero plus kaart-overzicht. De keuzehulp routeert
-naar een live check (toolId) of naar een FAQ-anker op dezelfde pagina
-(long-tail zonder eigen URL). tests/storefronts.test.js dwingt het format
-af; valideerRegister eist dat elke tool aan een bestaande categorie hangt.
+Implementatie: components/Storefront.js orkestreert; de blokken staan als
+herbruikbare componenten in components/storefront/; de inhoud per
+categorie is configuratie in content/storefronts.js (schema in het
+docblock daar). Sinds v3.11.0 (de template-audit) geldt: er is EEN
+template en ELKE categorie vult hem volledig in, beide talen; blokken
+zijn niet optioneel. tests/storefronts.test.js dwingt dit af (alle
+blokken aanwezig, minimale omvang per blok, sjabloon-koppen, geldige
+verwijzingen). De keuzehulp routeert naar een live check (toolId), een
+vraagpagina (variantId) of een FAQ-anker op dezelfde pagina (long-tail
+zonder eigen URL). valideerRegister eist dat elke tool aan een bestaande
+categorie hangt.
 
 De vaste bouwblokken, in deze volgorde (volgorde mag later op data):
 
-1. **Hero**: wat deze categorie beantwoordt, in een zin, met de
-   kernbelofte (beslissing, geen weerbericht).
-2. **Voor wie / waarvoor**: herkenbare situaties (2-3 regels).
-3. **Keuzehulp**: help de bezoeker het juiste segment kiezen ("welke
-   check past bij jouw vraag"), met de checks als keuzes.
-4. **Uitleg-blokken**: waar let je op, de 2-3 onderwerpen die de keuze
-   bepalen (per blok een kopje met het zoekwoord voorin).
-5. **De checks zelf**: de toolkaarten van de categorie (korteVraag,
-   verdict-voorbeeld), doorklik naar de toolpagina's.
-6. **FAQ**: zoekwoord voorin, FAQPage-JSON-LD, inklapbaar.
-7. **Gerelateerd**: 2-3 aangrenzende categorieen of checks.
+1. **Hero**: H1 is de categorietitel, intro is de categorie-intro
+   (tegelijk de meta-description: 120-158 tekens).
+2. **Voor wie / waarvoor**: herkenbare situaties (minimaal 2 regels).
+3. **Keuzehulp**: help de bezoeker het juiste segment kiezen, met de
+   checks als keuzes (minimaal 3).
+4. **Uitleg-blokken**: beslislogica (minimaal 4 punten), veelvoorkomende
+   situaties (minimaal 4) en het seizoensblok (precies 4).
+5. **Alle checks in deze categorie**: drie kaartsoorten in dezelfde
+   opmaak: live tools, vraagpagina's (varianten, met diepte-regel en cta
+   van de oudertool) en geplande checks als gedempte Binnenkort-kaart.
+   Het blok verdwijnt alleen als een categorie nog geen enkele kaart
+   heeft (winter, tot de eerste wintercheck live gaat).
+6. **FAQ**: zoekwoord voorin, FAQPage-JSON-LD uit dezelfde bron als de
+   zichtbare vragen (Google-eis: exact gelijk), inklapbaar.
+7. **Gerelateerd**: 2-3 aangrenzende categorieen.
 8. **(fase 5) Affiliate-selectie**: pas als laatste blok, nooit boven de
    keuzehulp; producten volgen het advies, niet andersom.
+
+Sjabloon-koppen (vast, met invulwoord; de tests controleren dit):
+- Blok 2: "Voor wie is deze pagina?"
+- Blok 3: "{X} kiezen: wat wil je weten?"
+- Blok 4: "Waar hangt {x} van af?", "Veelvoorkomende situaties",
+  "{X} per seizoen in Nederland"
+
+Visueel (feedbackronde juli 2026): geen gekleurde banner met rand of
+watermerk in de hero. Wel: een subtiele paginabrede tint in de
+categorie-kleur (color-mix rond 4 procent) plus het categorie-icoon
+groot en rustig op de achtergrond van de hele pagina. AI-gegenereerde
+visuals per storefront staan in de backlog als latere verrijking.
 
 Regels:
 - Eerst helpen, dan kiezen, dan pas (later) verkopen; de volgorde van de
   blokken bewaakt dat.
 - Elk blok is een herbruikbaar component; een storefront is configuratie
-  (welke blokken, welke inhoud), geen maatwerkpagina.
+  (welke inhoud), geen maatwerkpagina.
 - Anti-cannibalisatie: de storefront beantwoordt de brede vraag; de
   toolpagina's de specifieke. Geen dubbele H1's of dubbele FAQ-vragen
   tussen storefront en tools.
-- Eerste storefront: Huis-tuin-auto (de wascheck bestaat al, sterkste
-  affiliate-fit later).
+- Vragen uit de catalogus (/alle-checks) die een antwoord op de
+  storefront hebben, verwijzen met ankerCategorie plus anker naar dat
+  FAQ-item; tests/beslissingen.test.js controleert dat elk anker bestaat.

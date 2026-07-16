@@ -40,7 +40,7 @@ export function generateMetadata({ params }) {
     title: { absolute: title },
     description,
     alternates: { canonical: `/van/${van.slug}/naar/${naar.slug}` },
-    openGraph: { title, description, url: `/van/${van.slug}/naar/${naar.slug}` },
+    openGraph: { type: "website", title, description, url: `/van/${van.slug}/naar/${naar.slug}` },
   };
 }
 

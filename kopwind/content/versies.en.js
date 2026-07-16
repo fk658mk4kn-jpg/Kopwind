@@ -5,6 +5,12 @@
 
 export const VERSIES = [
   {
+    versie: "3.11.0",
+    codenaam: "Libeccio",
+    datum: "2026-07-16",
+    zin: "All seven theme pages are now equally complete: who the page helps, a picker, guidance per situation and season, every check as a card and a FAQ block. Fifteen questions that used to say 'coming soon' now link straight to their answer, and the pages got a calm background in the theme colour.",
+  },
+  {
     versie: "3.10.0",
     codenaam: "Levante",
     datum: "2026-07-15",
