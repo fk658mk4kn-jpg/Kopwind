@@ -12,8 +12,9 @@ import { VARIANTEN } from "@/lib/varianten";
  * plaats van een kale lijst te tonen, en vangt hij de long-tail zonder
  * concurrerende URL's.
  */
-export default function KeuzeHulpBlok({ blok }) {
+export default function KeuzeHulpBlok({ blok, categorie }) {
   if (!blok?.keuzes?.length) return null;
+  const kleur = categorie?.kleur ?? "#1B2733";
   return (
     <section className="storefront-keuzehulp" aria-label={blok.kop}>
       <h2>{blok.kop}</h2>
@@ -25,10 +26,18 @@ export default function KeuzeHulpBlok({ blok }) {
           const href = tool ? `/${tool.slug}` : variant ? `/${variant.slug}` : `#${k.anchor}`;
           const label = tool ? tool.korteVraag : variant ? variant.vraag : k.linkTekst;
           return (
-            <Link key={i} href={href} className="keuzehulp-rij">
+            <Link
+              key={i}
+              href={href}
+              className="keuzehulp-rij"
+              style={{
+                background: `color-mix(in srgb, ${kleur} 5%, #ffffff)`,
+                borderColor: `color-mix(in srgb, ${kleur} 22%, #ffffff)`,
+              }}
+            >
               <span className="keuzehulp-situatie">{k.situatie}</span>
-              <span className="keuzehulp-link">
-                {label} <Icoon naam="pijl" maat={13} />
+              <span className="keuzehulp-link" style={{ color: kleur }}>
+                {label} <Icoon naam="pijl" maat={14} />
               </span>
             </Link>
           );

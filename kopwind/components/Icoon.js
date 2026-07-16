@@ -12,7 +12,7 @@ const PADEN = {
   plus: "M12 5v14M5 12h14",
   bel: "M12 3a6 6 0 0 0-6 6v3.6l-1.6 2.9c-.3.6.1 1.5.9 1.5h13.4c.8 0 1.2-.9.9-1.5L18 12.6V9a6 6 0 0 0-6-6Zm-2 15a2 2 0 0 0 4 0",
   klok: "M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Zm0-14v5l3.2 1.9",
-  pijl: "M12 3v18M12 3l-4.5 6M12 3l4.5 6",
+  pijl: "M3.5 12h17M20.5 12l-5.5-5M20.5 12l-5.5 5",
   vinkje: "M5 12.5l4.5 4.5L19 7.5",
   fiets:
     "M6 17.5a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4Zm12 0a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4ZM6 14.3l3.4-6.3h4.2M9.4 8h2.8l3.4 6.3M12.2 8l2.4 6.3",
@@ -46,6 +46,10 @@ const PADEN = {
 
 const GEVULD = { ster: true, locatie: true };
 
+// Per-icoon lijndikte: de pijl is een richtingaanwijzer en mag steviger
+// zijn dan de illustratieve iconen (feedbackronde juli 2026).
+const DIKTES = { pijl: 2.7 };
+
 export default function Icoon({ naam, maat = 16, vol = false, className = "" }) {
   const pad = PADEN[naam];
   if (!pad) return null;
@@ -59,7 +63,7 @@ export default function Icoon({ naam, maat = 16, vol = false, className = "" }) 
       aria-hidden="true"
       fill={vullen ? "currentColor" : "none"}
       stroke="currentColor"
-      strokeWidth={vullen ? 0 : 2}
+      strokeWidth={vullen ? 0 : DIKTES[naam] ?? 2}
       strokeLinecap="round"
       strokeLinejoin="round"
     >

@@ -72,7 +72,7 @@ export default function Storefront({ categorie }) {
         style={{ background: `color-mix(in srgb, ${categorie.kleur} 4%, #ffffff)` }}
       >
         <span className="storefront-achtergrond-icoon" style={{ color: categorie.kleur }}>
-          <Icoon naam={categorie.icoon} maat={420} />
+          <Icoon naam={categorie.icoon} maat={460} />
         </span>
       </div>
 
@@ -94,10 +94,10 @@ export default function Storefront({ categorie }) {
       <VoorWieBlok blok={sf?.voorWie} />
 
       {/* Blok 3: keuzehulp (met de checks als keuzes) */}
-      <KeuzeHulpBlok blok={sf?.keuzehulp} />
+      <KeuzeHulpBlok blok={sf?.keuzehulp} categorie={categorie} />
 
       {/* Blok 4: uitleg (waar let je op) */}
-      <UitlegBlokken sf={sf} />
+      <UitlegBlokken sf={sf} categorie={categorie} />
 
       {/* Blok 5: alle checks (live, vraagpagina's en gepland) */}
       <ChecksGrid

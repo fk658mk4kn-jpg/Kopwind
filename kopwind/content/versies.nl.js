@@ -6,6 +6,12 @@
 
 export const VERSIES = [
   {
+    versie: "3.12.0",
+    codenaam: "Gregale",
+    datum: "2026-07-16",
+    zin: "De themapagina's zijn prettiger om door te scrollen: de keuzehulp staat in dezelfde kaartstijl als de checks, de uitlegblokken kregen vinkjes, accentranden en seizoensiconen, en het pijltje wijst voortaan gewoon naar rechts.",
+  },
+  {
     versie: "3.11.0",
     codenaam: "Libeccio",
     datum: "2026-07-16",

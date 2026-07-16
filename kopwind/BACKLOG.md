@@ -286,6 +286,11 @@ wassen en grasmaaien nu op /huis-tuin-auto).
   passende afbeelding of illustratie door AI maken en levert die aan; tot
   die tijd is het achtergrondmodel (paginatint plus categorie-icoon) de
   visuele laag. Geen stockfoto's (licenties, faceless).
+- **Onderling linken tussen relevante tools** (Martijn, juli 2026): op
+  toolpagina's naar aanverwante checks verwijzen (terras naar barbecue en
+  zonkracht, fiets naar regentiming, was naar ramen-antwoord). Past bij de
+  storefront-gedachte: organisch doorsturen naar de volgende stap; goed
+  voor interne linkstructuur en sessieduur.
 - **HubGrid harmoniseren met useDagVerdicts**: de homepage haalt nog
   BASIS_VELDEN op, waardoor de hooikoorts-badge daar leeg kan blijven; de
   nieuwe hook gebruikt de vereniging van alle weerVelden. Homepage op de hook

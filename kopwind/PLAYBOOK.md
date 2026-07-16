@@ -273,14 +273,22 @@ Regels:
 
 ---
 
-## 11. Storefront-format (vastgelegd juli 2026, gebouwd in v3.9.0, een template sinds v3.11.0)
+## 11. Storefront-format (definitieve richting, briefing juli 2026)
 
-Een storefront is een begeleidende categorie-landingspagina uit vaste
-bouwblokken: eerst context en keuzehulp, daarna pas de concrete keuze
-(Coolblue-model). Geen kale lijst met checks of producten, maar een pagina
-die de bezoeker eerst helpt begrijpen en kiezen, en daarna doorstuurt.
-Doel: topical authority en SEO op de categorie, plus (fase 5) de plek waar
-affiliate-selecties logisch landen.
+**Definitie (leidend)**: een storefront is geen productlijst of kale
+index, maar een begeleidende, verhalende categoriepagina die eerst helpt
+begrijpen en kiezen, en daarna pas doorstuurt. Hij moet drie dingen
+tegelijk doen: uitleggen waar de categorie over gaat, helpen kiezen welke
+check relevant is, en organisch doorsturen naar de juiste volgende stap.
+Een pagina die dat niet doet is een index, geen storefront. Elke
+storefront is zelfstandig waardevol, ook zonder affiliate.
+
+Coolblue (de koffiezetapparaten-pagina) is referentie voor opbouw,
+scanbaarheid en visueel ritme: keuzehulp voor de eindbestemming,
+duidelijke segmentatie, afwisseling tussen uitleg en actie. Niet
+overnemen: productzware commercie bovenaan, promotionele styling, een
+opzet die als webshop voelt. Ons eindpunt is een check of vervolgvraag,
+geen productgrid.
 
 Implementatie: components/Storefront.js orkestreert; de blokken staan als
 herbruikbare componenten in components/storefront/; de inhoud per
@@ -320,11 +328,29 @@ Sjabloon-koppen (vast, met invulwoord; de tests controleren dit):
 - Blok 4: "Waar hangt {x} van af?", "Veelvoorkomende situaties",
   "{X} per seizoen in Nederland"
 
-Visueel (feedbackronde juli 2026): geen gekleurde banner met rand of
-watermerk in de hero. Wel: een subtiele paginabrede tint in de
-categorie-kleur (color-mix rond 4 procent) plus het categorie-icoon
-groot en rustig op de achtergrond van de hele pagina. AI-gegenereerde
-visuals per storefront staan in de backlog als latere verrijking.
+Visueel (definitief, briefing juli 2026): rustig maar met ritme. De
+basis: een subtiele paginabrede tint in de categorie-kleur (color-mix
+rond 4 procent) plus het categorie-icoon groot en zacht op de achtergrond
+van de hele pagina (laag contrast, opacity rond 0,085). Geen harde
+banner-randen, geen schreeuwerige kleurvlakken in de hero, geen losse
+hero-iconen. Beeld is functioneel: elk visueel element helpt met
+scanbaarheid, herkenning of keuze. Het ritme komt van lichte ankers in de
+categorie-kleur: de keuzehulp-rijen in de kaarttaal van het checks-blok,
+vinkjes bij de beslislogica-punten, een accentrand op situatie-kaartjes,
+seizoensiconen (bloem, zon, druppel, vlok) op het seizoensblok. Zo is er
+duidelijke hierarchie: informatieve blokken zijn tekstueel rustig,
+keuze-blokken (keuzehulp, checks-grid) dragen kleur en kaarten. De pijl
+is overal het dikkere, naar rechts wijzende pijl-icoon (richting, geen
+decoratie). Rijkere AI-visuals of illustraties zijn P3 en komen alleen
+waar ze echt waarde toevoegen (levert Martijn aan; backlog).
+
+Affiliate-visie: een optionele laag, nooit het fundament. Zonder
+relevante affiliate is de storefront volledig en sterk zonder dat blok;
+geen lege placeholders of geforceerde vakken. Affiliate past qua
+componentlogica in de bestaande kaartstructuur en komt na context en
+keuzehulp, of dichter bij de check en de uitkomst, nooit als hoofdrol
+bovenaan. Bij invoering (fase 5): duidelijk onderscheid tussen interne
+navigatie en externe of commerciele links.
 
 Regels:
 - Eerst helpen, dan kiezen, dan pas (later) verkopen; de volgorde van de

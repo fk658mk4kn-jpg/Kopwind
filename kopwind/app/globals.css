@@ -2194,7 +2194,7 @@ a.checkkaart:hover .kaartknop { background: var(--geel); }
   position: absolute;
   right: -90px;
   top: 22vh;
-  opacity: 0.055;
+  opacity: 0.085;
 }
 .checkkaart-gepland {
   opacity: 0.65;
@@ -2232,8 +2232,12 @@ a.checkkaart:hover .kaartknop { background: var(--geel); }
 
 .storefront-tekst { margin-top: 30px; }
 
-.storefront-punten { margin: 0 0 8px; padding-left: 20px; display: flex; flex-direction: column; gap: 8px; }
-.storefront-punten li { line-height: 1.5; }
+/* Visueel ritme (feedbackronde juli 2026): lichte ankers in de
+   categorie-kleur. Beslislogica-punten met een vinkje, situatie-kaartjes
+   met een accentrand links, seizoen-kaartjes met een seizoensicoon. */
+.storefront-punten { margin: 0 0 8px; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 9px; }
+.storefront-punten li { line-height: 1.5; display: flex; gap: 10px; align-items: flex-start; }
+.punt-vink { flex: 0 0 auto; margin-top: 3px; }
 
 .storefront-situaties {
   display: grid;
@@ -2244,10 +2248,13 @@ a.checkkaart:hover .kaartknop { background: var(--geel); }
 
 .storefront-situatie {
   border: 1px solid var(--lijn);
+  border-left-width: 3px;
   border-radius: var(--radius-s);
   padding: 13px 15px;
   background: var(--wolk);
 }
+.storefront-seizoen { border-left-width: 1px; }
+.storefront-seizoen h3 { display: flex; align-items: center; gap: 8px; }
 
 .storefront-situatie h3 { margin: 0 0 5px; font-size: 14.5px; }
 .storefront-situatie p { margin: 0; font-size: 13.5px; color: var(--inkt-zacht); line-height: 1.45; }

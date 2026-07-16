@@ -5,6 +5,12 @@
 
 export const VERSIES = [
   {
+    versie: "3.12.0",
+    codenaam: "Gregale",
+    datum: "2026-07-16",
+    zin: "The theme pages are nicer to scroll through: the picker now uses the same card style as the checks, the guidance blocks got check marks, accent borders and season icons, and the arrow finally points right.",
+  },
+  {
     versie: "3.11.0",
     codenaam: "Libeccio",
     datum: "2026-07-16",

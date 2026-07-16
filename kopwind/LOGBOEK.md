@@ -1473,3 +1473,54 @@ kan alleen Martijn doen.
 nieuwe tools uit de vragenlijst (de ankers zijn er al), de
 HubGrid-harmonisatie met useDagVerdicts, of de AI-visuals zodra Martijn
 die aanlevert.
+
+## v3.12.0 "Gregale" - 2026-07-16
+
+**Wat**: Martijns definitieve storefront-briefing verwerkt. Het gros van de
+briefing (een template met afdwingende tests, alle secties gevuld, FAQ
+gelijk aan JSON-LD, ItemList bij de checks, www-canonical, og:type,
+meta-descriptions, het kaartenblok met Binnenkort-kaarten, een
+CTA-patroon, sjabloon-koppen) stond al sinds Levante en Libeccio; die
+punten zijn als checklist nagelopen en klopten. Nieuw gebouwd:
+
+**Playbook definitief**: sectie 11 herschreven naar de briefing als
+blijvende richting: de definitie (begeleidende, verhalende categoriepagina
+die uitlegt, helpt kiezen en doorstuurt; anders is het een index), de
+Coolblue-relatie (referentie voor ritme en keuzehulp, niet voor commercie)
+en de affiliate-visie (optionele laag, nooit fundament, geen placeholders,
+na context en keuzehulp of dichter bij de uitkomst, later duidelijk
+onderscheid interne versus externe links).
+
+**Visueel ritme**: de storefronts waren te tekstueel na het weghalen van
+de banner; Martijn noemde het huidige model "saai (geen)" en wees het
+checks-kaartenblok aan als de interessante taal. Die taal is doorgetrokken:
+keuzehulp-rijen renderen nu als lichte kaarten in de categorie-kleur
+(tint 5 procent, rand 22 procent, link in de kleur), de
+beslislogica-punten kregen een vinkje in de categorie-kleur in plaats van
+bullets, situatie-kaartjes een accentrand links (3px), en het seizoensblok
+seizoensiconen via naam-matching (bloem, zon, druppel, vlok; "De rest van
+het jaar" valt terug op de zon). Informatieve blokken blijven tekstueel
+rustig, keuze-blokken dragen kleur en kaarten: dat is de hierarchie uit de
+briefing. Het achtergrond-icoon is iets aanweziger (opacity 0,055 naar
+0,085, maat 460).
+
+**De pijl**: het pijl-icoon wees omhoog; het is nu een dikkere pijl naar
+rechts (nieuw pad plus een per-icoon diktemap in Icoon.js, 2,7 tegenover 2
+voor de rest). Werkt overal tegelijk: keuzehulp, kaart-cta's,
+catalogus-koppen, gerelateerd.
+
+**Backlog**: onderling linken tussen relevante tools toegevoegd (terras
+naar barbecue en zonkracht, fiets naar regentiming); AI-visuals bevestigd
+als P3.
+
+**Tests**: 129 groen; geen contract-wijzigingen, alleen render en styling.
+
+**Beperkingen**: dit is een visuele ronde zonder rendering in de sandbox;
+de kaarttaal, de vinkjes, de seizoensiconen, de nieuwe pijl en de
+achtergrond-opacity moeten op productie beoordeeld worden. De inline
+color-mix-waarden (5/22 procent) zijn startwaarden om op zicht bij te
+stellen.
+
+**Volgende**: Martijns oordeel over het ritme, daarna nieuwe tools uit de
+vragenlijst (ankers liggen klaar), de HubGrid-harmonisatie, of de
+cross-links uit de backlog.
