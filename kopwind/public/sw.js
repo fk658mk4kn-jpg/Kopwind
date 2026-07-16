@@ -29,6 +29,27 @@ self.addEventListener("push", (event) => {
   );
 });
 
+// Browsers vernieuwen push-abonnementen; zonder deze handler sterft de
+// koppeling stil (het oude endpoint wordt 410). Opnieuw abonneren met
+// dezelfde sleutel en de server het nieuwe endpoint laten overnemen.
+self.addEventListener("pushsubscriptionchange", (event) => {
+  const oud = event.oldSubscription;
+  const sleutel = oud?.options?.applicationServerKey;
+  if (!sleutel) return;
+  event.waitUntil(
+    self.registration.pushManager
+      .subscribe({ userVisibleOnly: true, applicationServerKey: sleutel })
+      .then((sub) =>
+        fetch("/api/push/vervang", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ oudEndpoint: oud.endpoint, subscription: sub.toJSON() }),
+        })
+      )
+      .catch(() => {})
+  );
+});
+
 self.addEventListener("notificationclick", (event) => {
   event.notification.close();
   const url = event.notification.data?.url ?? "/";

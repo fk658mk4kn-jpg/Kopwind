@@ -6,6 +6,12 @@
 
 export const VERSIES = [
   {
+    versie: "3.16.0",
+    codenaam: "Maestro",
+    datum: "2026-07-16",
+    zin: "Drie nieuwe checks: kan ik de auto wassen vandaag, moet ik morgen krabben en is het glad op de weg (winter heeft zijn eerste checks). Meldingen zijn nu per check in te stellen en in te klappen, elke route heeft een eigen aan-uitknop, en een stille bug waardoor meldingen na een tijdje stopten is verholpen: de koppeling herstelt zichzelf voortaan.",
+  },
+  {
     versie: "3.15.0",
     codenaam: "Marin",
     datum: "2026-07-16",

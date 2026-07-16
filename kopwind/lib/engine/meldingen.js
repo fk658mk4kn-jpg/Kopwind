@@ -351,7 +351,9 @@ export function migreerToolSchema(oud) {
 export function dueBriefings({ schema, log, nu, prefix }) {
   const items = [];
   const s = schema?.week ? schema : naarWeek(schema);
-  if (!s) return items;
+  // aan: false is de volg-schakelaar per route of check (juli 2026);
+  // ontbreekt het veld (oudere schemas), dan geldt aan.
+  if (!s || s.aan === false) return items;
   const dagCfg = s.week[String(isoDag(nu))];
   if (!dagCfg?.aan) return items;
   const dk = dagKey(nu);
@@ -383,7 +385,7 @@ export function dueBriefings({ schema, log, nu, prefix }) {
 export function dueVertrek({ schema, times, log, nu, prefix }) {
   const items = [];
   const s = schema?.week ? schema : naarWeek(schema);
-  if (!s?.vertrek?.aan) return items;
+  if (!s?.vertrek?.aan || s.aan === false) return items;
   if (!s.week[String(isoDag(nu))]?.aan) return items;
   const dk = dagKey(nu);
   const p = prefix ? `:${String(prefix).replaceAll(":", "_")}` : "";

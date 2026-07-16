@@ -198,6 +198,17 @@ GerelateerdBlok-relaties + `valideerRegister` groen (vangt dubbele slugs).
 
 ---
 
+### Inklapbaarheid (richtlijn, sinds v3.16.0)
+
+Alles met meer informatie dan een regel of twee is inklapbaar (wens
+Martijn, juli 2026). Het vaste patroon is een native `details` met een
+`summary` die de kop plus een korte samenvatting toont (bijvoorbeeld
+"aan op 3 dagen" of een teller), zodat de dichte staat al informatie
+geeft. Toegepast op: de categoriegroepen in het menu (dicht bij openen,
+titel blijft de link naar de storefront) en de meldingen per check.
+Nieuwe blokken met verdieping volgen hetzelfde patroon; geen eigen
+knop-met-state bouwen waar een `details` volstaat.
+
 ## 8. Bekende afwijkingen die rechtgetrokken moeten worden
 
 - **Regen-timing en paraplu missen de herlaad-actieknop** die de andere
@@ -272,6 +283,40 @@ Regels:
   gedeeld.
 
 ---
+
+### Push-koppeling die zichzelf herstelt (sinds v3.16.0)
+
+Browsers vernieuwen push-abonnementen periodiek. Het oude endpoint
+geeft dan 404/410, de cron ruimt de rij op, en zonder tegenmaatregel is
+het apparaat stil terwijl de UI "gekoppeld" toont. Drie lagen vangen
+dit af:
+
+1. `hersync(code)` in `lib/push-client.js` draait bij elk bezoek (via
+   GebruikerContext) zodra er een synccode is en de toestemming staat:
+   het actuele abonnement wordt opnieuw geupsert, en een verdwenen
+   abonnement wordt stil opnieuw aangemaakt (kan zonder prompt).
+2. De service worker heeft een `pushsubscriptionchange`-handler die met
+   de oude sleutel opnieuw abonneert en het nieuwe endpoint via
+   `POST /api/push/vervang` (sleutel: het oude endpoint) laat
+   overnemen met behoud van code en instellingen.
+3. `verstuurNaarAbos` telt opgeruimde abonnementen en de cron-response
+   toont `{ gecheckt, verzonden, verlopen, fouten }`; een niet-nul
+   `verlopen` in de output is het spoor van dit mechanisme.
+
+Elke route en elke check heeft bovendien een eigen volg-schakelaar
+(`aan: false` op schemaniveau); `dueBriefings` en `dueVertrek` slaan
+zulke schemas volledig over. Oudere schemas zonder het veld gelden als
+aan.
+
+### Dagsemantiek van de krabcheck
+
+De krabcheck beantwoordt een avondvraag over morgen. Daarom beoordeelt
+elke dag in `dagen[]` de nacht erna: de tab "vandaag" geeft het
+antwoord voor morgenochtend. De daglabels in LocatieTool zijn
+index-gebaseerd (index 0 heet altijd "vandaag"), dus de statuszinnen
+benoemen expliciet "morgenochtend" respectievelijk "die ochtend". Dit
+staat ook in de instellingen-uitleg en de content van de tool. Nieuwe
+nacht-checks volgen hetzelfde model.
 
 ## 11. Storefront-format (definitieve richting, briefing juli 2026)
 

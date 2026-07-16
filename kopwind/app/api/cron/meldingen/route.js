@@ -79,6 +79,12 @@ export async function GET(request) {
   const nu = nuAmsterdam();
   let gecheckt = 0;
   let verzonden = 0;
+  let verlopen = 0;
+  const stuur = async (lijst, payload) => {
+    const uit = await verstuurNaarAbos(lijst, payload);
+    verzonden += uit.ok;
+    verlopen += uit.verlopen;
+  };
   const fouten = [];
 
   try {
@@ -189,7 +195,7 @@ export async function GET(request) {
                     body: "Je volgende rit staat gepland. Open de fietscheck voor het actuele weer.",
                   };
             }
-            verzonden += await verstuurNaarAbos(lijst, {
+            await stuur(lijst, {
               ...tekst,
               tag: item.key,
               url: `/${fietsNaarWerk.slug}`,
@@ -226,7 +232,7 @@ export async function GET(request) {
           for (const item of teSturen) {
             const tekst = await toolBriefing(tool, schema, nu, perTool, item.doel);
             if (!tekst) continue; // Drempel hield hem tegen of data ontbrak.
-            verzonden += await verstuurNaarAbos(lijst, {
+            await stuur(lijst, {
               ...tekst,
               tag: item.key,
               url: `/${tool.slug}`,
@@ -254,7 +260,7 @@ export async function GET(request) {
       // Opruimen is best effort.
     }
 
-    return Response.json({ gecheckt, verzonden, fouten });
+    return Response.json({ gecheckt, verzonden, verlopen, fouten });
   } catch (e) {
     return Response.json(
       { error: "Cron mislukt.", detail: String(e), gecheckt, verzonden },

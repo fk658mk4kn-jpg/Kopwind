@@ -59,7 +59,12 @@ export default function BeslissingenLijst({ groepen }) {
         if (!cat) return null;
         const items = groep.items.filter(past);
         if (!items.length) return null;
-        const live = items.filter((i) => i.toolId || i.variantId || i.anker);
+        // Alleen echte checks (tool of variant) staan als rij met stip;
+        // vragen met een storefront-antwoord (anker) en geplande vragen
+        // delen dezelfde chip-opmaak eronder (feedback juli 2026: een
+        // anker-rij oogde als een live check die er niet is).
+        const live = items.filter((i) => i.toolId || i.variantId);
+        const ankers = items.filter((i) => i.anker && !i.toolId && !i.variantId);
         const gepland = items.filter((i) => !i.toolId && !i.variantId && !i.anker);
         return (
           <section key={groep.id} className="beslissingen-groep">
@@ -79,14 +84,7 @@ export default function BeslissingenLijst({ groepen }) {
                 {live.map((item) => {
                   const tool = item.toolId ? TOOLS.find((t) => t.id === item.toolId) : null;
                   const variant = item.variantId ? VARIANTEN.find((v) => v.id === item.variantId) : null;
-                  const ankerCat = item.anker ? vindCategorieOpId(item.ankerCategorie) : null;
-                  const doel = tool
-                    ? `/${tool.slug}`
-                    : variant
-                    ? `/${variant.slug}`
-                    : ankerCat
-                    ? `/${ankerCat.slug}#${item.anker}`
-                    : null;
+                  const doel = tool ? `/${tool.slug}` : variant ? `/${variant.slug}` : null;
                   if (!doel) return null;
                   const dag = tool && dagen ? dagen[tool.id] : null;
                   // Stoplicht: kleurVoorSchaal geeft een klasse (groen,
@@ -102,7 +100,6 @@ export default function BeslissingenLijst({ groepen }) {
                           <Icoon naam={tool?.icoon ?? cat.icoon} maat={16} />
                         </span>
                         <span className="beslissing-vraag">{vraagVan(item)}</span>
-                        {item.anker && <span className="badge klein stil">{S.beslissingen.antwoordBadge}</span>}
                         {dag && (
                           <span className={"statuslabel " + klasse} title={labelVoor(dag.conditie.score, tool.schaalLabels)}>
                             <span className="statusstip" role="img" aria-label={labelVoor(dag.conditie.score, tool.schaalLabels)} />
@@ -119,12 +116,26 @@ export default function BeslissingenLijst({ groepen }) {
                 })}
               </ul>
             )}
-            {gepland.length > 0 && (
+            {(ankers.length > 0 || gepland.length > 0) && (
               <div className="beslissingen-gepland">
-                <span className="instelhint">{S.beslissingen.inOntwikkeling}</span>
                 <div className="binnenkort-chips">
+                  {ankers.map((item) => {
+                    const ankerCat = vindCategorieOpId(item.ankerCategorie);
+                    if (!ankerCat) return null;
+                    return (
+                      <Link
+                        key={item.vraag}
+                        href={`/${ankerCat.slug}#${item.anker}`}
+                        className="binnenkort-chip anker-chip"
+                      >
+                        {vraagVan(item)}
+                      </Link>
+                    );
+                  })}
                   {gepland.map((item) => (
-                    <span key={item.vraag} className="binnenkort-chip">{item.vraag}</span>
+                    <span key={item.vraag} className="binnenkort-chip" title={S.beslissingen.inOntwikkeling}>
+                      {item.vraag}
+                    </span>
                   ))}
                 </div>
               </div>

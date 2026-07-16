@@ -102,7 +102,6 @@ export const S = {
     zoekPlaceholder: "Zoek: jas, regen, bbq...",
     zoekLabel: "Zoek een weerbeslissing",
     geenTreffers: "Niets gevonden. Probeer een ander woord, of kijk in de lijst hierboven.",
-    antwoordBadge: "Antwoord",
     inOntwikkeling: "In ontwikkeling",
   },
   menu: {

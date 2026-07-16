@@ -13,6 +13,9 @@ import * as watTrekIkAan from "./wat-trek-ik-aan.js";
 import * as terras from "./terras.js";
 import * as hardloopweerNl from "./hardloopweer.js";
 import * as strandweerNl from "./strandweer.js";
+import * as autoWassenNl from "./auto-wassen.js";
+import * as krabbenNl from "./krabben.js";
+import * as gladheidNl from "./gladheid.js";
 import * as barbecueweer from "./barbecueweer.js";
 import * as zonkracht from "./zonkracht.js";
 import * as hooikoorts from "./hooikoorts.js";
@@ -28,6 +31,9 @@ import * as whatToWear from "./en/what-to-wear.js";
 import * as patioWeather from "./en/patio-weather.js";
 import * as runningWeather from "./en/running-weather.js";
 import * as beachWeather from "./en/beach-weather.js";
+import * as washTheCar from "./en/wash-the-car.js";
+import * as windscreenFrost from "./en/windscreen-frost.js";
+import * as icyRoads from "./en/icy-roads.js";
 import * as bbqWeather from "./en/bbq-weather.js";
 import * as sunscreen from "./en/sunscreen.js";
 import * as hayFever from "./en/hay-fever.js";
@@ -46,6 +52,9 @@ const PER_SLUG =
         "patio-weather": patioWeather,
         "running-weather": runningWeather,
         "beach-weather": beachWeather,
+        "wash-the-car": washTheCar,
+        "windscreen-frost": windscreenFrost,
+        "icy-roads": icyRoads,
         "bbq-weather": bbqWeather,
         "sunscreen": sunscreen,
         "hay-fever": hayFever,
@@ -62,6 +71,9 @@ const PER_SLUG =
         "terrasweer": terras,
         "hardloopweer": hardloopweerNl,
         "strandweer": strandweerNl,
+        "auto-wassen": autoWassenNl,
+        "krabben": krabbenNl,
+        "gladheid": gladheidNl,
         "barbecueweer": barbecueweer,
         "zonkracht": zonkracht,
         "hooikoorts": hooikoorts,

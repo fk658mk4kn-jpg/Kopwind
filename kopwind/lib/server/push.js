@@ -30,9 +30,10 @@ function init() {
  * @returns {Promise<number>} aantal geslaagde verzendingen
  */
 export async function verstuurNaarAbos(abos, payload) {
-  if (!pushGeconfigureerd() || !abos.length) return 0;
+  if (!pushGeconfigureerd() || !abos.length) return { ok: 0, verlopen: 0 };
   init();
   let ok = 0;
+  let verlopen = 0;
   for (const abo of abos) {
     try {
       await webpush.sendNotification(abo.subscription, JSON.stringify(payload), {
@@ -43,7 +44,9 @@ export async function verstuurNaarAbos(abos, payload) {
     } catch (e) {
       const status = e?.statusCode;
       if (status === 404 || status === 410) {
-        // Abonnement bestaat niet meer (app verwijderd): opruimen.
+        // Abonnement bestaat niet meer (browser vernieuwde het of de app
+        // is weg): opruimen en tellen, zodat de cron-output het toont.
+        verlopen++;
         try {
           await dbDelete(`push_abos?endpoint=eq.${encodeURIComponent(abo.endpoint)}`);
         } catch {
@@ -52,5 +55,5 @@ export async function verstuurNaarAbos(abos, payload) {
       }
     }
   }
-  return ok;
+  return { ok, verlopen };
 }

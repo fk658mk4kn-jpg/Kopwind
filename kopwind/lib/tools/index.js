@@ -27,6 +27,9 @@
 import { fietsNaarWerk } from "./fiets-naar-werk.js";
 import { hardloopweer } from "./hardloopweer.js";
 import { strandweer } from "./strandweer.js";
+import { autoWassen } from "./auto-wassen.js";
+import { krabben } from "./krabben.js";
+import { gladheid } from "./gladheid.js";
 import { CATEGORIEEN } from "../categorieen.js";
 import { wasBuitenDrogen } from "./was-buiten-drogen.js";
 import { kleding } from "./kleding.js";
@@ -38,7 +41,7 @@ import { regenTiming } from "./regen-timing.js";
 import { paraplu } from "./paraplu.js";
 import { VARIANTEN, maakPseudoTool } from "../varianten.js";
 
-export const TOOLS = [fietsNaarWerk, hardloopweer, wasBuitenDrogen, kleding, terras, barbecue, strandweer, zonkracht, hooikoorts, regenTiming, paraplu];
+export const TOOLS = [fietsNaarWerk, hardloopweer, wasBuitenDrogen, autoWassen, kleding, terras, barbecue, strandweer, zonkracht, hooikoorts, regenTiming, paraplu, krabben, gladheid];
 
 export function vindTool(slug) {
   const direct = TOOLS.find((t) => t.slug === slug);
@@ -136,4 +139,7 @@ export function toolsInCategorie(categorieId) {
  * De meest gebruikte checks, bovenaan het menu als Populair-blok
  * (feedbackronde juli 2026): kleding, paraplu en de fietscheck.
  */
-export const POPULAIRE_TOOL_IDS = ["wat-trek-ik-aan", "paraplu", "fiets-naar-werk"];
+// Maximaal zes (wens Martijn, juli 2026): de homepage en het menu tonen
+// deze selectie onder "Populaire checks"; alle-checks is het volledige
+// overzicht.
+export const POPULAIRE_TOOL_IDS = ["wat-trek-ik-aan", "paraplu", "fiets-naar-werk", "terras", "was-buiten-drogen", "zonkracht"];

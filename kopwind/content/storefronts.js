@@ -254,7 +254,7 @@ export const STOREFRONTS = kies({
         intro: "Kies de situatie die het meest op de jouwe lijkt; je komt direct bij de check of het antwoord uit.",
         keuzes: [
           { situatie: "De was kan misschien naar buiten", toolId: "was-buiten-drogen" },
-          { situatie: "De auto is vies en je hebt een uurtje", anchor: "kan-ik-de-auto-wassen-vandaag", linkTekst: "Kan ik de auto wassen vandaag?" },
+          { situatie: "De auto is vies en je hebt een uurtje", toolId: "auto-wassen" },
           { situatie: "Schilderen, beitsen of kitten buiten", anchor: "kan-ik-buiten-schilderen-of-beitsen", linkTekst: "Kan ik buiten schilderen of beitsen?" },
           { situatie: "Het gras of de tuin wacht", anchor: "kan-ik-grasmaaien-vandaag", linkTekst: "Kan ik grasmaaien vandaag?" },
           { situatie: "Ramen wassen, dekbedden of het huis luchten", anchor: "kan-ik-mijn-ramen-wassen-vandaag", linkTekst: "Kan ik mijn ramen wassen vandaag?" },
@@ -289,7 +289,6 @@ export const STOREFRONTS = kies({
         ],
       },
       faq: [
-        { id: "kan-ik-de-auto-wassen-vandaag", v: "Kan ik de auto wassen vandaag?", a: "Auto wassen wil een droog blok van minstens een uur of twee, geen vorst en liefst geen felle zon op de lak (dat geeft kalkvlekken doordat druppels te snel opdrogen). Een bewolkte, droge dag met weinig wind is ideaal. De wascheck hierboven gebruikt dezelfde droog-en-wind-logica voor jouw plek." },
         { id: "kan-ik-mijn-ramen-wassen-vandaag", v: "Kan ik mijn ramen wassen vandaag?", a: "Ramen wassen gaat het best op een droge, bewolkte dag: felle zon droogt het sop te snel op en geeft strepen, en harde wind blaast stof op het natte glas. Motregen hoeft geen ramp te zijn, maar echte regen maakt het werk zinloos." },
         { id: "kan-ik-grasmaaien-vandaag", v: "Kan ik grasmaaien vandaag?", a: "Grasmaaien kan zodra het gras droog aanvoelt: na de ochtenddauw of een paar droge uren met wat wind. Nat gras maaien verstopt de maaier, plakt en beschadigt de zode. De namiddag van een droge dag is meestal het beste moment." },
         { id: "kan-ik-tuinieren-vandaag", v: "Kan ik tuinieren vandaag?", a: "Tuinieren luistert minder nauw dan andere klussen: lichte regen is voor planten en pas verzette grond zelfs prettig. Zware grond bewerk je liever niet kletsnat, en planten of zaaien doe je bij voorkeur voor een zachte regendag, niet voor een hittegolf." },
@@ -363,8 +362,8 @@ export const STOREFRONTS = kies({
       keuzehulp: {
         kop: "Wintervraag kiezen: wat wil je weten?",
         keuzes: [
-          { situatie: "Moet de krabber morgen mee naar de auto", anchor: "moet-ik-morgen-krabben", linkTekst: "Moet ik morgen krabben?" },
-          { situatie: "Je stapt zo op de fiets of in de auto en twijfelt over gladheid", anchor: "is-het-glad-op-de-weg", linkTekst: "Is het glad op de weg?" },
+          { situatie: "Moet de krabber morgen mee naar de auto", toolId: "krabben" },
+          { situatie: "Je stapt zo op de fiets of in de auto en twijfelt over gladheid", toolId: "gladheid" },
           { situatie: "Warm de deur uit: jas, muts en handschoenen", toolId: "wat-trek-ik-aan" },
         ],
       },
@@ -397,8 +396,8 @@ export const STOREFRONTS = kies({
         ],
       },
       faq: [
-        { id: "moet-ik-morgen-krabben", v: "Moet ik morgen krabben?", a: "Krabben is aan de orde na een heldere, windstille nacht met vocht in de lucht: de ruit koelt dan onder het vriespunt, ook als de officiele minimumtemperatuur net boven nul blijft (aan de grond vriest het eerder). Een auto onder een carport of tegen de gevel heeft er veel minder last van. Bewolkte of winderige nachten geven zelden een bevroren ruit." },
-        { id: "is-het-glad-op-de-weg", v: "Is het glad op de weg?", a: "Gladheid vraagt twee dingen tegelijk: een wegdek rond of onder nul en vocht (natte weg, mist, of neerslag). Let extra op bruggen, viaducten en fietspaden, die het eerst bevriezen, en op ijzel tijdens dooi na een vorstperiode. Bij twijfel: rustig vertrekken en de eerste remtest op een veilige plek doen." },
+        { id: "helpt-afdekken-tegen-een-bevroren-ruit", v: "Helpt afdekken tegen een bevroren ruit?", a: "Ja, en goed ook: een ruitenhoes, een stuk karton of desnoods een handdoek voorkomt dat de ruit naar de heldere hemel uitstraalt en aanvriest. Een carport of parkeren tegen de gevel scheelt om dezelfde reden veel. Alleen bij ijzel legt neerslag alsnog een laagje over alles heen." },
+        { id: "is-sneeuw-of-ijzel-gevaarlijker", v: "Is sneeuw of ijzel gevaarlijker op de weg?", a: "IJzel. Sneeuw zie je liggen en geeft nog enige grip; ijzel is een onzichtbare spiegelgladde laag waarop remmen en sturen vrijwel niet werken. IJzel ontstaat vooral als dooi invalt na een vorstperiode: regen valt dan op een nog bevroren wegdek." },
         { id: "waarom-is-het-glad-bij-plusgraden", v: "Waarom kan het glad zijn bij plusgraden?", a: "De thermometer meet op anderhalve meter hoogte, maar het wegdek heeft zijn eigen temperatuur. Na een koude nacht of vorstperiode kan de weg nog onder nul zijn terwijl de lucht 2 of 3 graden aangeeft; neerslag of optrekkende mist bevriest dan alsnog op het oppervlak. Vooral in de vroege ochtend en op bruggen speelt dit." },
       ],
       gerelateerd: ["kleding", "sport"],
@@ -632,7 +631,7 @@ export const STOREFRONTS = kies({
         intro: "Choose the situation that looks most like yours; it takes you straight to the check or the answer.",
         keuzes: [
           { situatie: "The laundry could go outside", toolId: "was-buiten-drogen" },
-          { situatie: "The car is dirty and you've got an hour", anchor: "kan-ik-de-auto-wassen-vandaag", linkTekst: "Can I wash the car today?" },
+          { situatie: "The car is dirty and you've got an hour", toolId: "auto-wassen" },
           { situatie: "Painting, staining or sealing outside", anchor: "kan-ik-buiten-schilderen-of-beitsen", linkTekst: "Can I paint or stain outside?" },
           { situatie: "The lawn or the garden is waiting", anchor: "kan-ik-grasmaaien-vandaag", linkTekst: "Can I mow the lawn today?" },
           { situatie: "Washing windows, airing duvets or the house", anchor: "kan-ik-mijn-ramen-wassen-vandaag", linkTekst: "Can I wash my windows today?" },
@@ -667,7 +666,6 @@ export const STOREFRONTS = kies({
         ],
       },
       faq: [
-        { id: "kan-ik-de-auto-wassen-vandaag", v: "Can I wash the car today?", a: "Washing the car wants a dry block of at least an hour or two, no frost and preferably no harsh sun on the paint (droplets drying too fast leave limescale spots). An overcast, dry day with little wind is ideal. The laundry check above uses the same dry-and-wind logic for your location." },
         { id: "kan-ik-mijn-ramen-wassen-vandaag", v: "Can I wash my windows today?", a: "Window washing works best on a dry, overcast day: harsh sun dries the suds too fast and leaves streaks, and strong wind blows dust onto the wet glass. Drizzle isn't necessarily a problem, but real rain makes the work pointless." },
         { id: "kan-ik-grasmaaien-vandaag", v: "Can I mow the lawn today?", a: "Mow as soon as the grass feels dry: after the morning dew or a few dry hours with some wind. Mowing wet grass clogs the mower, sticks and damages the turf. The late afternoon of a dry day is usually the best moment." },
         { id: "kan-ik-tuinieren-vandaag", v: "Can I garden today?", a: "Gardening is less fussy than other jobs: light rain is actually pleasant for plants and freshly moved soil. Avoid working heavy soil when it's soaked, and plant or sow ahead of a soft rainy day rather than a heatwave." },
@@ -741,8 +739,8 @@ export const STOREFRONTS = kies({
       keuzehulp: {
         kop: "Pick your winter question: what do you want to know?",
         keuzes: [
-          { situatie: "Does the scraper go to the car tomorrow", anchor: "moet-ik-morgen-krabben", linkTekst: "Do I need to scrape tomorrow?" },
-          { situatie: "You're about to bike or drive and doubt about ice", anchor: "is-het-glad-op-de-weg", linkTekst: "Are the roads icy?" },
+          { situatie: "Does the scraper go to the car tomorrow", toolId: "krabben" },
+          { situatie: "You're about to bike or drive and doubt about ice", toolId: "gladheid" },
           { situatie: "Out the door warm: coat, hat and gloves", toolId: "wat-trek-ik-aan" },
         ],
       },
@@ -775,8 +773,8 @@ export const STOREFRONTS = kies({
         ],
       },
       faq: [
-        { id: "moet-ik-morgen-krabben", v: "Do I need to scrape tomorrow?", a: "Scraping is on after a clear, calm night with moisture in the air: the windscreen then cools below freezing, even if the official minimum stays just above zero (it freezes earlier at the surface). A car under a carport or against the house suffers far less. Cloudy or windy nights rarely give a frozen screen." },
-        { id: "is-het-glad-op-de-weg", v: "Are the roads icy?", a: "Ice needs two things at once: a road surface around or below zero and moisture (a wet road, fog, or precipitation). Watch bridges, viaducts and bike paths, which freeze first, and freezing rain during a thaw after a frost spell. In doubt: set off calmly and do your first brake test somewhere safe." },
+        { id: "helpt-afdekken-tegen-een-bevroren-ruit", v: "Does covering help against a frozen windscreen?", a: "Yes, a lot: a windscreen cover, a piece of cardboard or even a towel stops the glass radiating to the clear sky and frosting over. A carport or parking against the house helps for the same reason. Only freezing rain still coats everything regardless." },
+        { id: "is-sneeuw-of-ijzel-gevaarlijker", v: "Is snow or black ice more dangerous on the road?", a: "Black ice. Snow is visible and still offers some grip; black ice is an invisible mirror-smooth layer on which braking and steering barely work. It mainly forms when a thaw sets in after a frost spell: rain then falls on a still-frozen road surface." },
         { id: "waarom-is-het-glad-bij-plusgraden", v: "Why can it be icy above zero?", a: "The thermometer measures at chest height, but the road surface has its own temperature. After a cold night or frost spell the road can still be below zero while the air reads 2 or 3 degrees; precipitation or lifting fog then freezes on the surface anyway. This plays mainly in the early morning and on bridges." },
       ],
       gerelateerd: ["kleding", "sport"],

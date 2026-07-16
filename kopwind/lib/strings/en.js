@@ -98,7 +98,6 @@ export const S = {
     zoekPlaceholder: "Search: coat, rain, bbq...",
     zoekLabel: "Search a weather decision",
     geenTreffers: "Nothing found. Try another word, or browse the list above.",
-    antwoordBadge: "Answer",
     inOntwikkeling: "In development",
   },
   menu: {

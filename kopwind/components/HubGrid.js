@@ -8,7 +8,7 @@ import { useDagVerdicts } from "@/components/useDagVerdicts";
 import { schaalVoor, labelVoor, kleurVoorSchaal } from "@/lib/engine/schaal";
 import { huidigeLocatie } from "@/lib/engine/locatie";
 import { STEDEN, dichtstbijzijndeStad } from "@/lib/steden/nl";
-import { TOOLS } from "@/lib/tools";
+import { TOOLS, POPULAIRE_TOOL_IDS } from "@/lib/tools";
 import { S } from "@/lib/strings";
 import { PAD } from "@/lib/i18n/paden";
 
@@ -101,9 +101,11 @@ export default function HubGrid() {
 
       <h2 className="hub-kop">{S.hub.populairKop}</h2>
       <div className="checkgrid">
-        {TOOLS.map((t) => (
-          <ToolKaart key={t.id} t={t} dag={dagen?.[t.id]} stad={stad} laden={laden} />
-        ))}
+        {POPULAIRE_TOOL_IDS.map((id) => TOOLS.find((t) => t.id === id))
+          .filter(Boolean)
+          .map((t) => (
+            <ToolKaart key={t.id} t={t} dag={dagen?.[t.id]} stad={stad} laden={laden} />
+          ))}
       </div>
 
       <Link href={PAD.alleChecks} className="allechecks-kaart paneel">

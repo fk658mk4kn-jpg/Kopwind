@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, useRef, useState } from "react";
+import { hersync } from "@/lib/push-client";
 import { migreerThresholds, defaultsVoor } from "@/lib/tools";
 import SettingsPanel from "./SettingsPanel";
 import MeldingenPanel from "./MeldingenPanel";
@@ -138,6 +139,13 @@ export default function GebruikerProvider({ children }) {
   };
 
   // Wijzigingen debounced naar de server (last write wins).
+  // Stille push-hersync: herstelt de koppeling als de browser het
+  // abonnement heeft vernieuwd (zie lib/push-client.js).
+  useEffect(() => {
+    if (!syncCode) return;
+    hersync(syncCode);
+  }, [syncCode]);
+
   useEffect(() => {
     if (!syncKlaar.current || !syncCode) return;
     clearTimeout(syncTimer.current);

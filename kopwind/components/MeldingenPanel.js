@@ -244,7 +244,7 @@ export default function MeldingenPanel({ open, onClose }) {
           </div>
         )}
 
-        <h3>{kies({ nl: "3. Meldingen per route", en: "3. Notifications per route" })}</h3>
+        <h3>{kies({ nl: "3. Meldingen per check", en: "3. Notifications per check" })}</h3>
         {g.routes.length === 0 && (
           <p className="uitleg">
             {kies({
@@ -488,12 +488,35 @@ function DrempelKeuze({ drempel, richtingGoed, onWijzig }) {
   );
 }
 
+/** Korte samenvatting voor de inklap-kop: uit, of op hoeveel dagen aan. */
+function weekSamenvatting(s) {
+  if (s.aan === false) return kies({ nl: "uit", en: "off" });
+  const n = [1, 2, 3, 4, 5, 6, 7].filter((d) => s.week?.[String(d)]?.aan).length;
+  if (n === 0) return kies({ nl: "geen dagen aan", en: "no days on" });
+  return kies({ nl: n === 1 ? "aan op 1 dag" : `aan op ${n} dagen`, en: n === 1 ? "on 1 day" : `on ${n} days` });
+}
+
 function RouteSchema({ route, onWijzig }) {
   const s = migreerRouteSchema(route.meldingen);
   const patch = (p) => onWijzig({ ...s, ...p });
+  const volgt = s.aan !== false;
   return (
-    <div className="routemeldingen">
-      <strong>{route.naam}</strong>
+    <details className="routemeldingen">
+      <summary>
+        <strong>{route.naam}</strong> <span className={"badge klein" + (volgt ? "" : " stil")}>{weekSamenvatting(s)}</span>
+      </summary>
+      <div className="instelrij">
+        <label>
+          <input
+            type="checkbox"
+            checked={volgt}
+            onChange={(e) => patch({ aan: e.target.checked })}
+          />{" "}
+          {kies({ nl: "Volg deze route", en: "Follow this route" })}
+        </label>
+      </div>
+      {volgt && (
+      <>
       <WeekEditor week={s.week} soort="route" onWijzig={(week) => patch({ week })} />
       <div className="instelrij">
         <label>
@@ -529,7 +552,9 @@ function RouteSchema({ route, onWijzig }) {
         />
       </div>
       <p className="schemazin">{schemaZin(s, "route")}</p>
-    </div>
+      </>
+      )}
+    </details>
   );
 }
 
@@ -537,8 +562,10 @@ function ToolSchema({ tool, presets, schema, onWijzig }) {
   const s = migreerToolSchema(schema);
   const patch = (p) => onWijzig({ ...s, ...p });
   return (
-    <div className="routemeldingen">
-      <h3 style={{ margin: "14px 0 4px" }}>Meldingen voor {tool.naam}</h3>
+    <details className="routemeldingen">
+      <summary>
+        <strong>{tool.naam}</strong> <span className={"badge klein" + (s.aan ? "" : " stil")}>{weekSamenvatting(s)}</span>
+      </summary>
       <div className="instelrij">
         <label>
           <input
@@ -586,6 +613,6 @@ function ToolSchema({ tool, presets, schema, onWijzig }) {
           <p className="schemazin">{schemaZin(s, "tool")}</p>
         </>
       )}
-    </div>
+    </details>
   );
 }

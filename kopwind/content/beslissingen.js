@@ -66,7 +66,7 @@ export const BESLISSINGEN = kies({
       id: "huis-tuin",
       items: [
         { toolId: "was-buiten-drogen", zoek: ["was", "drogen", "wasgoed", "waslijn"] },
-        { vraag: "Kan ik de auto wassen vandaag?", ankerCategorie: "huis-tuin", anker: "kan-ik-de-auto-wassen-vandaag", zoek: ["auto wassen", "auto"] },
+        { toolId: "auto-wassen", zoek: ["auto wassen", "auto", "wasbeurt"] },
         { vraag: "Kan ik buiten schilderen of beitsen?", ankerCategorie: "huis-tuin", anker: "kan-ik-buiten-schilderen-of-beitsen", zoek: ["schilderen", "beitsen", "verf", "schutting", "kitten"] },
         { vraag: "Kan ik grasmaaien vandaag?", ankerCategorie: "huis-tuin", anker: "kan-ik-grasmaaien-vandaag", zoek: ["gras", "maaien", "tuin"] },
         { vraag: "Kan ik tuinieren vandaag?", ankerCategorie: "huis-tuin", anker: "kan-ik-tuinieren-vandaag", zoek: ["tuinieren", "tuin", "planten"] },
@@ -86,8 +86,8 @@ export const BESLISSINGEN = kies({
     {
       id: "winter",
       items: [
-        { vraag: "Moet ik morgen krabben?", ankerCategorie: "winter", anker: "moet-ik-morgen-krabben", zoek: ["krabben", "vorst", "ijs", "autoruit"] },
-        { vraag: "Is het glad op de weg?", ankerCategorie: "winter", anker: "is-het-glad-op-de-weg", zoek: ["glad", "gladheid", "ijzel"] },
+        { toolId: "krabben", zoek: ["krabben", "vorst", "ijs", "autoruit"] },
+        { toolId: "gladheid", zoek: ["glad", "gladheid", "ijzel"] },
       ],
     },
   ],
@@ -140,7 +140,7 @@ export const BESLISSINGEN = kies({
       id: "huis-tuin",
       items: [
         { toolId: "was-buiten-drogen", zoek: ["laundry", "dry", "washing", "line"] },
-        { vraag: "Can I wash the car today?", ankerCategorie: "huis-tuin", anker: "kan-ik-de-auto-wassen-vandaag", zoek: ["car wash", "car"] },
+        { toolId: "auto-wassen", zoek: ["car wash", "car"] },
         { vraag: "Can I paint or stain outside?", ankerCategorie: "huis-tuin", anker: "kan-ik-buiten-schilderen-of-beitsen", zoek: ["paint", "stain", "fence", "sealant"] },
         { vraag: "Can I mow the lawn today?", ankerCategorie: "huis-tuin", anker: "kan-ik-grasmaaien-vandaag", zoek: ["lawn", "mow", "garden"] },
         { vraag: "Can I garden today?", ankerCategorie: "huis-tuin", anker: "kan-ik-tuinieren-vandaag", zoek: ["garden", "gardening", "plants"] },
@@ -160,8 +160,8 @@ export const BESLISSINGEN = kies({
     {
       id: "winter",
       items: [
-        { vraag: "Do I need to scrape tomorrow?", ankerCategorie: "winter", anker: "moet-ik-morgen-krabben", zoek: ["scrape", "frost", "ice", "windscreen"] },
-        { vraag: "Are the roads icy?", ankerCategorie: "winter", anker: "is-het-glad-op-de-weg", zoek: ["icy", "black ice", "slippery"] },
+        { toolId: "krabben", zoek: ["scrape", "frost", "ice", "windscreen"] },
+        { toolId: "gladheid", zoek: ["icy", "black ice", "slippery"] },
       ],
     },
   ],

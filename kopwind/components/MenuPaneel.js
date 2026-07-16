@@ -51,10 +51,13 @@ export default function MenuPaneel({ open, onClose }) {
             ))}
         </div>
         {groepen.map((g) => (
-          <div key={g.id} className="menugroep">
-            <Link href={`/${g.slug}`} className="menugroep-titel menugroep-link" onClick={onClose}>
-              {g.naam}
-            </Link>
+          <details key={g.id} className="menugroep menugroep-klap">
+            <summary className="menugroep-kop">
+              <Link href={`/${g.slug}`} className="menugroep-titel menugroep-link" onClick={onClose}>
+                {g.naam}
+              </Link>
+              <span className="menugroep-teller stil" aria-hidden="true">{g.tools.length}</span>
+            </summary>
             {g.tools.map((t) => (
               <Link key={t.id} href={`/${t.slug}`} className="menulink" onClick={onClose}>
                 <span className="menulink-icoon" style={{ color: t.kleur }}>
@@ -63,7 +66,7 @@ export default function MenuPaneel({ open, onClose }) {
                 {t.korteVraag}
               </Link>
             ))}
-          </div>
+          </details>
         ))}
         <div className="menugroep">
           <span className="menugroep-titel">{S.menu.meer}</span>

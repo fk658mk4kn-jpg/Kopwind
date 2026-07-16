@@ -17,28 +17,35 @@ De vragenlijst onderaan is de voorraad. Per vraag blijft de afweging:
 eigen tool (eigen engine-overlay), variant op een bestaande tool
 (eigen SEO-pagina, gedeelde engine), of FAQ-anker op de storefront.
 
-**Gebouwd in v3.15.0**: hardloopweer (sport) en strandweer (buiten),
-beide met eigen overlay, instellingen, content NL en EN.
+**Gebouwd in v3.15.0**: hardloopweer (sport) en strandweer (buiten).
+**Gebouwd in v3.16.0 (batch 2)**: auto-wassen (huis-tuin), krabben en
+gladheid (winter heeft zijn eerste echte checks; het grid op die
+storefront verschijnt vanzelf). De wintermotors zijn beredeneerd maar
+in juli niet tegen echt weer te valideren; in de eerste vorstweek de
+verdicts naast KNMI-waarschuwingen leggen en drempels bijstellen.
 
-**Batch 2 (voorgestelde volgorde):**
-1. Auto wassen (huis-tuin): droog blok, geen felle zon, geen vorst;
-   deelt denkwerk met de wascheck. Sterke zoekterm, latere affiliate-fit.
-2. Krabben plus gladheid (winter): geeft de wintercategorie zijn eerste
-   echte checks (het grid verschijnt daar dan vanzelf). Bouwen voor de
-   herfst, dan staat het klaar als het seizoen begint.
-3. Wandelen en buiten sporten (sport): mogelijk als varianten op de
-   hardloopcheck met eigen drempels; eerst bekijken of het variantmodel
-   afwijkende drempels aankan, anders eigen tools.
-4. Picknick (buiten): dicht bij terras; wellicht variant op terras.
-5. Grasmaaien en tuinieren (huis-tuin): nu FAQ-ankers; upgraden zodra
-   de eerste huis-tuin-tools bewezen verkeer trekken.
+**Batch 3 (voorgestelde volgorde):**
+1. Wandelen en buiten sporten (sport): het variantmodel deelt drempels
+   met de ouder-tool en past dus niet (wandelen bij 25 graden is prima,
+   hardlopen zwaar); eigen tools op het hardloop-patroon met eigen
+   optima.
+2. Picknick (buiten): dicht bij terras; wellicht variant op terras,
+   anders eigen lichte overlay.
+3. Grasmaaien en tuinieren (huis-tuin): nu FAQ-ankers; upgraden zodra
+   auto-wassen bewezen verkeer trekt.
 
 ## Open punten (feedback Martijn, juli 2026)
 
+- **Meldingen-bug (een melding, daarna stilte)**: code-fix geleverd in
+  v3.16.0 (hersync bij elk bezoek, pushsubscriptionchange-handler,
+  vervang-route, verlopen-teller in de cron-output). Bevestiging op
+  productie staat nog open: controleren of de externe cron nog draait
+  met de juiste secret, en of `verlopen` in de cron-response daalt.
 - **Onderling linken tussen relevante tools**: op toolpagina's naar
   aanverwante checks verwijzen (terras naar barbecue en zonkracht,
-  strand naar zonkracht, fiets naar regentiming, hardlopen naar
-  regentiming en kleding). Goed voor interne links en sessieduur.
+  strand naar zonkracht, fiets naar regentiming en gladheid, hardlopen
+  naar regentiming en kleding, krabben naar gladheid). Goed voor
+  interne links en sessieduur.
 - **Visuals per storefront**: Martijn levert later per storefront een
   AI-gegenereerde afbeelding of illustratie aan; tot die tijd is het
   achtergrondmodel (paginatint plus categorie-icoon) de visuele laag.
@@ -49,6 +56,20 @@ beide met eigen overlay, instellingen, content NL en EN.
 - **Homepage-kop**: staat nu op "Populaire checks" (consistent met de
   sitetaal); Martijn vroeg letterlijk "Populaire tools". Een
   string-wijziging als hij toch "tools" wil.
+- **Inklapbaarheid breder doorvoeren**: menu en meldingen zijn om
+  (v3.16.0); nalopen welke blokken met verdieping nog volgen
+  (storefront-uitlegblokken, instellingen-uitleg). Richtlijn staat in
+  PLAYBOOK sectie 7.
+
+## Verwerkt in v3.16.0 (deze ronde)
+
+Menu-categorieen inklapbaar met teller; Populaire checks op maximaal
+zes (een lijst voor homepage en menu); meldingen heten per check en
+elke check of route is inklapbaar met samenvatting; routes hebben een
+eigen volg-schakelaar (de gemiste uit-optie van de fietscheck); de
+verdictstip op alle-checks kan niet meer wegvallen bij lange vragen;
+anker-vragen delen de chip-opmaak met geplande vragen (klikbaar, vaste
+rand).
 
 ## Fietstool fase 2 (akkoord Martijn)
 
@@ -144,7 +165,7 @@ geen label = nog niet opgepakt.
 
 ### Huis, tuin en auto
 - Kan ik de was buiten drogen? [tool: was-buiten-drogen]
-- Kan ik de auto wassen vandaag? [anker, batch 2 kandidaat]
+- Kan ik de auto wassen vandaag? [tool: auto-wassen, v3.16.0]
 - Kan ik grasmaaien vandaag? [anker]
 - Kan ik tuinieren vandaag? [anker]
 - Kan ik mijn ramen wassen vandaag? [anker]
@@ -165,8 +186,8 @@ geen label = nog niet opgepakt.
 - Kan ik vandaag veilig zonnen? [anker]
 
 ### Winter en veiligheid
-- Moet ik morgen krabben? [anker, batch 2 kandidaat]
-- Is het glad op de weg? [anker, batch 2 kandidaat]
+- Moet ik morgen krabben? [tool: krabben, v3.16.0]
+- Is het glad op de weg? [tool: gladheid, v3.16.0]
 
 ### Comfort en gevoel (nog niet ingedeeld)
 - Is het koud vandaag? / Is het warm vandaag?

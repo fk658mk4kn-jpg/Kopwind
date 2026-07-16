@@ -5,6 +5,12 @@
 
 export const VERSIES = [
   {
+    versie: "3.16.0",
+    codenaam: "Maestro",
+    datum: "2026-07-16",
+    zin: "Three new checks: wash the car today, scrape tomorrow and are the roads icy (winter has its first checks). Notifications are now set and collapsed per check, every route has its own on-off switch, and a silent bug that made notifications stop after a while is fixed: the link now repairs itself.",
+  },
+  {
     versie: "3.15.0",
     codenaam: "Marin",
     datum: "2026-07-16",

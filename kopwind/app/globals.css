@@ -2251,12 +2251,45 @@ a.checkkaart:hover .kaartknop { background: var(--geel); }
 .allechecks-kaart:hover { border-color: var(--accent); }
 .allechecks-titel { display: block; font-weight: 700; margin-bottom: 2px; }
 
+/* Inklapbare meldingen-schemas en menugroepen (huisstijl: alles met
+   meer info is inklapbaar, juli 2026). */
+.routemeldingen > summary {
+  cursor: pointer;
+  padding: 4px 0;
+}
+.routemeldingen > summary .badge { margin-left: 6px; }
+.routemeldingen[open] > summary { margin-bottom: 4px; }
+
+.menugroep-klap > summary.menugroep-kop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  cursor: pointer;
+  list-style: revert;
+}
+.menugroep-teller { font-size: 12px; }
+.menugroep-klap:not([open]) { padding-bottom: 2px; }
+
 /* Stoplicht op alle-checks: label plus stip kleuren via de klasse. */
 .statuslabel.groen { color: var(--groen); }
 .statuslabel.oranje { color: var(--oranje); }
 .statuslabel.rood { color: var(--rood); }
 .statuslabel .statusstip { background: currentColor; }
+/* De stip mag nooit wegvallen bij lange vragen: de vraag mag krimpen
+   en afbreken, het label niet (bugfix juli 2026). */
 .beslissing-link { min-height: 50px; }
+.beslissing-vraag { min-width: 0; overflow-wrap: break-word; }
+.beslissing-link .statuslabel { flex: 0 0 auto; }
+/* Vragen met een storefront-antwoord: dezelfde chipvorm als gepland,
+   maar klikbaar met een vaste rand. */
+.anker-chip {
+  border-style: solid;
+  color: var(--inkt);
+  opacity: 1;
+  text-decoration: none;
+}
+.anker-chip:hover { border-color: var(--accent); }
 
 /* Gerelateerde onderwerpen op de storefront als uitgelichte blokken. */
 .gerelateerd-rij { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 10px; }

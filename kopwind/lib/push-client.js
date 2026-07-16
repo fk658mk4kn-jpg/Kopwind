@@ -89,6 +89,43 @@ export async function abonneer(code) {
   return { ok: true };
 }
 
+/**
+ * Stille her-registratie van het push-abonnement. Browsers vernieuwen
+ * abonnementen periodiek; het oude endpoint geeft dan 410 en wordt
+ * server-side opgeruimd, waarna dit apparaat onbereikbaar is terwijl de
+ * UI nog "gekoppeld" toont. Door bij elk bezoek het actuele abonnement
+ * opnieuw te upserten (en het stil opnieuw aan te maken als het weg is;
+ * dat kan zonder prompt zolang de toestemming er is) herstelt de
+ * koppeling zichzelf. Bugfix juli 2026: "een keer een melding gehad,
+ * daarna stilte".
+ */
+export async function hersync(code) {
+  if (!pushOndersteund() || !code) return;
+  if (typeof Notification === "undefined" || Notification.permission !== "granted") return;
+  try {
+    const reg = await navigator.serviceWorker.getRegistration();
+    if (!reg) return;
+    let sub = await reg.pushManager.getSubscription();
+    if (!sub) {
+      const r = await fetch("/api/push");
+      if (!r.ok) return;
+      const { publicKey } = await r.json();
+      if (!publicKey) return;
+      sub = await reg.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: base64NaarUint8(publicKey),
+      });
+    }
+    await fetch("/api/push", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ code, subscription: sub.toJSON() }),
+    });
+  } catch {
+    // Stil: hersync is best effort en mag een paginabezoek nooit storen.
+  }
+}
+
 /** Zegt het push-abonnement van dit apparaat op. */
 export async function zegOp(code) {
   if (!("serviceWorker" in navigator)) return;

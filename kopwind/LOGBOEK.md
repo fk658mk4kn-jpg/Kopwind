@@ -1682,3 +1682,59 @@ drempels bijstellen. De nieuwe iconen visueel beoordelen.
 
 **Volgende**: batch 2 uit de backlog (auto wassen, krabben plus
 gladheid, wandelen/buiten sporten), of de cross-links tussen tools.
+
+## v3.16.0 "Maestro" - 2026-07-16
+
+**Wat**: Martijns keuze: batch 2 plus zijn zes UI- en meldingenpunten.
+Geleverd: drie nieuwe checks (auto-wassen, krabben, gladheid), de
+meldingen-bugfix, inklapbaar menu en meldingenpaneel, populair op zes,
+en twee alle-checks-fixes.
+
+**De meldingen-bug (een melding, daarna stilte)**: de oorzaak zat niet
+in de dedupe (die bleek gezond: leeg log plus database-sleutels is
+bewust) maar in de push-laag. Browsers vernieuwen push-abonnementen
+periodiek; het oude endpoint geeft dan 410, verstuurNaarAbos ruimde de
+rij netjes op, en niets registreerde het nieuwe abonnement. De UI bleef
+"gekoppeld" tonen omdat de synccode los van het abonnement leeft.
+Fix in drie lagen: hersync() in push-client draait bij elk bezoek en
+upsert het actuele abonnement (of maakt het stil opnieuw aan, kan
+zonder prompt bij verleende toestemming); de service worker kreeg de
+ontbrekende pushsubscriptionchange-handler die via de nieuwe route
+/api/push/vervang het nieuwe endpoint laat overnemen op sleutel van het
+oude; en de cron-response toont voortaan een verlopen-teller zodat een
+run van de externe cron de diagnose zelf vertelt. Belangrijk voor de
+prod-check: als de externe cron zelf gestopt is (of met een oude
+secret draait), verklaart dat hetzelfde symptoom; de code kan dat niet
+zien.
+
+**Krabben-dagsemantiek**: de daglabels in LocatieTool zijn
+index-gebaseerd (tab 0 heet altijd vandaag), dus dagen[0]=morgen was
+geen optie. Gekozen model: elke dag beoordeelt de nacht erna, met
+statuszinnen die expliciet morgenochtend of die ochtend zeggen; het
+staat in de instellingen-uitleg, de content en PLAYBOOK sectie 10. De
+overlay leent daarvoor per dag de vroege uren van de volgende
+kalenderdag (eigen loop over basisPerDag met venster 0-8).
+
+**Risico-conventie**: krabben en gladheid volgen de
+zonkracht-conventie: hoge score is geen gedoe, antwoord.ja is de
+actie of het gevaar (ja, krabben; ja, glad). De register-test dwong
+minstens drie instelvelden af; dat leverde echte instellingen op in
+plaats van opvulling (parkeerplek en aanvriesgrens bij krabben,
+vervoerskeuze en gevoeligheid bij gladheid).
+
+**Gladheid is een benadering**: geen openbare wegdektemperatuur
+beschikbaar; het risico komt uit luchttemperatuur, neerslag, bewolking
+en wind (stralingsnachten). De disclaimer staat in de content en de
+instellingen-uitleg, bewust niet weggemoffeld.
+
+**Tests**: 129 groen; de catalogus- en EN-slugbewakers vingen de nieuwe
+tools correct af voor de koppelingen er waren. Beide builds ok.
+
+**Beperkingen**: geen rendering; de wintermotors zijn in juli niet
+tegen echt weer te valideren (beide zeggen nu terecht nee). De
+push-fix is pas bewezen na een echte browser-vernieuwing of een
+cron-run met verlopen groter dan nul. De drie nieuwe iconen (auto,
+krabber, slip) visueel beoordelen.
+
+**Volgende**: batch 3 (wandelen en buiten sporten als eigen tools,
+picknick), of de cross-links tussen tools.
