@@ -259,7 +259,7 @@ export const kleding = {
   korteVraag: T.korteVraag,
   cta: T.cta,
   navLabel: T.navLabel,
-  kleur: "#3D6E96",
+  kleur: "#7A5EA8",
   locatieHint: T.locatieHint,
   icoon: "shirt",
   categorieId: "kleding",

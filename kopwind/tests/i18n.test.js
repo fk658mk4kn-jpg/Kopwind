@@ -42,7 +42,7 @@ test("en-build: register levert Engelse slugs en het merk klopt", () => {
       console.log(t.TOOLS.map(x => x.slug).join(',') + '|' + b.HUB_NAAM);
     });
   `);
-  assert.equal(uit, "bike-to-work,dry-laundry-outside,what-to-wear,patio-weather,bbq-weather,sunscreen,hay-fever,when-will-it-rain,umbrella-today|Good day for it?");
+  assert.equal(uit, "bike-to-work,running-weather,dry-laundry-outside,what-to-wear,patio-weather,bbq-weather,beach-weather,sunscreen,hay-fever,when-will-it-rain,umbrella-today|Good day for it?");
 });
 
 test("nl blijft de standaard zonder env", () => {

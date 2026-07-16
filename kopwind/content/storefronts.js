@@ -148,7 +148,7 @@ export const STOREFRONTS = kies({
         keuzes: [
           { situatie: "Een terrasje: zon, luwte en het beste moment", toolId: "terras" },
           { situatie: "De barbecue aan vanavond", toolId: "barbecue" },
-          { situatie: "Een dag naar zee", anchor: "is-het-strandweer-vandaag", linkTekst: "Is het strandweer vandaag?" },
+          { situatie: "Een dag naar zee", toolId: "strandweer" },
           { situatie: "Picknicken of buiten eten in het park", anchor: "is-het-picknickweer-vandaag", linkTekst: "Is het picknickweer vandaag?" },
           { situatie: "Buiten zwemmen in open water", anchor: "kan-ik-buiten-zwemmen", linkTekst: "Kan ik buiten zwemmen?" },
           { situatie: "Vanavond naar de sterren kijken", anchor: "is-het-sterrenkijkweer-vanavond", linkTekst: "Is het sterrenkijkweer vanavond?" },
@@ -183,7 +183,6 @@ export const STOREFRONTS = kies({
         ],
       },
       faq: [
-        { id: "is-het-strandweer-vandaag", v: "Is het strandweer vandaag?", a: "Strandweer vraagt meer dan zon: minstens zo'n 20 graden gevoelstemperatuur, niet meer dan windkracht 4 (daarboven stuift het zand) en een droog venster van een paar uur. Aan zee waait het vrijwel altijd een windkracht harder dan landinwaarts; de terrascheck voor jouw badplaats geeft een goede indicatie van zon en luwte." },
         { id: "is-het-picknickweer-vandaag", v: "Is het picknickweer vandaag?", a: "Picknicken luistert minder nauw dan het terras: je kiest zelf je plek in zon of schaduw. Let vooral op een droog venster van twee tot drie uur en droog gras (na een ochtendbui blijft de grond lang nat). De terrascheck voor jouw plek is een prima maatstaf." },
         { id: "kan-ik-buiten-zwemmen", v: "Kan ik buiten zwemmen?", a: "Buitenwater warmt traag op: pas vanaf begin juni komt open water in Nederland boven de 18 graden, en na een paar hete dagen kan het alsnog fris zijn. Kijk naast de luchttemperatuur dus naar de watertemperatuur van jouw plas of zee, en bij officiele zwemplekken naar de waterkwaliteit (blauwalg in warme zomers)." },
         { id: "is-het-sterrenkijkweer-vanavond", v: "Is het sterrenkijkweer vanavond?", a: "Sterren kijken vraagt een heldere, liefst maanarme nacht met weinig wind. Een strakblauwe dag is geen garantie: avondbewolking trekt vaak pas na zonsondergang binnen of juist weg. Heldere winternachten zijn het donkerst, maar ook het koudst; kleed je warmer aan dan je denkt nodig te hebben." },
@@ -202,7 +201,7 @@ export const STOREFRONTS = kies({
         kop: "Sportcheck kiezen: wat wil je weten?",
         keuzes: [
           { situatie: "Fietsen naar werk: wind, regen en je vertrektijd", toolId: "fiets-naar-werk" },
-          { situatie: "Een rondje hardlopen", anchor: "is-het-hardloopweer-vandaag", linkTekst: "Is het hardloopweer vandaag?" },
+          { situatie: "Een rondje hardlopen", toolId: "hardloopweer" },
           { situatie: "Buiten trainen: bootcamp, calisthenics, teamsport", anchor: "kan-ik-buiten-sporten-vandaag", linkTekst: "Kan ik buiten sporten vandaag?" },
           { situatie: "Een lange wandeling", anchor: "kan-ik-wandelen-vandaag", linkTekst: "Kan ik wandelen vandaag?" },
         ],
@@ -236,7 +235,6 @@ export const STOREFRONTS = kies({
         ],
       },
       faq: [
-        { id: "is-het-hardloopweer-vandaag", v: "Is het hardloopweer vandaag?", a: "Ideaal hardloopweer is koeler dan je denkt: ruwweg 8 tot 15 graden, droog en niet te veel wind. Warmer kan prima, maar pas je tempo aan; bij harde wind kies je een rondje met de wind tegen op de heenweg. Het droge venster op jouw looptijd vind je via de regentiming-check." },
         { id: "kan-ik-buiten-sporten-vandaag", v: "Kan ik buiten sporten vandaag?", a: "Voor de meeste buitentrainingen is het antwoord ja, met drie checks: een droog venster van een uur op jouw trainingsmoment, een gevoelstemperatuur waar je intensiteit bij past (boven de 25 graden rustiger aan), en in de winter een blik op gladheid. Wind is bij krachttraining zelden een probleem, bij loopvormen wel." },
         { id: "kan-ik-wandelen-vandaag", v: "Kan ik wandelen vandaag?", a: "Wandelen kan bijna altijd; comfort is de vraag. Kijk naar het droge venster voor de lengte van je route, de gevoelstemperatuur (wind maakt open landschap fris) en in de zomer naar de zonkracht op paden zonder schaduw. Met de juiste jas is een frisse, heldere dag vaak de mooiste wandeldag." },
         { id: "is-het-te-warm-om-buiten-te-sporten", v: "Is het te warm om buiten te sporten?", a: "Boven de 25 graden wordt inspanning merkbaar zwaarder, boven de 30 is intensief sporten midden op de dag onverstandig: je lichaam koelt via zweet en dat kost vocht en vermogen. Verplaats naar de ochtend of avond, verlaag je tempo en drink vooraf en tijdens. Bij hitte plus hoge luchtvochtigheid geldt dit dubbel." },
@@ -528,7 +526,7 @@ export const STOREFRONTS = kies({
         keuzes: [
           { situatie: "A patio: sun, shelter and the best moment", toolId: "terras" },
           { situatie: "Firing up the barbecue tonight", toolId: "barbecue" },
-          { situatie: "A day at the seaside", anchor: "is-het-strandweer-vandaag", linkTekst: "Is it beach weather today?" },
+          { situatie: "A day at the seaside", toolId: "strandweer" },
           { situatie: "A picnic or eating outside in the park", anchor: "is-het-picknickweer-vandaag", linkTekst: "Is it picnic weather today?" },
           { situatie: "Swimming in open water", anchor: "kan-ik-buiten-zwemmen", linkTekst: "Can I swim outside?" },
           { situatie: "Stargazing tonight", anchor: "is-het-sterrenkijkweer-vanavond", linkTekst: "Is tonight good for stargazing?" },
@@ -563,7 +561,6 @@ export const STOREFRONTS = kies({
         ],
       },
       faq: [
-        { id: "is-het-strandweer-vandaag", v: "Is it beach weather today?", a: "Beach weather takes more than sun: around 20 degrees feels-like or more, no more than wind force 4 (above that the sand starts to fly) and a dry window of a few hours. At the coast the wind is almost always one force stronger than inland; the patio check for your seaside town gives a good read on sun and shelter." },
         { id: "is-het-picknickweer-vandaag", v: "Is it picnic weather today?", a: "A picnic is less fussy than the patio: you pick your own spot in sun or shade. Mainly look for a dry window of two to three hours and dry grass (after a morning shower the ground stays wet for a while). The patio check for your location is a fine yardstick." },
         { id: "kan-ik-buiten-zwemmen", v: "Can I swim outside?", a: "Open water warms slowly: in the Netherlands it only passes 18 degrees from early June, and after a few hot days it can still be fresh. So look at the water temperature of your lake or sea beside the air temperature, and at official swimming spots check the water quality (blue-green algae in warm summers)." },
         { id: "is-het-sterrenkijkweer-vanavond", v: "Is tonight good for stargazing?", a: "Stargazing wants a clear, preferably moonless night with little wind. A cloudless day is no guarantee: evening clouds often roll in, or clear away, only after sunset. Clear winter nights are the darkest but also the coldest; dress warmer than you think you need." },
@@ -582,7 +579,7 @@ export const STOREFRONTS = kies({
         kop: "Pick your sport check: what do you want to know?",
         keuzes: [
           { situatie: "Biking to work: wind, rain and your departure time", toolId: "fiets-naar-werk" },
-          { situatie: "Going for a run", anchor: "is-het-hardloopweer-vandaag", linkTekst: "Is it running weather today?" },
+          { situatie: "Going for a run", toolId: "hardloopweer" },
           { situatie: "Training outside: bootcamp, calisthenics, team sport", anchor: "kan-ik-buiten-sporten-vandaag", linkTekst: "Can I work out outside today?" },
           { situatie: "A long walk", anchor: "kan-ik-wandelen-vandaag", linkTekst: "Can I go for a walk today?" },
         ],
@@ -616,7 +613,6 @@ export const STOREFRONTS = kies({
         ],
       },
       faq: [
-        { id: "is-het-hardloopweer-vandaag", v: "Is it running weather today?", a: "Ideal running weather is cooler than you think: roughly 8 to 15 degrees, dry and not too much wind. Warmer works, but adjust your pace; with strong wind, take the headwind on the way out. Find the dry window at your running time via the rain-timing check." },
         { id: "kan-ik-buiten-sporten-vandaag", v: "Can I work out outside today?", a: "For most outdoor training the answer is yes, with three checks: a dry window of an hour at your training time, a feels-like your intensity can handle (above 25 degrees, ease off), and in winter a glance at ice. Wind rarely bothers strength work; it does bother running drills." },
         { id: "kan-ik-wandelen-vandaag", v: "Can I go for a walk today?", a: "Walking works almost always; comfort is the question. Look at the dry window for the length of your route, the feels-like (wind makes open country fresh) and in summer at the UV on shadeless paths. With the right coat, a fresh clear day is often the finest walking day." },
         { id: "is-het-te-warm-om-buiten-te-sporten", v: "Is it too warm to exercise outside?", a: "Above 25 degrees effort gets noticeably heavier, above 30 intensive midday sport is unwise: your body cools through sweat, which costs fluids and power. Move to morning or evening, lower your pace and drink before and during. With heat plus high humidity this counts double." },

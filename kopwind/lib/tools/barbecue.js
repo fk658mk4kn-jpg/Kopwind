@@ -317,7 +317,7 @@ export const barbecue = {
   korteVraag: T.korteVraag,
   cta: T.cta,
   navLabel: T.navLabel,
-  kleur: "#B5691E",
+  kleur: "#C24E3F",
   locatieHint: T.locatieHint,
   icoon: "bbq",
   categorieId: "buiten",

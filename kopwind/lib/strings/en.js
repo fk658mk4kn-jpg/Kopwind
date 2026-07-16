@@ -67,6 +67,7 @@ export const S = {
     zoekStad: "Search your city...",
     mijnLocatie: "Use my location",
     locatieFout: "Couldn't get your location. Search your city above, works just as well.",
+    populairKop: "Popular checks",
     recentKop: "Recently used",
     themaKop: "Pick a theme",
     alleChecksTitel: "All checks in one place",

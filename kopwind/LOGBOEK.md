@@ -1627,3 +1627,58 @@ niet (alleen hoofdtoolpagina's).
 
 **Volgende**: Martijns oordeel, daarna nieuwe tools uit de vragenlijst
 of de cross-links tussen tools uit de backlog.
+
+## v3.15.0 "Marin" - 2026-07-16
+
+**Wat**: Martijns keuze uit de backlog (nieuwe tools bouwen) plus zijn
+vier UI-punten, en de nieuwe vaste werkregel: de backlog wordt elke
+sessie bijgewerkt en tussendoor-feedback gaat er direct in.
+
+**Nieuwe tools**: hardloopweer (sport) en strandweer (buiten), gekozen
+op zoekvolume, seizoen (strand piekt nu in juli) en de categorie-gaten
+(sport had een check). Beide volgen het terras-patroon (uurscore, beste
+blok, factoren met redenen, status per dag, vijf dagen vooruit) met een
+eigen scoremotor: bij hardlopen is koel beter dan warm (top rond 8-15
+gevoel, hard aflopend boven de instelbare warmtegrens), telt motregen
+licht en echte regen als ongeschikt; bij strand ligt de windgrens op 20
+km/u (stuivend zand, geen luwte), telt de zon zwaarder en staat de
+kustregel in uitleg en instellingen (aan zee waait het een kracht
+harder; zoek je badplaats). Volledige content NL en EN, instellingen,
+en registratie in register en resolver. De catalogus- en
+keuzehulpvragen verwijzen nu naar de checks; de twee FAQ-antwoorden op
+de storefronts zijn vervallen (anti-cannibalisatie, geen dubbele vraag
+tussen storefront en toolpagina). De EN-slugtest bewaakte de
+registervolgorde en is bijgewerkt.
+
+**Kleuren**: alle zeven hexcodes waren uniek, maar drie paren zaten in
+dezelfde familie (twee blauwen, twee groenen, twee oranjes); dat was
+wat Martijn zag. Nieuw palet in zeven families: regen blauw #3C7DC4,
+kleding paars #7A5EA8, buiten koraalrood #C24E3F, sport groen #2F7D62,
+huis-tuin aardebruin #8C6239, gezondheid amber #D97C1B, winter
+staalblauw #44607A. Vier toolbestanden volgden mee en valideerRegister
+eist nu ook unieke categoriekleuren.
+
+**Homepage-kop**: "Alle checks" boven het grid klopte niet (het zijn
+niet alle checks) en heet nu "Populaire checks". Bewuste afwijking van
+Martijns letterlijke "Populaire tools": de hele site zegt checks
+(canonieke naamgeving is zijn eigen regel); een string-wijziging als
+hij toch tools wil. De alle-checks-kaart eronder blijft.
+
+**Alle-checks**: alleen nog het gekleurde bolletje per live check; het
+verdictwoord zit in de title-tooltip en als aria-label op de stip
+(toegankelijkheid blijft gedekt zonder zichtbare tekst). Tijdens laden
+een stille grijze stip.
+
+**Iconen**: hardloopschoen en strandbal nieuw getekend in de lijnstijl.
+
+**Tests**: 129 groen (twee bewakers vingen de nieuwe tools correct af
+voor de koppelingen er waren); beide builds ok, /hardloopweer en
+/running-weather prerenderen.
+
+**Beperkingen**: geen rendering en geen extern netwerk; de scoremotors
+zijn beredeneerd maar niet tegen echt weer gedraaid. Na deploy de
+verdicts van beide checks een paar dagen naast het gevoel leggen en de
+drempels bijstellen. De nieuwe iconen visueel beoordelen.
+
+**Volgende**: batch 2 uit de backlog (auto wassen, krabben plus
+gladheid, wandelen/buiten sporten), of de cross-links tussen tools.

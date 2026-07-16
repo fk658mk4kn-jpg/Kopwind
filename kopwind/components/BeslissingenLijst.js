@@ -104,12 +104,15 @@ export default function BeslissingenLijst({ groepen }) {
                         <span className="beslissing-vraag">{vraagVan(item)}</span>
                         {item.anker && <span className="badge klein stil">{S.beslissingen.antwoordBadge}</span>}
                         {dag && (
-                          <span className={"statuslabel " + klasse}>
-                            <span className="statusstip" aria-hidden="true" />
-                            {labelVoor(dag.conditie.score, tool.schaalLabels)}
+                          <span className={"statuslabel " + klasse} title={labelVoor(dag.conditie.score, tool.schaalLabels)}>
+                            <span className="statusstip" role="img" aria-label={labelVoor(dag.conditie.score, tool.schaalLabels)} />
                           </span>
                         )}
-                        {tool && !dag && laden && <span className="statuslabel stil">...</span>}
+                        {tool && !dag && laden && (
+                          <span className="statuslabel stil">
+                            <span className="statusstip" aria-hidden="true" />
+                          </span>
+                        )}
                       </Link>
                     </li>
                   );

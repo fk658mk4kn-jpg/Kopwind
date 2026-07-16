@@ -5,6 +5,12 @@
 
 export const VERSIES = [
   {
+    versie: "3.15.0",
+    codenaam: "Marin",
+    datum: "2026-07-16",
+    zin: "Two new checks: running weather today (with your best running window, because cool beats warm) and beach weather today (with a strict wind limit, because there is no shelter on the beach). Every theme now truly has its own colour, and All checks shows just the coloured dot per check.",
+  },
+  {
     versie: "3.14.0",
     codenaam: "Ostro",
     datum: "2026-07-16",

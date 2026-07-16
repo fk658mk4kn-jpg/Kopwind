@@ -6,6 +6,12 @@
 
 export const VERSIES = [
   {
+    versie: "3.15.0",
+    codenaam: "Marin",
+    datum: "2026-07-16",
+    zin: "Twee nieuwe checks: is het hardloopweer vandaag (met het beste loopblok, want koel loopt lekkerder dan warm) en is het strandweer vandaag (met een strenge windgrens, want op het strand is geen luwte). Elk thema heeft nu ook echt zijn eigen kleur, en op Alle checks zie je per check alleen nog het gekleurde bolletje.",
+  },
+  {
     versie: "3.14.0",
     codenaam: "Ostro",
     datum: "2026-07-16",

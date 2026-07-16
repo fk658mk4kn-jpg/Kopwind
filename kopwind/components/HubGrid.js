@@ -99,7 +99,7 @@ export default function HubGrid() {
         </>
       )}
 
-      <h2 className="hub-kop">{S.menu.alle}</h2>
+      <h2 className="hub-kop">{S.hub.populairKop}</h2>
       <div className="checkgrid">
         {TOOLS.map((t) => (
           <ToolKaart key={t.id} t={t} dag={dagen?.[t.id]} stad={stad} laden={laden} />

@@ -25,6 +25,8 @@
  */
 
 import { fietsNaarWerk } from "./fiets-naar-werk.js";
+import { hardloopweer } from "./hardloopweer.js";
+import { strandweer } from "./strandweer.js";
 import { CATEGORIEEN } from "../categorieen.js";
 import { wasBuitenDrogen } from "./was-buiten-drogen.js";
 import { kleding } from "./kleding.js";
@@ -36,7 +38,7 @@ import { regenTiming } from "./regen-timing.js";
 import { paraplu } from "./paraplu.js";
 import { VARIANTEN, maakPseudoTool } from "../varianten.js";
 
-export const TOOLS = [fietsNaarWerk, wasBuitenDrogen, kleding, terras, barbecue, zonkracht, hooikoorts, regenTiming, paraplu];
+export const TOOLS = [fietsNaarWerk, hardloopweer, wasBuitenDrogen, kleding, terras, barbecue, strandweer, zonkracht, hooikoorts, regenTiming, paraplu];
 
 export function vindTool(slug) {
   const direct = TOOLS.find((t) => t.slug === slug);
@@ -86,6 +88,13 @@ export function migreerThresholds(oud) {
 export function valideerRegister(tools = TOOLS) {
   const fouten = [];
   const iconen = new Map();
+  const catKleuren = new Map();
+  for (const c of CATEGORIEEN) {
+    if (catKleuren.has(c.kleur)) {
+      fouten.push(`categorie ${c.id}: kleur ${c.kleur} wordt al gebruikt door ${catKleuren.get(c.kleur)} (elke categorie een eigen kleur)`);
+    }
+    catKleuren.set(c.kleur, c.id);
+  }
   const slugs = new Set();
   const categorieIds = new Set(CATEGORIEEN.map((c) => c.id));
   const VERPLICHT = ["id", "slug", "naam", "korteVraag", "patroon", "inputType", "adviesLabels", "cta", "navLabel", "kleur", "schaalLabels", "categorieId"];

@@ -344,7 +344,7 @@ export const wasBuitenDrogen = {
   korteVraag: T.korteVraag,
   cta: T.cta,
   navLabel: T.navLabel,
-  kleur: "#4E9A86",
+  kleur: "#8C6239",
   locatieHint: T.locatieHint,
   icoon: "waslijn",
   categorieId: "huis-tuin",

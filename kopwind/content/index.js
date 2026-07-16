@@ -11,6 +11,8 @@ import * as fietsenNaarWerk from "./fietsen-naar-werk.js";
 import * as wasBuitenDrogen from "./was-buiten-drogen.js";
 import * as watTrekIkAan from "./wat-trek-ik-aan.js";
 import * as terras from "./terras.js";
+import * as hardloopweerNl from "./hardloopweer.js";
+import * as strandweerNl from "./strandweer.js";
 import * as barbecueweer from "./barbecueweer.js";
 import * as zonkracht from "./zonkracht.js";
 import * as hooikoorts from "./hooikoorts.js";
@@ -24,6 +26,8 @@ import * as bikeToWork from "./en/bike-to-work.js";
 import * as dryLaundryOutside from "./en/dry-laundry-outside.js";
 import * as whatToWear from "./en/what-to-wear.js";
 import * as patioWeather from "./en/patio-weather.js";
+import * as runningWeather from "./en/running-weather.js";
+import * as beachWeather from "./en/beach-weather.js";
 import * as bbqWeather from "./en/bbq-weather.js";
 import * as sunscreen from "./en/sunscreen.js";
 import * as hayFever from "./en/hay-fever.js";
@@ -40,6 +44,8 @@ const PER_SLUG =
         "dry-laundry-outside": dryLaundryOutside,
         "what-to-wear": whatToWear,
         "patio-weather": patioWeather,
+        "running-weather": runningWeather,
+        "beach-weather": beachWeather,
         "bbq-weather": bbqWeather,
         "sunscreen": sunscreen,
         "hay-fever": hayFever,
@@ -54,6 +60,8 @@ const PER_SLUG =
         "was-buiten-drogen": wasBuitenDrogen,
         "wat-trek-ik-aan": watTrekIkAan,
         "terrasweer": terras,
+        "hardloopweer": hardloopweerNl,
+        "strandweer": strandweerNl,
         "barbecueweer": barbecueweer,
         "zonkracht": zonkracht,
         "hooikoorts": hooikoorts,

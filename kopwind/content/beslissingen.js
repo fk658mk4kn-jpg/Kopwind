@@ -45,7 +45,7 @@ export const BESLISSINGEN = kies({
       items: [
         { toolId: "terras", zoek: ["terras", "buiten zitten", "borrel", "bier"] },
         { toolId: "barbecue", zoek: ["bbq", "barbecue", "grillen"] },
-        { vraag: "Is het strandweer vandaag?", ankerCategorie: "buiten", anker: "is-het-strandweer-vandaag", zoek: ["strand", "zee"] },
+        { toolId: "strandweer", zoek: ["strand", "zee", "kust"] },
         { vraag: "Is het picknickweer vandaag?", ankerCategorie: "buiten", anker: "is-het-picknickweer-vandaag", zoek: ["picknick", "buiten eten"] },
         { vraag: "Kan ik buiten zwemmen?", ankerCategorie: "buiten", anker: "kan-ik-buiten-zwemmen", zoek: ["zwemmen", "water"] },
         { vraag: "Is het sterrenkijkweer vanavond?", ankerCategorie: "buiten", anker: "is-het-sterrenkijkweer-vanavond", zoek: ["sterren", "sterrenkijken", "helder"] },
@@ -55,7 +55,7 @@ export const BESLISSINGEN = kies({
       id: "sport",
       items: [
         { toolId: "fiets-naar-werk", zoek: ["fiets", "fietsen", "woon-werk", "wind"] },
-        { vraag: "Is het hardloopweer vandaag?", ankerCategorie: "sport", anker: "is-het-hardloopweer-vandaag", zoek: ["hardlopen", "rennen", "runnen"] },
+        { toolId: "hardloopweer", zoek: ["hardlopen", "rennen", "runnen", "joggen"] },
         { vraag: "Kan ik buiten sporten vandaag?", ankerCategorie: "sport", anker: "kan-ik-buiten-sporten-vandaag", zoek: ["sporten", "training", "bootcamp"] },
         { vraag: "Kan ik wandelen vandaag?", ankerCategorie: "sport", anker: "kan-ik-wandelen-vandaag", zoek: ["wandelen", "lopen"] },
         { vraag: "Kan ik vandaag padellen of tennissen?", zoek: ["padel", "tennis", "baan"] },
@@ -119,7 +119,7 @@ export const BESLISSINGEN = kies({
       items: [
         { toolId: "terras", zoek: ["patio", "terrace", "sit outside", "drinks"] },
         { toolId: "barbecue", zoek: ["bbq", "barbecue", "grill"] },
-        { vraag: "Is it beach weather today?", ankerCategorie: "buiten", anker: "is-het-strandweer-vandaag", zoek: ["beach", "sea"] },
+        { toolId: "strandweer", zoek: ["beach", "sea", "coast"] },
         { vraag: "Is it picnic weather today?", ankerCategorie: "buiten", anker: "is-het-picknickweer-vandaag", zoek: ["picnic", "eat outside"] },
         { vraag: "Can I swim outside?", ankerCategorie: "buiten", anker: "kan-ik-buiten-zwemmen", zoek: ["swim", "water"] },
         { vraag: "Is tonight good for stargazing?", ankerCategorie: "buiten", anker: "is-het-sterrenkijkweer-vanavond", zoek: ["stars", "stargazing", "clear"] },
@@ -129,7 +129,7 @@ export const BESLISSINGEN = kies({
       id: "sport",
       items: [
         { toolId: "fiets-naar-werk", zoek: ["bike", "cycling", "commute", "wind"] },
-        { vraag: "Is it running weather today?", ankerCategorie: "sport", anker: "is-het-hardloopweer-vandaag", zoek: ["running", "run"] },
+        { toolId: "hardloopweer", zoek: ["running", "run", "jog"] },
         { vraag: "Can I work out outside today?", ankerCategorie: "sport", anker: "kan-ik-buiten-sporten-vandaag", zoek: ["workout", "training", "bootcamp"] },
         { vraag: "Can I go for a walk today?", ankerCategorie: "sport", anker: "kan-ik-wandelen-vandaag", zoek: ["walk", "walking"] },
         { vraag: "Can I play padel or tennis today?", zoek: ["padel", "tennis", "court"] },
