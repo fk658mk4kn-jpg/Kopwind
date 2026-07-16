@@ -18,6 +18,7 @@ import { S } from "@/lib/strings";
 import { LOCALE } from "@/lib/i18n/locale";
 import { CATEGORIEEN, vindCategorie } from "@/lib/categorieen";
 import Storefront from "@/components/Storefront";
+import RecentTracker from "@/components/RecentTracker";
 
 /**
  * Dynamische toolpagina uit het register (§6): de tool bovenaan, de
@@ -94,6 +95,7 @@ export default function ToolPagina({ params }) {
 
   return (
     <main>
+      <RecentTracker toolId={tool.id} />
       <Broodkruimel items={[{ naam: HUB_NAAM, href: "/" }, { naam: tool.naam }]} />
 
       <section className="tool-hero">

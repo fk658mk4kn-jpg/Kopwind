@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import LocatieZoek from "@/components/LocatieZoek";
 import Icoon from "@/components/Icoon";
@@ -33,6 +33,18 @@ export default function HubGrid() {
   // hooikoortskaart hier zijn pollenvelden; v3.13.0).
   const { stad, kiesStad, dagen, laden, fout } = useDagVerdicts();
   const [lokaleFout, setLokaleFout] = useState(null);
+  const [recent, setRecent] = useState([]);
+
+  // De drie meest recent gebruikte checks van deze gebruiker (lokaal
+  // bijgehouden door RecentTracker op de toolpagina's).
+  useEffect(() => {
+    try {
+      const ids = JSON.parse(localStorage.getItem("kopwind.recenteTools") ?? "[]");
+      setRecent(ids.map((id) => TOOLS.find((t) => t.id === id)).filter(Boolean).slice(0, 3));
+    } catch {
+      setRecent([]);
+    }
+  }, []);
 
   const kies = (plek) => {
     setLokaleFout(null);
@@ -76,36 +88,25 @@ export default function HubGrid() {
 
       {(fout ?? lokaleFout) && <div className="fout">{fout ?? lokaleFout}</div>}
 
+      {recent.length > 0 && (
+        <>
+          <h2 className="hub-kop">{S.hub.recentKop}</h2>
+          <div className="checkgrid">
+            {recent.map((t) => (
+              <ToolKaart key={t.id} t={t} dag={dagen?.[t.id]} stad={stad} laden={laden} />
+            ))}
+          </div>
+        </>
+      )}
+
+      <h2 className="hub-kop">{S.menu.alle}</h2>
       <div className="checkgrid">
         {TOOLS.map((t) => (
-          <Link
-            key={t.id}
-            href={`/${t.slug}`}
-            className="checkkaart"
-            style={{
-              background: `color-mix(in srgb, ${t.kleur} 6%, #ffffff)`,
-              borderColor: `color-mix(in srgb, ${t.kleur} 28%, #ffffff)`,
-            }}
-          >
-            <span className="kaart-watermerk" aria-hidden="true" style={{ color: t.kleur }}>
-              <Icoon naam={t.icoon} maat={96} />
-            </span>
-            <span className="kaart-rij1">
-              <span className="icon-chip klein" style={{ background: `color-mix(in srgb, ${t.kleur} 15%, #ffffff)`, color: t.kleur }}>
-                <Icoon naam={t.icoon} maat={16} />
-              </span>
-              <h2 className="kaart-vraag">{t.korteVraag}</h2>
-              <KaartBadge tool={t} dag={dagen?.[t.id]} stad={stad} />
-            </span>
-            <KaartRegel tool={t} dag={dagen?.[t.id]} stad={stad} laden={laden} />
-            <span className="kaart-cta">
-              <span className="kaart-cta-tekst">{t.cta}</span> <Icoon naam="pijl" maat={13} />
-            </span>
-          </Link>
+          <ToolKaart key={t.id} t={t} dag={dagen?.[t.id]} stad={stad} laden={laden} />
         ))}
       </div>
 
-      <Link href={PAD.alleChecks} className="allechecks-kaart">
+      <Link href={PAD.alleChecks} className="allechecks-kaart paneel">
         <span>
           <span className="allechecks-titel">{S.hub.alleChecksTitel}</span>
           <span className="kaartregel stil">{S.hub.alleChecksSub}</span>
@@ -113,6 +114,34 @@ export default function HubGrid() {
         <Icoon naam="pijl" maat={18} />
       </Link>
     </section>
+  );
+}
+
+function ToolKaart({ t, dag, stad, laden }) {
+  return (
+    <Link
+      href={`/${t.slug}`}
+      className="checkkaart"
+      style={{
+        background: `color-mix(in srgb, ${t.kleur} 6%, #ffffff)`,
+        borderColor: `color-mix(in srgb, ${t.kleur} 28%, #ffffff)`,
+      }}
+    >
+      <span className="kaart-watermerk" aria-hidden="true" style={{ color: t.kleur }}>
+        <Icoon naam={t.icoon} maat={96} />
+      </span>
+      <span className="kaart-rij1">
+        <span className="icon-chip klein" style={{ background: `color-mix(in srgb, ${t.kleur} 15%, #ffffff)`, color: t.kleur }}>
+          <Icoon naam={t.icoon} maat={16} />
+        </span>
+        <h3 className="kaart-vraag">{t.korteVraag}</h3>
+        <KaartBadge tool={t} dag={dag} stad={stad} />
+      </span>
+      <KaartRegel tool={t} dag={dag} stad={stad} laden={laden} />
+      <span className="kaart-cta">
+        <span className="kaart-cta-tekst">{t.cta}</span> <Icoon naam="pijl" maat={13} />
+      </span>
+    </Link>
   );
 }
 

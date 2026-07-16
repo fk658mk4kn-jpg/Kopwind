@@ -93,19 +93,21 @@ export default function Storefront({ categorie }) {
       {/* Blok 2: voor wie / waarvoor */}
       <VoorWieBlok blok={sf?.voorWie} />
 
-      {/* Blok 3: keuzehulp (met de checks als keuzes) */}
-      <KeuzeHulpBlok blok={sf?.keuzehulp} categorie={categorie} />
-
-      {/* Blok 4: uitleg (waar let je op) */}
-      <UitlegBlokken sf={sf} categorie={categorie} />
-
-      {/* Blok 5: alle checks (live, vraagpagina's en gepland) */}
+      {/* Blok 3: alle checks (live, vraagpagina's en gepland). Op verzoek
+          (juli 2026) voor de keuzehulp: het grid heeft de sterkste CTA. */}
       <ChecksGrid
         tools={tools}
         varianten={varianten}
         gepland={gepland}
         kop={S.categorie.alleChecks}
       />
+
+      {/* Blok 4: uitleg (waar let je op) */}
+      <UitlegBlokken sf={sf} categorie={categorie} />
+
+      {/* Blok 5: keuzehulp (situatie-routering, ook naar antwoorden
+          zonder eigen check) */}
+      <KeuzeHulpBlok blok={sf?.keuzehulp} categorie={categorie} />
 
       {/* Blok 6: FAQ */}
       <CategorieFaq faq={sf?.faq} />

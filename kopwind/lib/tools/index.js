@@ -85,6 +85,7 @@ export function migreerThresholds(oud) {
 /** Validatie voor de registertest: elk verplicht veld aanwezig en uniek. */
 export function valideerRegister(tools = TOOLS) {
   const fouten = [];
+  const iconen = new Map();
   const slugs = new Set();
   const categorieIds = new Set(CATEGORIEEN.map((c) => c.id));
   const VERPLICHT = ["id", "slug", "naam", "korteVraag", "patroon", "inputType", "adviesLabels", "cta", "navLabel", "kleur", "schaalLabels", "categorieId"];
@@ -103,6 +104,10 @@ export function valideerRegister(tools = TOOLS) {
     if (cat && t.kleur !== cat.kleur) {
       fouten.push(`${t.id}: kleur ${t.kleur} wijkt af van categorie-kleur ${cat.kleur} (een accentkleur per categorie)`);
     }
+    if (iconen.has(t.icoon)) {
+      fouten.push(`${t.id}: icoon ${t.icoon} wordt al gebruikt door ${iconen.get(t.icoon)} (elke tool een eigen icoon)`);
+    }
+    iconen.set(t.icoon, t.id);
     for (const k of ["goed", "matig", "slecht"]) {
       if (!t.adviesLabels?.[k]) fouten.push(`${t.id}: adviesLabel ${k} ontbreekt`);
     }

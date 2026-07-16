@@ -36,9 +36,23 @@ export function GerelateerdCategorieen({ ids }) {
       <h2>{S.categorie.gerelateerdKop}</h2>
       <div className="gerelateerd-rij">
         {items.map((c) => (
-          <Link key={c.id} href={`/${c.slug}`} className="gerelateerd-link">
-            <strong>{c.titel}</strong> <span className="stil">{c.kort}</span>{" "}
-            <Icoon naam="pijl" maat={12} />
+          <Link
+            key={c.id}
+            href={`/${c.slug}`}
+            className="gerelateerd-blok"
+            style={{
+              background: `color-mix(in srgb, ${c.kleur} 6%, #ffffff)`,
+              borderColor: `color-mix(in srgb, ${c.kleur} 24%, #ffffff)`,
+            }}
+          >
+            <span className="icon-chip klein" style={{ background: `color-mix(in srgb, ${c.kleur} 15%, #ffffff)`, color: c.kleur }}>
+              <Icoon naam={c.icoon} maat={16} />
+            </span>
+            <span className="gerelateerd-tekst">
+              <strong>{c.titel}</strong>
+              <span className="stil">{c.kort}</span>
+            </span>
+            <Icoon naam="pijl" maat={15} />
           </Link>
         ))}
       </div>

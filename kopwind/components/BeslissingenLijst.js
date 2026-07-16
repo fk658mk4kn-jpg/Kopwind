@@ -5,7 +5,7 @@ import Link from "next/link";
 import { TOOLS } from "@/lib/tools";
 import { VARIANTEN } from "@/lib/varianten";
 import { vindCategorieOpId } from "@/lib/categorieen";
-import { kleurVoorSchaal, labelVoor } from "@/lib/engine/schaal";
+import { schaalVoor, kleurVoorSchaal, labelVoor } from "@/lib/engine/schaal";
 import { useDagVerdicts } from "@/components/useDagVerdicts";
 import LocatieZoek from "@/components/LocatieZoek";
 import { S } from "@/lib/strings";
@@ -89,6 +89,12 @@ export default function BeslissingenLijst({ groepen }) {
                     : null;
                   if (!doel) return null;
                   const dag = tool && dagen ? dagen[tool.id] : null;
+                  // Stoplicht: kleurVoorSchaal geeft een klasse (groen,
+                  // oranje of rood) bij het schaal-id; de stip kleurt mee
+                  // via currentColor. Bugfix juli 2026: dit ging eerder
+                  // als klassenaam-in-een-style, waardoor de stip
+                  // onzichtbaar was.
+                  const klasse = dag ? kleurVoorSchaal(schaalVoor(dag.conditie.score).id) : null;
                   return (
                     <li key={doel}>
                       <Link href={doel} className="beslissing-link">
@@ -96,9 +102,10 @@ export default function BeslissingenLijst({ groepen }) {
                           <Icoon naam={tool?.icoon ?? cat.icoon} maat={16} />
                         </span>
                         <span className="beslissing-vraag">{vraagVan(item)}</span>
+                        {item.anker && <span className="badge klein stil">{S.beslissingen.antwoordBadge}</span>}
                         {dag && (
-                          <span className="statuslabel" style={{ color: kleurVoorSchaal(dag.conditie.score) }}>
-                            <span className="statusstip" aria-hidden="true" style={{ background: kleurVoorSchaal(dag.conditie.score) }} />
+                          <span className={"statuslabel " + klasse}>
+                            <span className="statusstip" aria-hidden="true" />
                             {labelVoor(dag.conditie.score, tool.schaalLabels)}
                           </span>
                         )}

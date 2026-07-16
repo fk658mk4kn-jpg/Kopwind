@@ -38,7 +38,7 @@ export const paraplu = {
   cta: T.cta,
   navLabel: T.navLabel,
   kleur: "#3C7DC4",
-  icoon: "druppel",
+  icoon: "paraplu",
   categorieId: "regen",
   soort: "advies",
   diepte: T.diepte,

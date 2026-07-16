@@ -6,6 +6,12 @@
 
 export const VERSIES = [
   {
+    versie: "3.14.0",
+    codenaam: "Ostro",
+    datum: "2026-07-16",
+    zin: "De voet staat weer onder elke themapagina en de gekleurde bolletjes op Alle checks doen het nu echt: groen, oranje of rood per check, standaard voor heel Nederland tot je een plek kiest. De homepage kreeg nette themablokken, een rijtje met je drie laatst gebruikte checks en een duidelijke knop naar alles. Elke check heeft voortaan een eigen icoon.",
+  },
+  {
     versie: "3.13.0",
     codenaam: "Solano",
     datum: "2026-07-16",

@@ -68,6 +68,7 @@ export const S = {
     zoekStad: "Zoek je stad...",
     mijnLocatie: "Gebruik mijn locatie",
     locatieFout: "Locatie ophalen lukte niet. Zoek je stad hierboven, dat werkt net zo goed.",
+    recentKop: "Recent gebruikt",
     themaKop: "Kies een thema",
     alleChecksTitel: "Alle checks op een plek",
     alleChecksSub: "Ook wat eraan komt, met de status voor jouw plek.",
@@ -100,6 +101,7 @@ export const S = {
     zoekPlaceholder: "Zoek: jas, regen, bbq...",
     zoekLabel: "Zoek een weerbeslissing",
     geenTreffers: "Niets gevonden. Probeer een ander woord, of kijk in de lijst hierboven.",
+    antwoordBadge: "Antwoord",
     inOntwikkeling: "In ontwikkeling",
   },
   menu: {

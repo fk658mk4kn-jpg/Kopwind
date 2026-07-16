@@ -42,7 +42,7 @@ export const regenTiming = {
   cta: T.cta,
   navLabel: T.navLabel,
   kleur: "#3C7DC4",
-  icoon: "druppel",
+  icoon: "klok",
   categorieId: "regen",
   soort: "info",
   diepte: T.diepte,

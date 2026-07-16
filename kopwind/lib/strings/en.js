@@ -67,6 +67,7 @@ export const S = {
     zoekStad: "Search your city...",
     mijnLocatie: "Use my location",
     locatieFout: "Couldn't get your location. Search your city above, works just as well.",
+    recentKop: "Recently used",
     themaKop: "Pick a theme",
     alleChecksTitel: "All checks in one place",
     alleChecksSub: "Including what is on the way, with the status for your location.",
@@ -96,6 +97,7 @@ export const S = {
     zoekPlaceholder: "Search: coat, rain, bbq...",
     zoekLabel: "Search a weather decision",
     geenTreffers: "Nothing found. Try another word, or browse the list above.",
+    antwoordBadge: "Answer",
     inOntwikkeling: "In development",
   },
   menu: {

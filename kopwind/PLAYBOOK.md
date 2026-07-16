@@ -302,23 +302,27 @@ vraagpagina (variantId) of een FAQ-anker op dezelfde pagina (long-tail
 zonder eigen URL). valideerRegister eist dat elke tool aan een bestaande
 categorie hangt.
 
-De vaste bouwblokken, in deze volgorde (volgorde mag later op data):
+De vaste bouwblokken, in deze volgorde (blok 3 en 5 gewisseld op verzoek
+van Martijn, juli 2026: het checks-grid heeft de sterkste CTA en staat
+daarom voor de keuzehulp; we meten op gedrag of de begeleiding hieronder
+lijdt):
 
 1. **Hero**: H1 is de categorietitel, intro is de categorie-intro
    (tegelijk de meta-description: 120-158 tekens).
 2. **Voor wie / waarvoor**: herkenbare situaties (minimaal 2 regels).
-3. **Keuzehulp**: help de bezoeker het juiste segment kiezen, met de
-   checks als keuzes (minimaal 3).
-4. **Uitleg-blokken**: beslislogica (minimaal 4 punten), veelvoorkomende
-   situaties (minimaal 4) en het seizoensblok (precies 4).
-5. **Alle checks in deze categorie**: drie kaartsoorten in dezelfde
+3. **Alle checks in deze categorie**: drie kaartsoorten in dezelfde
    opmaak: live tools, vraagpagina's (varianten, met diepte-regel en cta
    van de oudertool) en geplande checks als gedempte Binnenkort-kaart.
    Het blok verdwijnt alleen als een categorie nog geen enkele kaart
    heeft (winter, tot de eerste wintercheck live gaat).
+4. **Uitleg-blokken**: beslislogica (minimaal 4 punten), veelvoorkomende
+   situaties (minimaal 4) en het seizoensblok (precies 4).
+5. **Keuzehulp**: situatie-routering, ook naar antwoorden zonder eigen
+   check (minimaal 3 keuzes).
 6. **FAQ**: zoekwoord voorin, FAQPage-JSON-LD uit dezelfde bron als de
    zichtbare vragen (Google-eis: exact gelijk), inklapbaar.
-7. **Gerelateerd**: 2-3 aangrenzende categorieen.
+7. **Gerelateerd**: 2-3 aangrenzende categorieen, als uitgelichte
+   blokken in de kleur van de doelcategorie.
 8. **(fase 5) Affiliate-selectie**: pas als laatste blok, nooit boven de
    keuzehulp; producten volgen het advies, niet andersom.
 

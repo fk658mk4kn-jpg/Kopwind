@@ -1570,3 +1570,60 @@ achtergrond kan na de fix ineens te aanwezig blijken.
 
 **Volgende**: Martijns oordeel over homepage en achtergrond, daarna nieuwe
 tools uit de vragenlijst of de cross-links tussen tools uit de backlog.
+
+## v3.14.0 "Ostro" - 2026-07-16
+
+**Wat**: Martijns ronde over homepage en storefronts, met drie echte bugs
+die zijn waarnemingen verklaren.
+
+**Bug 1, de verdwenen footer**: mijn Solano-fix zette de
+storefront-achtergrondlaag op z-index 0 met de content op 1, maar de
+footer is een niet-gepositioneerde sibling buiten .storefront-pagina en
+positioned elementen met z-index 0 liggen boven alle niet-gepositioneerde
+content. De laag bedekte dus de footer. Fundamentele fix: de paginakleur
+staat nu op html, body is transparant en de laag weer op z-index -1;
+daarmee ligt hij onder alles en is de sibling-z-index-regel weg.
+
+**Bug 2, onzichtbare statusbolletjes**: kleurVoorSchaal geeft
+klassenamen ("groen", "oranje", "rood") bij een schaal-id, maar ik
+gebruikte hem in Levante met een score als input en de uitkomst als
+inline CSS-kleur; ongeldige kleur, dus geen stip. Nu: klasse via
+schaalVoor(score).id, stip kleurt via currentColor, en de drie klassen
+gebruiken de bestaande kleurvariabelen. Precies de gevraagde
+groen/oranje/rood-driedeling, met De Bilt als Nederland-standaard (zat
+al in de hook). Anker-vragen (zoals hardlopen) kregen een
+Antwoord-label, zodat ze niet voor live checks doorgaan.
+
+**Bug 3, kale homepage-blokken**: de Solano-CSS voor de themabalk en de
+alle-checks-kaart bleek niet in globals.css te staan; op productie
+stonden die elementen dus zonder enige opmaak. Opnieuw aangebracht en
+vanaf nu is een verificatie-grep na elke CSS-wijziging vaste stap.
+
+**Homepage**: thema's als aparte blokken in een grid (geen chips), een
+Recent-gebruikt-blok met de drie laatst bezochte checks (RecentTracker
+schrijft toolbezoek naar kopwind.recenteTools, maximaal vijf ids; leeg
+bij een eerste bezoek), het kopje "Alle checks" boven het volledige
+overzicht, de kaart-vragen van h2 naar h3 onder de nieuwe h2-kopjes, en
+de alle-checks-kaart als paneel.
+
+**Iconen**: paraplu, regentiming en de was deelden alle drie de druppel.
+Nieuw paraplu- en waslijnicoon getekend in de lijnstijl, de regentiming
+kreeg de klok, en valideerRegister eist voortaan een uniek icoon per
+tool.
+
+**Storefronts**: blok 3 en 5 gewisseld op verzoek (checks-grid met de
+sterkste CTA eerst, keuzehulp na de uitleg); pushback gegeven dat dit
+het Coolblue-principe omdraait en de afspraak is dat we op gedrag meten.
+Gerelateerde onderwerpen zijn nu uitgelichte blokken met icon-chip en
+tint in de kleur van de doelcategorie. Het achtergrond-icoon is op
+mobiel kleiner en zachter (scale 0,55, opacity 0,05).
+
+**Tests**: 129 groen; beide builds ok.
+
+**Beperkingen**: geen rendering; de nieuwe iconen (paraplu, waslijn),
+de mobiele achtergrond en het recent-blok op productie beoordelen. Het
+recent-blok vult zich pas na toolbezoeken; varianten registreren nog
+niet (alleen hoofdtoolpagina's).
+
+**Volgende**: Martijns oordeel, daarna nieuwe tools uit de vragenlijst
+of de cross-links tussen tools uit de backlog.

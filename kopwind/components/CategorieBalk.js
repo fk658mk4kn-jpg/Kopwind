@@ -12,12 +12,12 @@ import { S } from "@/lib/strings";
  */
 export default function CategorieBalk() {
   return (
-    <nav className="categoriebalk" aria-label={S.hub.themaKop}>
+    <nav className="categoriegrid" aria-label={S.hub.themaKop}>
       {CATEGORIEEN.map((c) => (
         <Link
           key={c.id}
           href={`/${c.slug}`}
-          className="categoriechip"
+          className="categorieblok"
           style={{
             background: `color-mix(in srgb, ${c.kleur} 6%, #ffffff)`,
             borderColor: `color-mix(in srgb, ${c.kleur} 24%, #ffffff)`,

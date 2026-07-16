@@ -5,6 +5,12 @@
 
 export const VERSIES = [
   {
+    versie: "3.14.0",
+    codenaam: "Ostro",
+    datum: "2026-07-16",
+    zin: "The footer is back under every theme page and the coloured dots on All checks now actually work: green, orange or red per check, defaulting to the whole country until you pick a place. The homepage got tidy theme blocks, a row with your three most recent checks and a clear button to everything. Every check now has its own icon.",
+  },
+  {
     versie: "3.13.0",
     codenaam: "Solano",
     datum: "2026-07-16",
