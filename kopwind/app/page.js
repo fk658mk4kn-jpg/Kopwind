@@ -4,6 +4,7 @@ import { hub } from "@/content/hub";
 import { kies, LOCALE } from "@/lib/i18n/locale";
 import { PAD } from "@/lib/i18n/paden";
 import HubGrid from "@/components/HubGrid";
+import CategorieBalk from "@/components/CategorieBalk";
 
 export const metadata = {
   alternates: { canonical: "/" },
@@ -40,11 +41,9 @@ export default function HubPagina() {
         <p className="hero-zin">{hub.intro}</p>
       </section>
 
-      <HubGrid />
+      <CategorieBalk />
 
-      <p className="uitleg-verwijzing">
-        {kies({ nl: "Waarom zegt een check wat hij zegt?", en: "Why does a check say what it says?" })} <Link href={PAD.uitleg}>{kies({ nl: "Het weer in gewone taal", en: "The weather in plain words" })}</Link>.
-      </p>
+      <HubGrid />
 
       <section className="seotekst compact">
         <h2>{kies({ nl: "Veelgestelde vragen", en: "Frequently asked questions" })}</h2>
@@ -55,6 +54,10 @@ export default function HubPagina() {
           </details>
         ))}
       </section>
+
+      <p className="uitleg-verwijzing">
+        {kies({ nl: "Waarom zegt een check wat hij zegt?", en: "Why does a check say what it says?" })} <Link href={PAD.uitleg}>{kies({ nl: "Het weer in gewone taal", en: "The weather in plain words" })}</Link>.
+      </p>
 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(siteJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />

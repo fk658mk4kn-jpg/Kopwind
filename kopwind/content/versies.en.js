@@ -5,6 +5,12 @@
 
 export const VERSIES = [
   {
+    versie: "3.13.0",
+    codenaam: "Solano",
+    datum: "2026-07-16",
+    zin: "The homepage now shows the way: the seven themes sit at the top as tappable buttons, a clear button to all checks sits below the cards, and the themes joined the footer. And the calm background tint and large icon on the theme pages are finally visible; a bug had hidden them behind the page.",
+  },
+  {
     versie: "3.12.0",
     codenaam: "Gregale",
     datum: "2026-07-16",

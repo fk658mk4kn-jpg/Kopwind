@@ -6,6 +6,12 @@
 
 export const VERSIES = [
   {
+    versie: "3.13.0",
+    codenaam: "Solano",
+    datum: "2026-07-16",
+    zin: "De homepage wijst nu de weg: bovenaan staan de zeven thema's als klikbare knoppen, onder de kaarten staat een duidelijke knop naar alle checks, en de thema's staan ook in de voet. En de rustige achtergrondkleur en het grote icoon op de themapagina's zijn nu echt zichtbaar; die zaten door een foutje achter de pagina verstopt.",
+  },
+  {
     versie: "3.12.0",
     codenaam: "Gregale",
     datum: "2026-07-16",

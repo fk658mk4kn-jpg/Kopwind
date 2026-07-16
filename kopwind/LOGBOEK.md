@@ -1524,3 +1524,49 @@ stellen.
 **Volgende**: Martijns oordeel over het ritme, daarna nieuwe tools uit de
 vragenlijst (ankers liggen klaar), de HubGrid-harmonisatie, of de
 cross-links uit de backlog.
+
+## v3.13.0 "Solano" - 2026-07-16
+
+**Wat**: de homepage-ronde van Martijn (thema's boven de tools, alle-checks
+duidelijker, uitleg-verwijzing naar onderen, achtergrond-icoon onzichtbaar)
+plus mijn aanvullingen uit backlog en code.
+
+**Themabalk**: nieuw component CategorieBalk: de zeven categorieen als
+klikbare chips (icon-chip plus tint in de categorie-kleur) direct onder de
+hero, boven de kiesbalk en de kaarten. De storefronts zijn daarmee vanaf de
+voordeur vindbaar. Zelfde kaarttaal als de rest, dus visueel rustig.
+
+**Alle checks**: het kleine "Meer vragen? Alle checks"-regeltje onder het
+grid is vervangen door een volwaardige alle-checks-kaart (titel, subregel,
+dikke pijl) in de kaartstijl. De uitleg-verwijzing ("Waarom zegt een check
+wat hij zegt? Het weer in gewone taal") staat nu onderaan de pagina, onder
+de veelgestelde vragen, precies zoals gevraagd.
+
+**Bugfix achtergrondmodel**: de storefront-achtergrondlaag stond op
+z-index -1, maar body heeft een dekkende achtergrond (var(--papier));
+daardoor lag de hele laag erachter en waren tint en icoon nooit zichtbaar.
+Dat verklaart Martijns "saai (geen)" beter dan de opacity: er viel niets te
+zien. Fix: de laag op z-index 0 en alle andere directe kinderen van
+.storefront-pagina op position relative met z-index 1. De
+opacity-verhoging van Gregale (0,085) wordt nu dus pas echt beoordeeld.
+
+**HubGrid op de hook**: de homepage draaide zijn eigen fetch met alleen
+BASIS_VELDEN, waardoor de hooikoortskaart daar leeg kon blijven terwijl
+alle-checks hem wel toonde. HubGrid gebruikt nu useDagVerdicts (zelfde
+stad, zelfde union van weervelden, zelfde localStorage-sleutel); de hook
+kreeg er een fout-state bij en HubGrid houdt alleen nog een lokale fout
+voor de mijn-locatie-knop. Scheelt veertig regels dubbele logica; het
+backlog-punt is afgevinkt.
+
+**Footer**: een Thema's-kolom met de zeven storefront-links, voor de
+checks-kolom. Sitewide interne links naar de categoriepagina's.
+
+**Tests**: 129 groen; beide builds ok.
+
+**Beperkingen**: geen rendering in de sandbox. De themabalk-chips, de
+alle-checks-kaart en vooral het nu pas zichtbare achtergrondmodel (tint 4
+procent, icoon 0,085) moeten op productie beoordeeld worden; de
+achtergrond kan na de fix ineens te aanwezig blijken.
+
+**Volgende**: Martijns oordeel over homepage en achtergrond, daarna nieuwe
+tools uit de vragenlijst of de cross-links tussen tools uit de backlog.

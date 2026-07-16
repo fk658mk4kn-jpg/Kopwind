@@ -1,18 +1,15 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
-import { useGebruiker } from "@/components/GebruikerContext";
 import LocatieZoek from "@/components/LocatieZoek";
 import Icoon from "@/components/Icoon";
-import { haalWeer } from "@/lib/engine/weather";
-import { BASIS_VELDEN } from "@/lib/engine/weerbasis";
+import { useDagVerdicts } from "@/components/useDagVerdicts";
 import { schaalVoor, labelVoor, kleurVoorSchaal } from "@/lib/engine/schaal";
 import { huidigeLocatie } from "@/lib/engine/locatie";
 import { STEDEN, dichtstbijzijndeStad } from "@/lib/steden/nl";
 import { TOOLS } from "@/lib/tools";
 import { S } from "@/lib/strings";
-import { kies as kiesTaal } from "@/lib/i18n/locale";
 import { PAD } from "@/lib/i18n/paden";
 
 /**
@@ -22,14 +19,8 @@ import { PAD } from "@/lib/i18n/paden";
  * je exacte adres hoeft alleen waar het er echt toe doet (de route).
  */
 
-/**
- * "Nederland" als plek: De Bilt, het KNMI-referentiepunt, als landelijk
- * gemiddelde. Wie binnenkomt zonder keuze ziet zo meteen live antwoorden.
- */
-const NEDERLAND = { naam: "Nederland", lat: 52.11, lon: 5.181 };
-
 const POPULAIR = [
-  NEDERLAND,
+  { naam: "Nederland", lat: 52.11, lon: 5.181 },
   ...["amsterdam", "rotterdam", "utrecht", "den-haag"]
     .map((slug) => STEDEN.find((s) => s.slug === slug))
     .filter(Boolean)
@@ -37,54 +28,15 @@ const POPULAIR = [
 ];
 
 export default function HubGrid() {
-  const g = useGebruiker();
-  const [stad, setStad] = useState(null);
-  const [dagen, setDagen] = useState(null);
-  const [laden, setLaden] = useState(false);
-  const [fout, setFout] = useState(null);
-
-  useEffect(() => {
-    try {
-      const l = JSON.parse(localStorage.getItem("kopwind.hubLocatie") ?? "null");
-      setStad(l?.lat ? l : NEDERLAND);
-    } catch {
-      setStad(NEDERLAND);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (!stad) return;
-    let actief = true;
-    setLaden(true);
-    setFout(null);
-    haalWeer(stad.lat, stad.lon, BASIS_VELDEN, 2)
-      .then((hourly) => {
-        if (!actief) return;
-        const nu = new Date();
-        const uit = {};
-        for (const t of TOOLS) {
-          if (typeof t.overlay !== "function") continue;
-          try {
-            uit[t.id] = t.overlay(hourly, nu, g.thresholdsVoor(t.id)).dagen?.[0] ?? null;
-          } catch {
-            uit[t.id] = null;
-          }
-        }
-        setDagen(uit);
-      })
-      .catch((e) => actief && setFout(e.message ?? String(e)))
-      .finally(() => actief && setLaden(false));
-    return () => {
-      actief = false;
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [stad]);
+  // Een bron voor stad plus dagverdicten: dezelfde hook als alle-checks,
+  // met de vereniging van alle weerVelden (zo heeft ook de
+  // hooikoortskaart hier zijn pollenvelden; v3.13.0).
+  const { stad, kiesStad, dagen, laden, fout } = useDagVerdicts();
+  const [lokaleFout, setLokaleFout] = useState(null);
 
   const kies = (plek) => {
-    const kaal = { naam: plek.naam.split(",")[0], lat: plek.lat, lon: plek.lon };
-    setStad(kaal);
-    localStorage.setItem("kopwind.hubLocatie", JSON.stringify(kaal));
-    g.meldInteractie();
+    setLokaleFout(null);
+    kiesStad(plek);
   };
 
   const mijnPlek = async () => {
@@ -93,7 +45,7 @@ export default function HubGrid() {
       const s = dichtstbijzijndeStad(hier.lat, hier.lon);
       if (s) kies({ naam: s.naam, lat: s.lat, lon: s.lon });
     } catch {
-      setFout(S.hub.locatieFout);
+      setLokaleFout(S.hub.locatieFout);
     }
   };
 
@@ -122,7 +74,7 @@ export default function HubGrid() {
         </div>
       </div>
 
-      {fout && <div className="fout">{fout}</div>}
+      {(fout ?? lokaleFout) && <div className="fout">{fout ?? lokaleFout}</div>}
 
       <div className="checkgrid">
         {TOOLS.map((t) => (
@@ -153,13 +105,13 @@ export default function HubGrid() {
         ))}
       </div>
 
-      <p className="binnenkort-regel">
-        {kiesTaal({
-          nl: "Meer vragen? ",
-          en: "More questions? ",
-        })}
-        <Link href={PAD.alleChecks}>{S.menu.alle}</Link>
-      </p>
+      <Link href={PAD.alleChecks} className="allechecks-kaart">
+        <span>
+          <span className="allechecks-titel">{S.hub.alleChecksTitel}</span>
+          <span className="kaartregel stil">{S.hub.alleChecksSub}</span>
+        </span>
+        <Icoon naam="pijl" maat={18} />
+      </Link>
     </section>
   );
 }

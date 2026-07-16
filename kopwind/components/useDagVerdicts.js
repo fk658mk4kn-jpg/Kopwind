@@ -21,6 +21,7 @@ export function useDagVerdicts() {
   const [stad, setStad] = useState(null);
   const [dagen, setDagen] = useState(null);
   const [laden, setLaden] = useState(false);
+  const [fout, setFout] = useState(null);
 
   useEffect(() => {
     try {
@@ -35,6 +36,7 @@ export function useDagVerdicts() {
     if (!stad) return;
     let actief = true;
     setLaden(true);
+    setFout(null);
     const velden = [...new Set(TOOLS.flatMap((t) => t.weerVelden ?? BASIS_VELDEN))];
     haalWeer(stad.lat, stad.lon, velden, 2)
       .then((hourly) => {
@@ -51,7 +53,11 @@ export function useDagVerdicts() {
         }
         setDagen(uit);
       })
-      .catch(() => actief && setDagen(null))
+      .catch((e) => {
+        if (!actief) return;
+        setDagen(null);
+        setFout(e.message ?? String(e));
+      })
       .finally(() => actief && setLaden(false));
     return () => {
       actief = false;
@@ -66,5 +72,5 @@ export function useDagVerdicts() {
     g.meldInteractie();
   };
 
-  return { stad, kiesStad, dagen, laden };
+  return { stad, kiesStad, dagen, laden, fout };
 }

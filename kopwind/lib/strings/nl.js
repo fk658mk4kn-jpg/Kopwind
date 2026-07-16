@@ -68,6 +68,9 @@ export const S = {
     zoekStad: "Zoek je stad...",
     mijnLocatie: "Gebruik mijn locatie",
     locatieFout: "Locatie ophalen lukte niet. Zoek je stad hierboven, dat werkt net zo goed.",
+    themaKop: "Kies een thema",
+    alleChecksTitel: "Alle checks op een plek",
+    alleChecksSub: "Ook wat eraan komt, met de status voor jouw plek.",
     kiesStad: "Kies je stad hierboven.",
     laden: "Even naar de lucht kijken...",
     geenAntwoord: "Nu even geen antwoord. Probeer de check zelf.",
@@ -174,6 +177,7 @@ export const S = {
     appleGeenStops: "Apple Maps kan geen tussenstops aan; daar gaat de route van start naar eind.",
   },
   voet: {
+    themas: "Thema's",
     checks: "Checks",
     uitleg: "Uitleg",
     over: "Over",

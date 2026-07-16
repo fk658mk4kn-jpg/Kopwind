@@ -1,6 +1,6 @@
 {
   "name": "kopwind",
-  "version": "3.12.0",
+  "version": "3.13.0",
   "private": true,
   "type": "module",
   "description": "Fiets of scooter? Multi-stop fietsplanner met kopwind per routesegment.",

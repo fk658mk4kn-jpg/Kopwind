@@ -67,6 +67,9 @@ export const S = {
     zoekStad: "Search your city...",
     mijnLocatie: "Use my location",
     locatieFout: "Couldn't get your location. Search your city above, works just as well.",
+    themaKop: "Pick a theme",
+    alleChecksTitel: "All checks in one place",
+    alleChecksSub: "Including what is on the way, with the status for your location.",
     kiesStad: "Pick your city above.",
     laden: "Checking the sky...",
     geenAntwoord: "No answer right now. Try the check itself.",
@@ -170,6 +173,7 @@ export const S = {
     appleGeenStops: "Apple Maps can't handle stopovers; that route runs start to finish.",
   },
   voet: {
+    themas: "Themes",
     checks: "Checks",
     uitleg: "Explainers",
     over: "About",

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { TOOLS } from "@/lib/tools";
+import { CATEGORIEEN } from "@/lib/categorieen";
 import { UITLEG } from "@/content/uitleg";
 import { HUB_NAAM } from "@/lib/brand";
 import { S } from "@/lib/strings";
@@ -13,6 +14,14 @@ export default function SiteFooter() {
   return (
     <footer className="voet">
       <div className="voet-kolommen">
+        <div>
+          <h2>{S.voet.themas}</h2>
+          {CATEGORIEEN.map((c) => (
+            <Link key={c.slug} href={`/${c.slug}`}>
+              {c.titel}
+            </Link>
+          ))}
+        </div>
         <div>
           <h2>{S.voet.checks}</h2>
           {TOOLS.map((t) => (

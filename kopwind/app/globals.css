@@ -2183,13 +2183,17 @@ a.checkkaart:hover .kaartknop { background: var(--geel); }
   padding: 3px 10px;
 }
 .storefront-pagina { position: relative; }
+/* De achtergrondlaag mag niet op z-index -1: dan valt hij achter de
+   dekkende body-achtergrond en is tint noch icoon ooit zichtbaar
+   (bugfix juli 2026). Laag op 0, alle content erboven op 1. */
 .storefront-achtergrond {
   position: fixed;
   inset: 0;
-  z-index: -1;
+  z-index: 0;
   pointer-events: none;
   overflow: hidden;
 }
+.storefront-pagina > :not(.storefront-achtergrond) { position: relative; z-index: 1; }
 .storefront-achtergrond-icoon {
   position: absolute;
   right: -90px;

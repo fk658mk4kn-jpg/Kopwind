@@ -291,10 +291,6 @@ wassen en grasmaaien nu op /huis-tuin-auto).
   zonkracht, fiets naar regentiming, was naar ramen-antwoord). Past bij de
   storefront-gedachte: organisch doorsturen naar de volgende stap; goed
   voor interne linkstructuur en sessieduur.
-- **HubGrid harmoniseren met useDagVerdicts**: de homepage haalt nog
-  BASIS_VELDEN op, waardoor de hooikoorts-badge daar leeg kan blijven; de
-  nieuwe hook gebruikt de vereniging van alle weerVelden. Homepage op de hook
-  zetten is een kleine refactor.
 - **Fiets-factorbalken** (punt 8): de route-engine levert geen
   factoren-structuur; meenemen in fietstool fase 2.
 
