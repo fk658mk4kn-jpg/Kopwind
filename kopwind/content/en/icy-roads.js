@@ -44,4 +44,8 @@ export const faq = [
     v: "Can I rely on this blindly?",
     a: "Use the check as an early warning, not a free pass. Without road sensors it stays an approximation, and locally it can differ (shaded spots, tunnels, freshly gritted routes). Setting off calmly and testing your brakes early remains the advice in doubt.",
   },
+  {
+    v: "Icy roads in the morning: until when does it stay slippery?",
+    a: "Icy roads in the morning last longer than you would think: shaded spots, bridges and cycle paths stay slippery until sun or thaw reaches them, sometimes well past ten. With air above zero the road surface can still be below it. The check looks per morning and names the risk; stay alert on shaded stretches until well after the visible thaw.",
+  },
 ];

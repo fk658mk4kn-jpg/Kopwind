@@ -44,4 +44,8 @@ export const faq = [
     v: "Can a picnic work in the evening?",
     a: "Certainly, but mind the drop after sunset: the feels-like temperature falls fast and the grass turns damp with dew. The best evening window usually ends around or just after sunset.",
   },
+  {
+    v: "Picnic in wind: which spot in the park do I pick?",
+    a: "A windy picnic is saved by the right spot: on the sheltered side of a tree line, hedge or building the same afternoon feels degrees warmer and everything stays put. Avoid open lawns and waterfronts, where the wind hits full on. Rule of thumb: if you see a flag flying stiff, move closer to shelter.",
+  },
 ];

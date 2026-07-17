@@ -44,4 +44,8 @@ export const faq = [
     v: "Until when in the year should I mow?",
     a: "As long as the grass grows, which it does at soil temperatures above 6 to 8 degrees. In a mild autumn you sometimes mow into November, set ever higher. Do the last cut on a dry day; grass that goes into winter too long invites fungus.",
   },
+  {
+    v: "Mowing in drought and heat: is it wise?",
+    a: "Mowing in drought and heat asks for restraint: mow higher (5 to 6 centimetres) and less often, because longer grass protects the roots from drying out. Mow in the evening rather than full midday sun and leave the clippings as a mulch layer. On a truly parched, yellow lawn you simply skip the round.",
+  },
 ];

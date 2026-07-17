@@ -48,4 +48,12 @@ export const faq = [
     v: "Do I need to enter my exact address?",
     a: "No, your seaside town is enough. Do pick the coastal town you're actually going to rather than your home town: for wind, that makes a big difference at the sea.",
   },
+  {
+    v: "Beach weather tomorrow and this weekend: where do I see that?",
+    a: "Beach weather for tomorrow and the weekend sits in the day picker: a verdict and the best beach window per day, five days ahead. On borderline days, watch the wind in the window above all; at the coast it makes the difference between lovely and sandblasted.",
+  },
+  {
+    v: "Beach with kids: what should I watch extra?",
+    a: "A beach day with kids asks for three extra checks: the UV index (children's skin burns faster, apply generously and repeat after swimming), the wind (blowing sand spoils it quickly) and the swimming flags at the lifeguard station. The calmest combination is often late afternoon: UV drops and the water is at its warmest.",
+  },
 ];

@@ -44,4 +44,8 @@ export const faq = [
     v: "Wat is het beste seizoen voor sterrenkijken?",
     a: "Heldere winternachten zijn het donkerst en het langst, maar ook het koudst: kleed je warmer aan dan je denkt nodig te hebben. De zomer heeft korte, lichte nachten maar wel de Perseiden in augustus. Voor- en najaar zijn een prima compromis.",
   },
+  {
+    v: "Vallende sterren kijken: wanneer is de kans het grootst?",
+    a: "Vallende sterren zie je het vaakst tijdens de grote zwermen: de Perseiden rond 12 augustus zijn de bekendste, de Geminiden rond 13 december de rijkste. De beste uren liggen na middernacht, en een maanarme nacht scheelt enorm. Combineer de zwermdata met deze check: helder en maanarm is de jackpot.",
+  },
 ];

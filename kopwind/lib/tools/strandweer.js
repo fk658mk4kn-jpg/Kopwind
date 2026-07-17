@@ -13,9 +13,9 @@
  * windgrens strenger als je een binnenlandse stad gebruikt.
  */
 
-import { clamp, lerp, maakScore, adviesVoorScore } from "../engine/score.js";
-import { jaVoor } from "../engine/schaal.js";
-import { bouwBasis, basisPerDag, dagKeyVan, BASIS_VELDEN } from "../engine/weerbasis.js";
+import { clamp, lerp } from "../engine/score.js";
+import { BASIS_VELDEN } from "../engine/weerbasis.js";
+import { maakVensterOverlay, topPijn } from "../engine/vensterTool.js";
 
 import { kies } from "../i18n/locale.js";
 
@@ -120,88 +120,22 @@ export function uurStrandScore(u, inst = STRAND_DEFAULTS) {
   return clamp(Math.round(84 * gevoelF * windF + zon), 0, 100);
 }
 
-function besteBlok(uren) {
-  const blokken = [];
-  let blok = [];
-  for (const u of uren) {
-    if (u.score >= BRUIKBAAR_VANAF) {
-      blok.push(u);
-    } else if (blok.length) {
-      blokken.push(blok);
-      blok = [];
-    }
-  }
-  if (blok.length) blokken.push(blok);
-  let beste = null;
-  for (const b of blokken) {
-    if (b.length < MIN_VENSTER_UREN) continue;
-    const gemiddeld = b.reduce((a, u) => a + u.score, 0) / b.length;
-    if (!beste || gemiddeld * b.length > beste.gemiddeld * beste.uren) {
-      beste = { van: b[0].uur, tot: b[b.length - 1].uur + 1, uren: b.length, gemiddeld, blok: b };
-    }
-  }
-  return beste;
-}
-
-function topPijn(gemiddeld) {
-  const ANKERS = [
-    [85, 0],
-    [72, 8],
-    [58, 20],
-    [45, 35],
-    [30, 52],
-  ];
-  if (gemiddeld >= ANKERS[0][0]) return 0;
-  for (let i = 0; i < ANKERS.length - 1; i++) {
-    const [x1, y1] = ANKERS[i];
-    const [x0, y0] = ANKERS[i + 1];
-    if (gemiddeld >= x0) return Math.round(lerp(gemiddeld, x0, x1, y0, y1));
-  }
-  return 55;
-}
-
-const pad2 = (n) => String(n).padStart(2, "0");
-
-function statusVandaag(venster, nu) {
-  if (!venster) return { soort: "nee", zin: T.statusNiks };
-  const uurNu = nu.getHours();
-  const tijd = `${pad2(venster.van)}:00-${pad2(venster.tot)}:00`;
-  if (uurNu >= venster.tot) return { soort: "geweest", zin: T.statusGeweest };
-  if (uurNu >= venster.van) return { soort: "nu", zin: T.statusNu(`${pad2(venster.tot)}:00`) };
-  return { soort: "later", zin: T.statusBeste(tijd) };
-}
-
-function statusToekomst(venster) {
-  if (!venster) return { soort: "nee", zin: T.toekomstGeen };
-  return {
-    soort: "info",
-    zin: T.toekomstBeste(`${pad2(venster.van)}:00-${pad2(venster.tot)}:00`),
-  };
-}
-
-export function overlay(hourly, nu = new Date(), instellingen = STRAND_DEFAULTS) {
-  const inst = { ...STRAND_DEFAULTS, ...(instellingen ?? {}) };
-  const basis = bouwBasis(hourly);
-  const perDag = basisPerDag(basis, inst.dagStart, inst.dagEind);
-  const vandaagKey = dagKeyVan(nu);
-
-  const dagen = [];
-  for (const [datum, dagUren] of perDag) {
-    if (datum < vandaagKey) continue;
-    const uren = dagUren.map((u) => ({
-      ...u,
-      score: uurStrandScore(u, inst),
-      nat: (u.neerslag ?? 0) > 0.05,
-    }));
-    dagen.push({ datum, uren });
-  }
-  dagen.sort((a, b) => (a.datum < b.datum ? -1 : 1));
-
-  const dagenUit = dagen.slice(0, 5).map(({ datum, uren }) => {
-    const venster = besteBlok(uren);
+/**
+ * Sinds v3.18.0 draait de strandcheck op de gedeelde venstermotor.
+ * De eigen identiteit zit in de factorenopbouw: wind is streng (8
+ * punten en een drempel op 75 procent van de grens, want op het
+ * strand is geen luwte), zon telt via een bewolkingsstraf, en fris
+ * weegt mee zodra het maximum bij jouw grens in de buurt komt.
+ */
+export const overlay = maakVensterOverlay({
+  defaults: STRAND_DEFAULTS,
+  uurScore: uurStrandScore,
+  teksten: T,
+  adviesLabels: T.adviesLabels,
+  minVensterUren: 2,
+  dagFactoren: ({ uren, venster, inst }) => {
     const maxGevoel = Math.max(...uren.map((u) => u.gevoel ?? -99));
     const natUren = uren.filter((u) => u.nat).length;
-
     const factoren = [];
     if (!venster) {
       const regent = natUren > 0;
@@ -238,38 +172,9 @@ export function overlay(hourly, nu = new Date(), instellingen = STRAND_DEFAULTS)
         factoren.push({ punten: 5, reden: T.redenBuien });
       }
     }
-    const { score, redenen } = maakScore(factoren);
-    const conditie = { score, redenen, advies: adviesVoorScore(score, strandweer.adviesLabels) };
-
-    const isVandaag = datum === vandaagKey;
-    const status = isVandaag ? statusVandaag(venster, nu) : statusToekomst(venster);
-
-    const top = venster
-      ? venster.blok.reduce((a, u) => (u.score > a.score ? u : a), venster.blok[0])
-      : null;
-
-    const antwoord = {
-      ja: isVandaag
-        ? ["nu", "later"].includes(status.soort)
-        : status.soort === "info" && jaVoor(score),
-      zin: status.zin,
-    };
-
-    return {
-      datum,
-      antwoord,
-      uren: uren.map((u) => ({ uur: u.uur, score: u.score, nat: u.nat })),
-      venster: venster ? { van: venster.van, tot: venster.tot, uren: venster.uren } : null,
-      metric: top
-        ? { zin: T.metric(pad2(top.uur), Math.round(top.gevoel ?? top.temp ?? 0)) }
-        : null,
-      conditie,
-      status,
-    };
-  });
-
-  return { dagen: dagenUit };
-}
+    return factoren;
+  },
+});
 
 export const strandweer = {
   id: "strandweer",

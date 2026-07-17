@@ -46,6 +46,14 @@ export const faq = [
   },
   {
     v: "Do I need to enter my exact address?",
-    a: "No. For running weather your town is plenty; the weather barely differs at that scale. Only the bike check benefits from a precise address, because it computes the route.",
+    a: "No. For running weather your town is plenty; the weather barely differs at that scale. Only [the bike check](tool:fiets-naar-werk) benefits from a precise address, because it computes the route.",
+  },
+  {
+    v: "Running in winter: what should I watch?",
+    a: "Running in winter works almost always; watch three things. Dress as if it were ten degrees warmer, because you run warm after two kilometres. In frost, check [the icy roads check](tool:gladheid), because frozen cycle paths are treacherous. And keep the first kilometre easy as an extra warm-up for cold muscles.",
+  },
+  {
+    v: "Running weather tomorrow morning: can I check tonight?",
+    a: "Running weather for tomorrow morning simply sits in the day picker: pick tomorrow and you see the best running window and the feels-like per hour. If you tend to forget, turn on a notification with an early send moment; the advice is ready before your alarm.",
   },
 ];

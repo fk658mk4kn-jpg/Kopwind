@@ -1793,3 +1793,147 @@ opbrengstvoorspelling. Het routeformulier in het paneel is niet in een
 browser getest (geen rendering hier); de datastructuur is een-op-een
 overgenomen uit FietsTool.bewaarRoute.
 
+## 2026-07-16 (avond, tweede run) - v3.18.0 "Zonda": de motormigratie
+
+**Opdracht**: "ga door met het volgende"; gekozen voor het
+backlog-item dat ik zelf als kandidaat had gemarkeerd: de zes oude
+venstertools naar lib/engine/vensterTool.js. Cross-links schuift een
+run op.
+
+**Aanpak met bewijs**: eerst een verificatiescript (patroon: vijf
+synthetische weerdagen met verschillende karakters, drie tijdstippen
+op de dag, defaults plus een afwijkend instellingenprofiel; de
+volledige overlay-JSON per run naar een snapshotmap). Snapshots van de
+originelen vastgelegd, daarna per tool gemigreerd en gedift. Eis:
+byte-identiek. Resultaat: terras en barbecue exact identiek; hardloop,
+strand en autowas identiek op de bedoelde legenda-toevoeging na.
+
+**Motor v2**: vier optionele hooks, allemaal backwards-compatible
+(batch 3 raakt niets): dagFactoren vervangt de volledige
+factorenopbouw (nodig omdat maakScore redenen in invoervolgorde
+bewaart en elke oude tool zijn eigen volgorde en puntwaardes heeft:
+bbq-wind 10 punten op 75 procent van de grens, strand-wind 8 op 75
+procent, hardloop-buien 4, autowas rekent met temp in plaats van
+gevoel); statusVandaag-override met zoekBlok (terras en bbq
+herberekenen het beste blok op de resterende uren, terras verrijkt met
+zonstuk en gaan-liggen-wind); metricVoor (bbq-rookzin, ongewijzigd
+verplaatst); naVerwerking (morgen-vanaf-regel).
+
+**Legenda-bugfix**: LocatieTool leest res.legenda, maar alleen terras
+en bbq leverden die; hardloop, strand, autowas en heel batch 3
+(inclusief sterrenkijken en zonnepanelen) misten daardoor de
+legenda-balk. De motor retourneert nu altijd {legenda, dagen}; de twee
+eigen motoren zijn gelijkgetrokken.
+
+**Bewuste uitzondering**: was-buiten-drogen niet gemigreerd. Dat is
+een droogtijd-model (droogtijdPijn, natPijn, blokken met minUren,
+status op daglengte, plus de aparte berekenDroogdagen-export voor
+meldingen); in de motor persen kost meer hooks dan het bespaart.
+
+**Winst**: 1671 naar 1218 regels over de vijf tools (zo'n 450 regels
+minder), en blokzoek, kwaliteitsankers en statuslogica bestaan nog op
+een plek.
+
+**Beperking**: de synthetische data bevat geen windrichting, dus het
+richting-pad van de rookzin zit niet in de diff-dekking; de functie
+zelf is byte-identiek verplaatst en ongewijzigd.
+
+## 2026-07-16 (avond, derde run) - v3.19.0 "Harmattan": de SEO-run
+
+**Werkwijze**: op verzoek van Martijn eerst een volledig voorstel
+(huidig weefsel, gaten, elke link en elke vraag met reden en
+cannibalisatie-markering), daarna bouwen na expliciet akkoord. Uit het
+akkoord: sterrenkijken-krabben geschrapt, zonnepanelen-zonkracht en de
+smog-anchor goedgekeurd, winterbanden en in-tekst-links geparkeerd,
+gradenreeks als hub-anchors bevestigd, en twee toevoegingen: anchors
+meteen als linkbestemming meenemen, en de promotiekandidaten in de
+backlog.
+
+**Gevonden gaten**: het gerelateerd-blok dekte 9 van de 24 checks
+(alles na v3.3 was nooit toegevoegd), de broodkruimel sloeg de hub
+over (Home, tool), winter ontving nul hub-links, en de sets van
+terras, barbecue en zonkracht waren verouderd na batch 3.
+
+**Gebouwd**: broodkruimel met categorie ertussen (plus completer
+BreadcrumbList-schema); GerelateerdBlok herschreven met 27 sets (24
+checks plus 3 kledingvarianten via templateId, want de pseudo-tool
+erft de ouder-id) en anchor-ondersteuning; hub-naar-hub herzien
+(buiten naar sport, sport plus winter, huis-tuin naar winter,
+gezondheid naar sport); 9 hub-anchors met catalogusvermelding en 35
+tool-vragen, tweetalig. De beslissingen-test valideert anker-items
+tegen de storefront-FAQ, dus de nieuwe anchors zijn testgedekt.
+
+**Anti-cannibalisatie bewaakt**: ankerteksten zijn overal de canonieke
+vraag van de doelpagina; de gradenvragen landen op de kleding-hub
+(patroon van de bestaande 15-gradenvraag), niet op de tool; nul nieuwe
+URL's. Eerlijkheid: zoekvolumes zijn vanaf hier niet verifieerbaar,
+dus alle keuzes zijn beredeneerde intentie; validatie loopt via Search
+Console (promotie-items staan in de backlog).
+
+**Beperkingen**: de anchor-links in het gerelateerd-blok springen naar
+een FAQ-item op de hub; of het item daar visueel opvalt (uitgeklapt of
+gemarkeerd) is niet gecheckt zonder rendering. Mobiel gedrag van het
+grotere blok (4 links) idem.
+
+## 2026-07-16 (avond, vierde run) - v3.20.0 "Bayamo": drie backlog-items (1, 6, 8)
+
+**Opdracht**: uit de backlog-lijst die ik zelf presenteerde koos
+Martijn 1 (status-upgrade motor-default), 6 (fietstool fase 2) en 8
+(in-tekst links).
+
+**1) Statusbug, gevonden en gefixt.** Bij het lezen van de motor-
+default viel op dat statusVandaag het beste blok over de HELE dag
+zocht (venster, nu) in plaats van op de resterende uren; terras en
+barbecue hadden dit altijd al zelf overschreven met een eigen
+statusVandaag. Dat betekent dat elf tools (batch 3 grotendeels, plus
+hardloop/strand/autowas sinds de motormigratie) een prima middagblok
+als "geweest" konden afdoen zodra er 's ochtends een iets beter blok
+lag. Gefixt door dat patroon de motor-default te maken. Geverifieerd
+met een doelbewust synthetisch scenario (strandweer, twee gescheiden
+blokken, klok op 15:00 na het beste blok maar voor het tweede): voor
+de fix "geweest", na de fix "later, 17:00-19:00". Bewuste
+gedragswijziging (statuszinnen), de verdicts zelf blijven ongewijzigd.
+
+**2) Fietstool fase 2.** lib/advice.js kreeg een echte
+factorenstructuur (tegenwind/droog/temp/stoten, elk met gewicht en een
+0-100-gunstigheidsscore afgeleid van de bestaande metrics, niet
+herberekend), gerenderd met het bestaande FactorBalken-component op
+zowel het dagadvies als elke ritkaart. DagBanner is herschreven: de
+badge gebruikt nu VerdictBadge (vijfschaal, consistent met de rest van
+de site) in plaats van de eigen 3-woordige kleurmapping; daaronder de
+windzin, de zwaarste rit met naam, de top-3-redenen als lijst, de
+factorbalken en de cijferdrempels expliciet. FietsTool.js is
+heringedeeld: resultaten (dagbanner) boven, kaart+ritkaarten in het
+midden, de routebuilder (Jouw rit) als eigen paneel onderaan. CSS
+(.dagbanner, .werkblad, .blok-legs, .blok-planner) mee aangepast; de
+oude gekleurde bannerachtergrond (.dagbanner.groen/oranje/rood) is
+vervallen, de badge draagt de kleur nu.
+
+**3) In-tekst links.** Notatie [label](tool:id) en
+[label](hub:categorie#anker) in content-strings; lib/inlineLinks.js
+parst, components/TekstMetLinks.js rendert, platteTekst() voedt de
+JSON-LD zodat structured data geen markup lekt. Bewuste keuze: alleen
+BESTAANDE natuurlijke vermeldingen van een andere check omwikkeld
+(geen nieuwe zinnen verzonnen), gevonden via een grep op letterlijke
+checknamen ("terrascheck", "kledingcheck", enzovoort) in de huidige
+content. 37 links in 14 toolbestanden plus 8 storefront-FAQ-items,
+NL en EN. Onderweg een eigen fout gevangen (per ongeluk tool:auto-wassen
+in plaats van tool:fiets-naar-werk bij de "bike check"-links) en
+gecorrigeerd voor het wegschrijven. Een tweede fout: variant-tools
+(jas, korte-broek, t-shirt) hebben geen entry in TOOLS maar in
+VARIANTEN; tool: moest daarom ook varianten resolven, in zowel
+TekstMetLinks als de test. tests/inline-links.test.js valideert nu elk
+linkdoel voor NL en EN (subprocess-patroon van i18n.test.js) en
+bewaakt dat de notatie niet ongebruikt blijft staan.
+
+**Niet gedaan, bewust:** de storefront-uitlegblokken (voor-wie,
+beslislogica, seizoen) renderen nog platte tekst; niet omgebouwd deze
+ronde. Een aantal tools zonder bestaande letterlijke vermelding
+(korte-broek-weer, buiten-zwemmen, gladheid, de meeste van batch 3)
+kregen geen in-tekst link; dat vergt een bewust geschreven nieuwe zin
+in plaats van een wrap, en dat is een aparte afweging per tool.
+
+**Verificatie:** 132 tests groen (was 129, +3 nieuw), beide builds
+zonder fouten, alle stad- en van/naar-pagina's van de fietscheck
+geprerenderd, geen em-dashes.
+

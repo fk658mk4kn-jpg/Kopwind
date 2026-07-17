@@ -44,4 +44,8 @@ export const faq = [
     v: "Kan ik ook het weer voor een lange afstandswandeling checken?",
     a: "Voor een dagtocht kijk je naar het hele dagbeeld: de uurbalk laat zien welke uren goed zijn en waar een bui valt. Voor meerdaagse tochten zie je per dag het oordeel, vijf dagen vooruit.",
   },
+  {
+    v: "Wandelen in de regen: wanneer is het nog leuk?",
+    a: "Wandelen in de regen kan verrassend fijn zijn bij motregen of een lichte, gestage bui: met een goede jas en in het bos merk je er weinig van. Waar het stopt met leuk zijn: harde buien, windkracht 5 of meer erbij, en temperaturen onder de 8 graden waarbij je nat wordt. De urenstrip laat zien welke uren droog genoeg zijn.",
+  },
 ];

@@ -23,7 +23,7 @@ export const blokken = [
   {
     kop: "Lange mouwen als vangnet",
     tekst:
-      "De Nederlandse klassieker: T-shirtweer in de middag, vest-weer op het terras om 20 uur. De kledingcheck zegt daarom niet alleen of het T-shirtweer is, maar ook wat je voor de avond meeneemt. Zo sta je niet te blauwbekken bij de tweede ronde.",
+      "De Nederlandse klassieker: T-shirtweer in de middag, vest-weer op het terras om 20 uur. De [kledingcheck](tool:wat-trek-ik-aan) zegt daarom niet alleen of het T-shirtweer is, maar ook wat je voor de avond meeneemt. Zo sta je niet te blauwbekken bij de tweede ronde.",
   },
 ];
 
@@ -38,10 +38,14 @@ export const faq = [
   },
   {
     v: "Kan een T-shirt met wind?",
-    a: "Wind is de grootste spelbreker voor blote armen: hij drukt het gevoel met gemak drie graden. Zoek je een terras of bankje, kies dan de luwte; de terrascheck vertelt bovendien wanneer de wind gaat liggen.",
+    a: "Wind is de grootste spelbreker voor blote armen: hij drukt het gevoel met gemak drie graden. Zoek je een terras of bankje, kies dan de luwte; [de terrascheck](tool:terras) vertelt bovendien wanneer de wind gaat liggen.",
   },
   {
     v: "En de zon op mijn blote armen?",
-    a: "Vanaf zonkracht 3 verbrand je onbeschermd, ook in april en mei wanneer het net T-shirtweer wordt. Combineer deze vraag dus met de zonkrachtcheck: T-shirt aan is vaak ook smeren aan.",
+    a: "Vanaf zonkracht 3 verbrand je onbeschermd, ook in april en mei wanneer het net T-shirtweer wordt. Combineer deze vraag dus met [de zonkrachtcheck](tool:zonkracht): T-shirt aan is vaak ook smeren aan.",
+  },
+  {
+    v: "T-shirt in de lente: vanaf wanneer kan het buiten?",
+    a: "T-shirt in de lente kan buiten vaak eerder dan de kalender doet vermoeden: bij 17 graden met volle maartzon en weinig wind voelt het als 20. De eerste T-shirtdagen zijn zon-gedreven; in de schaduw is het dan nog fris. Kijk naar het gevoel per dagdeel en houd een laagje bij de hand voor na vieren.",
   },
 ];

@@ -44,4 +44,8 @@ export const faq = [
     v: "Is wind a problem while swimming itself?",
     a: "In the water wind is manageable, but outside it makes you cold: wet plus 25 km/h of wind feels like a cold shower. At sea, waves and currents come on top. The check deducts points for wind, and more if you pick the sea in the settings.",
   },
+  {
+    v: "Water temperature for swimming: where do I check it?",
+    a: "The water temperature is not in this check (it judges the weather above the water), yet it is decisive. For official swimming spots you find temperature and quality on the national swimming water site; for sea and big lakes many watersports clubs publish live readings. Rule of thumb: below 18 degrees water it quickly gets too cold for untrained swimmers.",
+  },
 ];

@@ -56,4 +56,12 @@ export const faq = [
     v: "Krijg ik ook meldingen op mijn telefoon?",
     a: "Ja. Koppel je apparaten met een synccode en stel per route in op welke dagen en tijden je een briefing wilt, of een herinnering voor vertrek. Op Android en desktop (Chrome, Edge, Firefox) werken de meldingen direct in de browser en kun je de check met een knop op je beginscherm zetten. Op iPhone zet je de site eerst op je beginscherm via de deelknop (vanaf iOS 16.4); daarna komen de meldingen binnen als gewone pushberichten, ook als de app dicht is.",
   },
+  {
+    v: "Fietsen met windkracht 5: is dat te doen?",
+    a: "Fietsen met windkracht 5 (rond de 30 tot 38 km/u) is te doen maar stevig werk: tegenwind kost je zomaar een derde van je snelheid en zijwind duwt je uit koers, zeker op open stukken en bruggen. De fietscheck rekent de wind per rijrichting door, dus je ziet of juist de heen- of de terugrit de zware wordt.",
+  },
+  {
+    v: "Fietsen in de regen: vertrek ik beter eerder of later?",
+    a: "Fietsen in de regen is vaak te vermijden door slim te schuiven: de meeste buien zijn korter dan een half uur. De check vergelijkt je vertrektijd met de buientiming, dus je ziet of tien minuten eerder of later vertrekken je droog houdt. Bij lange regenperiodes is de keus simpeler: regenpak aan of ander vervoer.",
+  },
 ];

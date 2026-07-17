@@ -44,4 +44,8 @@ export const faq = [
     v: "When can the winter coat go away?",
     a: "Once the daytime feels-like is consistently above 10 to 12 degrees, usually in March or April. Watch the mornings though: those stay fresh longest. The check looks five days ahead, handy for timing the switch.",
   },
+  {
+    v: "Coat on the bike: when is it indispensable?",
+    a: "A coat on the bike becomes indispensable once the feels-like drops below 12 degrees or rain threatens: riding wind makes every degree colder and a wet shirt cools you down fast. Above 15 degrees and dry, the coat can go in the bag. [The clothing check](tool:wat-trek-ik-aan) factors in riding wind, so the advice holds on the bike too.",
+  },
 ];

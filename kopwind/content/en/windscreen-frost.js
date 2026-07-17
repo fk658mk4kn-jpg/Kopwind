@@ -44,4 +44,8 @@ export const faq = [
     v: "From what temperature do I get the scraper ready?",
     a: "With an expected minimum below 3 degrees and a clear night, having it ready is wise; below 1.5 degrees scraping becomes likely. In the settings you decide how early the check says yes.",
   },
+  {
+    v: "Windscreen frozen on the inside: how does that happen?",
+    a: "A windscreen freezing on the inside points to moisture in the car: wet mats, a leaking door seal or simply lots of condensation from wet coats. The moisture settles on the cold glass overnight and freezes. Fix it by drying the mats, putting a moisture absorber in the car and airing briefly after a wet ride.",
+  },
 ];

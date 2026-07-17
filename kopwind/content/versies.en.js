@@ -5,6 +5,24 @@
 
 export const VERSIES = [
   {
+    versie: "3.20.0",
+    codenaam: "Bayamo",
+    datum: "2026-07-16",
+    zin: "Fixed a lurking bug where some checks already said \"passed\" in the afternoon while a good window was still ahead. The bike check now shows right at the top whether it's a good cycling day, with the toughest leg and the reasons behind it, plus factor bars like the other checks. And several places in the text now link straight to the check they're talking about.",
+  },
+  {
+    versie: "3.19.0",
+    codenaam: "Harmattan",
+    datum: "2026-07-16",
+    zin: "Every check now points to its related checks and its theme (including the breadcrumb), and the theme pages reference each other more sensibly. On top of that, the checks and themes answer over forty new questions, from what to wear at 10 degrees to UV index 3 and the pollen calendar.",
+  },
+  {
+    versie: "3.18.0",
+    codenaam: "Zonda",
+    datum: "2026-07-16",
+    zin: "Maintenance under the hood: five checks (patio, barbecue, running, beach, car wash) now run on the same engine as the ten new checks, with exactly the same behaviour as before. Visible difference: every check now shows the legend bar under the hour strip; it was missing on some checks.",
+  },
+  {
     versie: "3.17.0",
     codenaam: "Passaat",
     datum: "2026-07-16",

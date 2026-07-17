@@ -44,4 +44,8 @@ export const faq = [
     v: "And the sun on my bare arms?",
     a: "From UV 3 you burn unprotected, including in April and May when it's just becoming T-shirt weather. So pair this question with the UV check: T-shirt on is often sunscreen on.",
   },
+  {
+    v: "T-shirt in spring: from when does it work outside?",
+    a: "A T-shirt in spring often works outside earlier than the calendar suggests: at 17 degrees with full March sun and little wind it feels like 20. The first T-shirt days are sun-driven; in the shade it is still fresh. Look at the feels-like per part of the day and keep a layer handy for after four.",
+  },
 ];

@@ -44,4 +44,8 @@ export const faq = [
     v: "Hoe vaak moet ik mijn ramen wassen?",
     a: "Buiten gemiddeld vier tot zes keer per jaar; vaker als je aan een drukke weg, aan zee (zoutaanslag) of onder bomen woont. Na de pollenpiek in mei en na de herfststormen zijn klassieke momenten. Binnen is twee keer per jaar meestal genoeg.",
   },
+  {
+    v: "Ramen wassen in de winter: kan dat?",
+    a: "Ramen wassen in de winter kan op vorstvrije dagen prima, en de lage zon maakt strepen juist minder waarschijnlijk. Gebruik lauw water (niet heet, dat spant het glas), werk in de middag als eventuele nachtvorst uit de sponningen is, en sla dagen onder het vriespunt over. De check keurt vriesuren automatisch af.",
+  },
 ];

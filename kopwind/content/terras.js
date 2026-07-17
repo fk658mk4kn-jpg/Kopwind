@@ -42,6 +42,14 @@ export const faq = [
   },
   {
     v: "Moet ik mijn exacte adres invullen?",
-    a: "Nee. Voor terrasweer is je stad ruim voldoende; het weer verschilt op die schaal nauwelijks. Alleen bij de fietscheck loont een precies adres, omdat daar de route wordt doorgerekend.",
+    a: "Nee. Voor terrasweer is je stad ruim voldoende; het weer verschilt op die schaal nauwelijks. Alleen bij [de fietscheck](tool:fiets-naar-werk) loont een precies adres, omdat daar de route wordt doorgerekend.",
+  },
+  {
+    v: "Terrasweer morgen: hoe check ik dat?",
+    a: "Terrasweer voor morgen en de dagen erna zie je met de dagkiezer boven de urenstrip: per dag het oordeel en het beste blok, tot vijf dagen vooruit. Handig om de vrijdagborrel op woensdag al te plannen; hou er wel rekening mee dat de voorspelling verder weg onzekerder wordt.",
+  },
+  {
+    v: "Terras in de avond: tot hoe laat blijft het lekker?",
+    a: "Terraszitten in de avond hangt op de gevoelstemperatuur na zonsondergang: die zakt snel zodra de zon weg is, vaak drie tot vijf graden binnen anderhalf uur. De urenstrip laat per avonduur zien hoe lang het comfortabel blijft; met een beschut plekje en een vestje rek je het blok makkelijk een uur op.",
   },
 ];

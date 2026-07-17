@@ -46,6 +46,14 @@ export const faq = [
   },
   {
     v: "Moet ik mijn exacte adres invullen?",
-    a: "Nee. Voor loopweer is je stad ruim voldoende; het weer verschilt op die schaal nauwelijks. Alleen bij de fietscheck loont een precies adres, omdat daar de route wordt doorgerekend.",
+    a: "Nee. Voor loopweer is je stad ruim voldoende; het weer verschilt op die schaal nauwelijks. Alleen bij [de fietscheck](tool:fiets-naar-werk) loont een precies adres, omdat daar de route wordt doorgerekend.",
+  },
+  {
+    v: "Hardlopen in de winter: waar let ik op?",
+    a: "Hardlopen in de winter kan bijna altijd; let op drie dingen. Kleed je alsof het tien graden warmer is, want na twee kilometer loop je warm. Check bij vorst de [gladheidscheck](tool:gladheid), want bevroren fietspaden zijn verraderlijk. En houd de eerste kilometer rustig als extra warming-up voor koude spieren.",
+  },
+  {
+    v: "Hardloopweer morgenochtend: kan ik vanavond al checken?",
+    a: "Hardloopweer voor morgenochtend staat gewoon in de dagkiezer: kies morgen en je ziet het beste loopblok en het gevoel per uur. Wil je het niet vergeten, zet dan een melding aan met een vroeg stuurmoment; dan ligt het advies klaar voor je wekker.",
   },
 ];

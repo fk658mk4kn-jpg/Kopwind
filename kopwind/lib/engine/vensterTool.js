@@ -42,7 +42,7 @@ function besteBlok(uren, minVensterUren, bruikbaarVanaf) {
   return beste;
 }
 
-function topPijn(gemiddeld) {
+export function topPijn(gemiddeld) {
   const ANKERS = [
     [85, 0],
     [72, 8],
@@ -76,6 +76,21 @@ function topPijn(gemiddeld) {
  *   [cfg.extraFactoren] extra factoren per dag ({punten, reden})
  * @param {(ctx: {uren: object[], inst: object, natVeel: boolean}) => string}
  *   [cfg.geenBlokReden] eigen hoofdreden als er geen blok is
+ * @param {(ctx: {uren: object[], venster: object|null, inst: object}) => Array}
+ *   [cfg.dagFactoren] vervangt de VOLLEDIGE factorenopbouw (geen-blok- en
+ *   bloktak); voor tools met een eigen puntenverdeling of redenvolgorde.
+ *   Gebruik topPijn en lerp uit de imports voor de standaardstukken.
+ * @param {(ctx: {uren: object[], venster: object|null, nu: Date, inst: object,
+ *   zoekBlok: (uren: object[]) => object|null}) => object}
+ *   [cfg.statusVandaag] vervangt de standaard vandaag-status; zoekBlok is de
+ *   motor-blokzoeker met dezelfde drempels (voor herberekening op resterende
+ *   uren, zoals de terrascheck doet).
+ * @param {(ctx: {venster: object|null, top: object|null, inst: object}) => object|null}
+ *   [cfg.metricVoor] vervangt de standaard metric-regel (bv. de rookzin van
+ *   de barbecuecheck).
+ * @param {(dagenUit: object[]) => void} [cfg.naVerwerking] mag de dagen na
+ *   afloop muteren (bv. "morgen vanaf 14:00 kan het wel" aan de nee-status
+ *   van vandaag plakken).
  */
 export function maakVensterOverlay(cfg) {
   const {
@@ -87,14 +102,35 @@ export function maakVensterOverlay(cfg) {
     bruikbaarVanaf = 40,
     extraFactoren,
     geenBlokReden,
+    dagFactoren,
+    statusVandaag: statusVandaagEigen,
+    metricVoor,
+    naVerwerking,
   } = cfg;
 
-  function statusVandaag(venster, nu) {
-    if (!venster) return { soort: "nee", zin: T.statusNiks };
-    const uurNu = nu.getHours();
-    const tijd = `${pad2(venster.van)}:00-${pad2(venster.tot)}:00`;
-    if (uurNu >= venster.tot) return { soort: "geweest", zin: T.statusGeweest };
-    if (uurNu >= venster.van) return { soort: "nu", zin: T.statusNu(`${pad2(venster.tot)}:00`) };
+  /**
+   * Standaard vandaag-status (sinds v3.20.0). Zoekt het beste blok
+   * opnieuw op de RESTERENDE uren, niet op de hele dag: anders telt
+   * een prima middagblok als "geweest" zodra er 's ochtends een iets
+   * beter blok lag dat al voorbij is. Dit is het patroon dat terras
+   * en barbecue altijd al als eigen statusVandaag-override hadden;
+   * nu is het de motor-default, zodat alle venstertools zonder eigen
+   * override er automatisch van profiteren.
+   */
+  function statusVandaag(uren, nu, zoekBlok) {
+    const resterend = uren.filter((u) => u.uur >= nu.getHours());
+    const blok = zoekBlok(resterend);
+    if (!blok) {
+      const eerder = zoekBlok(uren);
+      if (eerder && eerder.tot <= nu.getHours()) {
+        return { soort: "nee", zin: T.statusGeweest };
+      }
+      return { soort: "nee", zin: T.statusNiks };
+    }
+    const tijd = `${pad2(Math.max(blok.van, nu.getHours()))}:00-${pad2(blok.tot)}:00`;
+    if (blok.van <= nu.getHours()) {
+      return { soort: "nu", zin: T.statusNu(`${pad2(blok.tot)}:00`) };
+    }
     return { soort: "later", zin: T.statusBeste(tijd) };
   }
 
@@ -129,8 +165,10 @@ export function maakVensterOverlay(cfg) {
       const natUren = uren.filter((u) => u.nat).length;
       const natVeel = natUren > uren.length / 3;
 
-      const factoren = [];
-      if (!venster) {
+      let factoren = [];
+      if (dagFactoren) {
+        factoren = dagFactoren({ uren, venster, inst });
+      } else if (!venster) {
         factoren.push({
           punten: 72,
           reden: geenBlokReden
@@ -162,7 +200,7 @@ export function maakVensterOverlay(cfg) {
           factoren.push({ punten: 5, reden: T.redenBuien });
         }
       }
-      if (extraFactoren) {
+      if (!dagFactoren && extraFactoren) {
         factoren.push(...extraFactoren({ uren, venster, inst }));
       }
 
@@ -170,7 +208,18 @@ export function maakVensterOverlay(cfg) {
       const conditie = { score, redenen, advies: adviesVoorScore(score, adviesLabels) };
 
       const isVandaag = datum === vandaagKey;
-      const status = isVandaag ? statusVandaag(venster, nu) : statusToekomst(venster);
+      const zoekBlok = (u) => besteBlok(u, minVensterUren, bruikbaarVanaf);
+      const status = isVandaag
+        ? statusVandaagEigen
+          ? statusVandaagEigen({
+              uren,
+              venster,
+              nu,
+              inst,
+              zoekBlok,
+            })
+          : statusVandaag(uren, nu, zoekBlok)
+        : statusToekomst(venster);
 
       const top = venster
         ? venster.blok.reduce((a, u) => (u.score > a.score ? u : a), venster.blok[0])
@@ -188,14 +237,18 @@ export function maakVensterOverlay(cfg) {
         antwoord,
         uren: uren.map((u) => ({ uur: u.uur, score: u.score, nat: u.nat })),
         venster: venster ? { van: venster.van, tot: venster.tot, uren: venster.uren } : null,
-        metric: top
-          ? { zin: T.metric(pad2(top.uur), Math.round(top.gevoel ?? top.temp ?? 0)) }
-          : null,
+        metric: metricVoor
+          ? metricVoor({ venster, top, inst })
+          : top
+            ? { zin: T.metric(pad2(top.uur), Math.round(top.gevoel ?? top.temp ?? 0)) }
+            : null,
         conditie,
         status,
       };
     });
 
-    return { dagen: dagenUit };
+    if (naVerwerking) naVerwerking(dagenUit);
+
+    return { legenda: T.legenda, dagen: dagenUit };
   };
 }

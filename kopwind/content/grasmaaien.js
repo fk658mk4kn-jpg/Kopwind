@@ -44,4 +44,8 @@ export const faq = [
     v: "Tot wanneer in het jaar moet ik maaien?",
     a: "Zolang het gras groeit, en dat doet het bij bodemtemperaturen boven een graad of 6 a 8. In een zacht najaar maai je soms tot in november, steeds hoger afgesteld. De laatste maaibeurt doe je op een droge dag; te lang gras de winter in nodigt schimmels uit.",
   },
+  {
+    v: "Grasmaaien bij droogte en hitte: is dat verstandig?",
+    a: "Grasmaaien bij droogte en hitte doe je terughoudend: maai hoger (5 tot 6 centimeter) en minder vaak, want langer gras beschermt de wortels tegen uitdrogen. Maai in de avond in plaats van in de volle middag en laat het maaisel liggen als mulchlaagje. Bij een echt verdord, geel gazon sla je de beurt gewoon over.",
+  },
 ];

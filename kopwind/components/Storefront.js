@@ -1,4 +1,5 @@
 import Broodkruimel from "@/components/Broodkruimel";
+import { platteTekst } from "@/lib/inlineLinks";
 import Icoon from "@/components/Icoon";
 import VoorWieBlok from "@/components/storefront/VoorWieBlok";
 import KeuzeHulpBlok from "@/components/storefront/KeuzeHulpBlok";
@@ -43,7 +44,7 @@ export default function Storefront({ categorie }) {
         mainEntity: sf.faq.map((f) => ({
           "@type": "Question",
           name: f.v,
-          acceptedAnswer: { "@type": "Answer", text: f.a },
+          acceptedAnswer: { "@type": "Answer", text: platteTekst(f.a) },
         })),
       }
     : null;

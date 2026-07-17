@@ -153,24 +153,29 @@ h3 {
   font-size: 15.5px;
 }
 
-/* Werkblad: configuratie links, kaart rechts; ritblokken komen er vol
-   in de breedte direct onder, naast elkaar. */
+/* Werkblad: kaart links, de berekende ritten rechts ernaast (fase 2,
+   v3.20.0: was voorheen planner+kaart, de resultaten stonden er los
+   onder). De routebuilder (Jouw rit) staat nu als los paneel onder
+   dit werkblad. */
 .werkblad {
   display: grid;
-  grid-template-columns: minmax(0, 460px) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 440px) minmax(0, 1fr);
   gap: 18px;
   align-items: stretch;
   margin-bottom: 16px;
 }
 
-.blok-planner {
+.blok-legs {
   min-width: 0;
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-.blok-planner .paneel { flex: 1; }
+.blok-planner {
+  margin-bottom: 16px;
+}
+
 .blok-map { min-width: 0; }
 
 .blok-map .kaartpaneel {
@@ -429,27 +434,45 @@ a {
   width: 66px;
 }
 
-/* Dagbanner */
+/* Dagbanner: badge draagt de kleur (v3.20.0), het paneel zelf is neutraal
+   zoals elk ander paneel op de site. */
 .dagbanner {
+  background: var(--kaart);
+  border: 1px solid var(--lijn);
   border-radius: var(--radius);
   padding: 16px 20px;
-  margin: 0 0 14px;
-  border: 1px solid;
+  margin: 0 0 16px;
   box-shadow: var(--schaduw-zacht);
 }
 
-.dagbanner.groen { background: var(--groen-zacht); border-color: #bfe3cc; }
-.dagbanner.oranje { background: var(--oranje-zacht); border-color: #f1d3ab; }
-.dagbanner.rood { background: var(--rood-zacht); border-color: #f0bebe; }
-
-.dagbanner h2 {
-  margin: 0 0 4px;
-  font-size: 21px;
+.dagbanner-kop {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 10px;
 }
 
-.dagbanner.groen h2 { color: var(--groen); }
-.dagbanner.oranje h2 { color: var(--oranje); }
-.dagbanner.rood h2 { color: var(--rood); }
+.dagbanner-cijfer {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--inkt-zacht);
+}
+
+.dagbanner-wind { margin-bottom: 8px; }
+.dagbanner-zwaarste { margin-bottom: 8px; }
+
+.dagbanner-redenen {
+  margin: 0 0 12px;
+  padding-left: 20px;
+  color: var(--inkt-zacht);
+}
+
+.dagbanner-redenen li { margin-bottom: 2px; }
+
+.dagbanner-drempels {
+  font-size: 13px;
+  margin-bottom: 8px;
+}
 
 .dagbanner p { margin: 0; color: var(--inkt-zacht); }
 .dagcijfer { font-weight: 500; }
@@ -1758,6 +1781,18 @@ a.merk { text-decoration: none; }
 }
 
 .gerelateerd-link:hover { background: var(--wolk); }
+
+/* In-tekst links (v3.20.0): een link middenin lopende tekst. Geen
+   nieuwe kleur, gewoon de sitebrede linkstijl (inkttekst, gele
+   onderstreping); alleen iets dikker onderstreept zodat hij opvalt
+   tussen platte tekst zonder als knop of kaart te ogen. */
+.inline-link {
+  text-decoration-thickness: 2px;
+  text-underline-offset: 2px;
+}
+.inline-link:hover {
+  color: var(--accent-diep);
+}
 
 .bijgewerkt-regel { margin: 18px 0 0; font-size: 12.5px; color: var(--inkt-zacht); }
 

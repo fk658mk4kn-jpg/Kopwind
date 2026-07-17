@@ -44,4 +44,8 @@ export const faq = [
     v: "Geldt de check ook voor een padelbaan buiten bij de sportschool?",
     a: "Ja. Kies in de instellingen voor de padelkooi; die is beschutter dan een open tennisbaan, dus de windgrens ligt hoger. De droogte-eis blijft gelijk: nat glas en nat kunstgras zijn glad.",
   },
+  {
+    v: "Padel in de herfst en winter: kan ik buiten blijven spelen?",
+    a: "Padel in de herfst en winter kan buiten zolang de baan droog en ijsvrij is; kou is met een extra laagje en een langere warming-up zelden de spelbreker. De echte beperkingen zijn licht (zonder baanverlichting ben je vroeg klaar), natte bladeren op de baan en ballen die bij kou lager stuiten. De check keurt natte en vriesuren af.",
+  },
 ];

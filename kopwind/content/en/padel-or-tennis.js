@@ -44,4 +44,8 @@ export const faq = [
     v: "Does the check apply to an outdoor padel court at the gym?",
     a: "Yes. Pick the padel cage in the settings; it's more sheltered than an open tennis court, so the wind limit sits higher. The dryness rule stays the same: wet glass and wet turf are slippery.",
   },
+  {
+    v: "Padel in autumn and winter: can I keep playing outside?",
+    a: "Padel in autumn and winter works outside as long as the court is dry and ice-free; cold is rarely the spoiler with an extra layer and a longer warm-up. The real limits are light (without floodlights you finish early), wet leaves on the court and balls bouncing lower in the cold. The check rejects wet and freezing hours.",
+  },
 ];

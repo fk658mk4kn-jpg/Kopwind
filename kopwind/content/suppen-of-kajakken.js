@@ -44,4 +44,8 @@ export const faq = [
     v: "Telt regen zwaar mee?",
     a: "Minder dan je denkt: nat word je op het water toch wel. Motregen geeft een lichte aftrek; alleen bij stevige buien en hoge buienkans keurt de check uren af, ook omdat buien vaak vlagen en soms onweer meebrengen. En bij onweer ga je sowieso van het water af.",
   },
+  {
+    v: "Suppen in de zomer: wat is het beste tijdstip op drukke dagen?",
+    a: "Suppen in de zomer is het fijnst vroeg in de ochtend: het water is dan het vlakst (de wind trekt in de loop van de dag aan), de vaargeulen zijn nog rustig en je hebt de plas voor jezelf. De check laat per uur zien wanneer de wind het laagst is; op warme dagen valt dat rustigste blok bijna altijd voor tien uur.",
+  },
 ];

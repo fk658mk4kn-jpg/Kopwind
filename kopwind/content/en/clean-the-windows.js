@@ -44,4 +44,8 @@ export const faq = [
     v: "How often should I clean my windows?",
     a: "Outside, four to six times a year on average; more often near a busy road, at the coast (salt film) or under trees. After the pollen peak in May and after the autumn storms are classic moments. Inside, twice a year is usually enough.",
   },
+  {
+    v: "Cleaning windows in winter: is that possible?",
+    a: "Cleaning windows in winter works fine on frost-free days, and the low sun actually makes streaks less likely. Use lukewarm water (not hot, which stresses the glass), work in the afternoon once any night frost has left the rebates, and skip days below freezing. The check rejects freezing hours automatically.",
+  },
 ];

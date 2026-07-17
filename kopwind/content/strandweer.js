@@ -48,4 +48,12 @@ export const faq = [
     v: "Moet ik mijn exacte adres invullen?",
     a: "Nee, je badplaats is genoeg. Kies wel de kustplaats waar je echt heen gaat en niet je woonplaats: juist voor wind maakt dat aan zee een groot verschil.",
   },
+  {
+    v: "Strandweer morgen en dit weekend: waar zie ik dat?",
+    a: "Strandweer voor morgen en het weekend staat in de dagkiezer: per dag het oordeel en het beste strandblok, vijf dagen vooruit. Let bij twijfeldagen vooral op de wind in het blok; die bepaalt aan zee het verschil tussen heerlijk en schuren.",
+  },
+  {
+    v: "Strand met kinderen: waar let ik extra op?",
+    a: "Strand met kinderen vraagt om drie extra checks: de zonkracht (kinderhuid verbrandt sneller, smeer ruim en herhaal na het zwemmen), de wind (opwaaiend zand bederft het snel) en de zwemvlaggen bij de reddingsbrigade. De rustigste combinatie is vaak de late middag: de zonkracht zakt en het water is op zijn warmst.",
+  },
 ];

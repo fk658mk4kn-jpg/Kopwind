@@ -18,7 +18,7 @@ export const blokken = [
   {
     kop: "Het rustigste blok is het nieuwe beste blok",
     tekst:
-      "Waar de terrascheck het lekkerste moment zoekt, zoekt deze check het rustigste: het langste blok met weinig pollen. Vaak is dat de vroege ochtend of vlak na een bui, want regen slaat pollen neer. Handig voor je hardlooprondje, het luchten van de slaapkamer en de was aan de lijn.",
+      "Waar [de terrascheck](tool:terras) het lekkerste moment zoekt, zoekt deze check het rustigste: het langste blok met weinig pollen. Vaak is dat de vroege ochtend of vlak na een bui, want regen slaat pollen neer. Handig voor je hardlooprondje, het luchten van de slaapkamer en de was aan de lijn.",
   },
   {
     kop: "Eerlijk over de data",
@@ -38,10 +38,18 @@ export const faq = [
   },
   {
     v: "Helpt was binnen drogen tegen hooikoorts?",
-    a: "Op pollendagen wel: buiten hangend wasgoed vangt pollen, die je daarna mee naar binnen neemt. De wascheck en deze check versterken elkaar dus: is het droogweer maar pollenpiek, overweeg dan het rek binnen. Zelfde verhaal voor het luchten van de slaapkamer: doe dat in het rustigste blok.",
+    a: "Op pollendagen wel: buiten hangend wasgoed vangt pollen, die je daarna mee naar binnen neemt. De [wascheck](tool:was-buiten-drogen) en deze check versterken elkaar dus: is het droogweer maar pollenpiek, overweeg dan het rek binnen. Zelfde verhaal voor het luchten van de slaapkamer: doe dat in het rustigste blok.",
   },
   {
     v: "Is deze hooikoortscheck medisch advies?",
     a: "Nee. De check vertaalt modeldata naar een praktisch dagbeeld en is geen vervanging van je huisarts of apotheker. Heb je veel last, begin dan tijdig met je medicatie (die werkt vaak beter preventief) en bespreek aanhoudende klachten met een professional.",
+  },
+  {
+    v: "Hooikoorts en regen: helpt een bui echt?",
+    a: "Hooikoorts en regen is een dubbel verhaal: een stevige bui wast pollen uit de lucht en geeft daarna uren verlichting, maar juist aan het begin van een onweersbui kunnen pollenkorrels openbarsten in kleinere deeltjes die dieper in de luchtwegen komen. Direct na de regen is dus het gouden moment om te luchten of te sporten, niet tijdens de eerste minuten.",
+  },
+  {
+    v: "Hooikoorts in huis: raam open of dicht?",
+    a: "Hooikoorts in huis beperk je door te luchten op de rustige momenten: vlak na regen of in de vroege ochtend voordat de pollen opstijgen. Op droge, winderige dagen houd je ramen aan de windkant dicht en lucht je kort en gericht. Was buiten drogen op piekdagen is af te raden; pollen blijven in de stof hangen.",
   },
 ];

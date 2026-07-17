@@ -23,7 +23,7 @@ export const blokken = [
   {
     kop: "Licht, tussen of winter?",
     tekst:
-      "Grofweg: gevoel boven de 12 graden vraagt hooguit een licht jack, tussen de 4 en 12 een tussenjas, en daaronder de winterjas. Wind schuift die grenzen naar beneden. De kledingcheck vertaalt dit naar laagjes voor de hele dag, inclusief wat je meeneemt voor de terugweg.",
+      "Grofweg: gevoel boven de 12 graden vraagt hooguit een licht jack, tussen de 4 en 12 een tussenjas, en daaronder de winterjas. Wind schuift die grenzen naar beneden. De [kledingcheck](tool:wat-trek-ik-aan) vertaalt dit naar laagjes voor de hele dag, inclusief wat je meeneemt voor de terugweg.",
   },
 ];
 
@@ -43,5 +43,9 @@ export const faq = [
   {
     v: "Wanneer kan de winterjas de kast in?",
     a: "Zodra het gevoel overdag structureel boven de 10 tot 12 graden komt, meestal ergens in maart of april. Let wel op de ochtenden: die blijven het langst fris. De check kijkt vijf dagen vooruit, handig om de wissel te timen.",
+  },
+  {
+    v: "Jas mee of aan op de fiets: wanneer is hij onmisbaar?",
+    a: "Jas op de fiets is onmisbaar zodra de gevoelstemperatuur onder de 12 graden zakt of er regen dreigt: rijwind maakt elke graad kouder en een nat shirt koelt razendsnel af. Boven de 15 graden en droog kan de jas in de tas. De [kledingcheck](tool:wat-trek-ik-aan) rekent met de rijwind mee, dus het advies klopt ook op de fiets.",
   },
 ];

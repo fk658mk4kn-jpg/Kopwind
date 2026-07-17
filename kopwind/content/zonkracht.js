@@ -48,4 +48,12 @@ export const faq = [
     v: "Hoe hoog wordt de zonkracht in Nederland?",
     a: "In de zomer piekt de zonkracht hier rond 7, op uitzonderlijke dagen 8. Dat klinkt mild vergeleken met de tropen (10 en hoger), maar bij zonkracht 7 verbrandt een lichte huid al binnen een kwartier. De check laat per uur zien waar je aan toe bent.",
   },
+  {
+    v: "Zonkracht 3: moet ik smeren?",
+    a: "Zonkracht 3 is het punt waarop smeren zinvol wordt: een lichte huid verbrandt dan onbeschermd al na een half uur tot drie kwartier. Voor een korte lunchwandeling hoeft het niet per se, voor een middag buiten wel. Vanaf zonkracht 5 smeer je sowieso, en tussen 12:00 en 15:00 zoek je op de piek de schaduw op.",
+  },
+  {
+    v: "Zonkracht per uur: wanneer piekt hij vandaag?",
+    a: "Zonkracht per uur zie je in de urenstrip van deze check: de piek ligt in Nederland rond 13:00 tot 14:00 zomertijd, en de kracht bouwt vanaf een uur of 10 snel op. Bewolking dempt de piek maar haalt hem zelden weg. Plan smeren en schaduw dus op het blok rond het middaguur.",
+  },
 ];

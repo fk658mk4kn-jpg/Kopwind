@@ -44,4 +44,12 @@ export const faq = [
     v: "Krijg ik een seintje op drooghangdagen?",
     a: "Ja. Zet de wascheck op je beginscherm, kies je dagen en tijd, en laat 'm alleen piepen bij goed nieuws. Dan hoor je alleen iets op de dagen die ertoe doen.",
   },
+  {
+    v: "Was drogen in de winter: kan dat buiten?",
+    a: "Was drogen in de winter kan buiten, maar traag: bij 5 graden en hoge luchtvochtigheid duurt het makkelijk een hele dag, en onder nul vriest de was eerst stijf (het vocht verdampt daarna alsnog, dat heet vriesdrogen). Een droge, winderige winterdag werkt verrassend goed; de check laat zien of die eraan komt.",
+  },
+  {
+    v: "Was drogen bij bewolkt weer: hoe lang duurt het?",
+    a: "Was drogen bij bewolkt weer lukt prima; wind en droge lucht doen het meeste werk, niet de zon. Reken bij 15 graden en een stevige bries op drie tot vijf uur, windstil en klam eerder op een dagdeel. De check schat de droogtijd per moment, dus je ziet of ochtend- of middaghang slimmer is.",
+  },
 ];

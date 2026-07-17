@@ -44,4 +44,12 @@ export const faq = [
     v: "Does this work for balconies and gardens too?",
     a: "Yes. It's the same question: is outside pleasant, and when. Pick your town, adjust the wind setting to how exposed your spot is, and read the best block.",
   },
+  {
+    v: "Patio weather tomorrow: how do I check that?",
+    a: "Patio weather for tomorrow and the days after sits in the day picker above the hour strip: a verdict and the best window per day, up to five days ahead. Handy for planning Friday drinks on Wednesday; do keep in mind the forecast gets less certain further out.",
+  },
+  {
+    v: "Patio in the evening: until what time does it stay nice?",
+    a: "Sitting outside in the evening hinges on the feels-like temperature after sunset: it drops fast once the sun is gone, often three to five degrees within ninety minutes. The hour strip shows per evening hour how long it stays comfortable; a sheltered spot and a jumper easily stretch the window by an hour.",
+  },
 ];

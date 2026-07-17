@@ -44,4 +44,8 @@ export const faq = [
     v: "Do panels perform worse in heat?",
     a: "Yes, panels lose efficiency as they heat up: roughly half a percent per degree above 25 degrees cell temperature. A sunny spring day with a fresh breeze therefore often outproduces a scorching summer day. The indication stays high regardless: sun is sun.",
   },
+  {
+    v: "Solar panels in winter: do they still produce?",
+    a: "Solar panels certainly produce in winter, but far less: December and January together deliver roughly 5 to 8 percent of the annual yield, due to short days and a low sun. Clear frost days are surprisingly productive, because cold panels work more efficiently. The check shows the sunniest block in winter too.",
+  },
 ];

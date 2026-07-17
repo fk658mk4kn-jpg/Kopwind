@@ -426,9 +426,20 @@ niks). Per tool schrijf je alleen de uurscore, het tekstenobject en
 eventuele extra factoren (zoals nat gras van eerdere buien of felle
 zon op het glas).
 
-De zes venstertools van voor v3.17.0 (terras, barbecue,
-was-buiten-drogen, hardloopweer, strandweer, auto-wassen) hebben nog
-hun eigen kopie van dit patroon; migratie staat in de backlog.
+Sinds v3.18.0 draaien ook terras, barbecue, hardloopweer, strandweer
+en auto-wassen op de motor. Voor afwijkende identiteit zijn er vier
+optionele hooks: dagFactoren (vervangt de volledige factorenopbouw:
+eigen puntwaardes, drempels en redenvolgorde), statusVandaag (override
+met zoekBlok voor herberekening op resterende uren), metricVoor (eigen
+metric-regel, zoals de rookzin) en naVerwerking (dagen muteren na
+afloop, zoals de morgen-vanaf-regel). De motor levert altijd
+{legenda, dagen}; de interface leest die legenda. Uitzondering:
+was-buiten-drogen is een droogtijd-model (wanneer is de was droog) en
+blijft bewust op zijn eigen engine. Bij migraties geldt de
+snapshot-regel: leg de volledige overlay-output vast over synthetische
+dagen, meerdere tijdstippen en instellingenprofielen, en eis een
+byte-identieke diff (zie /tmp/verifieer.mjs-patroon in het logboek van
+v3.18.0).
 
 Twee modelvarianten buiten de motor om:
 - Avondmodel (sterrenkijken): beoordeelt alleen de avonduren, score
@@ -440,3 +451,62 @@ Twee modelvarianten buiten de motor om:
   dagindicatie (gewogen zonfactor over de daglichturen); het
   zonnigste blok wordt wel als venster getoond. Bewust geen kWh: dat
   is installatie-afhankelijk en zou schijnprecisie zijn.
+
+## 13. Intern linkweefsel (sinds v3.19.0)
+
+Drie lagen, allemaal op echte intentie-overlap en nooit met andermans
+zoekterm als ankertekst (anti-cannibalisatie):
+- Broodkruimel op elke toolpagina: Home, categorie, tool. De hub
+  krijgt zo van elke check een contextuele link.
+- Het blok "Ook handig vandaag" (components/GerelateerdBlok.js): 2 tot
+  4 links per check, wederkerig waar zinnig; ankertekst is de
+  canonieke vraag van de doelcheck. Items kunnen ook hub-anchors zijn
+  (zelfde URL-patroon als de catalogus: /categorie-slug#anker-id).
+- Hub-naar-hub via het gerelateerd-veld in storefronts (2 tot 3,
+  wederkerig waar mogelijk).
+
+Vaste regel bij elke NIEUWE tool: relaties toevoegen in BEIDE
+richtingen (de nieuwe tool krijgt een set, en 1 tot 3 bestaande
+checks nemen de nieuwe op), anders slibt de map dicht zoals tussen
+v3.3 en v3.18 gebeurde. Nieuwe vraag-antwoorden volgen de landingsplek
+uit de strategie: variant van een bestaande vraag wordt FAQ op de
+sterkste pagina of anchor op de hub (met catalogusvermelding), nooit
+een eigen URL zonder aangetoond volume; het zoekwoord staat voorin de
+vraag en het antwoord is lopende tekst.
+
+## 14. Fietstool: dagadvies-layout en factorenstructuur (sinds v3.20.0)
+
+Het dagadvies (DagBanner) staat boven de kaart en de ritkaarten, niet
+ernaast: badge in de vijfschaal (VerdictBadge, zelfde kleur/label als
+elke andere check, geen eigen 3-woordige taal meer in de UI), het
+cijfer (fmtCijfer), de zwaarste rit met naam, de top-redenen als losse
+punten (niet in een lopende zin verstopt) en de cijferdrempels
+expliciet uitgeschreven. De routebuilder (StopsEditor, presets,
+bewaar- en checkknop) staat als eigen paneel onder de kaart.
+
+lib/advice.js levert naast de pijnscore ook een factorenstructuur
+({id, gewicht, score}, score 0..100 gunstig) voor het bestaande
+FactorBalken-component: tegenwind (35), droog (35), temperatuur (20),
+windstoten (10). Zelfde uitgangspunt als lib/engine/factoren.js: een
+uitlegbare AFGELEIDE naast de echte score, geen tweede waarheid.
+
+## 15. In-tekst links: notatie en renderer (sinds v3.20.0)
+
+Content-strings (blokken, FAQ) mogen de notatie [label](tool:id) of
+[label](hub:categorie-id#anker-id) bevatten. lib/inlineLinks.js parst
+dit; components/TekstMetLinks.js rendert het naar echte next/link-
+links (tool: resolveert tegen TOOLS, dan tegen VARIANTEN; hub: tegen
+CATEGORIEEN plus optioneel een anchor). JSON-LD (FAQPage) gebruikt
+platteTekst() uit dezelfde module, nooit de ruwe markup.
+
+Zelfde anti-cannibalisatieregel als het gerelateerd-blok: het label
+is een natuurlijke verwijzing naar het EIGEN doel, nooit een gekaapte
+zoekterm. Nieuwe in-tekst links het liefst op een BESTAANDE, natuurlijke
+vermelding van de doel-tool in de tekst (wrap, geen nieuwe zin
+verzonnen); alleen bij een sterke reden een nieuwe zin toevoegen.
+
+Verplicht bij elke nieuwe of gewijzigde in-tekst link:
+tests/inline-links.test.js draait mee in npm test en valideert elk
+linkdoel voor NL en EN (subprocess met NEXT_PUBLIC_SITE_LOCALE=en,
+zelfde patroon als tests/i18n.test.js). Een tweede test bewaakt dat de
+notatie niet ongebruikt raakt (minstens 10 links site-breed).

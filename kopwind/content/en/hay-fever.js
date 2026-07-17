@@ -18,7 +18,7 @@ export const blokken = [
   {
     kop: "The calmest window is the new best window",
     tekst:
-      "Where the patio check hunts for the nicest moment, this one hunts for the quietest: the longest stretch with little pollen. Often that's the early morning or right after rain, because rain washes pollen down. Handy for your run, airing the bedroom and the laundry line.",
+      "Where [the patio check](tool:terras) hunts for the nicest moment, this one hunts for the quietest: the longest stretch with little pollen. Often that's the early morning or right after rain, because rain washes pollen down. Handy for your run, airing the bedroom and the laundry line.",
   },
   {
     kop: "Honest about the data",
@@ -38,10 +38,18 @@ export const faq = [
   },
   {
     v: "Does drying laundry inside help?",
-    a: "On pollen days, yes: laundry on the line catches pollen that you then carry inside. This check and the laundry check reinforce each other: good drying weather but a pollen peak means consider the indoor rack. Same story for airing the bedroom: do it in the calmest window.",
+    a: "On pollen days, yes: laundry on the line catches pollen that you then carry inside. This check and [the laundry check](tool:was-buiten-drogen) reinforce each other: good drying weather but a pollen peak means consider the indoor rack. Same story for airing the bedroom: do it in the calmest window.",
   },
   {
     v: "Is this medical advice?",
     a: "No. The check translates model data into a practical daily picture and doesn't replace your GP or pharmacist. If you suffer a lot, start your medication in time (it often works better preventively) and discuss persistent symptoms with a professional.",
+  },
+  {
+    v: "Hay fever and rain: does a shower really help?",
+    a: "Hay fever and rain is a double story: a solid shower washes pollen out of the air and brings hours of relief afterwards, but right at the start of a thunderstorm pollen grains can burst into smaller fragments that reach deeper into the airways. Right after the rain is the golden moment to air the house or train, not during the first minutes.",
+  },
+  {
+    v: "Hay fever indoors: window open or closed?",
+    a: "Hay fever indoors is limited by airing at the calm moments: right after rain or early in the morning before pollen rises. On dry, windy days keep windows on the wind side closed and air briefly and purposefully. Drying laundry outside on peak days is unwise; pollen clings to the fabric.",
   },
 ];

@@ -111,6 +111,8 @@ export const S = {
     kop: "What drives the verdict",
     temp: "Temperature",
     wind: "Wind",
+    tegenwind: "Headwind",
+    stoten: "Gusts",
     vocht: "Humidity",
     zon: "Sun",
     droog: "Dry",

@@ -44,4 +44,8 @@ export const faq = [
     v: "Is wind een probleem bij het zwemmen zelf?",
     a: "In het water valt wind mee, maar erbuiten maakt hij het koud: nat plus 25 km/u wind voelt als een koude douche. Aan zee komt daar golfslag en stroming bij. De check trekt daarom punten af bij veel wind, en meer als je de zee kiest in de instellingen.",
   },
+  {
+    v: "Zwemwatertemperatuur: waar check ik die?",
+    a: "Zwemwatertemperatuur staat niet in deze check (die beoordeelt het weer boven het water), maar is wel bepalend. Voor officiele zwemplekken vind je temperatuur en kwaliteit op zwemwater.nl; voor zee en grote plassen geven veel watersportverenigingen actuele metingen. Vuistregel: onder de 18 graden water is het voor ongeoefende zwemmers snel te koud.",
+  },
 ];

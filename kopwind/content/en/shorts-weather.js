@@ -44,4 +44,8 @@ export const faq = [
     v: "Does this apply to children?",
     a: "Children are often more active and notice cold less, but also cool faster when sitting still. For the playground use the normal limit and pack a spare pair of trousers in doubt.",
   },
+  {
+    v: "Shorts to work or school: when does that work?",
+    a: "Shorts to work or school work comfortably from about 18 degrees feels-like in the morning, because you are in them all day. The trap is the early bike ride: at 8:00 it is often five degrees cooler than the afternoon maximum promises. So check the morning feel, not the daily peak.",
+  },
 ];

@@ -46,6 +46,10 @@ export const faq = [
   },
   {
     v: "Do I need to enter my exact address?",
-    a: "No. For a wash day your town is plenty; the weather barely differs at that scale. Only the bike check benefits from a precise address, because it computes the route.",
+    a: "No. For a wash day your town is plenty; the weather barely differs at that scale. Only [the bike check](tool:fiets-naar-werk) benefits from a precise address, because it computes the route.",
+  },
+  {
+    v: "Washing the car after road salt: how fast should brine come off?",
+    a: "Washing the car after road salt is best done within a week or two: brine attracts moisture and speeds up rust on edges, seams and brake lines. Pick a frost-free day (otherwise locks and rubbers freeze shut) and rinse the wheel arches and underside especially well. The check finds the next suitable moment.",
   },
 ];

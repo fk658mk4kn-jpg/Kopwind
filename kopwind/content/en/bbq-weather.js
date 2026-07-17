@@ -44,4 +44,12 @@ export const faq = [
     v: "Can I get a nudge on BBQ days?",
     a: "Yes. Put the BBQ check on your home screen, pick your days and time, and let it ping only at Good or better. Handy for the spontaneous Friday evening.",
   },
+  {
+    v: "Barbecuing in wind: how much wind is too much?",
+    a: "Barbecuing in wind works fine up to about 20 km/h; above that you get flying ash, uneven heat and smoke lashing in every direction. Above 30 km/h open fire becomes unsafe. That is why the check weighs wind heavily, and the smoke line tells you where to put the barbecue.",
+  },
+  {
+    v: "BBQ weather tomorrow or this weekend: can I look ahead?",
+    a: "Looking ahead works with the day picker: a verdict and the best window per day, five days out. So on Thursday you already see whether Saturday evening looks promising. Turn on a notification to be safe; you will hear about it if the picture flips.",
+  },
 ];

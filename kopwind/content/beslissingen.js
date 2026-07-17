@@ -22,6 +22,8 @@ export const BESLISSINGEN = kies({
       id: "regen",
       items: [
         { toolId: "paraplu", zoek: ["paraplu", "regen", "bui", "nat"] },
+        { vraag: "Wat betekent 60 procent regenkans?", ankerCategorie: "regen", anker: "regenkans-betekenis", zoek: ["regenkans", "procent", "betekenis"] },
+        { vraag: "Code geel of oranje bij regen: wat betekent dat?", ankerCategorie: "regen", anker: "code-geel-of-oranje-bij-regen", zoek: ["code geel", "code oranje", "waarschuwing"] },
         { toolId: "regen-timing", zoek: ["regen", "wanneer", "bui", "droog venster"] },
         { vraag: "Word ik vandaag nat?", ankerCategorie: "regen", anker: "ga-ik-nat-vandaag", zoek: ["nat", "regen", "bui"] },
         { vraag: "Blijft het vandaag droog?", ankerCategorie: "regen", anker: "hoe-lang-blijft-het-droog", zoek: ["droog"] },
@@ -33,6 +35,9 @@ export const BESLISSINGEN = kies({
       id: "kleding",
       items: [
         { toolId: "wat-trek-ik-aan", zoek: ["kleding", "aan", "outfit", "laagjes"] },
+        { vraag: "Wat trek ik aan bij 5 graden?", ankerCategorie: "kleding", anker: "wat-trek-ik-aan-bij-5-graden", zoek: ["5 graden", "kleding"] },
+        { vraag: "Wat trek ik aan bij 10 graden?", ankerCategorie: "kleding", anker: "wat-trek-ik-aan-bij-10-graden", zoek: ["10 graden", "kleding"] },
+        { vraag: "Wat trek ik aan bij 20 graden?", ankerCategorie: "kleding", anker: "wat-trek-ik-aan-bij-20-graden", zoek: ["20 graden", "kleding"] },
         { variantId: "jas", zoek: ["jas"] },
         { variantId: "korte-broek", zoek: ["korte broek", "shorts"] },
         { variantId: "t-shirt", zoek: ["t-shirt", "shirt"] },
@@ -50,6 +55,7 @@ export const BESLISSINGEN = kies({
         { toolId: "buiten-zwemmen", zoek: ["zwemmen", "water"] },
         { toolId: "sterrenkijken", zoek: ["sterren", "sterrenkijken", "helder"] },
         { toolId: "suppen-of-kajakken", zoek: ["sup", "suppen", "kajak", "kano", "watersport"] },
+        { vraag: "Buiten eten met kinderen: wat is het beste tijdstip?", ankerCategorie: "buiten", anker: "buiten-eten-met-kinderen", zoek: ["buiten eten", "kinderen"] },
       ],
     },
     {
@@ -60,6 +66,7 @@ export const BESLISSINGEN = kies({
         { toolId: "buiten-sporten", zoek: ["sporten", "training", "bootcamp"] },
         { toolId: "wandelen", zoek: ["wandelen", "lopen"] },
         { toolId: "padel-of-tennis", zoek: ["padel", "tennis", "baan"] },
+        { vraag: "Sporten bij smog of slechte luchtkwaliteit: is dat verstandig?", ankerCategorie: "sport", anker: "sporten-bij-smog-of-slechte-lucht", zoek: ["smog", "luchtkwaliteit", "fijnstof"] },
       ],
     },
     {
@@ -74,12 +81,14 @@ export const BESLISSINGEN = kies({
         { vraag: "Kan ik het huis luchten vandaag?", ankerCategorie: "huis-tuin", anker: "kan-ik-mijn-huis-luchten-vandaag", zoek: ["luchten", "ramen open", "ventileren"] },
         { vraag: "Kan ik dekbedden buiten luchten?", ankerCategorie: "huis-tuin", anker: "kan-ik-dekbedden-buiten-luchten", zoek: ["dekbed", "luchten", "beddengoed"] },
         { toolId: "zonnepanelen", zoek: ["zonnepanelen", "opbrengst", "stroom"] },
+        { vraag: "Klusweer: welke dag deze week is het droogst?", ankerCategorie: "huis-tuin", anker: "klusweer-droogste-dag", zoek: ["klussen", "klusweer", "droogste dag"] },
       ],
     },
     {
       id: "gezondheid",
       items: [
         { toolId: "zonkracht", zoek: ["zonnebrand", "smeren", "uv", "zonkracht", "verbranden", "zonnen"] },
+        { vraag: "Pollenkalender: welke pollen vliegen wanneer?", ankerCategorie: "gezondheid", anker: "pollenkalender", zoek: ["pollenkalender", "pollen", "seizoen"] },
         { toolId: "hooikoorts", zoek: ["hooikoorts", "pollen", "niezen", "allergie"] },
       ],
     },
@@ -96,6 +105,8 @@ export const BESLISSINGEN = kies({
       id: "regen",
       items: [
         { toolId: "paraplu", zoek: ["umbrella", "rain", "shower", "wet"] },
+        { vraag: "What does a 60 percent rain chance mean?", ankerCategorie: "regen", anker: "regenkans-betekenis", zoek: ["rain chance", "percent", "probability"] },
+        { vraag: "Yellow or orange weather warning for rain: what does it mean?", ankerCategorie: "regen", anker: "code-geel-of-oranje-bij-regen", zoek: ["yellow warning", "orange warning", "weather warning"] },
         { toolId: "regen-timing", zoek: ["rain", "when", "shower", "dry window"] },
         { vraag: "Will I get wet today?", ankerCategorie: "regen", anker: "ga-ik-nat-vandaag", zoek: ["wet", "rain", "shower"] },
         { vraag: "Will it stay dry today?", ankerCategorie: "regen", anker: "hoe-lang-blijft-het-droog", zoek: ["dry"] },
@@ -107,6 +118,9 @@ export const BESLISSINGEN = kies({
       id: "kleding",
       items: [
         { toolId: "wat-trek-ik-aan", zoek: ["clothing", "wear", "outfit", "layers"] },
+        { vraag: "What to wear at 5 degrees?", ankerCategorie: "kleding", anker: "wat-trek-ik-aan-bij-5-graden", zoek: ["5 degrees", "wear"] },
+        { vraag: "What to wear at 10 degrees?", ankerCategorie: "kleding", anker: "wat-trek-ik-aan-bij-10-graden", zoek: ["10 degrees", "wear"] },
+        { vraag: "What to wear at 20 degrees?", ankerCategorie: "kleding", anker: "wat-trek-ik-aan-bij-20-graden", zoek: ["20 degrees", "wear"] },
         { variantId: "jas", zoek: ["coat", "jacket"] },
         { variantId: "korte-broek", zoek: ["shorts"] },
         { variantId: "t-shirt", zoek: ["t-shirt", "shirt"] },
@@ -124,6 +138,7 @@ export const BESLISSINGEN = kies({
         { toolId: "buiten-zwemmen", zoek: ["swim", "water"] },
         { toolId: "sterrenkijken", zoek: ["stars", "stargazing", "clear"] },
         { toolId: "suppen-of-kajakken", zoek: ["sup", "paddleboard", "kayak", "canoe", "watersport"] },
+        { vraag: "Eating outside with kids: what is the best time?", ankerCategorie: "buiten", anker: "buiten-eten-met-kinderen", zoek: ["eat outside", "kids"] },
       ],
     },
     {
@@ -134,6 +149,7 @@ export const BESLISSINGEN = kies({
         { toolId: "buiten-sporten", zoek: ["workout", "training", "bootcamp"] },
         { toolId: "wandelen", zoek: ["walk", "walking"] },
         { toolId: "padel-of-tennis", zoek: ["padel", "tennis", "court"] },
+        { vraag: "Training in smog or poor air quality: is it sensible?", ankerCategorie: "sport", anker: "sporten-bij-smog-of-slechte-lucht", zoek: ["smog", "air quality"] },
       ],
     },
     {
@@ -148,12 +164,14 @@ export const BESLISSINGEN = kies({
         { vraag: "Can I air the house today?", ankerCategorie: "huis-tuin", anker: "kan-ik-mijn-huis-luchten-vandaag", zoek: ["air", "ventilate", "windows open"] },
         { vraag: "Can I air duvets outside?", ankerCategorie: "huis-tuin", anker: "kan-ik-dekbedden-buiten-luchten", zoek: ["duvet", "air", "bedding"] },
         { toolId: "zonnepanelen", zoek: ["solar panels", "yield", "power"] },
+        { vraag: "DIY weather: which day this week is driest?", ankerCategorie: "huis-tuin", anker: "klusweer-droogste-dag", zoek: ["diy", "driest day"] },
       ],
     },
     {
       id: "gezondheid",
       items: [
         { toolId: "zonkracht", zoek: ["sunscreen", "uv", "sunburn", "burn", "sunbathe"] },
+        { vraag: "Pollen calendar: which pollen flies when?", ankerCategorie: "gezondheid", anker: "pollenkalender", zoek: ["pollen calendar", "pollen", "season"] },
         { toolId: "hooikoorts", zoek: ["hay fever", "pollen", "sneezing", "allergy"] },
       ],
     },

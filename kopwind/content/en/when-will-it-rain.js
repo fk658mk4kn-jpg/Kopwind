@@ -20,4 +20,12 @@ export const faq = [
   { v: "What time does the rain start?", a: "You see the next rain moment as a time. If it's already raining, the check shows when it's expected to turn dry again." },
   { v: "When will it turn dry again?", a: "If it's raining, the check finds the next block of at least an hour dry and shows that as a start time." },
   { v: "Are these scattered showers or prolonged rain?", a: "The summary per part of the day shows whether it's scattered showers or continuous rain." },
+  {
+    v: "Rain tonight: does it stay dry until morning?",
+    a: "Rain during the night checks just as well as daytime here: the timeline runs through the night and shows whether and when anything falls. Handy for laundry left outside, an open window or the question whether the grass is dry early tomorrow.",
+  },
+  {
+    v: "Rain chance per hour: how do I read it?",
+    a: "Rain chance per hour is the probability of measurable precipitation in that hour at your spot, not a measure of the amount. Two consecutive hours at 40 percent do not add up to 80; they remain separate chances. This check combines the chance with the expected amount, which is why it can say concretely when the shower falls and when it turns dry again.",
+  },
 ];

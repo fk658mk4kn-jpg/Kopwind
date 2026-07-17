@@ -44,4 +44,12 @@ export const faq = [
     v: "Krijg ik een seintje op barbecuedagen?",
     a: "Ja. Zet de barbecuecheck op je beginscherm, kies je dagen en tijd, en laat 'm alleen piepen bij Goed of beter. Handig voor de spontane vrijdagavond.",
   },
+  {
+    v: "Barbecueën met wind: hoeveel wind is te veel?",
+    a: "Barbecueën met wind gaat prima tot een km/u of 20; daarboven krijg je rondvliegende as, ongelijkmatige hitte en rook die alle kanten op slaat. Boven de 30 km/u wordt het onveilig voor open vuur. De check weegt wind daarom zwaar mee en de rookregel vertelt waar je de barbecue het best neerzet.",
+  },
+  {
+    v: "BBQ-weer morgen of dit weekend: kan ik vooruitkijken?",
+    a: "BBQ-weer vooruitkijken kan met de dagkiezer: per dag het oordeel en het beste blok, vijf dagen vooruit. Zo zie je op donderdag al of de zaterdagavond kansrijk is. Zet voor de zekerheid een melding aan; dan hoor je het als het beeld omslaat.",
+  },
 ];

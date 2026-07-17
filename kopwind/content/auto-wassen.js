@@ -46,6 +46,10 @@ export const faq = [
   },
   {
     v: "Moet ik mijn exacte adres invullen?",
-    a: "Nee. Voor een wasdag is je stad ruim voldoende; het weer verschilt op die schaal nauwelijks. Alleen bij de fietscheck loont een precies adres, omdat daar de route wordt doorgerekend.",
+    a: "Nee. Voor een wasdag is je stad ruim voldoende; het weer verschilt op die schaal nauwelijks. Alleen bij [de fietscheck](tool:fiets-naar-werk) loont een precies adres, omdat daar de route wordt doorgerekend.",
+  },
+  {
+    v: "Auto wassen na strooizout: hoe snel moet pekel eraf?",
+    a: "Auto wassen na strooizout wil je binnen een week of twee doen: pekel trekt vocht aan en versnelt roest op randen, naden en remleidingen. Kies een vorstvrije dag (anders vriezen sloten en rubbers vast) en spoel vooral de wielkasten en de onderkant goed. De check vindt het eerstvolgende geschikte moment.",
   },
 ];

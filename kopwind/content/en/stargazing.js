@@ -44,4 +44,8 @@ export const faq = [
     v: "What is the best season for stargazing?",
     a: "Clear winter nights are the darkest and longest, but also the coldest: dress warmer than you think you need. Summer has short, light nights but the Perseids in August. Spring and autumn are a fine compromise.",
   },
+  {
+    v: "Watching shooting stars: when is the chance biggest?",
+    a: "Shooting stars show most often during the big showers: the Perseids around 12 August are the best known, the Geminids around 13 December the richest. The best hours come after midnight, and a moon-poor night makes a huge difference. Combine the shower dates with this check: clear and moonless is the jackpot.",
+  },
 ];

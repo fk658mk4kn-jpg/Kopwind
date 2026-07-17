@@ -48,4 +48,12 @@ export const faq = [
     v: "How high does the UV index get in the Netherlands?",
     a: "In summer it peaks around 7 here, 8 on exceptional days. That sounds mild next to the tropics (10 and up), but at UV 7 fair skin burns within a quarter of an hour. The check shows you hour by hour where you stand.",
   },
+  {
+    v: "UV index 3: should I apply sunscreen?",
+    a: "UV index 3 is where sunscreen starts to make sense: fair skin burns unprotected within thirty to forty-five minutes at that level. For a short lunch walk you may get away without, for an afternoon outside you will not. From UV 5 you apply regardless, and between 12:00 and 15:00 you seek shade at the peak.",
+  },
+  {
+    v: "UV index per hour: when does it peak today?",
+    a: "The UV index per hour sits in the hour strip of this check: the peak in the Netherlands falls around 13:00 to 14:00 summer time, and the strength builds fast from about 10:00. Cloud dampens the peak but rarely removes it. So plan sunscreen and shade on the block around midday.",
+  },
 ];

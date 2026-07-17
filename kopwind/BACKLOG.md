@@ -38,12 +38,53 @@ winddrempels van sup (14/18/23) en padel (17/22/28) in de praktijk
 naast het gevoel leggen; ook de zonaftrek van ramen-wassen en de
 dauw-uren van grasmaaien zijn aannames.
 
-**Techniekschuld uit batch 3:**
-- De zes oude venstertools (terras, barbecue, was-buiten-drogen,
-  hardloopweer, strandweer, auto-wassen) hebben elk nog hun eigen
-  kopie van het vensterpatroon. Migreren naar
-  lib/engine/vensterTool.js: zelfde gedrag, minder code, een plek voor
-  bugfixes. Goede kandidaat voor de volgende run.
+**Motormigratie (v3.18.0, AF)**: terras, barbecue, hardloopweer,
+strandweer en auto-wassen draaien op de gedeelde venstermotor, met
+byte-identiek bewezen gedrag (snapshot-diff over vijf synthetische
+dagen). De wascheck is bewust niet gemigreerd: droogtijd-model, geen
+blokzoeker. Legenda-bugfix meegenomen: alle overlays leveren nu de
+legenda-balk.
+
+**Statusbug motor-default (v3.20.0, AF):** de motor-default zocht het
+beste blok over de hele dag in plaats van de resterende uren, waardoor
+een prima middagblok als "geweest" telde. Terras/barbecue hadden dit
+altijd al zelf gefixt; dat patroon is nu de default, dus wandelen,
+buiten-sporten, padel-of-tennis, suppen-of-kajakken, picknickweer,
+buiten-zwemmen, grasmaaien, ramen-wassen, hardloopweer, strandweer en
+auto-wassen profiteren automatisch. Geverifieerd met een synthetisch
+dubbel-blok-scenario.
+
+**SEO-run (v3.19.0, AF)**: linkweefsel (broodkruimel met hub, volledig
+gerelateerd-blok voor 24 checks plus varianten, hub-naar-hub herzien)
+en 35 tool-vragen plus 9 hub-anchors, tweetalig. Cross-links-item
+daarmee afgevoerd.
+
+**In-tekst links, laag D (v3.20.0, AF):** de linknotatie
+[label](tool:id) / [label](hub:categorie#anker), geparst door
+lib/inlineLinks.js en gerenderd door components/TekstMetLinks.js
+(JSON-LD krijgt de platte tekst). Toegepast op 37 links in 14
+toolbestanden plus de storefront-FAQ, tweetalig, uitsluitend op
+bestaande natuurlijke vermeldingen (geen nieuwe zinnen erbij
+verzonnen). tests/inline-links.test.js valideert elk linkdoel voor NL
+en EN.
+
+**Nog niet gedaan, kandidaat voor een volgende ronde:** de notatie
+toepassen op de storefront-uitlegblokken (voor-wie, beslislogica,
+seizoen; UitlegBlokken.js rendert nog platte tekst) en op de
+resterende tools zonder in-tekst link (korte-broek-weer,
+buiten-zwemmen, gladheid en de meeste van batch 3 hadden geen
+bestaande letterlijke vermelding om aan te haken; die vergen een
+bewuste nieuwe zin, geen wrap van iets dat er al stond).
+
+**Geparkeerd uit de SEO-run (akkoord Martijn):**
+- Winterbanden-anchor (7-gradenregel): rand van de weer-scope.
+
+**Promoveren naar eigen pagina zodra GSC volume toont:**
+- Pollenkalender (nu anchor op de gezondheid-hub): bij impressies op
+  brede kalender-termen een eigen pagina met maandoverzicht.
+- Gradenreeks "wat trek ik aan bij 5/10/20 graden" (nu anchors op de
+  kleding-hub): bij volume per graad-variant promoveren, te beginnen
+  met de best presterende.
 
 ## Open punten (feedback Martijn, juli 2026)
 
@@ -52,11 +93,6 @@ dauw-uren van grasmaaien zijn aannames.
   vervang-route, verlopen-teller in de cron-output). Bevestiging op
   productie staat nog open: controleren of de externe cron nog draait
   met de juiste secret, en of `verlopen` in de cron-response daalt.
-- **Onderling linken tussen relevante tools**: op toolpagina's naar
-  aanverwante checks verwijzen (terras naar barbecue en zonkracht,
-  strand naar zonkracht, fiets naar regentiming en gladheid, hardlopen
-  naar regentiming en kleding, krabben naar gladheid). Goed voor
-  interne links en sessieduur.
 - **Visuals per storefront**: Martijn levert later per storefront een
   AI-gegenereerde afbeelding of illustratie aan; tot die tijd is het
   achtergrondmodel (paginatint plus categorie-icoon) de visuele laag.
@@ -82,12 +118,25 @@ verdictstip op alle-checks kan niet meer wegvallen bij lange vragen;
 anker-vragen delen de chip-opmaak met geplande vragen (klikbaar, vaste
 rand).
 
-## Fietstool fase 2 (akkoord Martijn)
+## Fietstool fase 2 (v3.20.0, AF)
 
-- Herindeling: bovenaan ja/nee plus zwaarste rit plus 2-3 redenen,
-  routebuilder daaronder; score-drempels expliciet tonen.
-- Factorbalken voor de fietscheck: de route-engine levert nog geen
-  factoren-structuur; dit is het moment om die toe te voegen.
+Herindeling gedaan: dagadvies (badge in de vijfschaal, cijfer, zwaarste
+rit met naam, top-redenen als losse punten, cijferdrempels expliciet)
+staat boven de kaart en de ritkaarten; de routebuilder (Jouw rit) staat
+als eigen paneel onder de kaart. lib/advice.js levert nu een echte
+factorenstructuur (tegenwind, droog, temperatuur, windstoten) naast de
+pijnscore, zichtbaar als factorbalken op het dagadvies en op elke
+ritkaart via het bestaande FactorBalken-component.
+
+**Vervolgideeen (niet meegenomen dit keer):**
+- De kaart staat nu los van de ritkaarten in het werkblad; overwegen om
+  bij klikken op een ritkaart automatisch naar de kaart te scrollen op
+  mobiel, waar ze niet naast elkaar staan.
+- De 3-woordige fietstaal (prima fietsdag/pittige rit/liever niet
+  fietsen) wordt nergens meer getoond (de badge gebruikt nu de
+  vijfschaal); adviesVoorScore in lib/advice.js bestaat nog voor de
+  meldingen-drempels en interne logica maar is losgekoppeld van de UI.
+  Nalopen of dat overal klopt bij een volgende fietstool-ronde.
 
 ## Affiliate (fase 5, bewust laatst)
 

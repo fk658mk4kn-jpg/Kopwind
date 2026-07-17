@@ -42,6 +42,10 @@ export const faq = [
   },
   {
     v: "Verschilt dit van de hardloopcheck?",
-    a: "Ja. Hardlopen heeft een koeler optimum en is windgevoeliger. Deze check is gebouwd op gemengde trainingen: iets warmer mag, wind telt lichter, en de hittegrens is instelbaar op jouw trainingsvorm.",
+    a: "Ja. [Hardlopen](tool:hardloopweer) heeft een koeler optimum en is windgevoeliger. Deze check is gebouwd op gemengde trainingen: iets warmer mag, wind telt lichter, en de hittegrens is instelbaar op jouw trainingsvorm.",
+  },
+  {
+    v: "Bootcamp bij kou: vanaf welke temperatuur train ik binnen?",
+    a: "Bootcamp bij kou kan met een goede warming-up prima tot rond het vriespunt; de grens ligt eerder bij gladheid en wind dan bij de temperatuur zelf. Onder de min 5, bij ijzel of bij een gevoelstemperatuur ver onder nul wordt buiten trainen onverstandig: koude lucht happen tijdens intervallen is dan echt onaangenaam en de ondergrond onbetrouwbaar.",
   },
 ];

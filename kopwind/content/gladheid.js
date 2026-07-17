@@ -44,4 +44,8 @@ export const faq = [
     v: "Kan ik hierop blind vertrouwen?",
     a: "Gebruik de check als vroege waarschuwing, niet als vrijbrief. Zonder wegdeksensoren blijft het een benadering, en plaatselijk kan het afwijken (schaduwplekken, tunnels, pas gestrooide routes). Rustig vertrekken en vroeg remmen testen blijft bij twijfel het advies.",
   },
+  {
+    v: "Gladheid in de ochtend: tot hoe laat blijft het glad?",
+    a: "Gladheid in de ochtend houdt vaak langer aan dan je denkt: schaduwplekken, bruggen en fietspaden blijven glad tot de zon of de dooi ze bereikt, soms tot ver na tien uur. Boven de nul graden lucht kan het wegdek nog onder nul zijn. De check kijkt per ochtend en noemt het risico; blijf op beschaduwde stukken alert tot ruim na de zichtbare dooi.",
+  },
 ];

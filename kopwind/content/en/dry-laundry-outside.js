@@ -44,4 +44,12 @@ export const faq = [
     v: "Is this better than the dryer?",
     a: "For your energy bill and your clothes, yes. A dryer run costs real money; the wind is free. The check exists so you only skip the line when the weather truly won't cooperate.",
   },
+  {
+    v: "Drying laundry in winter: can it go outside?",
+    a: "Drying laundry outside in winter works, but slowly: at 5 degrees and high humidity it easily takes a full day, and below zero the laundry first freezes stiff (the moisture still evaporates afterwards, called freeze-drying). A dry, breezy winter day works surprisingly well; the check shows whether one is coming.",
+  },
+  {
+    v: "Drying laundry on a cloudy day: how long does it take?",
+    a: "Drying laundry under cloud works fine; wind and dry air do most of the work, not the sun. Count on three to five hours at 15 degrees with a solid breeze, and more like half a day when still and clammy. The check estimates drying time per moment, so you see whether a morning or afternoon hang is smarter.",
+  },
 ];

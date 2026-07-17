@@ -44,4 +44,8 @@ export const faq = [
     v: "Geldt dit advies ook voor kinderen?",
     a: "Kinderen zijn vaak actiever en merken kou minder snel, maar koelen bij stilzitten ook sneller af. Houd voor het schoolplein de gewone grens aan en geef bij twijfel een lange broek of trainingsbroek mee als wissel.",
   },
+  {
+    v: "Korte broek naar werk of school: wanneer kan dat?",
+    a: "Korte broek naar werk of school kan comfortabel vanaf een graad of 18 gevoelstemperatuur in de ochtend, want je zit er de hele dag mee. De valkuil is de vroege fietsrit: om 8:00 is het vaak vijf graden koeler dan het middagmaximum belooft. Check dus het ochtendgevoel, niet de dagpiek.",
+  },
 ];

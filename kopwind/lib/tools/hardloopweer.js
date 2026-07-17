@@ -15,9 +15,9 @@
  * uur ongeschikt.
  */
 
-import { clamp, lerp, maakScore, adviesVoorScore } from "../engine/score.js";
-import { jaVoor } from "../engine/schaal.js";
-import { bouwBasis, basisPerDag, dagKeyVan, BASIS_VELDEN } from "../engine/weerbasis.js";
+import { clamp, lerp } from "../engine/score.js";
+import { BASIS_VELDEN } from "../engine/weerbasis.js";
+import { maakVensterOverlay, topPijn } from "../engine/vensterTool.js";
 
 import { kies } from "../i18n/locale.js";
 
@@ -125,88 +125,22 @@ export function uurLoopScore(u, inst = HARDLOOP_DEFAULTS) {
   return clamp(Math.round(96 * tempF * windF * motregenF), 0, 100);
 }
 
-function besteBlok(uren) {
-  const blokken = [];
-  let blok = [];
-  for (const u of uren) {
-    if (u.score >= BRUIKBAAR_VANAF) {
-      blok.push(u);
-    } else if (blok.length) {
-      blokken.push(blok);
-      blok = [];
-    }
-  }
-  if (blok.length) blokken.push(blok);
-  let beste = null;
-  for (const b of blokken) {
-    if (b.length < MIN_VENSTER_UREN) continue;
-    const gemiddeld = b.reduce((a, u) => a + u.score, 0) / b.length;
-    if (!beste || gemiddeld * b.length > beste.gemiddeld * beste.uren) {
-      beste = { van: b[0].uur, tot: b[b.length - 1].uur + 1, uren: b.length, gemiddeld, blok: b };
-    }
-  }
-  return beste;
-}
-
-function topPijn(gemiddeld) {
-  const ANKERS = [
-    [85, 0],
-    [72, 8],
-    [58, 20],
-    [45, 35],
-    [30, 52],
-  ];
-  if (gemiddeld >= ANKERS[0][0]) return 0;
-  for (let i = 0; i < ANKERS.length - 1; i++) {
-    const [x1, y1] = ANKERS[i];
-    const [x0, y0] = ANKERS[i + 1];
-    if (gemiddeld >= x0) return Math.round(lerp(gemiddeld, x0, x1, y0, y1));
-  }
-  return 55;
-}
-
-const pad2 = (n) => String(n).padStart(2, "0");
-
-function statusVandaag(venster, nu) {
-  if (!venster) return { soort: "nee", zin: T.statusNiks };
-  const uurNu = nu.getHours();
-  const tijd = `${pad2(venster.van)}:00-${pad2(venster.tot)}:00`;
-  if (uurNu >= venster.tot) return { soort: "geweest", zin: T.statusGeweest };
-  if (uurNu >= venster.van) return { soort: "nu", zin: T.statusNu(`${pad2(venster.tot)}:00`) };
-  return { soort: "later", zin: T.statusBeste(tijd) };
-}
-
-function statusToekomst(venster) {
-  if (!venster) return { soort: "nee", zin: T.toekomstGeen };
-  return {
-    soort: "info",
-    zin: T.toekomstBeste(`${pad2(venster.van)}:00-${pad2(venster.tot)}:00`),
-  };
-}
-
-export function overlay(hourly, nu = new Date(), instellingen = HARDLOOP_DEFAULTS) {
-  const inst = { ...HARDLOOP_DEFAULTS, ...(instellingen ?? {}) };
-  const basis = bouwBasis(hourly);
-  const perDag = basisPerDag(basis, inst.dagStart, inst.dagEind);
-  const vandaagKey = dagKeyVan(nu);
-
-  const dagen = [];
-  for (const [datum, dagUren] of perDag) {
-    if (datum < vandaagKey) continue;
-    const uren = dagUren.map((u) => ({
-      ...u,
-      score: uurLoopScore(u, inst),
-      nat: (u.neerslag ?? 0) > 0.05,
-    }));
-    dagen.push({ datum, uren });
-  }
-  dagen.sort((a, b) => (a.datum < b.datum ? -1 : 1));
-
-  const dagenUit = dagen.slice(0, 5).map(({ datum, uren }) => {
-    const venster = besteBlok(uren);
+/**
+ * Sinds v3.18.0 draait de hardloopcheck op de gedeelde venstermotor.
+ * De eigen identiteit zit in de factorenopbouw: warm weegt zwaar (10
+ * punten zodra het richting jouw grens kruipt), wind licht (6) en
+ * buien het lichtst (4), want een spatje regen deert een loper
+ * weinig. Het venster mag een uur kort zijn.
+ */
+export const overlay = maakVensterOverlay({
+  defaults: HARDLOOP_DEFAULTS,
+  uurScore: uurLoopScore,
+  teksten: T,
+  adviesLabels: T.adviesLabels,
+  minVensterUren: 1,
+  dagFactoren: ({ uren, venster, inst }) => {
     const maxGevoel = Math.max(...uren.map((u) => u.gevoel ?? -99));
     const natUren = uren.filter((u) => u.nat).length;
-
     const factoren = [];
     if (!venster) {
       const regent = natUren > uren.length / 3;
@@ -238,38 +172,9 @@ export function overlay(hourly, nu = new Date(), instellingen = HARDLOOP_DEFAULT
         factoren.push({ punten: 4, reden: T.redenBuien });
       }
     }
-    const { score, redenen } = maakScore(factoren);
-    const conditie = { score, redenen, advies: adviesVoorScore(score, hardloopweer.adviesLabels) };
-
-    const isVandaag = datum === vandaagKey;
-    const status = isVandaag ? statusVandaag(venster, nu) : statusToekomst(venster);
-
-    const top = venster
-      ? venster.blok.reduce((a, u) => (u.score > a.score ? u : a), venster.blok[0])
-      : null;
-
-    const antwoord = {
-      ja: isVandaag
-        ? ["nu", "later"].includes(status.soort)
-        : status.soort === "info" && jaVoor(score),
-      zin: status.zin,
-    };
-
-    return {
-      datum,
-      antwoord,
-      uren: uren.map((u) => ({ uur: u.uur, score: u.score, nat: u.nat })),
-      venster: venster ? { van: venster.van, tot: venster.tot, uren: venster.uren } : null,
-      metric: top
-        ? { zin: T.metric(pad2(top.uur), Math.round(top.gevoel ?? top.temp ?? 0)) }
-        : null,
-      conditie,
-      status,
-    };
-  });
-
-  return { dagen: dagenUit };
-}
+    return factoren;
+  },
+});
 
 export const hardloopweer = {
   id: "hardloopweer",

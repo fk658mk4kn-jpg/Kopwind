@@ -6,6 +6,24 @@
 
 export const VERSIES = [
   {
+    versie: "3.20.0",
+    codenaam: "Bayamo",
+    datum: "2026-07-16",
+    zin: "Een sluimerende bug gefixt waardoor een aantal checks 's middags al \"geweest\" zei terwijl er nog een prima moment voor de deur lag. De fietscheck toont nu meteen boven aan of het een goede fietsdag is, met de zwaarste rit en de redenen erbij, en factorbalken zoals de andere checks. En op meerdere plekken in de tekst staan nu directe links naar de check waar het net over gaat.",
+  },
+  {
+    versie: "3.19.0",
+    codenaam: "Harmattan",
+    datum: "2026-07-16",
+    zin: "Elke check verwijst nu naar zijn verwante checks en naar zijn thema (ook in het kruimelpad), en de themapagina's verwijzen slimmer naar elkaar. Daarnaast beantwoorden de checks en thema's ruim veertig nieuwe vragen, van wat trek ik aan bij 10 graden tot zonkracht 3 en de pollenkalender.",
+  },
+  {
+    versie: "3.18.0",
+    codenaam: "Zonda",
+    datum: "2026-07-16",
+    zin: "Onderhoudsronde onder de motorkap: vijf checks (terras, barbecue, hardlopen, strand, autowassen) draaien nu op dezelfde motor als de tien nieuwe checks, met exact hetzelfde gedrag als voorheen. Zichtbaar verschil: elke check toont nu de legenda-balk onder de urenstrip; die ontbrak bij een deel van de checks.",
+  },
+  {
     versie: "3.17.0",
     codenaam: "Passaat",
     datum: "2026-07-16",

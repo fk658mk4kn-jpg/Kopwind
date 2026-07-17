@@ -44,4 +44,8 @@ export const faq = [
     v: "Presteren panelen slechter bij hitte?",
     a: "Ja, panelen verliezen rendement als ze heet worden: grofweg een half procent per graad boven de 25 graden celtemperatuur. Een zonnige lentedag met een frisse wind is daardoor vaak productiever dan een snikhete zomerdag. De indicatie blijft dan alsnog hoog: zon is zon.",
   },
+  {
+    v: "Zonnepanelen in de winter: leveren ze nog wat op?",
+    a: "Zonnepanelen leveren in de winter zeker wat, maar veel minder: december en januari zijn samen goed voor grofweg 5 tot 8 procent van de jaaropbrengst, door de korte dagen en de lage zon. Heldere vriesdagen zijn verrassend productief, want koude panelen werken efficienter. De check laat ook in de winter het zonnigste blok zien.",
+  },
 ];

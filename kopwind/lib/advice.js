@@ -28,7 +28,7 @@ export const DEFAULT_THRESHOLDS = {
   segmentLengte: 300, // meter per routesegment
 };
 
-import { lerp } from "./engine/score.js";
+import { lerp, clamp } from "./engine/score.js";
 
 /**
  * Berekent de pijnscore van een rit op basis van de metrics uit analyzeLeg.
@@ -117,7 +117,48 @@ export function painScore(metrics, thresholds = DEFAULT_THRESHOLDS) {
     }
   }
 
-  return { score: Math.min(100, Math.round(score)), redenen };
+  return { score: Math.min(100, Math.round(score)), redenen, factoren: factorenVoorRit(metrics, thresholds) };
+}
+
+/**
+ * De weerfactoren achter een ritscore als balkjes (fase 2, v3.20.0),
+ * in dezelfde vorm als FactorBalken elders op de site verwacht:
+ * {id, gewicht, score}, score 0..100 gunstig. Bewust een AFGELEIDE
+ * benadering naast painScore, niet een herberekening: kleine
+ * afwijkingen van het exacte cijfer zijn acceptabel, dit is
+ * toelichting, geen tweede waarheid (zelfde uitgangspunt als
+ * lib/engine/factoren.js). Vier factoren, gewicht in lijn met hun
+ * aandeel in de formule hierboven: tegenwind en droog wegen het
+ * zwaarst, temperatuur minder, windstoten het lichtst.
+ */
+function factorenVoorRit(metrics, thresholds) {
+  const tegenwindGunstig = clamp(
+    100 -
+      lerp(metrics.meanPosHead ?? 0, 0, thresholds.tegenwindZwaar + 12, 0, 100) -
+      (metrics.fracZwaar ?? 0) * 20 -
+      (metrics.fracMatig ?? 0) * 8,
+    0,
+    100
+  );
+  const droogGunstig = clamp(
+    100 -
+      lerp(metrics.neerslagKansMax ?? 0, 0, 100, 0, 65) -
+      lerp(metrics.neerslagMmMax ?? 0, 0, 4, 0, 35),
+    0,
+    100
+  );
+  const tempGunstig =
+    metrics.gevoelMin == null
+      ? 100
+      : clamp(lerp(metrics.gevoelMin, thresholds.gevoelMin - 8, 10, 20, 100), 0, 100);
+  const stotenGunstig = clamp(100 - lerp(metrics.maxGust ?? 0, 45, 80, 0, 100), 0, 100);
+
+  return [
+    { id: "tegenwind", gewicht: 35, score: Math.round(tegenwindGunstig) },
+    { id: "droog", gewicht: 35, score: Math.round(droogGunstig) },
+    { id: "temp", gewicht: 20, score: Math.round(tempGunstig) },
+    { id: "stoten", gewicht: 10, score: Math.round(stotenGunstig) },
+  ];
 }
 
 /** Vertaalt een pijnscore naar een fietsadvies. */
@@ -129,9 +170,22 @@ export function adviesVoorScore(score) {
 
 /** Advies voor een enkele rit. */
 export function legAdvies(metrics, thresholds = DEFAULT_THRESHOLDS) {
-  const { score, redenen } = painScore(metrics, thresholds);
-  return { score, redenen, advies: adviesVoorScore(score) };
+  const { score, redenen, factoren } = painScore(metrics, thresholds);
+  return { score, redenen, factoren, advies: adviesVoorScore(score) };
 }
+
+/**
+ * Cijferdrempels, expliciet en op een plek (fase 2, v3.20.0): welk
+ * cijfer bij welk advies hoort. Dezelfde grenzen als adviesVoorScore
+ * hierboven, alleen dan voor de gebruiker uitgeschreven. cijferWaarde
+ * (lib/engine/score.js) rekent score naar cijfer met dezelfde formule
+ * als fmtCijfer in lib/format.js.
+ */
+export const CIJFERDREMPELS = {
+  prima: 7.0, // score < 30
+  pittig: 4.0, // score < 60
+  // score >= 60: liever niet fietsen
+};
 
 /**
  * Dagadvies: je kiest een keer per dag of de fiets meegaat, dus de zwaarste
@@ -170,7 +224,12 @@ export function dagAdvies(legs) {
   return {
     score,
     advies: adviesVoorScore(score),
+    ja: score < 45, // zelfde jaVoor-grens als de rest van de site
     worstIdx,
+    worstLabel: label,
+    redenen,
+    windZin: wind || null,
+    factoren: worst.advies.factoren ?? [],
     uitleg,
   };
 }

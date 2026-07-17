@@ -207,7 +207,7 @@ export function overlay(hourly, nu = new Date(), instellingen = PANEEL_DEFAULTS)
     };
   });
 
-  return { dagen: dagenUit };
+  return { legenda: T.legenda, dagen: dagenUit };
 }
 
 export const zonnepanelen = {

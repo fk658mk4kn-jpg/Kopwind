@@ -44,4 +44,8 @@ export const faq = [
     v: "Does rain count heavily?",
     a: "Less than you'd think: you get wet on the water anyway. Drizzle gives a light deduction; only solid showers and a high shower chance reject hours, partly because showers bring gusts and sometimes thunder. And with thunder you get off the water, full stop.",
   },
+  {
+    v: "Paddleboarding in summer: what is the best time on busy days?",
+    a: "Paddleboarding in summer is nicest early in the morning: the water is at its flattest (wind picks up through the day), the channels are still quiet and you have the lake to yourself. The check shows per hour when the wind is lowest; on warm days that calmest window almost always falls before ten.",
+  },
 ];

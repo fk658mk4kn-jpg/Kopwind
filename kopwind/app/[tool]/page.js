@@ -19,6 +19,8 @@ import { LOCALE } from "@/lib/i18n/locale";
 import { CATEGORIEEN, vindCategorie } from "@/lib/categorieen";
 import Storefront from "@/components/Storefront";
 import RecentTracker from "@/components/RecentTracker";
+import TekstMetLinks from "@/components/TekstMetLinks";
+import { platteTekst } from "@/lib/inlineLinks";
 
 /**
  * Dynamische toolpagina uit het register (§6): de tool bovenaan, de
@@ -71,6 +73,7 @@ export default function ToolPagina({ params }) {
 
   const tool = vindTool(params.tool);
   const inhoud = inhoudVoorTool(params.tool);
+  const toolCategorie = CATEGORIEEN.find((c) => c.id === tool.categorieId) ?? null;
   if (!tool || !inhoud) notFound();
 
   const faqJsonLd = {
@@ -79,7 +82,7 @@ export default function ToolPagina({ params }) {
     mainEntity: inhoud.faq.map((f) => ({
       "@type": "Question",
       name: f.v,
-      acceptedAnswer: { "@type": "Answer", text: f.a },
+      acceptedAnswer: { "@type": "Answer", text: platteTekst(f.a) },
     })),
   };
   const appJsonLd = {
@@ -96,7 +99,13 @@ export default function ToolPagina({ params }) {
   return (
     <main>
       <RecentTracker toolId={tool.id} />
-      <Broodkruimel items={[{ naam: HUB_NAAM, href: "/" }, { naam: tool.naam }]} />
+      <Broodkruimel
+        items={[
+          { naam: HUB_NAAM, href: "/" },
+          ...(toolCategorie ? [{ naam: toolCategorie.titel, href: `/${toolCategorie.slug}` }] : []),
+          { naam: tool.naam },
+        ]}
+      />
 
       <section className="tool-hero">
         <h1>{inhoud.seo.h1}</h1>
@@ -135,7 +144,7 @@ export default function ToolPagina({ params }) {
         {inhoud.blokken.map((b) => (
           <div key={b.kop}>
             <h2>{b.kop}</h2>
-            <p>{b.tekst}</p>
+            <p><TekstMetLinks tekst={b.tekst} /></p>
           </div>
         ))}
 
@@ -143,7 +152,7 @@ export default function ToolPagina({ params }) {
         {inhoud.faq.map((f) => (
           <details key={f.v} className="faq-item">
             <summary><h3>{f.v}</h3></summary>
-            <p>{f.a}</p>
+            <p><TekstMetLinks tekst={f.a} /></p>
           </details>
         ))}
       </section>
@@ -161,7 +170,7 @@ export default function ToolPagina({ params }) {
           )}
         </p>
       )}
-      <GerelateerdBlok toolId={tool.id} />
+      <GerelateerdBlok toolId={tool.templateId ?? tool.id} />
     </main>
   );
 }

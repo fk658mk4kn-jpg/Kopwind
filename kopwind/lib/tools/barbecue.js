@@ -13,9 +13,9 @@
  * kan prima met een vest, barbecueen in de regen is treurig.
  */
 
-import { clamp, lerp, maakScore, adviesVoorScore } from "../engine/score.js";
-import { jaVoor } from "../engine/schaal.js";
-import { bouwBasis, basisPerDag, dagKeyVan, BASIS_VELDEN } from "../engine/weerbasis.js";
+import { clamp, lerp } from "../engine/score.js";
+import { BASIS_VELDEN } from "../engine/weerbasis.js";
+import { maakVensterOverlay, topPijn } from "../engine/vensterTool.js";
 import { kies } from "../i18n/locale.js";
 
 /** Alle teksten van de barbecuecheck, per taal. */
@@ -119,50 +119,6 @@ export function uurBbqScore(u, inst = BBQ_DEFAULTS) {
   return clamp(Math.round(90 * gevoelF * windF + zon), 0, 100);
 }
 
-function besteBlok(uren) {
-  const blokken = [];
-  let blok = [];
-  for (const u of uren) {
-    if (u.score >= BRUIKBAAR_VANAF) {
-      blok.push(u);
-    } else if (blok.length) {
-      blokken.push(blok);
-      blok = [];
-    }
-  }
-  if (blok.length) blokken.push(blok);
-  let beste = null;
-  for (const b of blokken) {
-    if (b.length < MIN_VENSTER_UREN) continue;
-    const gemiddeld = b.reduce((a, u) => a + u.score, 0) / b.length;
-    if (!beste || gemiddeld * b.length > beste.gemiddeld * beste.uren) {
-      beste = { van: b[0].uur, tot: b[b.length - 1].uur + 1, uren: b.length, gemiddeld, blok: b };
-    }
-  }
-  return beste;
-}
-
-function topPijn(gemiddeld) {
-  const ANKERS = [
-    [85, 0],
-    [72, 8],
-    [58, 20],
-    [45, 35],
-    [30, 52],
-  ];
-  if (gemiddeld >= ANKERS[0][0]) return 0;
-  for (let i = 0; i < ANKERS.length - 1; i++) {
-    const [x1, y1] = ANKERS[i];
-    const [x0, y0] = ANKERS[i + 1];
-    if (gemiddeld >= x0) return Math.round(lerp(gemiddeld, x0, x1, y0, y1));
-  }
-  return 55;
-}
-
-/**
- * Dominante windrichting in een blok via het vectorgemiddelde (zodat 350
- * en 10 graden noord middelen, niet zuid). Geeft graden 0..360 of null.
- */
 export function dominanteWindrichting(blok) {
   let x = 0;
   let y = 0;
@@ -192,29 +148,23 @@ export function rookZin(blok) {
   return T.rook(windstreekVoluit(uit), windstreekVoluit((uit + 180) % 360));
 }
 
-export function overlay(hourly, nu = new Date(), instellingen = BBQ_DEFAULTS) {
-  const inst = { ...BBQ_DEFAULTS, ...(instellingen ?? {}) };
-  const basis = bouwBasis(hourly);
-  const perDag = basisPerDag(basis, inst.dagStart, inst.dagEind);
-  const vandaagKey = dagKeyVan(nu);
-
-  const dagen = [];
-  for (const [datum, dagUren] of perDag) {
-    if (datum < vandaagKey) continue;
-    const uren = dagUren.map((u) => ({
-      ...u,
-      score: uurBbqScore(u, inst),
-      nat: (u.neerslag ?? 0) > 0.05,
-    }));
-    dagen.push({ datum, uren });
-  }
-  dagen.sort((a, b) => (a.datum < b.datum ? -1 : 1));
-
-  const dagenUit = dagen.slice(0, 5).map(({ datum, uren }) => {
-    const venster = besteBlok(uren);
+/**
+ * Sinds v3.18.0 draait de barbecuecheck op de gedeelde venstermotor.
+ * De eigen identiteit zit in de factorenopbouw (wind is met 10 punten
+ * en een drempel op 75 procent van de grens de zwaarste spelbreker,
+ * en staat voor fris in de redenvolgorde), de vandaag-status op de
+ * resterende uren, de rookzin als metric (waar de rook heen trekt) en
+ * de morgen-nabewerking.
+ */
+export const overlay = maakVensterOverlay({
+  defaults: BBQ_DEFAULTS,
+  uurScore: uurBbqScore,
+  teksten: T,
+  adviesLabels: T.adviesLabels,
+  minVensterUren: 2,
+  dagFactoren: ({ uren, venster, inst }) => {
     const maxGevoel = Math.max(...uren.map((u) => u.gevoel ?? -99));
     const natUren = uren.filter((u) => u.nat).length;
-
     const factoren = [];
     if (!venster) {
       factoren.push({
@@ -246,68 +196,34 @@ export function overlay(hourly, nu = new Date(), instellingen = BBQ_DEFAULTS) {
         factoren.push({ punten: 6, reden: T.redenBuien });
       }
     }
-    const { score, redenen } = maakScore(factoren);
-    const conditie = { score, redenen, advies: adviesVoorScore(score, barbecue.adviesLabels) };
-
-    const isVandaag = datum === vandaagKey;
-    const status = isVandaag ? statusVandaag(uren, nu, inst) : statusToekomst(venster);
-
-    const antwoord = {
-      ja: isVandaag
-        ? ["nu", "later"].includes(status.soort)
-        : status.soort === "info" && jaVoor(score),
-      zin: status.zin,
-    };
-
-    return {
-      datum,
-      antwoord,
-      uren: uren.map((u) => ({ uur: u.uur, score: u.score, nat: u.nat })),
-      venster: venster ? { van: venster.van, tot: venster.tot, uren: venster.uren } : null,
-      metric: venster ? { zin: rookZin(venster.blok) } : null,
-      conditie,
-      status,
-    };
-  });
-
-  if (dagenUit[0]?.status?.soort === "nee" && dagenUit[1]?.venster) {
-    const v = dagenUit[1].venster;
-    dagenUit[0].status.zin += T.morgenWel(String(v.van).padStart(2, "0"));
-  }
-
-  return {
-    legenda: T.legenda,
-    dagen: dagenUit,
-  };
-}
-
-function fmtBlok(van, tot) {
-  return `${String(van).padStart(2, "0")}:00-${String(tot).padStart(2, "0")}:00`;
-}
-
-function statusVandaag(uren, nu, inst) {
-  const resterend = uren.filter((u) => u.uur >= nu.getHours());
-  const blok = besteBlok(resterend);
-  if (!blok) {
-    const eerder = besteBlok(uren);
-    if (eerder && eerder.tot <= nu.getHours()) {
-      return { soort: "nee", zin: T.statusGeweest };
+    return factoren;
+  },
+  statusVandaag: ({ uren, nu, zoekBlok }) => {
+    const resterend = uren.filter((u) => u.uur >= nu.getHours());
+    const blok = zoekBlok(resterend);
+    if (!blok) {
+      const eerder = zoekBlok(uren);
+      if (eerder && eerder.tot <= nu.getHours()) {
+        return { soort: "nee", zin: T.statusGeweest };
+      }
+      return { soort: "nee", zin: T.statusNiks };
     }
-    return { soort: "nee", zin: T.statusNiks };
-  }
-  const nuBezig = blok.van <= nu.getHours();
-  return {
-    soort: nuBezig ? "nu" : "later",
-    zin: nuBezig
-      ? T.statusNu(`${String(blok.tot).padStart(2, "0")}:00`)
-      : T.statusBeste(fmtBlok(blok.van, blok.tot)),
-  };
-}
-
-function statusToekomst(venster) {
-  if (!venster) return { soort: "nee", zin: T.toekomstGeen };
-  return { soort: "info", zin: T.toekomstBeste(fmtBlok(venster.van, venster.tot)) };
-}
+    const nuBezig = blok.van <= nu.getHours();
+    return {
+      soort: nuBezig ? "nu" : "later",
+      zin: nuBezig
+        ? T.statusNu(`${String(blok.tot).padStart(2, "0")}:00`)
+        : T.statusBeste(`${String(blok.van).padStart(2, "0")}:00-${String(blok.tot).padStart(2, "0")}:00`),
+    };
+  },
+  metricVoor: ({ venster }) => (venster ? { zin: rookZin(venster.blok) } : null),
+  naVerwerking: (dagenUit) => {
+    if (dagenUit[0]?.status?.soort === "nee" && dagenUit[1]?.venster) {
+      const v = dagenUit[1].venster;
+      dagenUit[0].status.zin += T.morgenWel(String(v.van).padStart(2, "0"));
+    }
+  },
+});
 
 export const barbecue = {
   id: "barbecue",

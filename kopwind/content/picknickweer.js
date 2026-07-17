@@ -44,4 +44,8 @@ export const faq = [
     v: "Kan een picknick in de avond?",
     a: "Zeker, maar hou rekening met de daling na zonsondergang: de gevoelstemperatuur zakt dan snel en het gras wordt klam van de dauw. Het beste avondblok eindigt meestal rond of net na zonsondergang.",
   },
+  {
+    v: "Picknick met wind: welke plek in het park kies ik?",
+    a: "Picknick met wind red je met de juiste plek: aan de windluwe kant van een bosrand, heg of gebouw voelt dezelfde middag graden warmer en blijft alles liggen. Vermijd open grasvlakten en waterkanten, daar staat de wind vol. Vuistregel: zie je een vlag strak staan, zoek dan dichter bij de beschutting.",
+  },
 ];

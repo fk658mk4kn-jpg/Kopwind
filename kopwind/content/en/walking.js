@@ -44,4 +44,8 @@ export const faq = [
     v: "Can I check the weather for a long-distance walk?",
     a: "For a day hike, look at the full-day picture: the hour bar shows which hours are good and where a shower falls. For multi-day walks you get a verdict per day, five days ahead.",
   },
+  {
+    v: "Walking in the rain: when is it still enjoyable?",
+    a: "Walking in the rain can be surprisingly pleasant in drizzle or light, steady rain: with a good coat, and in the woods, you barely notice. Where it stops being fun: hard showers, wind force 5 or more on top, and temperatures below 8 degrees while getting wet. The hour strip shows which hours are dry enough.",
+  },
 ];

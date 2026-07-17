@@ -2,6 +2,7 @@ import Link from "next/link";
 import Icoon from "@/components/Icoon";
 import { vindCategorieOpId } from "@/lib/categorieen";
 import { S } from "@/lib/strings";
+import TekstMetLinks from "@/components/TekstMetLinks";
 
 /**
  * Storefront-blok 6 (PLAYBOOK sectie 11): de FAQ. Zoekwoord voorin, elk
@@ -16,7 +17,7 @@ export function CategorieFaq({ faq }) {
       {faq.map((f) => (
         <details key={f.id} id={f.id} className="faq-item">
           <summary><h3>{f.v}</h3></summary>
-          <p>{f.a}</p>
+          <p><TekstMetLinks tekst={f.a} /></p>
         </details>
       ))}
     </section>

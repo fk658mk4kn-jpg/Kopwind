@@ -44,4 +44,8 @@ export const faq = [
     v: "Vanaf welke temperatuur leg ik de krabber klaar?",
     a: "Bij een verwacht minimum onder de 3 graden en een heldere nacht is klaarleggen verstandig; onder de 1,5 graad wordt krabben waarschijnlijk. In de instellingen bepaal je zelf hoe snel de check ja zegt.",
   },
+  {
+    v: "Autoruit aan de binnenkant bevroren: hoe kan dat?",
+    a: "Een autoruit die aan de binnenkant bevriest wijst op vocht in de auto: natte matten, een lekkend portierrubber of gewoon veel condens van natte jassen. Het vocht slaat 's nachts neer op het koude glas en bevriest. Aanpakken: matten drogen, een vochtvreter in de auto en even doorluchten na een natte rit.",
+  },
 ];

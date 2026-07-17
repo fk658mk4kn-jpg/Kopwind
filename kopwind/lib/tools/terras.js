@@ -17,9 +17,9 @@
  * vanaf 14:00 wel".
  */
 
-import { clamp, lerp, maakScore, adviesVoorScore } from "../engine/score.js";
-import { jaVoor } from "../engine/schaal.js";
-import { bouwBasis, basisPerDag, dagKeyVan, BASIS_VELDEN } from "../engine/weerbasis.js";
+import { clamp, lerp } from "../engine/score.js";
+import { BASIS_VELDEN } from "../engine/weerbasis.js";
+import { maakVensterOverlay, topPijn } from "../engine/vensterTool.js";
 
 import { kies } from "../i18n/locale.js";
 
@@ -128,69 +128,30 @@ export function uurTerrasScore(u, inst = TERRAS_DEFAULTS) {
   return clamp(Math.round(88 * gevoelF * windF + zon), 0, 100);
 }
 
-function besteBlok(uren) {
-  const blokken = [];
-  let blok = [];
-  for (const u of uren) {
-    if (u.score >= BRUIKBAAR_VANAF) {
-      blok.push(u);
-    } else if (blok.length) {
-      blokken.push(blok);
-      blok = [];
-    }
-  }
-  if (blok.length) blokken.push(blok);
-  let beste = null;
-  for (const b of blokken) {
-    if (b.length < MIN_VENSTER_UREN) continue;
-    const gemiddeld = b.reduce((a, u) => a + u.score, 0) / b.length;
-    if (!beste || gemiddeld * b.length > beste.gemiddeld * beste.uren) {
-      beste = { van: b[0].uur, tot: b[b.length - 1].uur + 1, uren: b.length, gemiddeld, blok: b };
-    }
-  }
-  return beste;
+function zonStuk(blok) {
+  const zonUren = blok.filter((u) => u.dag && u.bewolking != null && u.bewolking <= 50);
+  if (!zonUren.length) return "";
+  if (zonUren.length === blok.length) return T.metZon;
+  return T.zonVanaf(String(zonUren[0].uur).padStart(2, "0"));
 }
 
-function topPijn(gemiddeld) {
-  const ANKERS = [
-    [85, 0],
-    [72, 8],
-    [58, 20],
-    [45, 35],
-    [30, 52],
-  ];
-  if (gemiddeld >= ANKERS[0][0]) return 0;
-  for (let i = 0; i < ANKERS.length - 1; i++) {
-    const [x1, y1] = ANKERS[i];
-    const [x0, y0] = ANKERS[i + 1];
-    if (gemiddeld >= x0) return Math.round(lerp(gemiddeld, x0, x1, y0, y1));
-  }
-  return 55;
-}
-
-export function overlay(hourly, nu = new Date(), instellingen = TERRAS_DEFAULTS) {
-  const inst = { ...TERRAS_DEFAULTS, ...(instellingen ?? {}) };
-  const basis = bouwBasis(hourly);
-  const perDag = basisPerDag(basis, inst.dagStart, inst.dagEind);
-  const vandaagKey = dagKeyVan(nu);
-
-  const dagen = [];
-  for (const [datum, dagUren] of perDag) {
-    if (datum < vandaagKey) continue;
-    const uren = dagUren.map((u) => ({
-      ...u,
-      score: uurTerrasScore(u, inst),
-      nat: (u.neerslag ?? 0) > 0.05,
-    }));
-    dagen.push({ datum, uren });
-  }
-  dagen.sort((a, b) => (a.datum < b.datum ? -1 : 1));
-
-  const dagenUit = dagen.slice(0, 5).map(({ datum, uren }) => {
-    const venster = besteBlok(uren);
+/**
+ * Sinds v3.18.0 draait de terrascheck op de gedeelde venstermotor. De
+ * eigen identiteit zit in drie callbacks: de factorenopbouw (fris voor
+ * wind in de redenvolgorde, wind weegt 6 punten), de vandaag-status
+ * die het beste blok op de RESTERENDE uren herberekent en verrijkt
+ * met zon ("met zon" of "zon vanaf 15:00") en een gaan-liggen-wind,
+ * en de morgen-nabewerking ("morgen vanaf 14:00 kan het wel").
+ */
+export const overlay = maakVensterOverlay({
+  defaults: TERRAS_DEFAULTS,
+  uurScore: uurTerrasScore,
+  teksten: T,
+  adviesLabels: T.adviesLabels,
+  minVensterUren: 2,
+  dagFactoren: ({ uren, venster, inst }) => {
     const maxGevoel = Math.max(...uren.map((u) => u.gevoel ?? -99));
     const natUren = uren.filter((u) => u.nat).length;
-
     const factoren = [];
     if (!venster) {
       const regent = natUren > 0;
@@ -223,81 +184,34 @@ export function overlay(hourly, nu = new Date(), instellingen = TERRAS_DEFAULTS)
         factoren.push({ punten: 5, reden: T.redenBuien });
       }
     }
-    const { score, redenen } = maakScore(factoren);
-    const conditie = { score, redenen, advies: adviesVoorScore(score, terras.adviesLabels) };
-
-    const isVandaag = datum === vandaagKey;
-    const status = isVandaag ? statusVandaag(uren, nu, inst) : statusToekomst(venster);
-
-    const top = venster
-      ? venster.blok.reduce((a, u) => (u.score > a.score ? u : a), venster.blok[0])
-      : null;
-
-    const antwoord = {
-      ja: isVandaag
-        ? ["nu", "later"].includes(status.soort)
-        : status.soort === "info" && jaVoor(score),
-      zin: status.zin,
-    };
-
-    return {
-      datum,
-      antwoord,
-      uren: uren.map((u) => ({ uur: u.uur, score: u.score, nat: u.nat })),
-      venster: venster ? { van: venster.van, tot: venster.tot, uren: venster.uren } : null,
-      metric: top
-        ? { zin: T.metric(String(top.uur).padStart(2, "0"), Math.round(top.gevoel)) }
-        : null,
-      conditie,
-      status,
-    };
-  });
-
-  if (dagenUit[0]?.status?.soort === "nee" && dagenUit[1]?.venster) {
-    const v = dagenUit[1].venster;
-    dagenUit[0].status.zin += T.morgenWel(String(v.van).padStart(2, "0"));
-  }
-
-  return {
-    legenda: T.legenda,
-    dagen: dagenUit,
-  };
-}
-
-function zonStuk(blok) {
-  const zonUren = blok.filter((u) => u.dag && u.bewolking != null && u.bewolking <= 50);
-  if (!zonUren.length) return "";
-  if (zonUren.length === blok.length) return T.metZon;
-  return T.zonVanaf(String(zonUren[0].uur).padStart(2, "0"));
-}
-
-function statusVandaag(uren, nu, inst) {
-  const resterend = uren.filter((u) => u.uur >= nu.getHours());
-  const blok = besteBlok(resterend);
-  if (!blok) {
-    const eerder = besteBlok(uren);
-    if (eerder && eerder.tot <= nu.getHours()) {
-      return { soort: "nee", zin: T.statusGeweest };
+    return factoren;
+  },
+  statusVandaag: ({ uren, nu, inst, zoekBlok }) => {
+    const resterend = uren.filter((u) => u.uur >= nu.getHours());
+    const blok = zoekBlok(resterend);
+    if (!blok) {
+      const eerder = zoekBlok(uren);
+      if (eerder && eerder.tot <= nu.getHours()) {
+        return { soort: "nee", zin: T.statusGeweest };
+      }
+      return { soort: "nee", zin: T.statusNiks };
     }
-    return { soort: "nee", zin: T.statusNiks };
-  }
-  const tijd = `${String(Math.max(blok.van, nu.getHours())).padStart(2, "0")}:00-${String(blok.tot).padStart(2, "0")}:00`;
-  const windDaalt =
-    resterend.some((u) => u.uur < blok.van && (u.wind ?? 0) > inst.maxWind * 0.8) &&
-    blok.blok.every((u) => (u.wind ?? 0) <= inst.maxWind * 0.8);
-  return {
-    soort: blok.van <= nu.getHours() ? "nu" : "later",
-    zin: T.statusBeste(tijd, zonStuk(blok.blok), windDaalt ? T.windLigt : ""),
-  };
-}
-
-function statusToekomst(venster) {
-  if (!venster) return { soort: "nee", zin: T.toekomstGeen };
-  return {
-    soort: "info",
-    zin: T.toekomstBeste(`${String(venster.van).padStart(2, "0")}:00-${String(venster.tot).padStart(2, "0")}:00`),
-  };
-}
+    const tijd = `${String(Math.max(blok.van, nu.getHours())).padStart(2, "0")}:00-${String(blok.tot).padStart(2, "0")}:00`;
+    const windDaalt =
+      resterend.some((u) => u.uur < blok.van && (u.wind ?? 0) > inst.maxWind * 0.8) &&
+      blok.blok.every((u) => (u.wind ?? 0) <= inst.maxWind * 0.8);
+    return {
+      soort: blok.van <= nu.getHours() ? "nu" : "later",
+      zin: T.statusBeste(tijd, zonStuk(blok.blok), windDaalt ? T.windLigt : ""),
+    };
+  },
+  naVerwerking: (dagenUit) => {
+    if (dagenUit[0]?.status?.soort === "nee" && dagenUit[1]?.venster) {
+      const v = dagenUit[1].venster;
+      dagenUit[0].status.zin += T.morgenWel(String(v.van).padStart(2, "0"));
+    }
+  },
+});
 
 export const terras = {
   id: "terras",

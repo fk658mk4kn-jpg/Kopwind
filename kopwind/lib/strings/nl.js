@@ -115,6 +115,8 @@ export const S = {
     kop: "Wat het oordeel bepaalt",
     temp: "Temperatuur",
     wind: "Wind",
+    tegenwind: "Tegenwind",
+    stoten: "Windstoten",
     vocht: "Luchtvochtigheid",
     zon: "Zon",
     droog: "Droog",

@@ -72,11 +72,13 @@ export const STOREFRONTS = kies({
       },
       faq: [
         { id: "ga-ik-nat-vandaag", v: "Ga ik nat worden vandaag?", a: "Dat hangt vooral af van het moment waarop de regen valt, hoe lang je buiten bent en of het om een korte bui of langdurige neerslag gaat. Gebruik de check bovenaan voor het directe antwoord voor jouw locatie." },
-        { id: "moet-ik-een-regenjas-aan", v: "Moet ik een regenjas aan?", a: "Een regenjas is vooral slim als de kans op regen samenvalt met het moment dat je buiten bent, of als er langdurige motregen wordt verwacht. Voor puur kledingadvies kun je ook naar de kledingchecks." },
+        { id: "moet-ik-een-regenjas-aan", v: "Moet ik een regenjas aan?", a: "Een regenjas is vooral slim als de kans op regen samenvalt met het moment dat je buiten bent, of als er langdurige motregen wordt verwacht. Voor puur kledingadvies kun je ook naar [de kledingchecks](hub:kleding)." },
         { id: "gaat-het-vanavond-regenen", v: "Gaat het vanavond regenen?", a: "Voor avondvragen is timing belangrijker dan het daggemiddelde. Gebruik de uurlijkse verwachting op de regen-timingpagina om te zien of de avond droog blijft." },
         { id: "gaat-het-morgen-regenen", v: "Gaat het morgen regenen?", a: "Morgenvragen horen bij dezelfde intentie, maar met een ander tijdvenster. De datumkiezer in de check laat je vooruitkijken zonder dat je een andere pagina hoeft te openen." },
         { id: "gaat-het-regenen-deze-week", v: "Gaat het regenen deze week?", a: "Voor de week zie je in de check een compacte trend per dag. Handig om te plannen, al blijft een voorspelling verder vooruit onzekerder dan die voor vandaag." },
         { id: "hoe-lang-blijft-het-droog", v: "Hoe lang blijft het droog?", a: "Kijk op de regen-timingpagina naar het eerstvolgende regenmoment: het verschil tussen nu en die tijd is je droge venster." },
+        { id: "regenkans-betekenis", v: "Wat betekent 60 procent regenkans?", a: "Regenkans is de kans dat er op jouw plek in dat uur meetbare neerslag valt, geen maat voor hoeveel of hoe lang. 60 procent betekent dus: in zes van de tien vergelijkbare situaties valt er iets, van een spatje tot een hoosbui. Kijk daarom naast de kans ook naar de verwachte hoeveelheid; de regenchecks doen precies dat en noemen het droogste venster." },
+        { id: "code-geel-of-oranje-bij-regen", v: "Code geel of oranje bij regen: wat betekent dat?", a: "Code geel waarschuwt voor mogelijk gevaarlijk weer, zoals zware buien met veel water in korte tijd; oranje betekent grote kans op gevaarlijk weer met schade of overlast. De codes gaan over veiligheid en impact, niet over de vraag of je paraplu mee moet; daarvoor heb je de checks hier. Bij oranje stel je ritten uit als dat kan." },
       ],
       gerelateerd: ["huis-tuin", "kleding"],
     },
@@ -132,6 +134,9 @@ export const STOREFRONTS = kies({
         { id: "heb-ik-vandaag-een-zonnebril-nodig", v: "Heb ik vandaag een zonnebril nodig?", a: "Niet alleen bij strakblauw: ook bij dun bewolkt weer en een laagstaande zon (ochtend- en avondspits, winterse dagen) is het licht vaak feller dan je denkt. Onderweg is een zonnebril dan comfortabeler en veiliger." },
         { id: "wat-trek-ik-aan-bij-15-graden", v: "Wat trek ik aan bij 15 graden?", a: "Vijftien graden is de klassieke twijfeltemperatuur: met zon en weinig wind volstaat een shirt met een licht laagje, bij bewolking en wind voelt het eerder als een dunne jas. Kijk daarom naar de gevoelstemperatuur per dagdeel in de outfitcheck, niet alleen naar het getal." },
         { id: "waarom-voelt-het-kouder-dan-de-thermometer", v: "Waarom voelt het kouder dan de thermometer zegt?", a: "Wind voert de warme luchtlaag rond je lichaam af (windchill) en vochtige lucht geleidt warmte beter weg. Daardoor kan 10 graden met harde wind kouder aanvoelen dan 5 graden windstil. De checks rekenen daarom met gevoelstemperatuur." },
+        { id: "wat-trek-ik-aan-bij-5-graden", v: "Wat trek ik aan bij 5 graden?", a: "Bij 5 graden is het winterjassenweer: een warme jas, lange broek en dichte schoenen, en bij wind of vocht ook muts en handschoenen, want de gevoelstemperatuur duikt dan richting nul. Ga je bewegen, op de fiets of hardlopend, kies dan laagjes die je onderweg uit kunt doen. [De kledingcheck](tool:wat-trek-ik-aan) rekent het per dagdeel voor je uit." },
+        { id: "wat-trek-ik-aan-bij-10-graden", v: "Wat trek ik aan bij 10 graden?", a: "Bij 10 graden zit je goed met een lichte jas of dikke trui over een shirt met lange mouwen. Het verschil zit in wind en zon: 10 graden met zon en windstilte voelt als lente, 10 graden met harde wind als een graad of 6. Kijk dus naar de gevoelstemperatuur per dagdeel; [de kledingcheck](tool:wat-trek-ik-aan) doet dat automatisch." },
+        { id: "wat-trek-ik-aan-bij-20-graden", v: "Wat trek ik aan bij 20 graden?", a: "Bij 20 graden kan het T-shirt aan, zeker met zon erbij; in de schaduw of bij wind is een dun laagje eroverheen prettig. De ochtend en avond zijn vaak een graad of vijf koeler dan het middagmaximum, dus neem iets mee als je lang van huis bent. [De kledingcheck](tool:wat-trek-ik-aan) en [de T-shirtvraag](tool:t-shirt) rekenen met het gevoel per dagdeel." },
       ],
       gerelateerd: ["regen", "sport"],
     },
@@ -184,11 +189,12 @@ export const STOREFRONTS = kies({
         ],
       },
       faq: [
-        { id: "kan-ik-vanavond-buiten-eten", v: "Kan ik vanavond buiten eten?", a: "Na zonsondergang zakt de gevoelstemperatuur snel: reken op drie tot vijf graden minder dan overdag, en meer als het opklaart. Kijk naar de avonduren in de terrascheck, zoek de luwte en leg een plaid of vestje klaar; dan haal je makkelijk een uur of twee extra buiten." },
+        { id: "kan-ik-vanavond-buiten-eten", v: "Kan ik vanavond buiten eten?", a: "Na zonsondergang zakt de gevoelstemperatuur snel: reken op drie tot vijf graden minder dan overdag, en meer als het opklaart. Kijk naar de avonduren in [de terrascheck](tool:terras), zoek de luwte en leg een plaid of vestje klaar; dan haal je makkelijk een uur of twee extra buiten." },
         { id: "hoeveel-wind-is-te-veel-om-buiten-te-zitten", v: "Hoeveel wind is te veel om buiten te zitten?", a: "Vanaf zo'n 20 km/u waaien servetten en lichte spullen weg, rond de 30 km/u wordt stilzitten onaangenaam en voelt het al gauw vijf graden kouder. Een beschutte plek scheelt grofweg de helft: achter een muur of haag zit je bij 30 km/u alsof het er 15 zijn." },
         { id: "kan-ik-vannacht-buiten-slapen-of-kamperen", v: "Kan ik vannacht buiten slapen of kamperen?", a: "Kijk naar de nachttemperatuur (niet die van overdag), de wind en de kans op dauw of mist. Onder de 10 graden wil je een slaapzak met marge, en op open plekken maakt wind het verschil tussen fris en guur. Een heldere, windstille nacht is het koudst maar ook het droogst." },
+        { id: "buiten-eten-met-kinderen", v: "Buiten eten met kinderen: wat is het beste tijdstip?", a: "Buiten eten met kinderen lukt het best in de vroege avond, tussen een uur of vijf en zeven: de zonkracht is dan flink gezakt, de wind gaat vaak liggen en het is nog warm genoeg om stil te zitten. Check het terrasblok voor jouw plek en kijk in de zomer even naar de zonkracht van de late middag." },
       ],
-      gerelateerd: ["gezondheid", "huis-tuin"],
+      gerelateerd: ["gezondheid", "sport"],
     },
     sport: {
       voorWie: {
@@ -240,8 +246,9 @@ export const STOREFRONTS = kies({
         { id: "moet-ik-langer-warming-uppen-bij-kou", v: "Moet ik langer warming-uppen bij koud weer?", a: "Ja. Bij temperaturen onder de 10 graden zijn spieren en pezen stugger en duurt het langer voor je op werktemperatuur bent. Reken op tien tot vijftien minuten rustig opbouwen in plaats van vijf, en begin in een laagje dat je na de warming-up uit kunt doen." },
         { id: "kan-ik-buiten-sporten-bij-onweer", v: "Kan ik buiten sporten bij onweer?", a: "Nee. Bij onweer in de buurt stop je en zoek je een gebouw of auto op; open velden, water en losse bomen zijn de gevaarlijkste plekken. Vuistregel: zit er minder dan 30 seconden tussen flits en klap, dan is het onweer dichtbij genoeg om te schuilen, en wacht je na de laatste klap 30 minuten." },
         { id: "is-het-te-warm-om-buiten-te-sporten", v: "Is het te warm om buiten te sporten?", a: "Boven de 25 graden wordt inspanning merkbaar zwaarder, boven de 30 is intensief sporten midden op de dag onverstandig: je lichaam koelt via zweet en dat kost vocht en vermogen. Verplaats naar de ochtend of avond, verlaag je tempo en drink vooraf en tijdens. Bij hitte plus hoge luchtvochtigheid geldt dit dubbel." },
+        { id: "sporten-bij-smog-of-slechte-lucht", v: "Sporten bij smog of slechte luchtkwaliteit: is dat verstandig?", a: "Sporten bij smog is af te raden op de momenten dat de lucht het slechtst is: tijdens inspanning adem je vijf tot tien keer meer lucht in dan in rust. Smog piekt vaak op warme, windstille dagen in de namiddag; vroeg in de ochtend is de lucht meestal het schoonst. Mensen met astma of hooikoorts merken het als eerste; verplaats de training dan naar binnen of naar de vroege uren." },
       ],
-      gerelateerd: ["kleding", "buiten"],
+      gerelateerd: ["kleding", "buiten", "winter"],
     },
     "huis-tuin": {
       voorWie: {
@@ -294,10 +301,11 @@ export const STOREFRONTS = kies({
       faq: [
         { id: "kan-ik-tuinieren-vandaag", v: "Kan ik tuinieren vandaag?", a: "Tuinieren luistert minder nauw dan andere klussen: lichte regen is voor planten en pas verzette grond zelfs prettig. Zware grond bewerk je liever niet kletsnat, en planten of zaaien doe je bij voorkeur voor een zachte regendag, niet voor een hittegolf." },
         { id: "kan-ik-buiten-schilderen-of-beitsen", v: "Kan ik buiten schilderen of beitsen vandaag?", a: "Buiten schilderen of beitsen vraagt het meest van het weer: droog tijdens de klus en de uren erna, ruwweg 10 tot 25 graden, geen felle zon op het werkvlak en geen dauwnacht direct erna. Plan het op twee droge dagen achter elkaar, niet op een enkel droog middagje." },
-        { id: "kan-ik-dekbedden-buiten-luchten", v: "Kan ik dekbedden buiten luchten?", a: "Dekbedden luchten werkt hetzelfde als de was buiten drogen: droge lucht en een briesje doen het werk. Een paar uur op een droge, winderige dag is genoeg; haal ze binnen voor de avondvocht toeslaat. De wascheck geeft voor jouw plek het beste moment." },
+        { id: "kan-ik-dekbedden-buiten-luchten", v: "Kan ik dekbedden buiten luchten?", a: "Dekbedden luchten werkt hetzelfde als de was buiten drogen: droge lucht en een briesje doen het werk. Een paar uur op een droge, winderige dag is genoeg; haal ze binnen voor de avondvocht toeslaat. [De wascheck](tool:was-buiten-drogen) geeft voor jouw plek het beste moment." },
         { id: "kan-ik-mijn-huis-luchten-vandaag", v: "Kan ik mijn huis luchten vandaag?", a: "Luchten kan bijna elke dag en werkt het best als de buitenlucht droger is dan binnen: koele ochtenden en droge, frisse dagen zijn ideaal. Alleen bij mist, langdurige regen of een hoge pollenpiek (zie de hooikoortscheck) kun je het raam beter even dichthouden." },
+        { id: "klusweer-droogste-dag", v: "Klusweer: welke dag deze week is het droogst?", a: "Klusweer is vooral droog weer: voor schilderen, ramen, gras en de auto wil je een dag zonder buien en zonder klamme ochtend. Elke check hier kijkt vijf dagen vooruit; de dag met het langste droge blok is je klusdag. Voor verf en kit geldt extra: ook de nacht erna het liefst droog en boven de 5 graden." },
       ],
-      gerelateerd: ["regen", "buiten"],
+      gerelateerd: ["regen", "winter"],
     },
     gezondheid: {
       voorWie: {
@@ -345,12 +353,13 @@ export const STOREFRONTS = kies({
         ],
       },
       faq: [
-        { id: "verbrand-ik-bij-bewolkt-weer", v: "Verbrand ik bij bewolkt weer?", a: "Ja, dat kan makkelijk: dunne of gebroken bewolking laat tot 80 procent van de uv-straling door, en de temperatuur zegt niets over de zonkracht. Bij een uv-index van 3 of hoger kun je bij langer buiten zijn verbranden, ook als je de zon niet ziet. De zonkrachtcheck toont de index per uur voor jouw plek." },
+        { id: "verbrand-ik-bij-bewolkt-weer", v: "Verbrand ik bij bewolkt weer?", a: "Ja, dat kan makkelijk: dunne of gebroken bewolking laat tot 80 procent van de uv-straling door, en de temperatuur zegt niets over de zonkracht. Bij een uv-index van 3 of hoger kun je bij langer buiten zijn verbranden, ook als je de zon niet ziet. [De zonkrachtcheck](tool:zonkracht) toont de index per uur voor jouw plek." },
         { id: "vanaf-welke-zonkracht-moet-ik-smeren", v: "Vanaf welke zonkracht moet ik smeren?", a: "De vuistregel: vanaf uv-index 3 smeren bij langer dan een halfuur buiten, vanaf 6 ook bij korte periodes en schaduw zoeken rond het middaguur, vanaf 8 is onbeschermd zonnen af te raden. Een lichte huid verbrandt bij index 7 al binnen een kwartier." },
         { id: "wanneer-zijn-pollen-het-ergst", v: "Wanneer zijn pollen het ergst op de dag?", a: "Graspollen pieken meestal in de ochtend (als de dauw opdroogt) en opnieuw in de vroege avond als de lucht afkoelt en pollen dalen. Droge, warme dagen met wind zijn het zwaarst; na een regenbui is de lucht tijdelijk schoon. De hooikoortscheck laat het verloop per uur zien." },
-        { id: "kan-ik-vandaag-veilig-zonnen", v: "Kan ik vandaag veilig zonnen?", a: "Veilig zonnen bestaat uit drie dingen: de zonkracht van het moment kennen (bij index 6 of hoger is de middagzon fel), vooraf en tussentijds smeren met minimaal factor 30, en je tijd opbouwen. De aangenaamste en veiligste zonuren liggen voor 11 en na 15 uur; de zonkrachtcheck toont per uur hoe sterk de zon is." },
+        { id: "kan-ik-vandaag-veilig-zonnen", v: "Kan ik vandaag veilig zonnen?", a: "Veilig zonnen bestaat uit drie dingen: de zonkracht van het moment kennen (bij index 6 of hoger is de middagzon fel), vooraf en tussentijds smeren met minimaal factor 30, en je tijd opbouwen. De aangenaamste en veiligste zonuren liggen voor 11 en na 15 uur; [de zonkrachtcheck](tool:zonkracht) toont per uur hoe sterk de zon is." },
+        { id: "pollenkalender", v: "Pollenkalender: welke pollen vliegen wanneer?", a: "De pollenkalender in Nederland loopt grofweg zo: els en hazelaar van januari tot maart, berk van maart tot mei (voor veel mensen de heftigste piek), grassen van mei tot augustus met de top in juni, en bijvoet en andere kruiden in de nazomer. Warm en droog weer verlengt het seizoen. De hooikoortscheck vertaalt dit naar vandaag: welke pollen nu vliegen en wanneer het rustigste moment is." },
       ],
-      gerelateerd: ["buiten", "kleding"],
+      gerelateerd: ["buiten", "sport"],
     },
     winter: {
       voorWie: {
@@ -450,11 +459,13 @@ export const STOREFRONTS = kies({
       },
       faq: [
         { id: "ga-ik-nat-vandaag", v: "Will I get wet today?", a: "That depends mainly on when the rain falls, how long you're out and whether it's a short shower or prolonged rain. Use the check at the top for the direct answer for your location." },
-        { id: "moet-ik-een-regenjas-aan", v: "Do I need a raincoat?", a: "A raincoat is smart mainly when the rain chance coincides with the time you're out, or when prolonged drizzle is expected. For pure clothing advice see the clothing checks." },
+        { id: "moet-ik-een-regenjas-aan", v: "Do I need a raincoat?", a: "A raincoat is smart mainly when the rain chance coincides with the time you're out, or when prolonged drizzle is expected. For pure clothing advice see [the clothing checks](hub:kleding)." },
         { id: "gaat-het-vanavond-regenen", v: "Will it rain tonight?", a: "For evening questions, timing matters more than the daily average. Use the hourly outlook on the rain-timing page to see whether the evening stays dry." },
         { id: "gaat-het-morgen-regenen", v: "Will it rain tomorrow?", a: "Tomorrow questions share the same intent, just a different time window. The date picker in the check lets you look ahead without opening another page." },
         { id: "gaat-het-regenen-deze-week", v: "Will it rain this week?", a: "For the week the check shows a compact trend per day. Handy for planning, though a forecast further ahead stays less certain than today's." },
         { id: "hoe-lang-blijft-het-droog", v: "How long does it stay dry?", a: "Check the rain-timing page for the next rain moment: the gap between now and that time is your dry window." },
+        { id: "regenkans-betekenis", v: "What does a 60 percent rain chance mean?", a: "Rain chance is the probability of measurable precipitation at your spot in that hour, not a measure of how much or how long. So 60 percent means: in six out of ten comparable situations something falls, from a sprinkle to a downpour. Always look at the expected amount next to the chance; the rain checks do exactly that and name the driest window." },
+        { id: "code-geel-of-oranje-bij-regen", v: "Yellow or orange weather warning for rain: what does it mean?", a: "A yellow warning flags potentially dangerous weather, such as heavy showers with a lot of water in a short time; orange means a high chance of dangerous weather with damage or disruption. The codes are about safety and impact, not about whether to bring an umbrella; that is what the checks here are for. Under orange, postpone trips if you can." },
       ],
       gerelateerd: ["huis-tuin", "kleding"],
     },
@@ -510,6 +521,9 @@ export const STOREFRONTS = kies({
         { id: "heb-ik-vandaag-een-zonnebril-nodig", v: "Do I need sunglasses today?", a: "Not only under clear blue skies: with thin clouds and a low sun (morning and evening rush, winter days) the light is often brighter than you think. On the road, sunglasses are then both more comfortable and safer." },
         { id: "wat-trek-ik-aan-bij-15-graden", v: "What do I wear at 15 degrees?", a: "Fifteen degrees is the classic doubt temperature: with sun and little wind a shirt plus a light layer will do, with clouds and wind it feels more like thin-jacket weather. So look at the feels-like per part of the day in the outfit check, not just the number." },
         { id: "waarom-voelt-het-kouder-dan-de-thermometer", v: "Why does it feel colder than the thermometer says?", a: "Wind strips away the warm layer of air around your body (wind chill) and humid air conducts heat away faster. That's why 10 degrees with strong wind can feel colder than a calm 5 degrees. The checks therefore work with feels-like temperature." },
+        { id: "wat-trek-ik-aan-bij-5-graden", v: "What to wear at 5 degrees?", a: "At 5 degrees it is winter coat weather: a warm coat, long trousers and closed shoes, plus a hat and gloves in wind or damp, because the feels-like temperature then dives towards zero. If you are moving, cycling or running, pick layers you can shed along the way. [The clothing check](tool:wat-trek-ik-aan) works it out per part of the day." },
+        { id: "wat-trek-ik-aan-bij-10-graden", v: "What to wear at 10 degrees?", a: "At 10 degrees a light jacket or thick jumper over a long-sleeved shirt works well. The difference is wind and sun: 10 degrees with sun and no wind feels like spring, 10 degrees with strong wind like 6. So look at the feels-like temperature per part of the day; [the clothing check](tool:wat-trek-ik-aan) does that automatically." },
+        { id: "wat-trek-ik-aan-bij-20-graden", v: "What to wear at 20 degrees?", a: "At 20 degrees the T-shirt can come out, certainly with sun; in the shade or in wind a thin layer over it is welcome. Morning and evening often run a good five degrees cooler than the afternoon maximum, so bring something along if you are out for long. [The clothing check](tool:wat-trek-ik-aan) and [the T-shirt question](tool:t-shirt) work with the feels-like per part of the day." },
       ],
       gerelateerd: ["regen", "sport"],
     },
@@ -562,11 +576,12 @@ export const STOREFRONTS = kies({
         ],
       },
       faq: [
-        { id: "kan-ik-vanavond-buiten-eten", v: "Can I eat outside tonight?", a: "After sunset the feels-like temperature drops fast: count on three to five degrees less than daytime, more when skies clear. Check the evening hours in the patio check, find shelter and keep a blanket or jumper handy; that easily buys you an extra hour or two outside." },
+        { id: "kan-ik-vanavond-buiten-eten", v: "Can I eat outside tonight?", a: "After sunset the feels-like temperature drops fast: count on three to five degrees less than daytime, more when skies clear. Check the evening hours in [the patio check](tool:terras), find shelter and keep a blanket or jumper handy; that easily buys you an extra hour or two outside." },
         { id: "hoeveel-wind-is-te-veel-om-buiten-te-zitten", v: "How much wind is too much for sitting outside?", a: "From around 20 km/h napkins and light items blow away; around 30 km/h sitting still gets unpleasant and feels a good five degrees colder. A sheltered spot roughly halves it: behind a wall or hedge, 30 km/h feels like 15." },
         { id: "kan-ik-vannacht-buiten-slapen-of-kamperen", v: "Can I sleep outside or camp tonight?", a: "Look at the night temperature (not the daytime one), the wind and the chance of dew or fog. Below 10 degrees you want a sleeping bag with margin, and in open spots wind makes the difference between fresh and bleak. A clear, windless night is the coldest but also the driest." },
+        { id: "buiten-eten-met-kinderen", v: "Eating outside with kids: what is the best time?", a: "Eating outside with kids works best in the early evening, between five and seven or so: the UV index has dropped a lot by then, the wind often dies down and it is still warm enough to sit still. Check the patio window for your spot and, in summer, glance at the late-afternoon UV index." },
       ],
-      gerelateerd: ["gezondheid", "huis-tuin"],
+      gerelateerd: ["gezondheid", "sport"],
     },
     sport: {
       voorWie: {
@@ -618,8 +633,9 @@ export const STOREFRONTS = kies({
         { id: "moet-ik-langer-warming-uppen-bij-kou", v: "Should I warm up longer in cold weather?", a: "Yes. Below 10 degrees, muscles and tendons are stiffer and it takes longer to reach working temperature. Count on ten to fifteen minutes of gradual build-up instead of five, and start in a layer you can shed after the warm-up." },
         { id: "kan-ik-buiten-sporten-bij-onweer", v: "Can I train outside during a thunderstorm?", a: "No. With thunder nearby you stop and head for a building or car; open fields, water and lone trees are the most dangerous spots. Rule of thumb: less than 30 seconds between flash and bang means the storm is close enough to shelter, and you wait 30 minutes after the last rumble." },
         { id: "is-het-te-warm-om-buiten-te-sporten", v: "Is it too warm to exercise outside?", a: "Above 25 degrees effort gets noticeably heavier, above 30 intensive midday sport is unwise: your body cools through sweat, which costs fluids and power. Move to morning or evening, lower your pace and drink before and during. With heat plus high humidity this counts double." },
+        { id: "sporten-bij-smog-of-slechte-lucht", v: "Training in smog or poor air quality: is it sensible?", a: "Training in smog is best avoided at the moments the air is worst: during exercise you breathe five to ten times more air than at rest. Smog often peaks on warm, windless days in the late afternoon; early morning usually has the cleanest air. People with asthma or hay fever notice it first; move the session indoors or to the early hours." },
       ],
-      gerelateerd: ["kleding", "buiten"],
+      gerelateerd: ["kleding", "buiten", "winter"],
     },
     "huis-tuin": {
       voorWie: {
@@ -672,10 +688,11 @@ export const STOREFRONTS = kies({
       faq: [
         { id: "kan-ik-tuinieren-vandaag", v: "Can I garden today?", a: "Gardening is less fussy than other jobs: light rain is actually pleasant for plants and freshly moved soil. Avoid working heavy soil when it's soaked, and plant or sow ahead of a soft rainy day rather than a heatwave." },
         { id: "kan-ik-buiten-schilderen-of-beitsen", v: "Can I paint or stain outside today?", a: "Outdoor painting and staining ask the most of the weather: dry during the job and the hours after, roughly 10 to 25 degrees, no harsh sun on the surface and no dewy night straight after. Plan it on two dry days in a row, not a single dry afternoon." },
-        { id: "kan-ik-dekbedden-buiten-luchten", v: "Can I air duvets outside?", a: "Airing duvets works like drying laundry outside: dry air and a breeze do the work. A few hours on a dry, breezy day is enough; bring them in before the evening damp sets in. The laundry check gives the best moment for your location." },
+        { id: "kan-ik-dekbedden-buiten-luchten", v: "Can I air duvets outside?", a: "Airing duvets works like drying laundry outside: dry air and a breeze do the work. A few hours on a dry, breezy day is enough; bring them in before the evening damp sets in. [The laundry check](tool:was-buiten-drogen) gives the best moment for your location." },
         { id: "kan-ik-mijn-huis-luchten-vandaag", v: "Can I air the house today?", a: "Airing works almost every day and is most effective when the outside air is drier than inside: cool mornings and dry, fresh days are ideal. Only with fog, prolonged rain or a high pollen peak (see the hay fever check) is it better to keep the window shut for a bit." },
+        { id: "klusweer-droogste-dag", v: "DIY weather: which day this week is driest?", a: "DIY weather is above all dry weather: for painting, windows, the lawn and the car you want a day without showers and without a clammy morning. Every check here looks five days ahead; the day with the longest dry window is your DIY day. For paint and sealant one extra rule: the night after should ideally stay dry and above 5 degrees." },
       ],
-      gerelateerd: ["regen", "buiten"],
+      gerelateerd: ["regen", "winter"],
     },
     gezondheid: {
       voorWie: {
@@ -723,12 +740,13 @@ export const STOREFRONTS = kies({
         ],
       },
       faq: [
-        { id: "verbrand-ik-bij-bewolkt-weer", v: "Can I burn in cloudy weather?", a: "Yes, easily: thin or broken clouds let up to 80 percent of UV radiation through, and temperature says nothing about UV strength. From a UV index of 3 you can burn when out for longer, even without seeing the sun. The UV check shows the index per hour for your location." },
+        { id: "verbrand-ik-bij-bewolkt-weer", v: "Can I burn in cloudy weather?", a: "Yes, easily: thin or broken clouds let up to 80 percent of UV radiation through, and temperature says nothing about UV strength. From a UV index of 3 you can burn when out for longer, even without seeing the sun. [The UV check](tool:zonkracht) shows the index per hour for your location." },
         { id: "vanaf-welke-zonkracht-moet-ik-smeren", v: "From which UV index should I apply sunscreen?", a: "Rule of thumb: from UV index 3, apply when out for more than half an hour; from 6, also for short spells, and seek shade around midday; from 8, unprotected sunbathing is unwise. Fair skin burns within a quarter of an hour at index 7." },
         { id: "wanneer-zijn-pollen-het-ergst", v: "When is pollen worst during the day?", a: "Grass pollen usually peaks in the morning (as the dew dries) and again in the early evening when the air cools and pollen descends. Dry, warm, windy days are the hardest; after a rain shower the air is temporarily clean. The hay fever check shows the hourly course." },
-        { id: "kan-ik-vandaag-veilig-zonnen", v: "Can I sunbathe safely today?", a: "Safe sunbathing is three things: knowing the UV of the moment (from index 6 the midday sun is fierce), applying factor 30 or higher beforehand and in between, and building up your time. The most pleasant and safest sun hours sit before 11 am and after 3 pm; the UV check shows the strength per hour." },
+        { id: "kan-ik-vandaag-veilig-zonnen", v: "Can I sunbathe safely today?", a: "Safe sunbathing is three things: knowing the UV of the moment (from index 6 the midday sun is fierce), applying factor 30 or higher beforehand and in between, and building up your time. The most pleasant and safest sun hours sit before 11 am and after 3 pm; [the UV check](tool:zonkracht) shows the strength per hour." },
+        { id: "pollenkalender", v: "Pollen calendar: which pollen flies when?", a: "The pollen calendar in the Netherlands roughly runs like this: alder and hazel from January to March, birch from March to May (the toughest peak for many people), grasses from May to August topping out in June, and mugwort and other herbs in late summer. Warm, dry weather stretches the season. The hay fever check translates this to today: which pollen is flying now and when the calmest moment falls." },
       ],
-      gerelateerd: ["buiten", "kleding"],
+      gerelateerd: ["buiten", "sport"],
     },
     winter: {
       voorWie: {

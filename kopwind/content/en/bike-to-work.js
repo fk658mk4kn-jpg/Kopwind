@@ -44,4 +44,12 @@ export const faq = [
     v: "Does this work anywhere in the Netherlands?",
     a: "Yes. Search any address as a start or stop. The 35 largest cities also have their own page with the live answer for today.",
   },
+  {
+    v: "Cycling in wind force 5: is that doable?",
+    a: "Cycling in wind force 5 (around 30 to 38 km/h) is doable but hard work: a headwind easily costs you a third of your speed and crosswind pushes you off line, especially on open stretches and bridges. The bike check runs the wind per riding direction, so you see whether the ride out or the ride home is the tough one.",
+  },
+  {
+    v: "Cycling in the rain: better to leave earlier or later?",
+    a: "Cycling in the rain can often be dodged by shifting smartly: most showers last under half an hour. The check compares your departure time with the shower timing, so you see whether leaving ten minutes earlier or later keeps you dry. In long rain spells the choice is simpler: rain gear on or another mode.",
+  },
 ];

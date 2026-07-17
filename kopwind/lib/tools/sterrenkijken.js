@@ -182,7 +182,7 @@ export function overlay(hourly, nu = new Date(), instellingen = STERREN_DEFAULTS
     };
   });
 
-  return { dagen: dagenUit };
+  return { legenda: T.legenda, dagen: dagenUit };
 }
 
 export const sterrenkijken = {

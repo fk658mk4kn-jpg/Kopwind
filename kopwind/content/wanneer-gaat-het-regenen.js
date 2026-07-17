@@ -32,4 +32,12 @@ export const faq = [
   { v: "Hoe laat begint de regen?", a: "Je ziet het eerstvolgende regenmoment als tijdstip. Valt er nu al regen, dan toont de check wanneer het naar verwachting weer droog wordt." },
   { v: "Wanneer wordt het weer droog?", a: "Als het regent, zoekt de check het eerstvolgende blok van minstens een uur droog en toont dat als starttijd." },
   { v: "Zijn dit losse buien of langdurige regen?", a: "De samenvatting per dagdeel (ochtend, middag, avond) laat zien of het gaat om verspreide buien of aaneengesloten neerslag." },
+  {
+    v: "Regen vannacht: blijft het droog tot morgenochtend?",
+    a: "Regen vannacht check je hier net zo goed als overdag: de tijdlijn loopt door de nacht heen en laat zien of en wanneer er iets valt. Handig voor wasgoed dat buiten hangt, een open raam of de vraag of het gras morgenvroeg droog is.",
+  },
+  {
+    v: "Regenkans per uur: hoe lees ik die?",
+    a: "Regenkans per uur is de kans op meetbare neerslag in dat uur op jouw plek, geen maat voor de hoeveelheid. Twee uur met 40 procent achter elkaar betekent dus niet 80 procent; het blijven losse kansen. Deze check combineert de kans met de verwachte hoeveelheid en zegt daarom concreet wanneer de bui valt en wanneer het weer droog is.",
+  },
 ];

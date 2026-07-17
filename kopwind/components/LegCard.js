@@ -5,6 +5,7 @@ import { labelVoor, schaalVoor, kleurVoorSchaal } from "@/lib/engine/schaal";
 import { kies } from "@/lib/i18n/locale";
 import { fietsNaarWerk } from "@/lib/tools/fiets-naar-werk";
 import KleurLegenda from "@/components/KleurLegenda";
+import FactorBalken from "@/components/FactorBalken";
 
 const kleurVoor = (score) => kleurVoorSchaal(schaalVoor(score).id);
 
@@ -148,6 +149,7 @@ export default function LegCard({ leg, index, actief, onClick, onKiesRoute }) {
         <p className="redenen">Wat telt tegen: {a.redenen.join(", ")}.</p>
       )}
       {leg.warning && <p className="waarschuwing">{leg.warning}</p>}
+      <FactorBalken factoren={a.factoren} />
     </div>
   );
 }

@@ -42,6 +42,10 @@ export const faq = [
   },
   {
     v: "How is this different from the running check?",
-    a: "Running has a cooler sweet spot and is more wind-sensitive. This check is built for mixed training: slightly warmer is fine, wind counts lighter, and the heat limit adapts to your training style.",
+    a: "[Running](tool:hardloopweer) has a cooler sweet spot and is more wind-sensitive. This check is built for mixed training: slightly warmer is fine, wind counts lighter, and the heat limit adapts to your training style.",
+  },
+  {
+    v: "Bootcamp in the cold: from what temperature do I train inside?",
+    a: "Bootcamp in the cold works fine down to around freezing with a proper warm-up; the limit is set by ice and wind sooner than by the temperature itself. Below minus 5, in freezing rain, or with a feels-like far below zero, training outside turns unwise: gulping cold air during intervals is genuinely unpleasant and the surface unreliable.",
   },
 ];
