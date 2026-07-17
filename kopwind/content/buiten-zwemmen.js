@@ -1,7 +1,7 @@
 /** content/buiten-zwemmen.js: teksten van de zwemcheck. */
 
 export const seo = {
-  title: "Zwemweer vandaag: kan ik buiten zwemmen?",
+  title: "Zwemweer vandaag: kan ik buiten zwemmen en wordt het warm genoeg?",
   description:
     "Kan ik buiten zwemmen? Zie het beste zwemblok, of de zon erbij is en hoeveel wind er staat. Plus waar je zelf op moet letten: watertemperatuur en blauwalg.",
   h1: "Kan ik buiten zwemmen?",
@@ -42,7 +42,7 @@ export const faq = [
   },
   {
     v: "Is wind een probleem bij het zwemmen zelf?",
-    a: "In het water valt wind mee, maar erbuiten maakt hij het koud: nat plus 25 km/u wind voelt als een koude douche. Aan zee komt daar golfslag en stroming bij. De check trekt daarom punten af bij veel wind, en meer als je de zee kiest in de instellingen.",
+    a: "In het water valt wind mee, maar erbuiten maakt hij het koud: nat plus 25 km/u wind voelt als een koude douche. Aan zee komt daar golfslag en stroming bij. De check trekt daarom punten af bij veel wind, en meer als je de zee kiest in de instellingen. Voor de hele stranddag eromheen is er [de strandcheck](tool:strandweer).",
   },
   {
     v: "Zwemwatertemperatuur: waar check ik die?",

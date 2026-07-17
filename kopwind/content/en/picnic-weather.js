@@ -1,7 +1,7 @@
 /** content/en/picnic-weather.js: picnic check copy. */
 
 export const seo = {
-  title: "Picnic weather today: dry grass, sun and little wind",
+  title: "Picnic weather today: can I have a picnic and will it be nice?",
   description:
     "Picnic weather today? See the best picnic window, whether the grass is dry and whether the blanket stays put. Five days ahead. Free.",
   h1: "Picnic weather today?",
@@ -13,7 +13,7 @@ export const blokken = [
   {
     kop: "Stricter than the patio",
     tekst:
-      "On a patio chair with a wall at your back you last longer than flat on the ground. This check therefore uses a lower wind limit (napkins and cups blow away long before a chair topples) and reckons with sitting still at grass height, where it feels that bit cooler.",
+      "On a patio chair with a wall at your back you last longer than flat on the ground. This check therefore uses a lower wind limit (napkins and cups blow away long before a chair topples) and reckons with sitting still at grass height, where it feels that bit cooler. For the chair scenario there's [the patio check](tool:terras).",
   },
   {
     kop: "Wet grass counts",

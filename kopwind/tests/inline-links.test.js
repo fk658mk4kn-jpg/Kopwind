@@ -26,6 +26,13 @@ function verzamelTeksten() {
   }
   for (const [catId, sf] of Object.entries(STOREFRONTS)) {
     for (const f of sf.faq ?? []) teksten.push({ bron: `hub:${catId}#${f.v}`, tekst: f.a });
+    // Sinds v3.21.0 rendert TekstMetLinks ook de uitlegteksten van de
+    // storefront (voor-wie, beslislogica, situaties, seizoen), dus die
+    // horen in dezelfde integriteitscheck.
+    for (const r of sf.voorWie?.regels ?? []) teksten.push({ bron: `hub:${catId}#voorWie`, tekst: r });
+    for (const p of sf.beslislogica?.punten ?? []) teksten.push({ bron: `hub:${catId}#beslislogica`, tekst: p });
+    for (const s of sf.situaties?.items ?? []) teksten.push({ bron: `hub:${catId}#situatie:${s.naam}`, tekst: s.tekst });
+    for (const s of sf.seizoen?.items ?? []) teksten.push({ bron: `hub:${catId}#seizoen:${s.naam}`, tekst: s.tekst });
   }
   return teksten;
 }
@@ -61,9 +68,10 @@ test("inline links (NL): elk [label](tool:id) en [label](hub:id#anker) bestaat",
 test("inline links: minstens een deel van de content gebruikt de notatie", () => {
   // Geen loze motor: als niemand ooit [label](tool:...) gebruikt, is er
   // iets misgegaan bij het toepassen (bijvoorbeeld een verkeerd escape-
-  // teken in een content-string).
+  // teken in een content-string). Drempel op 30 sinds v3.21.0: er staan
+  // er ruim meer, en een flinke onbedoelde daling moet opvallen.
   const totaal = verzamelTeksten().reduce((n, { tekst }) => n + inlineLinkDoelen(tekst).length, 0);
-  assert.ok(totaal >= 10, `verwacht meerdere inline links, vond ${totaal}`);
+  assert.ok(totaal >= 30, `verwacht ruim 30 inline links, vond ${totaal}`);
 });
 
 test("inline links (EN): elk [label](tool:id) en [label](hub:id#anker) bestaat", () => {
@@ -92,6 +100,10 @@ test("inline links (EN): elk [label](tool:id) en [label](hub:id#anker) bestaat",
       }
       for (const [catId, sf] of Object.entries(STOREFRONTS)) {
         for (const f of sf.faq ?? []) teksten.push({ bron: 'hub:' + catId, tekst: f.a });
+        for (const r of sf.voorWie?.regels ?? []) teksten.push({ bron: 'hub:' + catId, tekst: r });
+        for (const p of sf.beslislogica?.punten ?? []) teksten.push({ bron: 'hub:' + catId, tekst: p });
+        for (const s of sf.situaties?.items ?? []) teksten.push({ bron: 'hub:' + catId, tekst: s.tekst });
+        for (const s of sf.seizoen?.items ?? []) teksten.push({ bron: 'hub:' + catId, tekst: s.tekst });
       }
 
       const toolIds = new Set([...TOOLS.map((t) => t.id), ...VARIANTEN.map((v) => v.id)]);

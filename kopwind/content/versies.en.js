@@ -5,6 +5,18 @@
 
 export const VERSIES = [
   {
+    versie: "3.22.0",
+    codenaam: "Foehn",
+    datum: "2026-07-17",
+    zin: "The homepage now puts the most popular guides first based on real thumbs-up, and the explainers on the theme pages fold away so you reach the point faster. Titles catch more ways of searching (will it, is it, can I). And a few checks now carry a short advice block with a handy tip.",
+  },
+  {
+    versie: "3.21.0",
+    codenaam: "Chinook",
+    datum: "2026-07-17",
+    zin: "Wherever a check mentions another check, that mention is now a real link: from the walking question about running to the icy roads check pointing at the scraping check. On the theme pages too, in the explainers and season blocks. So you click straight through to the answer the text is talking about.",
+  },
+  {
     versie: "3.20.0",
     codenaam: "Bayamo",
     datum: "2026-07-16",

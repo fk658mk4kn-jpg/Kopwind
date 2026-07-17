@@ -34,7 +34,7 @@ export const faq = [
   },
   {
     v: "How long does the court stay wet after rain?",
-    a: "Clay is often unplayable for two to four hours after a decent shower, longer in cold, still weather. Artificial grass and hard courts dry faster. The check deducts points when showers fell earlier in the day.",
+    a: "Clay is often unplayable for two to four hours after a decent shower, longer in cold, still weather. Artificial grass and hard courts dry faster. The check deducts points when showers fell earlier in the day. The exact timing of that shower sits at [when will it rain](tool:regen-timing).",
   },
   {
     v: "Can I play in cold weather?",

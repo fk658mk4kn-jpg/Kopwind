@@ -34,6 +34,7 @@ export default function HubGrid() {
   const { stad, kiesStad, dagen, laden, fout } = useDagVerdicts();
   const [lokaleFout, setLokaleFout] = useState(null);
   const [recent, setRecent] = useState([]);
+  const [populaireIds, setPopulaireIds] = useState(POPULAIRE_TOOL_IDS);
 
   // De drie meest recent gebruikte checks van deze gebruiker (lokaal
   // bijgehouden door RecentTracker op de toolpagina's).
@@ -44,6 +45,34 @@ export default function HubGrid() {
     } catch {
       setRecent([]);
     }
+  }, []);
+
+  // Populaire keuzehulpen op werkelijke populariteit (v3.22.0): de
+  // homepage rendert statisch de handmatige POPULAIRE_TOOL_IDS als
+  // startvolgorde, en dit effect herschikt zodra de live tellingen
+  // binnen zijn (positieve stemmen aflopend). Tools zonder stemmen
+  // zakken naar achter maar blijven in beeld; bij geen database of een
+  // hikkende fetch blijft de handmatige volgorde staan. Zo blijft de
+  // pagina snel en degradeert hij netjes.
+  useEffect(() => {
+    let actief = true;
+    fetch("/api/stem?populair=1")
+      .then((r) => (r.ok ? r.json() : Promise.reject()))
+      .then((data) => {
+        if (!actief || !Array.isArray(data.volgorde)) return;
+        const gestemd = data.volgorde.map((v) => v.tool).filter((id) => POPULAIRE_TOOL_IDS.includes(id));
+        // Gestemde tools voorop in stemvolgorde, de rest van de
+        // handmatige lijst erachter in de oorspronkelijke volgorde.
+        const rest = POPULAIRE_TOOL_IDS.filter((id) => !gestemd.includes(id));
+        const nieuw = [...gestemd, ...rest];
+        if (nieuw.length) setPopulaireIds(nieuw);
+      })
+      .catch(() => {
+        // Geen database of hikkende fetch: handmatige volgorde blijft.
+      });
+    return () => {
+      actief = false;
+    };
   }, []);
 
   const kies = (plek) => {
@@ -101,7 +130,7 @@ export default function HubGrid() {
 
       <h2 className="hub-kop">{S.hub.populairKop}</h2>
       <div className="checkgrid">
-        {POPULAIRE_TOOL_IDS.map((id) => TOOLS.find((t) => t.id === id))
+        {populaireIds.map((id) => TOOLS.find((t) => t.id === id))
           .filter(Boolean)
           .map((t) => (
             <ToolKaart key={t.id} t={t} dag={dagen?.[t.id]} stad={stad} laden={laden} />

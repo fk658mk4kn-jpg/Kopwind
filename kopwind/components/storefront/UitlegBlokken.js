@@ -1,4 +1,5 @@
 import Icoon from "@/components/Icoon";
+import TekstMetLinks from "@/components/TekstMetLinks";
 
 /**
  * Storefront-blok 4 (PLAYBOOK sectie 11): de uitleg-blokken. Waar let je
@@ -28,38 +29,38 @@ export default function UitlegBlokken({ sf, categorie }) {
   return (
     <section className="seotekst storefront-tekst">
       {sf.beslislogica && (
-        <>
-          <h2>{sf.beslislogica.kop}</h2>
+        <details className="uitleg-klap">
+          <summary className="uitleg-klap-kop"><h2>{sf.beslislogica.kop}</h2></summary>
           <ul className="storefront-punten">
             {sf.beslislogica.punten.map((p, i) => (
               <li key={i}>
                 <span className="punt-vink" style={{ color: kleur }} aria-hidden="true">
                   <Icoon naam="vinkje" maat={15} />
                 </span>
-                <span>{p}</span>
+                <span><TekstMetLinks tekst={p} /></span>
               </li>
             ))}
           </ul>
-        </>
+        </details>
       )}
 
       {sf.situaties && (
-        <>
-          <h2>{sf.situaties.kop}</h2>
+        <details className="uitleg-klap">
+          <summary className="uitleg-klap-kop"><h2>{sf.situaties.kop}</h2></summary>
           <div className="storefront-situaties">
             {sf.situaties.items.map((s) => (
               <div key={s.naam} className="storefront-situatie" style={{ borderLeftColor: kleur }}>
                 <h3>{s.naam}</h3>
-                <p>{s.tekst}</p>
+                <p><TekstMetLinks tekst={s.tekst} /></p>
               </div>
             ))}
           </div>
-        </>
+        </details>
       )}
 
       {sf.seizoen && (
-        <>
-          <h2>{sf.seizoen.kop}</h2>
+        <details className="uitleg-klap">
+          <summary className="uitleg-klap-kop"><h2>{sf.seizoen.kop}</h2></summary>
           <div className="storefront-situaties">
             {sf.seizoen.items.map((s) => (
               <div key={s.naam} className="storefront-situatie storefront-seizoen">
@@ -69,11 +70,11 @@ export default function UitlegBlokken({ sf, categorie }) {
                   </span>
                   {s.naam}
                 </h3>
-                <p>{s.tekst}</p>
+                <p><TekstMetLinks tekst={s.tekst} /></p>
               </div>
             ))}
           </div>
-        </>
+        </details>
       )}
     </section>
   );

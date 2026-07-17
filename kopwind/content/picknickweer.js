@@ -1,7 +1,7 @@
 /** content/picknickweer.js: teksten van de picknickcheck. */
 
 export const seo = {
-  title: "Picknickweer vandaag: droog gras, zon en weinig wind",
+  title: "Picknickweer vandaag: kan ik picknicken en wordt het mooi?",
   description:
     "Is het picknickweer vandaag? Zie het beste picknickblok, of het gras droog is en of het kleedje blijft liggen. Vijf dagen vooruit. Gratis.",
   h1: "Is het picknickweer vandaag?",
@@ -13,7 +13,7 @@ export const blokken = [
   {
     kop: "Strenger dan het terras",
     tekst:
-      "Op een terrasstoel met een muur in de rug hou je het langer vol dan plat op de grond. Deze check rekent daarom met een lagere windgrens (servetten en bekers waaien eerder weg dan een stoel omvalt) en met stilzitten op maaihoogte, waar het net wat frisser voelt.",
+      "Op een terrasstoel met een muur in de rug hou je het langer vol dan plat op de grond. Deze check rekent daarom met een lagere windgrens (servetten en bekers waaien eerder weg dan een stoel omvalt) en met stilzitten op maaihoogte, waar het net wat frisser voelt. Voor het stoel-scenario is er [de terrascheck](tool:terras).",
   },
   {
     kop: "Nat gras telt mee",

@@ -1,7 +1,7 @@
 /** content/barbecueweer.js: teksten van de barbecuecheck. Avondgericht. */
 
 export const seo = {
-  title: "Barbecueweer vandaag: het beste avondblok voor jouw stad",
+  title: "Barbecueën vandaag: kan het en wordt het bbq-weer?",
   description:
     "Kan ik vandaag barbecue\u00ebn? Zie het beste avondblok, of het droog blijft en waar de rook heen trekt. Vijf dagen vooruit. Gratis.",
   h1: "Kan ik vandaag barbecue\u00ebn?",
@@ -38,7 +38,7 @@ export const faq = [
   },
   {
     v: "Het regent in de middag. Kan de barbecue vanavond nog?",
-    a: "Vaak wel. De check kijkt alleen naar jouw avondvenster; een middagbui telt niet mee zolang het blok zelf droog is. Je ziet in de urenstrip precies welke avonduren bruikbaar zijn.",
+    a: "Vaak wel. De check kijkt alleen naar jouw avondvenster; een middagbui telt niet mee zolang het blok zelf droog is. Je ziet in de urenstrip precies welke avonduren bruikbaar zijn. En wanneer die middagbui precies opklaart, zie je bij [wanneer gaat het regenen](tool:regen-timing).",
   },
   {
     v: "Krijg ik een seintje op barbecuedagen?",

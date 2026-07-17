@@ -1,7 +1,7 @@
 /** content/wandelen.js: teksten van de wandelcheck. */
 
 export const seo = {
-  title: "Wandelweer vandaag: het beste wandelblok voor jouw stad",
+  title: "Wandelweer vandaag: kan ik wandelen en wordt het mooi?",
   description:
     "Kan ik wandelen vandaag? Zie het beste wandelblok, de gevoelstemperatuur en of je droog blijft. Vijf dagen vooruit. Gratis.",
   h1: "Kan ik wandelen vandaag?",
@@ -38,7 +38,7 @@ export const faq = [
   },
   {
     v: "Waarom wijkt het advies af van hardlopen?",
-    a: "Omdat het optimum anders ligt. Hardlopen bij 24 graden is zwaar, wandelen dan is prima. Andersom is een gure dag met windvlagen voor een hardloper te doen en voor een wandelaar guur. Elke check heeft zijn eigen drempels.",
+    a: "Omdat het optimum anders ligt. [Hardlopen](tool:hardloopweer) bij 24 graden is zwaar, wandelen dan is prima. Andersom is een gure dag met windvlagen voor een hardloper te doen en voor een wandelaar guur. Elke check heeft zijn eigen drempels.",
   },
   {
     v: "Kan ik ook het weer voor een lange afstandswandeling checken?",

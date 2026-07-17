@@ -1,7 +1,7 @@
 /** content/en/dry-laundry-outside.js: laundry check copy for the English site. */
 
 export const seo = {
-  title: "Dry laundry outside today? Your drying window per hour",
+  title: "Drying laundry outside today: can I and will it dry?",
   description:
     "Can I dry laundry outside today? See per hour when your wash actually dries: humidity, wind and rain, with a drying time estimate. Free.",
   h1: "Dry the laundry outside today?",
@@ -38,7 +38,7 @@ export const faq = [
   },
   {
     v: "What if a shower is coming?",
-    a: "The hour strip marks wet hours, and the check only counts dry windows long enough to matter. You choose your own risk level, from I'll take a chance to rather safely dry.",
+    a: "The hour strip marks wet hours, and the check only counts dry windows long enough to matter. You choose your own risk level, from I'll take a chance to rather safely dry. To see the exact shower timing next to it, use [when will it rain](tool:regen-timing).",
   },
   {
     v: "Is this better than the dryer?",

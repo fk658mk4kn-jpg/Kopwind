@@ -18,7 +18,7 @@ export const blokken = [
   {
     kop: "The whole day in one line",
     tekst:
-      "Dressed for the afternoon, frozen on the morning ride: classic. The check looks at morning, afternoon and evening separately and tells you what to bring: a jumper for tonight, a rain jacket for the four o'clock shower.",
+      "Dressed for the afternoon, frozen on the morning ride: classic. The check looks at morning, afternoon and evening separately and tells you what to bring: a jumper for tonight, a rain jacket for the four o'clock shower. Down-to-the-minute shower timing sits at [when will it rain](tool:regen-timing).",
   },
   {
     kop: "Tuned to your thermostat",

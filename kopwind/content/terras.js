@@ -1,7 +1,7 @@
 /** content/terras.js: teksten van de terrascheck. Je stad is genoeg. */
 
 export const seo = {
-  title: "Terrasweer vandaag: de beste terrasuren voor jouw stad",
+  title: "Terrasweer vandaag: kan ik op het terras en wordt het lekker?",
   description:
     "Kan ik vandaag op het terras? Zie de beste uren, of de zon er dan bij is en wanneer de wind gaat liggen. Vijf dagen vooruit. Gratis.",
   h1: "Kan ik vandaag op het terras zitten?",

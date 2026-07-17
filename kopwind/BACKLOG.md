@@ -68,13 +68,12 @@ bestaande natuurlijke vermeldingen (geen nieuwe zinnen erbij
 verzonnen). tests/inline-links.test.js valideert elk linkdoel voor NL
 en EN.
 
-**Nog niet gedaan, kandidaat voor een volgende ronde:** de notatie
-toepassen op de storefront-uitlegblokken (voor-wie, beslislogica,
-seizoen; UitlegBlokken.js rendert nog platte tekst) en op de
-resterende tools zonder in-tekst link (korte-broek-weer,
-buiten-zwemmen, gladheid en de meeste van batch 3 hadden geen
-bestaande letterlijke vermelding om aan te haken; die vergen een
-bewuste nieuwe zin, geen wrap van iets dat er al stond).
+**Uitbreiding (v3.21.0, AF):** de storefront-uitlegteksten (voor-wie,
+beslislogica, situaties, seizoen) renderen nu via TekstMetLinks en
+alle negentien checks zonder link kregen er een of twee, tweetalig:
+wraps op bestaande vermeldingen plus korte verwijzende slotzinnen waar
+die er niet waren. De integriteitstest dekt sindsdien ook de
+uitlegteksten; site-breed staan er 93 in-tekst links.
 
 **Geparkeerd uit de SEO-run (akkoord Martijn):**
 - Winterbanden-anchor (7-gradenregel): rand van de weer-scope.
@@ -138,18 +137,31 @@ ritkaart via het bestaande FactorBalken-component.
   meldingen-drempels en interne logica maar is losgekoppeld van de UI.
   Nalopen of dat overal klopt bij een volgende fietstool-ronde.
 
-## Affiliate (fase 5, bewust laatst)
+## Affiliate (fundament in v3.22.0, uitrol volgt)
 
-- Affiliate-veld in het register activeren (bestaat, is leeg).
-- Twee lagen: breed op de storefront, specifiek op de toolpagina, als
-  optionele laag binnen de bestaande kaartstructuur (zie PLAYBOOK
-  sectie 11), met transparant partnerlabel en duidelijk onderscheid
-  tussen interne en externe links.
-- Kandidaten per categorie: regen (regenjassen, paraplu's), was
-  (wasrekken), zon (zonnebrand, zonnebrillen), strand (windschermen,
-  parasols), hardlopen (schoenen, kleding), tuin (gereedschap),
-  klussen (verf, beits).
-- Pas starten als er verkeer is om te verzilveren.
+**Gebouwd (v3.22.0):** het affiliate-veld op elke tool heeft nu een
+schema (lib/affiliate.js), een component (AdviesBlok: advies eerst,
+partnerlink als hulpmiddel, verplichte disclosure, rel="sponsored
+nofollow noopener", geen tracking) en een test die elk blok in beide
+talen valideert. Ingevuld voor zonkracht (zonnebrand) en
+was-buiten-drogen (drooggerei), met PLACEHOLDER-winkellinks.
+
+**Nu te doen door Martijn:**
+- Echte affiliate-accounts en -links regelen en de placeholder-URL's
+  (Kruidvat, Blokker) vervangen. Kandidaat-programma's: Praxis of
+  Gamma (tuin, klussen), bol.com partner (breed), Decathlon (sport).
+- Pas dan echt uitrollen naar meer tools; de plek en het patroon staan
+  klaar.
+
+**Kandidaten per categorie (invulling volgt zodra links er zijn):**
+regen (regenjassen, paraplu's), was (wasrekken, gedaan als voorbeeld),
+zon (zonnebrand gedaan, plus zonnebrillen, parasols), strand
+(windschermen, parasols), hardlopen (schoenen, kleding), tuin
+(gereedschap, snoeischaar), klussen (verf, beits).
+
+**Nog te overwegen:** ook een breder affiliate-blok op de storefront
+(nu alleen op de toolpagina), als optionele laag binnen de
+kaartstructuur (PLAYBOOK sectie 11).
 
 ## Klein en operationeel
 
@@ -164,6 +176,16 @@ ritkaart via het bestaande FactorBalken-component.
 - Dagdeel- en situatie-advies per tool (ochtend/middag/avond).
 - Bezoekersteller per tool: pas als de cijfers indrukwekkend genoeg
   zijn om te tonen (wens Martijn, 2026-07-14: nu te vroeg).
+- Populaire keuzehulpen AANVULLEN van buiten de vaste zes (nu:
+  herschikken binnen POPULAIRE_TOOL_IDS op stemmen, v3.22.0). Optie om
+  een tool buiten de zes met veel stemmen te laten instromen; bewust
+  niet gedaan om de gekozen thematische mix niet te laten verdringen
+  door bijvoorbeeld drie zomer-tools. Overwegen zodra er
+  stemvolume is.
+- SEO-werkwoordvarianten book breder dan de title (v3.22.0 deed 11
+  titles): eventueel ook intro's en H1's laten afwisselen, en de
+  resterende tools meenemen. Alleen als Search Console laat zien dat de
+  varianten volume trekken; anders niet mechanisch uitbreiden.
 
 ## Geparkeerd
 
@@ -236,6 +258,17 @@ geen label = nog niet opgepakt.
 - Kan ik vandaag mijn terras schoonmaken?
 - Kan ik vandaag mijn tuinmeubels schoonmaken?
 - Leveren mijn zonnepanelen vandaag veel op? [tool: zonnepanelen, v3.17.0]
+- Kan ik vandaag snoeien? (idee Martijn 2026-07-17) Sterke
+  affiliate-kandidaat: advies "welke planten wel, welke niet, en
+  wanneer wel of niet snoeien" (vorstrisico, groeiseizoen, bloei na of
+  voor de bloei), plus een AdviesBlok naar snoeigereedschap bij Praxis
+  of Gamma. Afweging vooraf: dit is deels weer (vorst, nat blad) maar
+  vooral plantenkennis, dus het kan een eigen tool worden met een
+  lichte weer-overlay plus een steviger adviesblok dan gemiddeld.
+  Waarschijnlijk het beste eerste echte affiliate-onderwerp, want de
+  koopintentie (gereedschap) is hoog en het advies is evergreen.
+- Plantenadvies breder: per plant/klus wat wel en niet kan bij dit
+  weer (dezelfde advies-plus-affiliate-vorm als snoeien).
 
 ### Zon, lucht en hooikoorts
 - Verbrand ik vandaag? [tool: zonkracht]

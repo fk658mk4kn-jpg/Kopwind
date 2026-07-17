@@ -34,7 +34,7 @@ export const faq = [
   },
   {
     v: "Waarom is mijn ruit bevroren terwijl het niet gevroren heeft?",
-    a: "De weerbericht-temperatuur wordt op anderhalve meter hoogte gemeten. Glas dat naar een heldere hemel straalt wordt kouder dan die lucht, net als gras (grondvorst). Vocht uit de lucht slaat dan als ijs op de ruit neer.",
+    a: "De weerbericht-temperatuur wordt op anderhalve meter hoogte gemeten. Glas dat naar een heldere hemel straalt wordt kouder dan die lucht, net als gras (grondvorst). Vocht uit de lucht slaat dan als ijs op de ruit neer. Hetzelfde mechanisme maakt bruggen en fietspaden plaatselijk glad; [de gladheidscheck](tool:gladheid) kijkt daarnaar.",
   },
   {
     v: "Helpt warm water tegen een bevroren ruit?",

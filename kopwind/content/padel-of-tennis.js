@@ -34,7 +34,7 @@ export const faq = [
   },
   {
     v: "Hoe lang blijft de baan nat na regen?",
-    a: "Gravel is na een stevige bui vaak twee tot vier uur onbespeelbaar, langer bij koud en windstil weer. Kunstgras en smashcourt drogen sneller. De check trekt punten af als er eerder op de dag buien vielen.",
+    a: "Gravel is na een stevige bui vaak twee tot vier uur onbespeelbaar, langer bij koud en windstil weer. Kunstgras en smashcourt drogen sneller. De check trekt punten af als er eerder op de dag buien vielen. De exacte timing van die bui staat bij [wanneer gaat het regenen](tool:regen-timing).",
   },
   {
     v: "Kan ik met koud weer spelen?",

@@ -1,7 +1,7 @@
 /** content/en/bbq-weather.js: barbecue check copy for the English site. */
 
 export const seo = {
-  title: "BBQ weather today? The best evening window for your town",
+  title: "BBQ weather today: can I barbecue and will it stay dry?",
   description:
     "Can I barbecue today? See the best evening window, whether it stays dry and where the smoke will drift. Five days ahead. Free.",
   h1: "Can I barbecue today?",
@@ -38,7 +38,7 @@ export const faq = [
   },
   {
     v: "It rains in the afternoon. Is tonight still on?",
-    a: "Often, yes. The check only looks at your evening window; an afternoon shower doesn't count as long as the block itself stays dry. The hour strip shows exactly which evening hours are usable.",
+    a: "Often, yes. The check only looks at your evening window; an afternoon shower doesn't count as long as the block itself stays dry. The hour strip shows exactly which evening hours are usable. And exactly when that afternoon shower clears, you'll see at [when will it rain](tool:regen-timing).",
   },
   {
     v: "Can I get a nudge on BBQ days?",

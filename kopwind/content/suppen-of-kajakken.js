@@ -38,7 +38,7 @@ export const faq = [
   },
   {
     v: "Kan ik in het voorjaar al het water op?",
-    a: "Het kan, maar het water is dan nog koud, ook op warme dagen: open water loopt weken achter op de lucht. Zonder wetsuit is een onverwachte duik in april of mei geen pretje en bij langer zwemmen echt gevaarlijk. Met wetsuit rekent de check met een lagere warmtegrens.",
+    a: "Het kan, maar het water is dan nog koud, ook op warme dagen: open water loopt weken achter op de lucht. Zonder wetsuit is een onverwachte duik in april of mei geen pretje en bij langer zwemmen echt gevaarlijk. Met wetsuit rekent de check met een lagere warmtegrens. Zelfde verhaal als bij [buiten zwemmen](tool:buiten-zwemmen): de lucht zegt weinig over het water.",
   },
   {
     v: "Telt regen zwaar mee?",

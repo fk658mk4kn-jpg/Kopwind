@@ -47,6 +47,29 @@ export async function GET(req) {
     return Response.json({ error: "Stemmen staat nog niet aan." }, { status: 503 });
   }
   const { searchParams } = new URL(req.url);
+
+  // Populair-modus (v3.22.0): alle positieve stemmen ooit, per tool
+  // geteld en aflopend gesorteerd. Voedt de "Populaire keuzehulpen" op
+  // de homepage, die client-side herschikt op dit totaal. Eén query
+  // over alleen de positieve rijen; de telling per tool gebeurt hier.
+  // Bewust simpel via dbSelect; bij veel volume kan dit een
+  // count=exact-aggregatie per tool worden.
+  if (searchParams.get("populair")) {
+    try {
+      const rijen = await dbSelect(`stemmen?stem=eq.1&select=tool_id`);
+      const per = new Map();
+      for (const r of rijen) per.set(r.tool_id, (per.get(r.tool_id) ?? 0) + 1);
+      const volgorde = [...per.entries()]
+        .filter(([id]) => geldigeTool(id))
+        .sort((a, b) => b[1] - a[1])
+        .map(([id, aantal]) => ({ tool: id, positief: aantal }));
+      return Response.json({ volgorde });
+    } catch (e) {
+      console.error("stem populair faalde:", e);
+      return Response.json({ error: "Populair ophalen mislukt.", detail: String(e) }, { status: 502 });
+    }
+  }
+
   const tool = searchParams.get("tool") ?? "";
   const dag = searchParams.get("dag") ?? "";
   if (!geldigeTool(tool) || !DAG_RE.test(dag)) {

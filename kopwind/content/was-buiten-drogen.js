@@ -1,7 +1,7 @@
 /** content/was-buiten-drogen.js: teksten van de wascheck. Direct, zonder cijfers. */
 
 export const seo = {
-  title: "Vandaag de was buiten drogen? Droogvenster, wind en regen check",
+  title: "Was buiten drogen vandaag: kan het en gaat de was drogen?",
   description:
     "Kan de was vandaag buiten? Zie per uur wanneer je was goed droogt, hoe lang het duurt en het beste ophangmoment. Vijf dagen vooruit. Gratis.",
   h1: "Kan de was vandaag buiten?",
@@ -38,7 +38,7 @@ export const faq = [
   },
   {
     v: "Er staat regen op de planning. Kan het dan toch?",
-    a: "Vaak wel. Een dag met buien heeft geregeld een droog blok van een paar uur, en dat blok zie je gemarkeerd in de urenstrip. Valt de bui pas na het blok, dan haal je het gewoon.",
+    a: "Vaak wel. Een dag met buien heeft geregeld een droog blok van een paar uur, en dat blok zie je gemarkeerd in de urenstrip. Valt de bui pas na het blok, dan haal je het gewoon. De exacte buientiming ernaast leggen kan bij [wanneer gaat het regenen](tool:regen-timing).",
   },
   {
     v: "Krijg ik een seintje op drooghangdagen?",

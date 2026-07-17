@@ -1,7 +1,7 @@
 /** content/en/sunscreen.js: sunscreen check copy for the English site. */
 
 export const seo = {
-  title: "UV index today: will I burn and when do I need sunscreen?",
+  title: "UV index today: will I burn, do I need sunscreen and how strong is the sun?",
   description:
     "Do I need sunscreen today? See the UV index per hour, the sunscreen window and how fast your skin type burns. Five days ahead. Free.",
   h1: "Will I burn today?",
@@ -42,7 +42,7 @@ export const faq = [
   },
   {
     v: "Does this apply to children too?",
-    a: "Even more strictly. Children's skin is thinner and burns faster, and sunburn at a young age weighs heavier for later risk. Use at least factor 30 for kids, reapply every two hours and right after swimming, and keep them in the shade as much as possible between 12:00 and 15:00 at UV 6 or higher.",
+    a: "Even more strictly. Children's skin is thinner and burns faster, and sunburn at a young age weighs heavier for later risk. Use at least factor 30 for kids, reapply every two hours and right after swimming, and keep them in the shade as much as possible between 12:00 and 15:00 at UV 6 or higher. For a full beach day with kids, [the beach check](tool:strandweer) lines up wind and sun too.",
   },
   {
     v: "How high does the UV index get in the Netherlands?",

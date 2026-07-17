@@ -23,7 +23,7 @@ export const blokken = [
   {
     kop: "En de regen-timing",
     tekst:
-      "Als er buien in de voorspelling zitten, zie je rond welk uur. Dan weet je of de regenjas mee moet of dat je er net tussendoor glipt. Vijf dagen vooruit, dus ook morgen sta je niet voor verrassingen.",
+      "Als er buien in de voorspelling zitten, zie je rond welk uur. Dan weet je of de regenjas mee moet of dat je er net tussendoor glipt. Op de minuut precies kijken kan bij [wanneer gaat het regenen](tool:regen-timing). Vijf dagen vooruit, dus ook morgen sta je niet voor verrassingen.",
   },
 ];
 

@@ -23,7 +23,7 @@ export const blokken = [
   {
     kop: "Zomeravonden zijn licht",
     tekst:
-      "In juni en juli is het om 22:00 nog schemerig: de zon zit dan net onder de horizon en echt donker wordt het pas tegen middernacht. De check herkent dat aan het daglicht in de avonduren en waarschuwt ervoor. In de winter begint het donker al om 18:00, maar kleed je warm aan.",
+      "In juni en juli is het om 22:00 nog schemerig: de zon zit dan net onder de horizon en echt donker wordt het pas tegen middernacht. De check herkent dat aan het daglicht in de avonduren en waarschuwt ervoor. In de winter begint het donker al om 18:00, maar [kleed je warm aan](tool:wat-trek-ik-aan).",
   },
 ];
 

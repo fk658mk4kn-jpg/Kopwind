@@ -1,7 +1,7 @@
 /** content/en/running-weather.js: copy for the running check. */
 
 export const seo = {
-  title: "Running weather today: your best running window",
+  title: "Running weather today: is it and will it be good for a run?",
   description:
     "Running weather today? See your best running window from feels-like temperature, wind and rain, five days ahead. Free and fuss-free.",
   h1: "Running weather today?",

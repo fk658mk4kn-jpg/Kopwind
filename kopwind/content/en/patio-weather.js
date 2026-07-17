@@ -1,7 +1,7 @@
 /** content/en/patio-weather.js: patio check copy for the English site. */
 
 export const seo = {
-  title: "Patio weather today? The best outdoor hours for your town",
+  title: "Patio weather today: can I sit outside and will it be nice?",
   description:
     "Can I sit outside today? See the best patio hours: feels-like temperature, wind and sun per hour, five days ahead. Free.",
   h1: "Sit outside today?",

@@ -6,6 +6,18 @@
 
 export const VERSIES = [
   {
+    versie: "3.22.0",
+    codenaam: "Foehn",
+    datum: "2026-07-17",
+    zin: "De homepage zet de populairste keuzehulpen nu voorop op basis van echte duimpjes, en de uitleg op de themapagina's is inklapbaar zodat je sneller bij de kern komt. Titels vangen meer manieren van zoeken af (wordt het, gaat het, kan ik). En bij een paar checks staat nu een kort adviesblok met een handige tip.",
+  },
+  {
+    versie: "3.21.0",
+    codenaam: "Chinook",
+    datum: "2026-07-17",
+    zin: "Overal waar een check een andere check noemt, is die vermelding nu een echte link: van de wandelvraag over hardlopen tot de gladheidscheck die naar de krabcheck wijst. Ook op de themapagina's zelf, in de uitleg en de seizoensblokken. Zo klik je direct door naar het antwoord waar de tekst het over heeft.",
+  },
+  {
     versie: "3.20.0",
     codenaam: "Bayamo",
     datum: "2026-07-16",

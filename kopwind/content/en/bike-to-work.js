@@ -1,7 +1,7 @@
 /** content/en/bike-to-work.js: bike check copy for the English site. */
 
 export const seo = {
-  title: "Bike to work today? Wind and cycling weather for your ride",
+  title: "Bike to work today: can I and will it be good cycling weather?",
   description:
     "Can I bike to work today? Check your ride: headwind per part of the route, rain, feels-like temperature and a clear verdict. Free, no account.",
   h1: "Bike to work today?",
@@ -30,7 +30,7 @@ export const blokken = [
 export const faq = [
   {
     v: "When is it a good day to bike to work?",
-    a: "Dry, a feels-like above your own limit and no strong headwind on your specific route. The check answers in plain words, from Give it a miss to Ideal bike day, and names the reasons: headwind halfway, showers around eight, that kind of thing.",
+    a: "Dry, a feels-like above your own limit and no strong headwind on your specific route. The check answers in plain words, from Give it a miss to Ideal bike day, and names the reasons: headwind halfway, showers around eight, that kind of thing. In winter the road surface joins in: in frost, glance at [the icy roads check](tool:gladheid).",
   },
   {
     v: "How does the check know my headwind?",

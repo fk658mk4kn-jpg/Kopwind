@@ -1,7 +1,7 @@
 /** content/strandweer.js: teksten van de strandcheck. */
 
 export const seo = {
-  title: "Strandweer vandaag: de beste stranduren en de wind op de kust",
+  title: "Strandweer vandaag: wordt het en kan ik naar het strand?",
   description:
     "Is het strandweer vandaag? Zie de beste stranduren op basis van warmte, wind en zon, met de kustregel voor wind. Vijf dagen vooruit, gratis.",
   h1: "Is het strandweer vandaag?",
@@ -13,7 +13,7 @@ export const blokken = [
   {
     kop: "Wind maakt of breekt de stranddag",
     tekst:
-      "Boven windkracht 4 gaat het zand stuiven en wordt liggen onprettig; daarom ligt de windgrens hier lager dan bij het terras. En let op de kustregel: aan zee waait het vrijwel altijd een windkracht harder dan landinwaarts. Zoek dus op je badplaats zelf, niet op je woonplaats.",
+      "Boven windkracht 4 gaat het zand stuiven en wordt liggen onprettig; daarom ligt de windgrens hier lager dan bij [het terras](tool:terras). En let op de kustregel: aan zee waait het vrijwel altijd een windkracht harder dan landinwaarts. Zoek dus op je badplaats zelf, niet op je woonplaats.",
   },
   {
     kop: "Warm genoeg, en de zon telt mee",
@@ -54,6 +54,6 @@ export const faq = [
   },
   {
     v: "Strand met kinderen: waar let ik extra op?",
-    a: "Strand met kinderen vraagt om drie extra checks: de zonkracht (kinderhuid verbrandt sneller, smeer ruim en herhaal na het zwemmen), de wind (opwaaiend zand bederft het snel) en de zwemvlaggen bij de reddingsbrigade. De rustigste combinatie is vaak de late middag: de zonkracht zakt en het water is op zijn warmst.",
+    a: "Strand met kinderen vraagt om drie extra checks: [de zonkracht](tool:zonkracht) (kinderhuid verbrandt sneller, smeer ruim en herhaal na het zwemmen), de wind (opwaaiend zand bederft het snel) en de zwemvlaggen bij de reddingsbrigade. De rustigste combinatie is vaak de late middag: de zonkracht zakt en het water is op zijn warmst.",
   },
 ];

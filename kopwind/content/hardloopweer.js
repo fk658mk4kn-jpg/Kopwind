@@ -1,7 +1,7 @@
 /** content/hardloopweer.js: teksten van de hardloopcheck. */
 
 export const seo = {
-  title: "Hardloopweer vandaag: het beste loopblok voor jouw stad",
+  title: "Hardloopweer vandaag: is het en wordt het goed weer om te lopen?",
   description:
     "Is het hardloopweer vandaag? Zie het beste loopblok op basis van gevoelstemperatuur, wind en regen, vijf dagen vooruit. Gratis en zonder gedoe.",
   h1: "Is het hardloopweer vandaag?",

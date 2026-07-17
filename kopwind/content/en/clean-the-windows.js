@@ -42,7 +42,7 @@ export const faq = [
   },
   {
     v: "How often should I clean my windows?",
-    a: "Outside, four to six times a year on average; more often near a busy road, at the coast (salt film) or under trees. After the pollen peak in May and after the autumn storms are classic moments. Inside, twice a year is usually enough.",
+    a: "Outside, four to six times a year on average; more often near a busy road, at the coast (salt film) or under trees. After [the pollen peak in May](hub:gezondheid#pollenkalender) and after the autumn storms are classic moments. Inside, twice a year is usually enough.",
   },
   {
     v: "Cleaning windows in winter: is that possible?",

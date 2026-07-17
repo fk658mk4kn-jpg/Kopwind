@@ -13,7 +13,7 @@ export const blokken = [
   {
     kop: "Twee soorten gladheid",
     tekst:
-      "De gevaarlijkste vorm is bevriezende natheid: een nat wegdek of ijzel bij temperaturen rond nul, spekglad en vaak onzichtbaar. De tweede vorm is grondvorst na een heldere, windstille nacht: het wegdek wordt dan kouder dan de lucht en bevriest plaatselijk, terwijl de thermometer plusgraden aangeeft.",
+      "De gevaarlijkste vorm is bevriezende natheid: een nat wegdek of ijzel bij temperaturen rond nul, spekglad en vaak onzichtbaar. De tweede vorm is grondvorst na een heldere, windstille nacht: het wegdek wordt dan kouder dan de lucht en bevriest plaatselijk, terwijl de thermometer plusgraden aangeeft. Diezelfde heldere nachten zetten ook de autoruit vol ijs; daarvoor is er [de krabcheck](tool:krabben).",
   },
   {
     kop: "Bruggen, viaducten en fietspaden eerst",

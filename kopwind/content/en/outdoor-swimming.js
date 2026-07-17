@@ -1,7 +1,7 @@
 /** content/en/outdoor-swimming.js: swim check copy. */
 
 export const seo = {
-  title: "Swimming weather today: can I swim outside?",
+  title: "Swimming weather today: can I swim outside and is it warm enough?",
   description:
     "Swim outside today? See the best swim window, whether the sun is out and how much wind there is. Plus what to check yourself: water temperature and algae.",
   h1: "Swim outside today?",
@@ -42,7 +42,7 @@ export const faq = [
   },
   {
     v: "Is wind a problem while swimming itself?",
-    a: "In the water wind is manageable, but outside it makes you cold: wet plus 25 km/h of wind feels like a cold shower. At sea, waves and currents come on top. The check deducts points for wind, and more if you pick the sea in the settings.",
+    a: "In the water wind is manageable, but outside it makes you cold: wet plus 25 km/h of wind feels like a cold shower. At sea, waves and currents come on top. The check deducts points for wind, and more if you pick the sea in the settings. For the beach day around it, there's [the beach check](tool:strandweer).",
   },
   {
     v: "Water temperature for swimming: where do I check it?",

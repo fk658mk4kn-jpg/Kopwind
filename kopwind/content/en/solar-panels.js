@@ -38,7 +38,7 @@ export const faq = [
   },
   {
     v: "When is the best moment for the washing machine?",
-    a: "The sunniest block the status line names, usually roughly 11:00 to 15:00 with a south-facing roof. With east-west the profile is flatter and you can happily run a heavy appliance in the morning or late afternoon too.",
+    a: "The sunniest block the status line names, usually roughly 11:00 to 15:00 with a south-facing roof. With east-west the profile is flatter and you can happily run a heavy appliance in the morning or late afternoon too. Whether it's also drying weather for the line outside, [the laundry check](tool:was-buiten-drogen) will tell you.",
   },
   {
     v: "Do panels perform worse in heat?",

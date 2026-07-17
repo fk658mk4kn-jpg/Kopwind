@@ -1,7 +1,7 @@
 /** content/en/walking.js: walking check copy. */
 
 export const seo = {
-  title: "Walking weather today: your best walking window",
+  title: "Walking weather today: can I go for a walk and will it be nice?",
   description:
     "Go for a walk today? See the best walking window, the feels-like temperature and whether you'll stay dry. Five days ahead. Free.",
   h1: "Go for a walk today?",
@@ -38,7 +38,7 @@ export const faq = [
   },
   {
     v: "Why does the advice differ from running?",
-    a: "Because the sweet spot differs. Running at 24 degrees is hard work; walking then is lovely. The other way round, a blustery day is fine for a runner and bleak for a walker. Each check has its own thresholds.",
+    a: "Because the sweet spot differs. [Running](tool:hardloopweer) at 24 degrees is hard work; walking then is lovely. The other way round, a blustery day is fine for a runner and bleak for a walker. Each check has its own thresholds.",
   },
   {
     v: "Can I check the weather for a long-distance walk?",

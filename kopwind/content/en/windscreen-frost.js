@@ -34,7 +34,7 @@ export const faq = [
   },
   {
     v: "Why is my windscreen frozen when it didn't freeze?",
-    a: "The forecast temperature is measured at chest height. Glass radiating to a clear sky gets colder than that air, just like grass (ground frost). Moisture from the air then settles on the screen as ice.",
+    a: "The forecast temperature is measured at chest height. Glass radiating to a clear sky gets colder than that air, just like grass (ground frost). Moisture from the air then settles on the screen as ice. The same mechanism makes bridges and cycle paths locally slippery; [the icy roads check](tool:gladheid) watches for that.",
   },
   {
     v: "Does warm water help against a frozen windscreen?",

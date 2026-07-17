@@ -1,7 +1,7 @@
 /** content/zonkracht.js: teksten van de zonkrachtcheck. */
 
 export const seo = {
-  title: "Zonkracht vandaag: verbrand ik en wanneer moet ik smeren?",
+  title: "Zonkracht vandaag: verbrand ik, moet ik smeren en hoe fel wordt de zon?",
   description:
     "Moet ik vandaag smeren? Zie de zonkracht per uur, het smeervenster en hoe snel jouw huidtype verbrandt. Vijf dagen vooruit. Gratis.",
   h1: "Verbrand ik vandaag?",
@@ -42,7 +42,7 @@ export const faq = [
   },
   {
     v: "Geldt het zonkracht- en smeeradvies ook voor kinderen?",
-    a: "Extra streng zelfs. Kinderhuid is dunner en verbrandt sneller, en verbranding op jonge leeftijd weegt zwaarder voor het risico later. Houd voor kinderen minimaal factor 30 aan, smeer elke twee uur en direct na het zwemmen, en zet ze bij zonkracht 6 of hoger tussen 12:00 en 15:00 zoveel mogelijk in de schaduw.",
+    a: "Extra streng zelfs. Kinderhuid is dunner en verbrandt sneller, en verbranding op jonge leeftijd weegt zwaarder voor het risico later. Houd voor kinderen minimaal factor 30 aan, smeer elke twee uur en direct na het zwemmen, en zet ze bij zonkracht 6 of hoger tussen 12:00 en 15:00 zoveel mogelijk in de schaduw. Voor een hele stranddag met kinderen zet [de strandcheck](tool:strandweer) ook wind en zon op een rij.",
   },
   {
     v: "Hoe hoog wordt de zonkracht in Nederland?",

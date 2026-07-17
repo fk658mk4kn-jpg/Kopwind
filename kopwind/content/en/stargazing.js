@@ -23,7 +23,7 @@ export const blokken = [
   {
     kop: "Summer evenings are light",
     tekst:
-      "In June and July it's still twilight at 22:00: the sun sits just below the horizon and real darkness only starts towards midnight. The check spots that through the daylight flag in the evening hours and warns about it. In winter darkness starts at 18:00, but dress warmer than you think.",
+      "In June and July it's still twilight at 22:00: the sun sits just below the horizon and real darkness only starts towards midnight. The check spots that through the daylight flag in the evening hours and warns about it. In winter darkness starts at 18:00, but [dress warmer than you think](tool:wat-trek-ik-aan).",
   },
 ];
 

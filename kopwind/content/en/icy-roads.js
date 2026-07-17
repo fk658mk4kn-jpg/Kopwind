@@ -13,7 +13,7 @@ export const blokken = [
   {
     kop: "Two kinds of ice",
     tekst:
-      "The most dangerous form is freezing wetness: a wet road surface or freezing rain around zero, mirror-slick and often invisible. The second form is ground frost after a clear, calm night: the surface gets colder than the air and freezes locally while the thermometer shows plus degrees.",
+      "The most dangerous form is freezing wetness: a wet road surface or freezing rain around zero, mirror-slick and often invisible. The second form is ground frost after a clear, calm night: the surface gets colder than the air and freezes locally while the thermometer shows plus degrees. Those same clear nights coat the windscreen in ice too; that's what [the scraping check](tool:krabben) is for.",
   },
   {
     kop: "Bridges, viaducts and bike paths first",

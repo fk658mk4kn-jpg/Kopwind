@@ -30,7 +30,7 @@ export const blokken = [
 export const faq = [
   {
     v: "Can you wear shorts at 15 degrees?",
-    a: "Sitting still that's fresh for most, especially with wind or cloud. Active (walking, sport, cycling with effort) 15 degrees can feel fine. The check weighs wind and sun into the feels-like, so look at the number it shows, not the thermometer.",
+    a: "Sitting still that's fresh for most, especially with wind or cloud. Active ([walking](tool:wandelen), sport, cycling with effort) 15 degrees can feel fine. The check weighs wind and sun into the feels-like, so look at the number it shows, not the thermometer.",
   },
   {
     v: "Does wind really count that much on bare legs?",

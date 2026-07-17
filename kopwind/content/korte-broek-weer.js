@@ -30,7 +30,7 @@ export const blokken = [
 export const faq = [
   {
     v: "Kan een korte broek bij 15 graden?",
-    a: "Stilzittend wordt dat voor de meesten fris, zeker met wind of bewolking. Actief (wandelen, sporten, fietsen met inspanning) kan 15 graden prima aanvoelen. De check weegt wind en zon mee in het gevoel, dus kijk naar het getal dat hij toont, niet naar de thermometer.",
+    a: "Stilzittend wordt dat voor de meesten fris, zeker met wind of bewolking. Actief ([wandelen](tool:wandelen), sporten, fietsen met inspanning) kan 15 graden prima aanvoelen. De check weegt wind en zon mee in het gevoel, dus kijk naar het getal dat hij toont, niet naar de thermometer.",
   },
   {
     v: "Telt wind echt zo zwaar op blote benen?",

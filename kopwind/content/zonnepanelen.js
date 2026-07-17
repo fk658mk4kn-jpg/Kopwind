@@ -38,7 +38,7 @@ export const faq = [
   },
   {
     v: "Wat is het beste moment voor de wasmachine?",
-    a: "Het zonnigste blok dat de statusregel noemt, meestal ruwweg tussen 11:00 en 15:00 bij een zuid-dak. Heb je oost-west, dan is het profiel vlakker en kun je ook 's ochtends of aan het eind van de middag prima een grootverbruiker draaien.",
+    a: "Het zonnigste blok dat de statusregel noemt, meestal ruwweg tussen 11:00 en 15:00 bij een zuid-dak. Heb je oost-west, dan is het profiel vlakker en kun je ook 's ochtends of aan het eind van de middag prima een grootverbruiker draaien. Of het buiten ook droogweer voor de waslijn is, zegt [de wascheck](tool:was-buiten-drogen).",
   },
   {
     v: "Presteren panelen slechter bij hitte?",

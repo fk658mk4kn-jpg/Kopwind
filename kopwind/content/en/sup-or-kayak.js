@@ -23,7 +23,7 @@ export const blokken = [
   {
     kop: "Warm enough, even if you fall in",
     tekst:
-      "Air temperature doesn't tell the whole story: in spring and autumn the water is still cold and an unexpected dip is instantly serious. A wetsuit allows cooler days; set that in the settings. And on open water, just wear a buoyancy aid, even when it's mirror-flat.",
+      "Air temperature doesn't tell the whole story: in spring and autumn the water is still cold and an unexpected dip is instantly serious. A wetsuit allows cooler days; set that in the settings. Same story as with [outdoor swimming](tool:buiten-zwemmen): the air says little about the water. And on open water, just wear a buoyancy aid, even when it's mirror-flat.",
   },
 ];
 

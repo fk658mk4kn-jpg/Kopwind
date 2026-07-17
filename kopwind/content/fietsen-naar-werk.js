@@ -4,7 +4,7 @@
  */
 
 export const seo = {
-  title: "Vandaag op de fiets naar werk? Fietsweer, wind en reistijd check",
+  title: "Fietsen naar werk vandaag: kan het en wordt het goed fietsweer?",
   description:
     "Kan ik vandaag fietsen naar werk? Check je woon-werkrit: reistijd, fietsweer, wind tegen per deel van de route, regen en temperatuur. Gratis, direct advies.",
   h1: "Kan ik vandaag fietsen naar werk?",
@@ -46,7 +46,7 @@ export const faq = [
   },
   {
     v: "Wat is goed fietsweer?",
-    a: "Droog, een gevoelstemperatuur boven een graad of 5 en weinig wind tegen (of wind mee). In de check is dat Goed of Ideaal: een prima fietsdag.",
+    a: "Droog, een gevoelstemperatuur boven een graad of 5 en weinig wind tegen (of wind mee). In de check is dat Goed of Ideaal: een prima fietsdag. In de winter komt het wegdek erbij: check bij vorst even [de gladheidscheck](tool:gladheid).",
   },
   {
     v: "Kan ik ook mijn terugrit en tussenstops checken?",

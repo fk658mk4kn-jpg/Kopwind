@@ -376,5 +376,14 @@ export const wasBuitenDrogen = {
   },
   adviesLabels: T.adviesLabels,
   bijgewerkt: "2026-07-13",
-  affiliate: null,
+  affiliate: {
+    kop: { nl: "Sneller droog buiten", en: "Faster drying outside" },
+    advies: {
+      nl: "Buiten draait alles om lucht langs de was: hang met ruimte tussen de stukken en zet een droogrek op een winderige, beschutte plek. Een stevig droogrek of een lange waslijn met genoeg spanning helpt meer dan je denkt; natte was die opeengepakt hangt, droogt half zo snel.",
+      en: "Outside it's all about air moving past the laundry: hang with space between items and put a rack in a breezy, sheltered spot. A sturdy drying rack or a long line with enough tension helps more than you'd think; laundry packed together dries half as fast.",
+    },
+    items: [
+      { label: { nl: "Droogrek en waslijn", en: "Drying rack and washing line" }, url: "https://www.blokker.nl/", partner: "Blokker" },
+    ],
+  },
 };

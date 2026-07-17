@@ -1,7 +1,7 @@
 /** content/en/mow-the-lawn.js: mowing check copy. */
 
 export const seo = {
-  title: "Mow the lawn today: dry grass and the best mowing moment",
+  title: "Mowing the lawn today: can I, is the grass dry and when?",
   description:
     "Mow the lawn today? See whether the grass is dry enough and when the best mowing moment falls. Five days ahead. Free.",
   h1: "Mow the lawn today?",
@@ -18,7 +18,7 @@ export const blokken = [
   {
     kop: "Morning dew counts",
     tekst:
-      "Even without rain the grass is wet with dew in the morning. Hours before 10:00 therefore score lower, and with a corded electric mower a bit stricter still (moisture and mains power don't mix). The late afternoon of a dry day is almost always the best moment.",
+      "Even without rain the grass is wet with dew in the morning. Hours before 10:00 therefore score lower, and with a corded electric mower a bit stricter still (moisture and mains power don't mix). The late afternoon of a dry day is almost always the best moment. Planning more dry-day chores: see [which day this week is driest](hub:huis-tuin#klusweer-droogste-dag).",
   },
   {
     kop: "No mowing in frost or heat",

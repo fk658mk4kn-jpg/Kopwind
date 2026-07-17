@@ -1,7 +1,7 @@
 /** content/en/beach-weather.js: copy for the beach check. */
 
 export const seo = {
-  title: "Beach weather today: the best beach hours and the coastal wind",
+  title: "Beach weather today: will it be good and can I go to the beach?",
   description:
     "Beach weather today? See the best beach hours from warmth, wind and sun, with the coastal wind rule. Five days ahead, free.",
   h1: "Beach weather today?",
@@ -13,7 +13,7 @@ export const blokken = [
   {
     kop: "Wind makes or breaks the beach day",
     tekst:
-      "Above wind force 4 the sand starts to fly and lying down gets unpleasant; that's why the wind limit sits lower here than for the patio. And mind the coastal rule: at the sea the wind is almost always one force stronger than inland. So search your seaside town itself, not your home town.",
+      "Above wind force 4 the sand starts to fly and lying down gets unpleasant; that's why the wind limit sits lower here than for [the patio](tool:terras). And mind the coastal rule: at the sea the wind is almost always one force stronger than inland. So search your seaside town itself, not your home town.",
   },
   {
     kop: "Warm enough, and the sun counts",
@@ -54,6 +54,6 @@ export const faq = [
   },
   {
     v: "Beach with kids: what should I watch extra?",
-    a: "A beach day with kids asks for three extra checks: the UV index (children's skin burns faster, apply generously and repeat after swimming), the wind (blowing sand spoils it quickly) and the swimming flags at the lifeguard station. The calmest combination is often late afternoon: UV drops and the water is at its warmest.",
+    a: "A beach day with kids asks for three extra checks: [the UV index](tool:zonkracht) (children's skin burns faster, apply generously and repeat after swimming), the wind (blowing sand spoils it quickly) and the swimming flags at the lifeguard station. The calmest combination is often late afternoon: UV drops and the water is at its warmest.",
   },
 ];

@@ -1,7 +1,7 @@
 /** content/grasmaaien.js: teksten van de maaicheck. */
 
 export const seo = {
-  title: "Grasmaaien vandaag: droog gras en het beste maaimoment",
+  title: "Grasmaaien vandaag: kan het, is het gras droog en wanneer?",
   description:
     "Kan ik grasmaaien vandaag? Zie of het gras droog genoeg is en wat het beste maaimoment is. Vijf dagen vooruit. Gratis.",
   h1: "Kan ik grasmaaien vandaag?",
@@ -18,7 +18,7 @@ export const blokken = [
   {
     kop: "De ochtenddauw telt mee",
     tekst:
-      "Ook zonder regen is het gras 's ochtends nat van de dauw. Voor 10:00 scoort een uur daarom lager, en met een elektrische maaier met snoer nog wat strenger (vocht en stroom gaan niet samen). De namiddag van een droge dag is bijna altijd het beste moment.",
+      "Ook zonder regen is het gras 's ochtends nat van de dauw. Voor 10:00 scoort een uur daarom lager, en met een elektrische maaier met snoer nog wat strenger (vocht en stroom gaan niet samen). De namiddag van een droge dag is bijna altijd het beste moment. Meer droge klusjes plannen: zie [welke dag deze week het droogst is](hub:huis-tuin#klusweer-droogste-dag).",
   },
   {
     kop: "Niet maaien bij vorst of hitte",

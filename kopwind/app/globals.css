@@ -2308,6 +2308,81 @@ a.checkkaart:hover .kaartknop { background: var(--geel); }
 .menugroep-teller { font-size: 12px; }
 .menugroep-klap:not([open]) { padding-bottom: 2px; }
 
+/* Inklapbare storefront-uitleg (v3.22.0, standaard dicht): de h2 blijft
+   de kop, maar zit nu in een summary met een draaipijl, net als het
+   menu. De h2 houdt zijn eigen grootte; de summary voegt alleen het
+   klikgedrag en de marker toe. */
+.uitleg-klap { border-top: 1px solid var(--lijn); }
+.uitleg-klap:first-child { border-top: 0; }
+.uitleg-klap > summary.uitleg-klap-kop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  cursor: pointer;
+  list-style: none;
+  padding: 4px 0;
+}
+.uitleg-klap > summary.uitleg-klap-kop::-webkit-details-marker { display: none; }
+.uitleg-klap > summary.uitleg-klap-kop h2 { margin: 0; }
+.uitleg-klap > summary.uitleg-klap-kop::after {
+  content: "";
+  width: 9px;
+  height: 9px;
+  border-right: 2px solid var(--inkt-zacht);
+  border-bottom: 2px solid var(--inkt-zacht);
+  transform: rotate(45deg);
+  transition: transform 0.15s ease;
+  flex: 0 0 auto;
+  margin-right: 4px;
+}
+.uitleg-klap[open] > summary.uitleg-klap-kop::after { transform: rotate(-135deg); }
+
+/* Affiliate-adviesblok (v3.22.0): advies eerst, links als nette knoppen,
+   disclosure klein eronder. Neutrale kaart, geen schreeuwerige
+   advertentie-look; sluit aan op de rest van de panelen. */
+.adviesblok {
+  background: var(--kaart);
+  border: 1px solid var(--lijn);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  margin: 22px 0;
+  box-shadow: var(--schaduw-zacht);
+}
+.adviesblok h2 { margin: 0 0 8px; font-size: 17px; }
+.adviesblok > p { margin: 0 0 14px; color: var(--inkt-zacht); }
+.adviesblok-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.adviesblok-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border: 1px solid var(--lijn);
+  border-radius: 10px;
+  text-decoration: none;
+  color: var(--inkt);
+  background: var(--wolk);
+  transition: border-color 0.15s ease;
+}
+.adviesblok-link:hover { border-color: var(--accent); }
+.adviesblok-partner {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  color: var(--inkt-zacht);
+}
+.adviesblok-disclosure {
+  margin: 0;
+  font-size: 12px;
+  color: var(--inkt-zacht);
+}
+
 /* Stoplicht op alle-checks: label plus stip kleuren via de klasse. */
 .statuslabel.groen { color: var(--groen); }
 .statuslabel.oranje { color: var(--oranje); }

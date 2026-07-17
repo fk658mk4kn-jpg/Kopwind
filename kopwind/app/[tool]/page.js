@@ -20,6 +20,7 @@ import { CATEGORIEEN, vindCategorie } from "@/lib/categorieen";
 import Storefront from "@/components/Storefront";
 import RecentTracker from "@/components/RecentTracker";
 import TekstMetLinks from "@/components/TekstMetLinks";
+import AdviesBlok from "@/components/AdviesBlok";
 import { platteTekst } from "@/lib/inlineLinks";
 
 /**
@@ -98,7 +99,7 @@ export default function ToolPagina({ params }) {
 
   return (
     <main>
-      <RecentTracker toolId={tool.id} />
+      <RecentTracker toolId={tool.templateId ?? tool.id} />
       <Broodkruimel
         items={[
           { naam: HUB_NAAM, href: "/" },
@@ -127,6 +128,7 @@ export default function ToolPagina({ params }) {
         <DeelKnop />
       </div>
       <AdSlot plek="onder-tool" />
+      <AdviesBlok affiliate={tool.affiliate} />
 
       <section className="seotekst">
         <details className="stadlijst boven">

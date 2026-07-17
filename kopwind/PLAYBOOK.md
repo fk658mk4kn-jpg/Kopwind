@@ -492,8 +492,12 @@ uitlegbare AFGELEIDE naast de echte score, geen tweede waarheid.
 
 ## 15. In-tekst links: notatie en renderer (sinds v3.20.0)
 
-Content-strings (blokken, FAQ) mogen de notatie [label](tool:id) of
-[label](hub:categorie-id#anker-id) bevatten. lib/inlineLinks.js parst
+Content-strings mogen de notatie [label](tool:id) of
+[label](hub:categorie-id#anker-id) bevatten. De renderer dekt de
+toolpagina (blokken, FAQ) en sinds v3.21.0 ook alle storefront-
+tekstplekken (FAQ, voor-wie, beslislogica, situaties, seizoen). NIET
+in seo.title, seo.description, seo.intro of categorie.intro: die
+strings gaan ook naar metadata en zouden de ruwe notatie lekken. lib/inlineLinks.js parst
 dit; components/TekstMetLinks.js rendert het naar echte next/link-
 links (tool: resolveert tegen TOOLS, dan tegen VARIANTEN; hub: tegen
 CATEGORIEEN plus optioneel een anchor). JSON-LD (FAQPage) gebruikt
@@ -510,3 +514,39 @@ tests/inline-links.test.js draait mee in npm test en valideert elk
 linkdoel voor NL en EN (subprocess met NEXT_PUBLIC_SITE_LOCALE=en,
 zelfde patroon als tests/i18n.test.js). Een tweede test bewaakt dat de
 notatie niet ongebruikt raakt (minstens 10 links site-breed).
+
+## 16. Terminologie: check versus keuzehulp (sinds v3.22.0)
+
+Twee woorden, bewust verdeeld:
+- "check" = de HANDELING. "Doe de check", "deel deze check", "probeer
+  de gewone regencheck", en de samengestelde toolnamen (terrascheck,
+  kledingcheck) blijven zo. Ook de tool-slugs en /alle-checks blijven
+  ongemoeid; dat is techniek/URL, geen zichtbare merkterm.
+- "keuzehulp(en)" = het INSTRUMENT als ding of verzameling. "Alle
+  keuzehulpen", "Populaire keuzehulpen", "stel de keuzehulpen op jou
+  af". EN: "guide(s)".
+Stroef klinkende koppen mogen vrij herschreven worden in plaats van
+het woord te forceren ("De checks van vandaag" werd "Waar let je op
+vandaag?"). Twijfel je bij een nieuwe string: gaat het om iets DOEN
+(check) of om het GEREEDSCHAP (keuzehulp)?
+
+## 17. Affiliate-adviesblok (sinds v3.22.0)
+
+Elke tool heeft een veld `affiliate` (null = geen blok). Schema en
+validatie staan in lib/affiliate.js, het renderen in
+components/AdviesBlok.js (op de toolpagina, na de feedback-rij). Vaste
+regels:
+- Advies EERST, commerciele link als hulpmiddel. Het advies moet ook
+  zonder de link nuttig zijn. Nooit een banner of "koop nu".
+- Verplichte disclosure onder elk blok (standaard in
+  AFFILIATE_DISCLOSURE, override per tool mag).
+- Elke uitgaande link: target="_blank" plus rel="sponsored nofollow
+  noopener". Geen tracking, geen pixels: dit is een link-model, geen
+  advertentienetwerk (de AdSlot voor echte ads blijft leeg omdat die
+  wel consent zou vereisen).
+- 1 tot 4 links per blok, elk met een winkelnaam (partner) zichtbaar.
+- tests/affiliate.test.js valideert elk ingevuld blok in NL en EN.
+De SEO-titels mogen meerdere werkwoordsvarianten van dezelfde intentie
+bevatten (kan ik / wordt het / gaat het / is het X-weer) om varianten
+op EEN pagina af te vangen; nooit een nieuwe URL per variant
+(anti-cannibalisatie).

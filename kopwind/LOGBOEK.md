@@ -1937,3 +1937,121 @@ in plaats van een wrap, en dat is een aparte afweging per tool.
 zonder fouten, alle stad- en van/naar-pagina's van de fietscheck
 geprerenderd, geen em-dashes.
 
+## 2026-07-17 - v3.21.0 "Chinook": het linkweefsel afgemaakt
+
+**Opdracht**: "Bouwen maar" op de twee vervolgpunten uit v3.20.0: de
+storefront-uitlegblokken aan de linkrenderer, en in-tekst links voor
+de checks die er nog geen hadden.
+
+**Deel A, uitlegblokken.** UitlegBlokken.js (beslislogica-punten,
+situaties, seizoen) en VoorWieBlok.js renderen nu via TekstMetLinks;
+gecheckt dat die teksten nergens anders (metadata, JSON-LD) worden
+geconsumeerd, dus geen platteTekst-plumbing nodig. De
+integriteitstest verzamelt die vier tekstbronnen nu ook, in NL en in
+het EN-subprocess. Veertien bestaande vermeldingen in de
+uitlegteksten meteen gewrapt (7 NL + 7 EN), waaronder twee
+hub-verwijzingen ("zie de winterchecks" op regen en sport) en de
+fietscheck-vermelding in de tegenwind-situatie. Substring-valkuil
+onderweg: "Zie de winterchecks." versus "Zie ook de winterchecks."
+overlappen bijna, dus alle replaces met ruime context en assert==1.
+
+**Deel B, veertig nieuwe links.** Eerst geinventariseerd welke
+bestanden nul links hadden (19) en wat hun teksten aan natuurlijke
+aanknopingspunten boden; zeven kandidaat-antwoorden apart gelezen
+voordat ik zinnen koos. Per check een of twee links: wraps waar de
+tekst een andere check al noemde (hardlopen in de wandel-FAQ, het
+terras bij de strand-windgrens, "kleed je warm aan" bij sterrenkijken,
+de pollenpiek bij ramen-wassen naar de pollenkalender-anchor, 40
+procent regenkans naar de regenkans-anchor) en korte verwijzende
+slotzinnen waar dat niet zo was (gladheid en krabben wijzen naar
+elkaars mechanisme, zonnepanelen naar de wascheck bij de
+wasmachinevraag, padel en de wascheck naar de regentiming, zonkracht
+en zwemmen naar de strandcheck). Sup kreeg de zwemcheck-verwijzing
+("de lucht zegt weinig over het water"), fiets de gladheidscheck bij
+goed fietsweer.
+
+**Vier links bewust buiten de gerelateerd-sets**, wel binnen de
+intentie-regel: strand naar terras (de tekst vergelijkt de windgrens
+letterlijk met het terras), korte-broek naar wandelen (wrap van een
+bestaande opsomming), wat-trek-ik-aan naar de regentiming (het blok
+heet "En de regen-timing") en de EN what-to-wear-variant daarvan. Geen
+door Martijn afgewezen paren gebruikt (sterrenkijken-krabben blijft
+eruit; sterrenkijken linkt naar de kledingcheck, conform de set).
+
+**EN-spiegels**: de EN-teksten zijn geen letterlijke vertalingen, dus
+elke spiegelstring apart opgezocht; what-to-wear EN heeft geen
+regen-timing-blok en kreeg de link in het ochtendrit-blok. Een gok op
+een niet-bestaande EN-string werd door de assert gevangen; alle edits
+voor dat punt waren al weggeschreven, dus alleen de resterende negen
+opnieuw gedraaid.
+
+**Test**: sanity-drempel van 10 naar 30 links (er staan er nu 93
+site-breed), zodat een onbedoelde kaalslag opvalt.
+
+**Verificatie**: 132 tests groen, beide builds foutloos, geen
+em-dashes.
+
+## 2026-07-17 (tweede run) - v3.22.0 "Foehn": vijf feedbackpunten
+
+**Opdracht**: vijf punten uit een feedbackronde, oplopend in omvang.
+Onderweg twee keuzevragen aan Martijn voorgelegd voordat ik de
+zwaardere stukken bouwde.
+
+**1. Terminologie.** Martijn koos geen losse termvervanging maar een
+contextregel voor de hele site: "check" voor de handeling ("doe de
+check"), "keuzehulp(en)" voor het instrument. 11 NL plus 11 EN strings
+herzien; de afwijker "Alle tools" (die in EN al "All checks" was)
+rechtgetrokken. Stroeve koppen vrij vertaald ("De checks van vandaag"
+-> "Waar let je op vandaag?"). Slugs en /alle-checks bewust ongemoeid.
+
+**2. Recent-gebruikt varianten.** De bug: een variantpagina (jas,
+korte-broek, t-shirt) sloeg zijn eigen id op, die niet in TOOLS staat,
+dus HubGrid vond hem niet terug. Fix: RecentTracker en de toolpagina
+registreren nu de canonieke id (templateId ?? id), zodat een
+variantbezoek meetelt als bezoek aan de ouder. Werkt automatisch voor
+elke toekomstige variant, geen aanpassing per tool nodig, precies wat
+Martijn vroeg.
+
+**3. Inklapbaarheid.** Keuze aan Martijn: reikwijdte. Hij koos
+storefront-uitleg inklapbaar, standaard dicht. UitlegBlokken.js: de
+drie secties (beslislogica, situaties, seizoen) zijn nu <details> met
+de h2 in de summary en een draaipijl, aansluitend op het menu-patroon.
+Instellingen bewust NIET aangeraakt (uitleg die je moet openklappen om
+een instelling te snappen werkt averechts).
+
+**4. Populaire keuzehulpen op stemmen.** Keuze aan Martijn: build-time,
+server-runtime of client-side. Hij koos client-side (optie 3), passend
+bij hoe recent-gebruikt al werkt. Nieuwe populair-modus op de
+stem-API (?populair=1) telt alle positieve stemmen per tool; HubGrid
+rendert statisch de handmatige POPULAIRE_TOOL_IDS en herschikt zodra de
+tellingen binnen zijn. Degradeert netjes zonder database. Bewust
+herschikken BINNEN de vaste zes, niet aanvullen van buiten (zou de
+thematische mix kunnen verdringen); die optie staat in de backlog.
+
+**5a. SEO-werkwoordvarianten.** Martijn twijfelde tussen title-
+verbreding en aparte pagina's; ik heb uitgelegd dat title-verbreding de
+SEO-beste optie IS (Google clustert query-varianten naar een resultaat;
+aparte pagina's kannibaliseren). 11 NL plus 11 EN titles vangen nu naast
+"kan het/kan ik vandaag" ook "wordt het", "gaat het" en "is het X-weer"
+af, zonder een enkele nieuwe URL.
+
+**5b + affiliate-fundament.** Martijn was het eens: geen locatiedienst
+("zwemplekken bij jou"), wel tekstueel advies plus affiliate. Het
+bestaande lege affiliate-veld heeft nu een schema (lib/affiliate.js),
+een component (AdviesBlok: advies eerst, disclosure verplicht,
+rel="sponsored nofollow noopener", geen tracking) en een invulling voor
+zonkracht en was-buiten-drogen met PLACEHOLDER-winkellinks (Kruidvat,
+Blokker). tests/affiliate.test.js valideert elk blok in beide talen.
+Het snoei-idee plus breder plantenadvies staat als sterkste eerste
+affiliate-onderwerp in de backlog (hoge koopintentie op gereedschap,
+evergreen advies), met Praxis/Gamma als kandidaat-programma.
+
+**Verificatie**: 135 tests groen (was 132, +3 affiliate), beide builds
+foutloos, adviesblok geverifieerd aanwezig op zonkracht en
+was-buiten-drogen en afwezig op tools zonder affiliate, rel-attributen
+correct in de HTML, geen em-dashes.
+
+**Aandachtspunt voor Martijn**: de affiliate-links zijn placeholders
+naar winkelhomepages. Vervang ze door echte affiliate-links zodra de
+accounts er zijn, anders lever je verkeer zonder commissie.
+

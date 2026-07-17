@@ -42,7 +42,7 @@ export const faq = [
   },
   {
     v: "Hoe vaak moet ik mijn ramen wassen?",
-    a: "Buiten gemiddeld vier tot zes keer per jaar; vaker als je aan een drukke weg, aan zee (zoutaanslag) of onder bomen woont. Na de pollenpiek in mei en na de herfststormen zijn klassieke momenten. Binnen is twee keer per jaar meestal genoeg.",
+    a: "Buiten gemiddeld vier tot zes keer per jaar; vaker als je aan een drukke weg, aan zee (zoutaanslag) of onder bomen woont. Na [de pollenpiek in mei](hub:gezondheid#pollenkalender) en na de herfststormen zijn klassieke momenten. Binnen is twee keer per jaar meestal genoeg.",
   },
   {
     v: "Ramen wassen in de winter: kan dat?",

@@ -10,7 +10,7 @@ export const seo = {
 };
 
 export const blokken = [
-  { kop: "Timing beats the rain chance", tekst: "A day with a 40 percent chance sounds like a gamble, but if that rain falls in one hour-long block, the rest of the day is simply dry. This check looks at the run per quarter hour: when it starts, how long it lasts, and when it clears." },
+  { kop: "Timing beats the rain chance", tekst: "A day with a [40 percent chance](hub:regen#regenkans-betekenis) sounds like a gamble, but if that rain falls in one hour-long block, the rest of the day is simply dry. This check looks at the run per quarter hour: when it starts, how long it lasts, and when it clears." },
   { kop: "Plan your departure", tekst: "The question behind the question is usually: can I leave now, or better wait? With the next rain moment and the next dry window you see at a glance whether you'll bridge that twenty-minute errand dry." },
   { kop: "How reliable is this?", tekst: "The 15-minute rain comes, for the Netherlands, from the high-resolution German and French models (ICON-D2 and AROME). A real nowcast, not raw interpolation. For the coming hour it's strikingly accurate; further ahead rain stays fickle." },
 ];

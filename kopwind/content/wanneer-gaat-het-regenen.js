@@ -13,7 +13,7 @@ export const blokken = [
   {
     kop: "Timing telt zwaarder dan de regenkans",
     tekst:
-      "Een dag met 40 procent regenkans klinkt als een gok, maar als die regen in een blok van een uur valt, is de rest van de dag gewoon droog. Deze check kijkt daarom niet naar het daggemiddelde maar naar het verloop per kwartier: wanneer begint het, hoe lang duurt het, en wanneer klaart het weer op.",
+      "Een dag met [40 procent regenkans](hub:regen#regenkans-betekenis) klinkt als een gok, maar als die regen in een blok van een uur valt, is de rest van de dag gewoon droog. Deze check kijkt daarom niet naar het daggemiddelde maar naar het verloop per kwartier: wanneer begint het, hoe lang duurt het, en wanneer klaart het weer op.",
   },
   {
     kop: "Vertrek slim plannen",

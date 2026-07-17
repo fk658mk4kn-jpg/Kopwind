@@ -67,7 +67,7 @@ export const STOREFRONTS = kies({
           { naam: "Lente", tekst: "Veel wisselvalligheid, korte buien en snelle omslagen. Timing is hier extra belangrijk: tussen twee buien door is het vaak prima droog." },
           { naam: "Zomer", tekst: "Vaak langere droge periodes, maar ook plotselinge lokale buien en onweer later op de dag. Hang plannen niet op aan het daggemiddelde." },
           { naam: "Herfst", tekst: "Meer wind, meer langdurige neerslag en vaker het gevoel dat je nat wordt ondanks een korte afstand." },
-          { naam: "Winter", tekst: "Niet alleen regen telt, maar ook nat-koud, motregen en later mogelijk gladheid. Zie ook de winterchecks." },
+          { naam: "Winter", tekst: "Niet alleen regen telt, maar ook nat-koud, motregen en later mogelijk gladheid. Zie ook [de winterchecks](hub:winter)." },
         ],
       },
       faq: [
@@ -167,7 +167,7 @@ export const STOREFRONTS = kies({
           "Wind is de spelbreker die je onderschat: boven een windkracht 4 waait het terras leeg en wordt het strand een zandstraal.",
           "Het droge venster moet op jouw moment vallen: een dag met 60 procent regenkans kan een kurkdroge middag hebben.",
           "De avondknik: na zonsondergang zakt de temperatuur snel, juist bij helder weer. Voor barbecue en buiten eten telt de avond, niet het middagmaximum.",
-          "Zonkracht telt mee bij lang buiten zijn: op het strand of in het park verbrand je sneller dan je merkt. Zie ook de zonkrachtcheck.",
+          "Zonkracht telt mee bij lang buiten zijn: op het strand of in het park verbrand je sneller dan je merkt. Zie ook [de zonkrachtcheck](tool:zonkracht).",
         ],
       },
       situaties: {
@@ -185,7 +185,7 @@ export const STOREFRONTS = kies({
           { naam: "Lente", tekst: "De zon heeft al kracht maar de lucht en het water zijn nog koud. Terras in de luwte: ja. Zwemmen in buitenwater: meestal nog niet." },
           { naam: "Zomer", tekst: "Het buitenseizoen, met de avond als goud. Let op verkoeling bij hitte, de zonkracht midden op de dag en late onweersbuien." },
           { naam: "Herfst", tekst: "De verrassend mooie dagen zitten tussen de fronten in. Een heldere, windstille oktobermiddag is prima terrasweer met een jas erbij." },
-          { naam: "Winter", tekst: "Buiten zijn kan altijd, comfort vraagt planning: het zonnigste dagdeel, uit de wind, en warme kleding. Zie de kledingchecks." },
+          { naam: "Winter", tekst: "Buiten zijn kan altijd, comfort vraagt planning: het zonnigste dagdeel, uit de wind, en warme kleding. Zie [de kledingchecks](hub:kleding)." },
         ],
       },
       faq: [
@@ -221,14 +221,14 @@ export const STOREFRONTS = kies({
           "Temperatuur plus inspanning: voor duursport ligt het comfort lager dan je denkt, rond de 8 tot 15 graden. Boven de 25 wordt dezelfde training zwaarder en trager.",
           "De timing van de bui: een uur droog is genoeg voor een rondje. Kijk naar het droge venster op jouw sportmoment, niet naar de dagkans.",
           "Zonkracht en hitte tellen dubbel bij inspanning: sporten midden op een zomerdag betekent smeren, drinken en het liefst schaduw of een vroeger tijdstip.",
-          "In de winter telt het wegdek: gladheid maakt hardlopen en fietsen riskant, juist in de vroege ochtend. Zie de winterchecks.",
+          "In de winter telt het wegdek: gladheid maakt hardlopen en fietsen riskant, juist in de vroege ochtend. Zie [de winterchecks](hub:winter).",
         ],
       },
       situaties: {
         kop: "Veelvoorkomende situaties",
         items: [
           { naam: "Hardlopen na werk, buien verwacht", tekst: "Zoek het droge venster tussen 17 en 20 uur in plaats van af te blazen. Een half uur verschuiven is vaak genoeg; licht motregenen loopt prima weg." },
-          { naam: "Tegenwind op de heenweg", tekst: "Wind tegen op de heenrit betekent wind mee terug: plan je zwaarste richting op je frisse benen. De fietscheck rekent per rit, niet per dag." },
+          { naam: "Tegenwind op de heenweg", tekst: "Wind tegen op de heenrit betekent wind mee terug: plan je zwaarste richting op je frisse benen. [De fietscheck](tool:fiets-naar-werk) rekent per rit, niet per dag." },
           { naam: "Trainen tijdens een warme periode", tekst: "Verplaats de sessie naar de vroege ochtend of late avond, verlaag de intensiteit en drink meer dan je dorst aangeeft. Boven de 27 graden is rustig bewegen het nieuwe hard trainen." },
           { naam: "Koude, heldere winterochtend", tekst: "Prima sportweer als het wegdek droog is: kleed je in laagjes en bescherm handen en oren. Check bij temperaturen rond nul eerst op gladheid, vooral op bruggen en fietspaden." },
         ],
@@ -239,7 +239,7 @@ export const STOREFRONTS = kies({
           { naam: "Lente", tekst: "Het beste duursportseizoen: koele lucht, lengende dagen. Let op de wind (maart en april waaien stevig) en op pollen als je daar gevoelig voor bent." },
           { naam: "Zomer", tekst: "Vroeg of laat sporten wint: de ochtend is koel en windstil, de avond zwoel. Midden op de dag tellen zonkracht en hitte zwaarder dan je conditie." },
           { naam: "Herfst", tekst: "Fris en vaak ideaal, tussen de fronten door. Regenkleding die ademt maakt het verschil tussen doortrainen en overslaan." },
-          { naam: "Winter", tekst: "Kou is zelden het probleem, gladheid en duisternis wel. Reflectie, verlichting en een gladheidscheck in de ochtend horen erbij." },
+          { naam: "Winter", tekst: "Kou is zelden het probleem, gladheid en duisternis wel. Reflectie, verlichting en een [gladheidscheck](tool:gladheid) in de ochtend horen erbij." },
         ],
       },
       faq: [
@@ -402,7 +402,7 @@ export const STOREFRONTS = kies({
           { naam: "Late herfst", tekst: "De eerste nachtvorsten duiken vaak al in oktober of november op na een heldere nacht. Vooral grondvorst: de autoruit is wit, de weg meestal nog niet glad." },
           { naam: "Hartje winter", tekst: "December tot februari is het echte seizoen: vorstperiodes, sneeuw en het ijzelrisico tijdens elke dooi-inval. De krab- en gladheidsvraag is dan dagelijkse kost." },
           { naam: "Vroege lente", tekst: "Verraderlijk: zachte middagen, maar heldere maartnachten vriezen aan de grond nog geregeld. De ochtendspits kan glad zijn terwijl de middag 15 graden haalt." },
-          { naam: "De rest van het jaar", tekst: "Van mei tot september speelt gladheid door vorst geen rol. De winterchecks staan dan in de wachtstand; de kledingcheck neemt het over." },
+          { naam: "De rest van het jaar", tekst: "Van mei tot september speelt gladheid door vorst geen rol. De winterchecks staan dan in de wachtstand; [de kledingcheck](tool:wat-trek-ik-aan) neemt het over." },
         ],
       },
       faq: [
@@ -454,7 +454,7 @@ export const STOREFRONTS = kies({
           { naam: "Spring", tekst: "Very changeable, short showers and quick turns. Timing matters extra here: between two showers it's often perfectly dry." },
           { naam: "Summer", tekst: "Often longer dry spells, but also sudden local showers and thunderstorms later in the day. Don't hang plans on the daily average." },
           { naam: "Autumn", tekst: "More wind, more prolonged rain and more often that feeling of getting wet despite a short distance." },
-          { naam: "Winter", tekst: "Not just rain counts, but wet-cold, drizzle and later possibly slippery roads. See the winter checks too." },
+          { naam: "Winter", tekst: "Not just rain counts, but wet-cold, drizzle and later possibly slippery roads. See [the winter checks](hub:winter) too." },
         ],
       },
       faq: [
@@ -554,7 +554,7 @@ export const STOREFRONTS = kies({
           "Wind is the underrated spoiler: above force 4 the patio empties and the beach turns into a sandblaster.",
           "The dry window has to land on your moment: a day with a 60 percent rain chance can hold a bone-dry afternoon.",
           "The evening dip: after sunset the temperature drops fast, especially under clear skies. For barbecues and dining outside, the evening counts, not the afternoon maximum.",
-          "UV matters when you're out long: on the beach or in the park you burn faster than you notice. See the UV check too.",
+          "UV matters when you're out long: on the beach or in the park you burn faster than you notice. See [the UV check](tool:zonkracht) too.",
         ],
       },
       situaties: {
@@ -572,7 +572,7 @@ export const STOREFRONTS = kies({
           { naam: "Spring", tekst: "The sun already has power but air and water are still cold. Patio in the shelter: yes. Swimming in open water: usually not yet." },
           { naam: "Summer", tekst: "The outdoor season, with the evening as gold. Mind cooling during heat, the midday UV and late thunderstorms." },
           { naam: "Autumn", tekst: "The surprisingly fine days sit between the fronts. A clear, calm October afternoon is perfectly good patio weather with a coat." },
-          { naam: "Winter", tekst: "Being outside always works, comfort takes planning: the sunniest part of the day, out of the wind, warm clothing. See the clothing checks." },
+          { naam: "Winter", tekst: "Being outside always works, comfort takes planning: the sunniest part of the day, out of the wind, warm clothing. See [the clothing checks](hub:kleding)." },
         ],
       },
       faq: [
@@ -608,14 +608,14 @@ export const STOREFRONTS = kies({
           "Temperature plus effort: for endurance sport the comfort zone is lower than you think, roughly 8 to 15 degrees. Above 25 the same workout gets heavier and slower.",
           "The timing of the shower: one dry hour is enough for a loop. Look at the dry window at your training time, not the daily chance.",
           "UV and heat count double under effort: midday summer sessions mean sunscreen, fluids and preferably shade or an earlier slot.",
-          "In winter the road surface counts: ice makes running and cycling risky, especially early morning. See the winter checks.",
+          "In winter the road surface counts: ice makes running and cycling risky, especially early morning. See [the winter checks](hub:winter).",
         ],
       },
       situaties: {
         kop: "Common situations",
         items: [
           { naam: "Running after work, showers expected", tekst: "Find the dry window between 5 and 8 pm instead of calling it off. Shifting half an hour is often enough; light drizzle runs off just fine." },
-          { naam: "Headwind on the way out", tekst: "Wind against on the way out means wind behind on the return: plan your hardest direction on fresh legs. The bike check works per ride, not per day." },
+          { naam: "Headwind on the way out", tekst: "Wind against on the way out means wind behind on the return: plan your hardest direction on fresh legs. [The bike check](tool:fiets-naar-werk) works per ride, not per day." },
           { naam: "Training through a warm spell", tekst: "Move the session to early morning or late evening, lower the intensity and drink more than your thirst suggests. Above 27 degrees, easy movement is the new hard training." },
           { naam: "Cold, clear winter morning", tekst: "Fine sport weather if the surface is dry: dress in layers and protect hands and ears. Around zero, check for ice first, especially on bridges and bike paths." },
         ],
@@ -626,7 +626,7 @@ export const STOREFRONTS = kies({
           { naam: "Spring", tekst: "The best endurance season: cool air, lengthening days. Mind the wind (March and April blow hard) and pollen if you're sensitive." },
           { naam: "Summer", tekst: "Early or late wins: mornings are cool and calm, evenings mild. In the middle of the day, UV and heat outweigh your fitness." },
           { naam: "Autumn", tekst: "Fresh and often ideal, between the fronts. Breathable rain gear makes the difference between training on and skipping." },
-          { naam: "Winter", tekst: "Cold is rarely the problem, ice and darkness are. Reflection, lights and a morning ice check come with the season." },
+          { naam: "Winter", tekst: "Cold is rarely the problem, ice and darkness are. Reflection, lights and a morning [ice check](tool:gladheid) come with the season." },
         ],
       },
       faq: [
@@ -789,7 +789,7 @@ export const STOREFRONTS = kies({
           { naam: "Late autumn", tekst: "The first night frosts often appear in October or November after a clear night. Mostly ground frost: the windscreen is white, the road usually not yet slippery." },
           { naam: "Midwinter", tekst: "December to February is the real season: frost spells, snow and the freezing-rain risk during every thaw. The scrape-and-ice question becomes daily routine." },
           { naam: "Early spring", tekst: "Treacherous: mild afternoons, but clear March nights still freeze at the surface. The morning rush can be icy while the afternoon hits 15 degrees." },
-          { naam: "The rest of the year", tekst: "From May to September frost plays no role. The winter checks stand by; the clothing check takes over." },
+          { naam: "The rest of the year", tekst: "From May to September frost plays no role. The winter checks stand by; [the clothing check](tool:wat-trek-ik-aan) takes over." },
         ],
       },
       faq: [

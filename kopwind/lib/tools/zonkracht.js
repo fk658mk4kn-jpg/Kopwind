@@ -237,5 +237,14 @@ export const zonkracht = {
   },
   adviesLabels: T.adviesLabels,
   bijgewerkt: "2026-07-13",
-  affiliate: null,
+  affiliate: {
+    kop: { nl: "Op zonkrachtdagen: goed smeren", en: "On high-UV days: apply properly" },
+    advies: {
+      nl: "Vanaf zonkracht 3 is smeren het advies, en op piekdagen kies je factor 30 of hoger, ruim aangebracht en om de twee uur herhaald. Een fles met een hoge factor die je fijn vindt smeren gebruik je vaker; dat scheelt meer dan het exacte cijfer op het etiket.",
+      en: "From UV 3 sunscreen is the advice, and on peak days you want factor 30 or higher, applied generously and repeated every two hours. A high-factor bottle you actually like using gets used more often; that matters more than the exact number on the label.",
+    },
+    items: [
+      { label: { nl: "Zonnebrand factor 30 en hoger", en: "Sunscreen factor 30 and up" }, url: "https://www.kruidvat.nl/", partner: "Kruidvat" },
+    ],
+  },
 };
