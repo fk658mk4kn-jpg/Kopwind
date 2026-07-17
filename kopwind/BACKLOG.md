@@ -24,15 +24,26 @@ storefront verschijnt vanzelf). De wintermotors zijn beredeneerd maar
 in juli niet tegen echt weer te valideren; in de eerste vorstweek de
 verdicts naast KNMI-waarschuwingen leggen en drempels bijstellen.
 
-**Batch 3 (voorgestelde volgorde):**
-1. Wandelen en buiten sporten (sport): het variantmodel deelt drempels
-   met de ouder-tool en past dus niet (wandelen bij 25 graden is prima,
-   hardlopen zwaar); eigen tools op het hardloop-patroon met eigen
-   optima.
-2. Picknick (buiten): dicht bij terras; wellicht variant op terras,
-   anders eigen lichte overlay.
-3. Grasmaaien en tuinieren (huis-tuin): nu FAQ-ankers; upgraden zodra
-   auto-wassen bewezen verkeer trekt.
+**Gebouwd in v3.17.0 (batch 3, AF)**: tien checks in een keer:
+wandelen, buiten-sporten, padel-of-tennis, suppen-of-kajakken,
+picknickweer, buiten-zwemmen, sterrenkijken, grasmaaien, ramen-wassen
+en zonnepanelen. De drie "in ontwikkeling"-beloftes (padel, sup,
+zonnepanelen) zijn daarmee ingelost; de gepland-secties in
+beslissingen.js zijn leeg. Acht draaien op de nieuwe gedeelde
+venstermotor (lib/engine/vensterTool.js); sterrenkijken (avondmodel
+plus maanfase) en zonnepanelen (dagmodel) hebben een eigen motor.
+Kanttekening, zelfde als bij winter: alle tien scoremotors zijn
+beredeneerd maar niet tegen echt weer gevalideerd. Vooral de
+winddrempels van sup (14/18/23) en padel (17/22/28) in de praktijk
+naast het gevoel leggen; ook de zonaftrek van ramen-wassen en de
+dauw-uren van grasmaaien zijn aannames.
+
+**Techniekschuld uit batch 3:**
+- De zes oude venstertools (terras, barbecue, was-buiten-drogen,
+  hardloopweer, strandweer, auto-wassen) hebben elk nog hun eigen
+  kopie van het vensterpatroon. Migreren naar
+  lib/engine/vensterTool.js: zelfde gedrag, minder code, een plek voor
+  bugfixes. Goede kandidaat voor de volgende run.
 
 ## Open punten (feedback Martijn, juli 2026)
 
@@ -146,9 +157,9 @@ geen label = nog niet opgepakt.
 - Is het terrasweer vandaag? [tool: terras]
 - Is het BBQ-weer vandaag? [tool: barbecue]
 - Is het strandweer vandaag? [tool: strandweer, v3.15.0]
-- Is het picknickweer vandaag? [anker]
-- Kan ik buiten zwemmen? [anker]
-- Is het sterrenkijkweer vanavond? [anker]
+- Is het picknickweer vandaag? [tool: picknickweer, v3.17.0]
+- Kan ik buiten zwemmen? [tool: buiten-zwemmen, v3.17.0]
+- Is het sterrenkijkweer vanavond? [tool: sterrenkijken, v3.17.0]
 - Kan ik buiten eten vandaag?
 - Kan ik vandaag zonnen? [anker, gezondheid]
 - Is het biertijd vandaag?
@@ -156,26 +167,26 @@ geen label = nog niet opgepakt.
 ### Sport en beweging
 - Kan ik vandaag fietsen naar werk? [tool: fiets-naar-werk]
 - Is het hardloopweer vandaag? [tool: hardloopweer, v3.15.0]
-- Kan ik buiten sporten vandaag? [anker]
-- Kan ik wandelen vandaag? [anker]
-- Kan ik vandaag padellen of tennissen? (gepland)
-- Kan ik vandaag suppen of kajakken? (gepland)
+- Kan ik buiten sporten vandaag? [tool: buiten-sporten, v3.17.0]
+- Kan ik wandelen vandaag? [tool: wandelen, v3.17.0]
+- Kan ik vandaag padellen of tennissen? [tool: padel-of-tennis, v3.17.0]
+- Kan ik vandaag suppen of kajakken? [tool: suppen-of-kajakken, v3.17.0]
 - Kan ik vandaag basketballen buiten?
 - Is het te warm om buiten te sporten? [anker]
 
 ### Huis, tuin en auto
 - Kan ik de was buiten drogen? [tool: was-buiten-drogen]
 - Kan ik de auto wassen vandaag? [tool: auto-wassen, v3.16.0]
-- Kan ik grasmaaien vandaag? [anker]
+- Kan ik grasmaaien vandaag? [tool: grasmaaien, v3.17.0]
 - Kan ik tuinieren vandaag? [anker]
-- Kan ik mijn ramen wassen vandaag? [anker]
+- Kan ik mijn ramen wassen vandaag? [tool: ramen-wassen, v3.17.0]
 - Kan ik mijn huis luchten vandaag? [anker]
 - Kan ik dekbedden buiten luchten? [anker]
 - Kan ik buiten schilderen of beitsen? [anker]
 - Droogt verf vandaag goed?
 - Kan ik vandaag mijn terras schoonmaken?
 - Kan ik vandaag mijn tuinmeubels schoonmaken?
-- Leveren mijn zonnepanelen vandaag veel op? (gepland)
+- Leveren mijn zonnepanelen vandaag veel op? [tool: zonnepanelen, v3.17.0]
 
 ### Zon, lucht en hooikoorts
 - Verbrand ik vandaag? [tool: zonkracht]

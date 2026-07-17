@@ -2259,6 +2259,8 @@ a.checkkaart:hover .kaartknop { background: var(--geel); }
 }
 .routemeldingen > summary .badge { margin-left: 6px; }
 .routemeldingen[open] > summary { margin-bottom: 4px; }
+.routemeldingen .routemeldingen { margin-left: 14px; }
+.routetoevoegen > summary strong { font-weight: 600; color: var(--inkt-zacht); }
 
 .menugroep-klap > summary.menugroep-kop {
   display: flex;

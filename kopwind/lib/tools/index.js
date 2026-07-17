@@ -30,6 +30,16 @@ import { strandweer } from "./strandweer.js";
 import { autoWassen } from "./auto-wassen.js";
 import { krabben } from "./krabben.js";
 import { gladheid } from "./gladheid.js";
+import { wandelen } from "./wandelen.js";
+import { buitenSporten } from "./buiten-sporten.js";
+import { padelOfTennis } from "./padel-of-tennis.js";
+import { suppenOfKajakken } from "./suppen-of-kajakken.js";
+import { picknickweer } from "./picknickweer.js";
+import { buitenZwemmen } from "./buiten-zwemmen.js";
+import { sterrenkijken } from "./sterrenkijken.js";
+import { grasmaaien } from "./grasmaaien.js";
+import { ramenWassen } from "./ramen-wassen.js";
+import { zonnepanelen } from "./zonnepanelen.js";
 import { CATEGORIEEN } from "../categorieen.js";
 import { wasBuitenDrogen } from "./was-buiten-drogen.js";
 import { kleding } from "./kleding.js";
@@ -41,7 +51,39 @@ import { regenTiming } from "./regen-timing.js";
 import { paraplu } from "./paraplu.js";
 import { VARIANTEN, maakPseudoTool } from "../varianten.js";
 
-export const TOOLS = [fietsNaarWerk, hardloopweer, wasBuitenDrogen, autoWassen, kleding, terras, barbecue, strandweer, zonkracht, hooikoorts, regenTiming, paraplu, krabben, gladheid];
+export const TOOLS = [
+  // Sport
+  fietsNaarWerk,
+  hardloopweer,
+  wandelen,
+  buitenSporten,
+  padelOfTennis,
+  // Huis en tuin
+  wasBuitenDrogen,
+  autoWassen,
+  grasmaaien,
+  ramenWassen,
+  zonnepanelen,
+  // Kleding
+  kleding,
+  // Buiten
+  terras,
+  barbecue,
+  strandweer,
+  picknickweer,
+  buitenZwemmen,
+  suppenOfKajakken,
+  sterrenkijken,
+  // Zon en gezondheid
+  zonkracht,
+  hooikoorts,
+  // Regen
+  regenTiming,
+  paraplu,
+  // Winter
+  krabben,
+  gladheid,
+];
 
 export function vindTool(slug) {
   const direct = TOOLS.find((t) => t.slug === slug);

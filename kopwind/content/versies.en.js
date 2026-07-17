@@ -5,6 +5,12 @@
 
 export const VERSIES = [
   {
+    versie: "3.17.0",
+    codenaam: "Passaat",
+    datum: "2026-07-16",
+    zin: "Ten new checks in one go: walking, outdoor workouts, padel or tennis, SUP or kayak, picnic weather, outdoor swimming, stargazing (with moon phase), mowing, window cleaning and your solar panel yield day. That also delivers the three checks that were marked in development. In the notifications panel your bike routes now sit under the bike check, and you can add a route right there.",
+  },
+  {
     versie: "3.16.0",
     codenaam: "Maestro",
     datum: "2026-07-16",

@@ -1738,3 +1738,58 @@ krabber, slip) visueel beoordelen.
 
 **Volgende**: batch 3 (wandelen en buiten sporten als eigen tools,
 picknick), of de cross-links tussen tools.
+
+## 2026-07-16 (avond) - v3.17.0 "Passaat": batch 3, tien checks en de meldingen-nesting
+
+**Opdracht Martijn**: batch 3 met tien tools ("doe wat jij denkt dat
+het beste is"), plus twee meldingen-punten: routes zijn geen checks en
+horen genest onder de fietscheck, en een route moet in het paneel zelf
+aan te maken zijn zonder eerst de fietscheck te openen.
+
+**Keuze van de tien**: de drie "in ontwikkeling"-beloftes die al op de
+site stonden eerst (padel-of-tennis, suppen-of-kajakken, zonnepanelen),
+dan de batch-3-kern uit de backlog (wandelen, buiten-sporten,
+picknickweer) en vier op zoekgedrag en seizoen (buiten-zwemmen,
+sterrenkijken, grasmaaien, ramen-wassen). Tuinieren, luchten en
+dekbedden blijven ankers: te veel overlap met grasmaaien en de
+wascheck om nu een eigen motor te rechtvaardigen.
+
+**Engine-refactor**: acht van de tien zijn venstertools; in plaats van
+acht keer het terras-patroon te kopieren staat dat patroon nu een keer
+in lib/engine/vensterTool.js (blokken, beste blok, standaardfactoren,
+tijdbewuste status). Per tool resteren uurscore, teksten en extra
+factoren. De zes oude venstertools zijn bewust NIET mee-gemigreerd
+(risico beperken in een toch al grote run); dat staat in de backlog.
+
+**Eigen motoren**: sterrenkijken is een avondmodel (uren 21-24) op
+bewolking, met schemer-detectie via de daglicht-vlag en een lokaal
+berekende maanfase (maanFractie, synodische maand; geverifieerd: 29
+juli 2026 geeft 1.00 en 14 juli 2026 geeft 0.00, kloppend met volle en
+nieuwe maan). Zonnepanelen is een dagmodel: gewogen zonfactor over de
+daglichturen (zuid weegt 11:00-15:00 dubbel, oost-west vlak), bewust
+zonder kWh, met het zonnigste blok als handelingsadvies (wasmachine,
+laden).
+
+**Meldingenpaneel**: FietsGroep nest de RouteSchema's onder een
+details-kop met samenvatting (x van y routes actief), en RouteToevoegen
+maakt een route aan met naam plus van- en naar-adres via de bestaande
+LocatieZoek. De route krijgt legOptions [{}] (een been, geen opties) en
+geen durations; verfijnen kan in de fietscheck, die dezelfde
+routes-array leest.
+
+**Anti-cannibalisatie**: zeven storefront-FAQ-items vervallen (de
+vragen zijn nu checks). Buiten zakte daardoor naar nul en sport naar
+een item; aangevuld met niet-concurrerende vragen (avond buiten eten,
+windgrens, buiten slapen; warming-up bij kou, onweer). Keuzehulpen
+verwijzen nu naar de tools, plus drie nieuwe keuzehulp-regels voor
+padel, sup en zonnepanelen.
+
+**Beperkingen, eerlijk**: geen van de tien scoremotors is tegen echt
+weer gevalideerd; de winddrempels van sup en padel en de zonaftrek van
+ramen-wassen zijn beredeneerde aannames. De zwemcheck kent geen
+watertemperatuur en geen blauwalg (staat met naam in content en
+uitleg). De zonnepanelencheck is een relatieve indicatie, geen
+opbrengstvoorspelling. Het routeformulier in het paneel is niet in een
+browser getest (geen rendering hier); de datastructuur is een-op-een
+overgenomen uit FietsTool.bewaarRoute.
+

@@ -412,3 +412,31 @@ Regels:
 - Vragen uit de catalogus (/alle-checks) die een antwoord op de
   storefront hebben, verwijzen met ankerCategorie plus anker naar dat
   FAQ-item; tests/beslissingen.test.js controleert dat elk anker bestaat.
+
+## 12. Venstertools bouwen op de gedeelde motor (sinds v3.17.0)
+
+Nieuwe checks die per dag het beste blok zoeken bouwen op
+lib/engine/vensterTool.js in plaats van het terras-patroon te
+kopieren. maakVensterOverlay({defaults, uurScore, teksten,
+adviesLabels, minVensterUren, extraFactoren?, geenBlokReden?}) levert
+de complete overlay: blokken bouwen, beste blok kiezen, de
+standaardfactoren (blokkwaliteit, kort blok, buien, wind boven 80
+procent van de grens) en de tijdbewuste status (nu, later, geweest,
+niks). Per tool schrijf je alleen de uurscore, het tekstenobject en
+eventuele extra factoren (zoals nat gras van eerdere buien of felle
+zon op het glas).
+
+De zes venstertools van voor v3.17.0 (terras, barbecue,
+was-buiten-drogen, hardloopweer, strandweer, auto-wassen) hebben nog
+hun eigen kopie van dit patroon; migratie staat in de backlog.
+
+Twee modelvarianten buiten de motor om:
+- Avondmodel (sterrenkijken): beoordeelt alleen de avonduren, score
+  volgt de bewolking, en de maanfase wordt lokaal berekend
+  (maanFractie in lib/tools/sterrenkijken.js, synodische maand vanaf
+  de referentie-nieuwe-maan van 6 januari 2000). Aftrek alleen als de
+  gebruiker voor deep-sky kiest.
+- Dagmodel (zonnepanelen): geen venster-zoektocht maar een
+  dagindicatie (gewogen zonfactor over de daglichturen); het
+  zonnigste blok wordt wel als venster getoond. Bewust geen kWh: dat
+  is installatie-afhankelijk en zou schijnprecisie zijn.

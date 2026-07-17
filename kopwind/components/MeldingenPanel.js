@@ -18,6 +18,7 @@ import {
   isGeabonneerd,
 } from "@/lib/push-client";
 import { useGebruiker } from "./GebruikerContext";
+import LocatieZoek from "./LocatieZoek";
 
 /**
  * Meldingen en apparaten, granulair (§8):
@@ -245,21 +246,11 @@ export default function MeldingenPanel({ open, onClose }) {
         )}
 
         <h3>{kies({ nl: "3. Meldingen per check", en: "3. Notifications per check" })}</h3>
-        {g.routes.length === 0 && (
-          <p className="uitleg">
-            {kies({
-              nl: "Nog geen opgeslagen routes. Sla in de fietscheck je woon-werkrit op; daarna stel je hier per route in wanneer je een melding wilt.",
-              en: "No saved routes yet. Save your commute in the bike check; then set per route here when you want a notification.",
-            })}
-          </p>
-        )}
-        {g.routes.map((r) => (
-          <RouteSchema
-            key={r.naam}
-            route={r}
-            onWijzig={(schema) => g.wijzigRouteMeldingen(r.naam, schema)}
-          />
-        ))}
+        <FietsGroep
+          routes={g.routes}
+          onWijzig={(naam, schema) => g.wijzigRouteMeldingen(naam, schema)}
+          onNieuweRoute={(route) => g.zetRoutes([...g.routes.filter((r) => r.naam !== route.naam), route])}
+        />
 
         {locatieTools.map((tool) => (
           <ToolSchema
@@ -494,6 +485,125 @@ function weekSamenvatting(s) {
   const n = [1, 2, 3, 4, 5, 6, 7].filter((d) => s.week?.[String(d)]?.aan).length;
   if (n === 0) return kies({ nl: "geen dagen aan", en: "no days on" });
   return kies({ nl: n === 1 ? "aan op 1 dag" : `aan op ${n} dagen`, en: n === 1 ? "on 1 day" : `on ${n} days` });
+}
+
+/**
+ * De fietscheck als groep in het meldingenpaneel: routes zijn geen
+ * checks maar ritten binnen de fietscheck, dus ze staan genest onder
+ * een kop (feedback Martijn, juli 2026). Routes kun je hier ook
+ * aanmaken, zonder eerst de fietscheck te openen: naam plus een van-
+ * en naar-adres is genoeg; verfijnen (tussenstops, tijden) kan later
+ * altijd in de fietscheck zelf.
+ */
+function FietsGroep({ routes, onWijzig, onNieuweRoute }) {
+  const fiets = TOOLS.find((t) => t.id === "fiets-naar-werk");
+  const actief = routes.filter((r) => {
+    const s = migreerRouteSchema(r.meldingen);
+    return s.aan !== false && [1, 2, 3, 4, 5, 6, 7].some((d) => s.week?.[String(d)]?.aan);
+  }).length;
+  const samenvatting =
+    routes.length === 0
+      ? kies({ nl: "nog geen routes", en: "no routes yet" })
+      : actief === 0
+        ? kies({ nl: "uit", en: "off" })
+        : kies({
+            nl: `${actief} van ${routes.length} route${routes.length === 1 ? "" : "s"} actief`,
+            en: `${actief} of ${routes.length} route${routes.length === 1 ? "" : "s"} active`,
+          });
+  return (
+    <details className="routemeldingen">
+      <summary>
+        <strong>{fiets?.naam}</strong> <span className={"badge klein" + (actief ? "" : " stil")}>{samenvatting}</span>
+      </summary>
+      {routes.length === 0 && (
+        <p className="uitleg">
+          {kies({
+            nl: "Nog geen routes. Voeg er hieronder een toe met een van- en naar-adres, of stel je rit met tussenstops samen in de fietscheck.",
+            en: "No routes yet. Add one below with a from and to address, or build your ride with stops in the bike check.",
+          })}
+        </p>
+      )}
+      {routes.map((r) => (
+        <RouteSchema key={r.naam} route={r} onWijzig={(schema) => onWijzig(r.naam, schema)} />
+      ))}
+      <RouteToevoegen bestaand={routes.map((r) => r.naam)} onToevoegen={onNieuweRoute} />
+    </details>
+  );
+}
+
+/** Mini-routeformulier: naam, van en naar. Meer hoeft hier niet. */
+function RouteToevoegen({ bestaand, onToevoegen }) {
+  const [naam, setNaam] = useState("");
+  const [van, setVan] = useState(null);
+  const [naar, setNaar] = useState(null);
+  const [fout, setFout] = useState(null);
+  const bewaar = () => {
+    const schoon = naam.trim();
+    if (!schoon || !van || !naar) {
+      setFout(kies({ nl: "Vul een naam, een van- en een naar-adres in.", en: "Fill in a name, a from and a to address." }));
+      return;
+    }
+    if (bestaand.includes(schoon)) {
+      setFout(kies({ nl: "Die routenaam bestaat al.", en: "That route name already exists." }));
+      return;
+    }
+    onToevoegen({ naam: schoon, stops: [van, naar], legOptions: [{}], meldingen: undefined });
+    setNaam("");
+    setVan(null);
+    setNaar(null);
+    setFout(null);
+  };
+  return (
+    <details className="routemeldingen routetoevoegen">
+      <summary>
+        <strong>{kies({ nl: "Route toevoegen", en: "Add a route" })}</strong>
+      </summary>
+      <div className="instelrij">
+        <input
+          type="text"
+          value={naam}
+          onChange={(e) => setNaam(e.target.value)}
+          placeholder={kies({ nl: "Naam (bv. Woon-werk)", en: "Name (e.g. Commute)" })}
+          aria-label={kies({ nl: "Routenaam", en: "Route name" })}
+        />
+      </div>
+      <div className="instelrij">
+        <span className="instelhint">{kies({ nl: "Van", en: "From" })}</span>
+        {van ? (
+          <span className="instelgroep">
+            {van.naam}{" "}
+            <button type="button" className="knop klein" onClick={() => setVan(null)}>
+              {kies({ nl: "wijzig", en: "change" })}
+            </button>
+          </span>
+        ) : (
+          <LocatieZoek onKies={setVan} />
+        )}
+      </div>
+      <div className="instelrij">
+        <span className="instelhint">{kies({ nl: "Naar", en: "To" })}</span>
+        {naar ? (
+          <span className="instelgroep">
+            {naar.naam}{" "}
+            <button type="button" className="knop klein" onClick={() => setNaar(null)}>
+              {kies({ nl: "wijzig", en: "change" })}
+            </button>
+          </span>
+        ) : (
+          <LocatieZoek onKies={setNaar} />
+        )}
+      </div>
+      {fout && <p className="uitleg synstatus">{fout}</p>}
+      <div className="instelrij">
+        <button type="button" className="knop" onClick={bewaar}>
+          {kies({ nl: "Bewaar route", en: "Save route" })}
+        </button>
+        <span className="instelhint">
+          {kies({ nl: "Tussenstops en tijden stel je later in de fietscheck in.", en: "Stops and times can be set later in the bike check." })}
+        </span>
+      </div>
+    </details>
+  );
 }
 
 function RouteSchema({ route, onWijzig }) {

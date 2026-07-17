@@ -6,6 +6,12 @@
 
 export const VERSIES = [
   {
+    versie: "3.17.0",
+    codenaam: "Passaat",
+    datum: "2026-07-16",
+    zin: "Tien nieuwe checks in een keer: wandelen, buiten sporten, padel of tennis, suppen of kajakken, picknickweer, buiten zwemmen, sterrenkijken (met maanfase), grasmaaien, ramen wassen en de opbrengstdag van je zonnepanelen. Daarmee zijn ook de drie checks die als in ontwikkeling stonden er echt. In het meldingenpaneel staan je fietsroutes nu netjes onder de fietscheck en kun je een route direct daar toevoegen.",
+  },
+  {
     versie: "3.16.0",
     codenaam: "Maestro",
     datum: "2026-07-16",

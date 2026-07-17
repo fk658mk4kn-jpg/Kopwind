@@ -16,6 +16,16 @@ import * as strandweerNl from "./strandweer.js";
 import * as autoWassenNl from "./auto-wassen.js";
 import * as krabbenNl from "./krabben.js";
 import * as gladheidNl from "./gladheid.js";
+import * as wandelenNl from "./wandelen.js";
+import * as buitenSportenNl from "./buiten-sporten.js";
+import * as padelOfTennisNl from "./padel-of-tennis.js";
+import * as suppenOfKajakkenNl from "./suppen-of-kajakken.js";
+import * as picknickweerNl from "./picknickweer.js";
+import * as buitenZwemmenNl from "./buiten-zwemmen.js";
+import * as sterrenkijkenNl from "./sterrenkijken.js";
+import * as grasmaaienNl from "./grasmaaien.js";
+import * as ramenWassenNl from "./ramen-wassen.js";
+import * as zonnepanelenNl from "./zonnepanelen.js";
 import * as barbecueweer from "./barbecueweer.js";
 import * as zonkracht from "./zonkracht.js";
 import * as hooikoorts from "./hooikoorts.js";
@@ -34,6 +44,16 @@ import * as beachWeather from "./en/beach-weather.js";
 import * as washTheCar from "./en/wash-the-car.js";
 import * as windscreenFrost from "./en/windscreen-frost.js";
 import * as icyRoads from "./en/icy-roads.js";
+import * as walkingEn from "./en/walking.js";
+import * as outdoorWorkoutEn from "./en/outdoor-workout.js";
+import * as padelOrTennisEn from "./en/padel-or-tennis.js";
+import * as supOrKayakEn from "./en/sup-or-kayak.js";
+import * as picnicWeatherEn from "./en/picnic-weather.js";
+import * as outdoorSwimmingEn from "./en/outdoor-swimming.js";
+import * as stargazingEn from "./en/stargazing.js";
+import * as mowTheLawnEn from "./en/mow-the-lawn.js";
+import * as cleanTheWindowsEn from "./en/clean-the-windows.js";
+import * as solarPanelsEn from "./en/solar-panels.js";
 import * as bbqWeather from "./en/bbq-weather.js";
 import * as sunscreen from "./en/sunscreen.js";
 import * as hayFever from "./en/hay-fever.js";
@@ -55,6 +75,16 @@ const PER_SLUG =
         "wash-the-car": washTheCar,
         "windscreen-frost": windscreenFrost,
         "icy-roads": icyRoads,
+        "walking": walkingEn,
+        "outdoor-workout": outdoorWorkoutEn,
+        "padel-or-tennis": padelOrTennisEn,
+        "sup-or-kayak": supOrKayakEn,
+        "picnic-weather": picnicWeatherEn,
+        "outdoor-swimming": outdoorSwimmingEn,
+        "stargazing": stargazingEn,
+        "mow-the-lawn": mowTheLawnEn,
+        "clean-the-windows": cleanTheWindowsEn,
+        "solar-panels": solarPanelsEn,
         "bbq-weather": bbqWeather,
         "sunscreen": sunscreen,
         "hay-fever": hayFever,
@@ -74,6 +104,16 @@ const PER_SLUG =
         "auto-wassen": autoWassenNl,
         "krabben": krabbenNl,
         "gladheid": gladheidNl,
+        "wandelen": wandelenNl,
+        "buiten-sporten": buitenSportenNl,
+        "padel-of-tennis": padelOfTennisNl,
+        "suppen-of-kajakken": suppenOfKajakkenNl,
+        "picknickweer": picknickweerNl,
+        "buiten-zwemmen": buitenZwemmenNl,
+        "sterrenkijken": sterrenkijkenNl,
+        "grasmaaien": grasmaaienNl,
+        "ramen-wassen": ramenWassenNl,
+        "zonnepanelen": zonnepanelenNl,
         "barbecueweer": barbecueweer,
         "zonkracht": zonkracht,
         "hooikoorts": hooikoorts,
