@@ -2055,3 +2055,56 @@ correct in de HTML, geen em-dashes.
 naar winkelhomepages. Vervang ze door echte affiliate-links zodra de
 accounts er zijn, anders lever je verkeer zonder commissie.
 
+## 2026-07-17 (derde run) - v3.23.0 "Boreas": fietstool-reparatie en de stadpagina-fix
+
+**Opdracht**: fietstool repareren (kaart over het menu, te lang,
+builder onvindbaar) en de vraag of de stedenknoppen de hele vraag
+moeten dragen voor SEO. Plus de twee fietstool-restpunten uit de
+backlog meegenomen.
+
+**Fietstool.** Drie oorzaken gevonden en gefixt. (1) De kaart schoof
+over het sticky menu omdat Leaflet intern z-indexen tot 1000 gebruikt
+en de menubalk (.kop) op 100 staat; zonder eigen stacking context
+prikken de kaartlagen daar doorheen. Fix: isolation: isolate plus
+z-index: 0 op het kaartpaneel. (2) De kaart werd te lang omdat hij op
+height: 100% meegroeide met de rittenkolom ernaast; nu een vaste 460px
+(mobiel 340px). (3) De builder stond sinds v3.20 als los paneel
+helemaal onderaan; die keuze pakte in de praktijk verkeerd uit en is
+teruggedraaid: builder links, kaart rechts, resultaten (dagbanner plus
+ritkaarten) vol breed eronder. Mobiel stapelt de DOM-volgorde nu
+builder, kaart, resultaten. Ritkaart-klik scrollt op schermen onder
+het CSS-breekpunt (960px) naar de kaart. De adviesVoorScore-audit
+bevestigde dat de 3-woordige fietstaal nergens meer gerenderd wordt;
+het veld blijft als intern contract (tests, drempels) met een
+waarschuwend commentaar erbij.
+
+**Stedenknoppen, en de bug die eronder vandaan kwam.** Martijns
+voorstel (hele vraag in de ankertekst) heb ik beargumenteerd
+bijgestuurd naar de zoekterm-kern plus stad ("Terrasweer Amsterdam"):
+sterker relevantiesignaal dan alleen de stadsnaam, natuurlijker dan
+twaalf keer dezelfde vraagzin. Bij het uitzoeken waar die ankertekst
+op moest aansluiten bleek een serieuze bestaande bug: STAD_TEMPLATES
+dekte 7 van de 24 tools en de fallback pakte letterlijk het
+was-drogen-template, waardoor ~200 stadpagina's (waaronder
+/hardloopweer/amsterdam, geverifieerd in de gebouwde HTML) de title,
+description en h1 "Was buiten drogen in ..." droegen. Alle 24 tools
+hebben nu een eigen tweetalig template in lib/steden/stadTemplates.js;
+het vangnet put uit de tool zelf (navLabel, korteVraag) en kan nooit
+meer andermans tekst lenen; tests/stad-templates.test.js dwingt af dat
+elke geregistreerde tool een echt template en een ankerterm heeft, in
+beide talen, en vangt ook zwerf-entries voor onbestaande ids.
+
+**Bijvangst.** De drie kledingvariant-pagina's toonden twaalf
+stedenknoppen naar niet-bestaande stad-URL's (404): de stad-uitrol
+voor varianten wacht bewust tot ze ranken (eerder besluit Martijn),
+maar generateStaticParams genereert ze dus niet, terwijl de lijst wel
+rendert. De lijst is op variantpagina's verborgen met een commentaar
+dat de conditie weg kan zodra de uitrol er komt; het backlog-item is
+daarop aangevuld.
+
+**Verificatie**: 137 tests groen (was 135, +2 stad-templates), beide
+builds foutloos, titles steekproefsgewijs gecontroleerd in de gebouwde
+HTML (hardloopweer, gladheid, sterrenkijken NL; running-weather EN),
+ankerteksten aanwezig, variantpagina's zonder stedenlijst, geen
+em-dashes.
+

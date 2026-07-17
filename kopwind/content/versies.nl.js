@@ -6,6 +6,12 @@
 
 export const VERSIES = [
   {
+    versie: "3.23.0",
+    codenaam: "Boreas",
+    datum: "2026-07-17",
+    zin: "De fietscheck is opgeruimd: route invullen en de kaart staan weer netjes naast elkaar, de kaart schuift niet meer over het menu en een tik op een ritkaart brengt je op je telefoon direct naar de kaart. Daarnaast hebben alle stadspagina's nu hun eigen correcte titel en omschrijving, en vertellen de stadsknoppen meteen waar ze heen gaan.",
+  },
+  {
     versie: "3.22.0",
     codenaam: "Foehn",
     datum: "2026-07-17",

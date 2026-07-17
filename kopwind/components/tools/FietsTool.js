@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import StopsEditor from "@/components/StopsEditor";
 import LegCard from "@/components/LegCard";
@@ -42,6 +42,17 @@ export default function FietsTool({ beginStops = null }) {
   const [actieveLeg, setActieveLeg] = useState(0);
   const [bezig, setBezig] = useState(false);
   const [fout, setFout] = useState(null);
+  const kaartRef = useRef(null);
+
+  // Ritkaart-klik: maak de rit actief op de kaart, en scroll op smalle
+  // schermen naar de kaart toe (daar staan kaart en ritkaarten onder
+  // elkaar, dus zonder scroll zie je het effect van je klik niet).
+  const kiesLeg = (i) => {
+    setActieveLeg(i);
+    if (typeof window !== "undefined" && window.innerWidth <= 960) {
+      kaartRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
 
   // Het plan wordt puur afgeleid: routewissel herrekent direct, zonder fetch.
   const plan = useMemo(() => {
@@ -166,14 +177,44 @@ export default function FietsTool({ beginStops = null }) {
 
   return (
     <div>
-      {plan && (
-        <section className="resultaten" aria-label={kies({ nl: "Ritinformatie", en: "Ride details" })}>
-          <DagBanner dag={plan.dag} />
-        </section>
-      )}
-
       <div className="werkblad">
-        <div className="blok-map">
+        <section className="paneel blok-planner" aria-label={kies({ nl: "Route bouwen", en: "Build your route" })}>
+          <h2 className="paneel-titel">{kies({ nl: "Jouw rit", en: "Your ride" })}</h2>
+          {g.routes.length > 0 && (
+            <div className="chips routechips">
+              <span className="routekeuze-label">{kies({ nl: "Mijn routes:", en: "My routes:" })}</span>
+              {g.routes.map((r) => (
+                <button
+                  key={r.naam}
+                  className="chip"
+                  onClick={() => laadRoute(r)}
+                  title={r.stops.map((s) => s.naam.split(",")[0]).join(" \u2192 ")}
+                >
+                  {r.naam}
+                </button>
+              ))}
+            </div>
+          )}
+          <StopsEditor
+            stops={stops}
+            setStops={setStops}
+            legOptions={legOptions}
+            setLegOptions={setLegOptions}
+            presets={g.presets}
+            onSavePreset={g.bewaarPreset}
+          />
+          <div className="actiebalk">
+            <button className="knop primair" onClick={bereken} disabled={bezig}>
+              {bezig ? S.algemeen.bezig : kies({ nl: "Check je rit", en: "Check your ride" })}
+            </button>
+            <button className="knop" onClick={bewaarRoute} disabled={bezig}>
+              {kies({ nl: "Bewaar route", en: "Save route" })}
+            </button>
+          </div>
+          {fout && <div className="fout">{fout}</div>}
+        </section>
+
+        <div className="blok-map" ref={kaartRef}>
           <div className="kaartpaneel">
             <MapView
               legs={plan?.legs}
@@ -187,76 +228,41 @@ export default function FietsTool({ beginStops = null }) {
             />
           </div>
         </div>
-
-        {plan && (
-          <div className="blok-legs">
-            <NavKnoppen stops={planStops} />
-            <div className="legs">
-              {plan.legs.map((leg, i) => (
-                <LegCard
-                  key={i}
-                  leg={leg}
-                  index={i}
-                  actief={i === actieveLeg}
-                  onClick={() => setActieveLeg(i)}
-                  onKiesRoute={kiesRoute}
-                />
-              ))}
-            </div>
-            {planTijd && (
-              <p className="databron">
-                Weerdata: Open-Meteo uurvoorspelling, live opgehaald om{" "}
-                {fmtTijd(planTijd)}. Routes: OpenStreetMap.
-              </p>
-            )}
-          </div>
-        )}
       </div>
 
-      {!plan && !fout && (
-        <p className="leeg">
-          {kies({
-            nl: "Vul je vertrekpunt en je werk in (tussenstop zoals de sportschool kan ook) en tik op Check je rit.",
-            en: "Fill in your start and your work (a stopover like the gym works too) and tap Check your ride.",
-          })}
-        </p>
-      )}
-
-      <section className="paneel blok-planner" aria-label={kies({ nl: "Route bouwen", en: "Build your route" })}>
-        <h2 className="paneel-titel">{kies({ nl: "Jouw rit", en: "Your ride" })}</h2>
-        {g.routes.length > 0 && (
-          <div className="chips routechips">
-            <span className="routekeuze-label">{kies({ nl: "Mijn routes:", en: "My routes:" })}</span>
-            {g.routes.map((r) => (
-              <button
-                key={r.naam}
-                className="chip"
-                onClick={() => laadRoute(r)}
-                title={r.stops.map((s) => s.naam.split(",")[0]).join(" \u2192 ")}
-              >
-                {r.naam}
-              </button>
+      {plan ? (
+        <section className="resultaten" aria-label={kies({ nl: "Ritinformatie", en: "Ride details" })}>
+          <DagBanner dag={plan.dag} />
+          <NavKnoppen stops={planStops} />
+          <div className="legs">
+            {plan.legs.map((leg, i) => (
+              <LegCard
+                key={i}
+                leg={leg}
+                index={i}
+                actief={i === actieveLeg}
+                onClick={() => kiesLeg(i)}
+                onKiesRoute={kiesRoute}
+              />
             ))}
           </div>
-        )}
-        <StopsEditor
-          stops={stops}
-          setStops={setStops}
-          legOptions={legOptions}
-          setLegOptions={setLegOptions}
-          presets={g.presets}
-          onSavePreset={g.bewaarPreset}
-        />
-        <div className="actiebalk">
-          <button className="knop primair" onClick={bereken} disabled={bezig}>
-            {bezig ? S.algemeen.bezig : kies({ nl: "Check je rit", en: "Check your ride" })}
-          </button>
-          <button className="knop" onClick={bewaarRoute} disabled={bezig}>
-            {kies({ nl: "Bewaar route", en: "Save route" })}
-          </button>
-        </div>
-        {fout && <div className="fout">{fout}</div>}
-      </section>
+          {planTijd && (
+            <p className="databron">
+              Weerdata: Open-Meteo uurvoorspelling, live opgehaald om{" "}
+              {fmtTijd(planTijd)}. Routes: OpenStreetMap.
+            </p>
+          )}
+        </section>
+      ) : (
+        !fout && (
+          <p className="leeg">
+            {kies({
+              nl: "Vul je vertrekpunt en je werk in (tussenstop zoals de sportschool kan ook) en tik op Check je rit.",
+              en: "Fill in your start and your work (a stopover like the gym works too) and tap Check your ride.",
+            })}
+          </p>
+        )
+      )}
     </div>
   );
 }

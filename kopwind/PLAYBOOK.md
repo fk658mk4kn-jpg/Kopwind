@@ -550,3 +550,21 @@ De SEO-titels mogen meerdere werkwoordsvarianten van dezelfde intentie
 bevatten (kan ik / wordt het / gaat het / is het X-weer) om varianten
 op EEN pagina af te vangen; nooit een nieuwe URL per variant
 (anti-cannibalisatie).
+
+## 18. Stadpagina's: templates en ankertermen (sinds v3.23.0)
+
+Alle per-stad SEO-teksten staan centraal in
+lib/steden/stadTemplates.js. Twee vaste regels bij elke NIEUWE tool:
+- Een eigen stad-template (title, description, h1) toevoegen in BEIDE
+  talen. Het generieke vangnet in titelVoor put uit de tool zelf en is
+  alleen een noodrem; tests/stad-templates.test.js faalt zolang een
+  geregistreerde tool geen eigen template heeft. Achtergrond: de oude
+  fallback leende het was-drogen-template, waardoor ~200 stadpagina's
+  de verkeerde title droegen.
+- Een ankerterm toevoegen (ANKER_TERM, beide talen): de zoekterm-kern
+  die op de stedenknoppen komt als "{term} {stad}" ("Terrasweer
+  Amsterdam"). Bewust niet de volledige vraagzin (twaalf keer dezelfde
+  lange zin oogt als stuffing) en niet alleen de stadsnaam (mist het
+  relevantiesignaal).
+Varianten hebben ook een ankerterm, maar hun stedenlijst is verborgen
+tot de stad-uitrol voor varianten er is (zie backlog).

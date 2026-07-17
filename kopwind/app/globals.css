@@ -153,36 +153,35 @@ h3 {
   font-size: 15.5px;
 }
 
-/* Werkblad: kaart links, de berekende ritten rechts ernaast (fase 2,
-   v3.20.0: was voorheen planner+kaart, de resultaten stonden er los
-   onder). De routebuilder (Jouw rit) staat nu als los paneel onder
-   dit werkblad. */
+/* Werkblad: routebuilder (Jouw rit) links, kaart rechts ernaast
+   (v3.23.0, na feedback: de kaart stond sinds v3.20 los van de builder
+   en groeide mee met de rittenkolom tot ver voorbij het scherm). De
+   resultaten (dagbanner plus ritkaarten) staan er vol breed onder.
+   Mobiel stapelt de DOM-volgorde: builder eerst, kaart eronder. */
 .werkblad {
   display: grid;
   grid-template-columns: minmax(0, 440px) minmax(0, 1fr);
   gap: 18px;
-  align-items: stretch;
+  align-items: start;
   margin-bottom: 16px;
 }
 
-.blok-legs {
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.blok-planner {
-  margin-bottom: 16px;
-}
+.blok-planner { min-width: 0; }
 
 .blok-map { min-width: 0; }
 
 .blok-map .kaartpaneel {
-  height: 100%;
-  min-height: 440px;
+  /* Vaste hoogte: de kaart mag nooit meegroeien met de content ernaast
+     ("wordt te lang"). 460px toont een route ruim; wie meer wil, zoomt. */
+  height: 460px;
   border-radius: var(--radius);
   overflow: hidden;
+  /* Eigen stacking context: Leaflet gebruikt intern z-indexen tot 1000
+     en prikte daarmee door de sticky menubalk (.kop, z-index 100) heen.
+     Met isolate blijven alle kaartlagen binnen dit paneel. */
+  position: relative;
+  isolation: isolate;
+  z-index: 0;
   border: 1px solid var(--lijn-sterk);
   box-shadow: var(--schaduw);
   background: #eef0ec;

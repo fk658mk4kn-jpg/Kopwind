@@ -5,6 +5,12 @@
 
 export const VERSIES = [
   {
+    versie: "3.23.0",
+    codenaam: "Boreas",
+    datum: "2026-07-17",
+    zin: "The bike check got tidied up: building your route and the map sit side by side again, the map no longer slides over the menu, and tapping a leg card on your phone takes you straight to the map. On top of that, every town page now carries its own correct title and description, and the town buttons say where they lead.",
+  },
+  {
     versie: "3.22.0",
     codenaam: "Foehn",
     datum: "2026-07-17",

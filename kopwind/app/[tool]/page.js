@@ -22,6 +22,7 @@ import RecentTracker from "@/components/RecentTracker";
 import TekstMetLinks from "@/components/TekstMetLinks";
 import AdviesBlok from "@/components/AdviesBlok";
 import { platteTekst } from "@/lib/inlineLinks";
+import { stadAnker } from "@/lib/steden/stadTemplates";
 
 /**
  * Dynamische toolpagina uit het register (§6): de tool bovenaan, de
@@ -131,17 +132,23 @@ export default function ToolPagina({ params }) {
       <AdviesBlok affiliate={tool.affiliate} />
 
       <section className="seotekst">
-        <details className="stadlijst boven">
-          <summary>{tool.navLabel} per stad</summary>
-          <p>Direct beginnen met je eigen plaats vooraf ingevuld? Kies je stad:</p>
-          <div className="stadlinks">
-            {STEDEN.map((s) => (
-              <Link key={s.slug} href={`/${tool.slug}/${s.slug}`}>
-                {s.naam}
-              </Link>
-            ))}
-          </div>
-        </details>
+        {/* Varianten (jas, korte-broek, t-shirt) hebben bewust nog geen
+            stadpagina's (backlog: uitrollen zodra ze ranken); de lijst
+            tonen zou twaalf 404-links opleveren. Zodra de stad-uitrol
+            er komt, kan deze conditie weg. */}
+        {!tool.templateId && (
+          <details className="stadlijst boven">
+            <summary>{tool.navLabel} per stad</summary>
+            <p>Direct beginnen met je eigen plaats vooraf ingevuld? Kies je stad:</p>
+            <div className="stadlinks">
+              {STEDEN.map((s) => (
+                <Link key={s.slug} href={`/${tool.slug}/${s.slug}`}>
+                  {stadAnker(tool, s.naam)}
+                </Link>
+              ))}
+            </div>
+          </details>
+        )}
 
         {inhoud.blokken.map((b) => (
           <div key={b.kop}>

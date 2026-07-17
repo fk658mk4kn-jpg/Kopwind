@@ -5,6 +5,7 @@ import { TOOLS, vindTool } from "@/lib/tools";
 import { inhoudVoorTool } from "@/content";
 import { STEDEN, vindStad } from "@/lib/steden/nl";
 import { stadTekst, buurSteden } from "@/lib/steden/teksten";
+import { titelVoor } from "@/lib/steden/stadTemplates";
 import { HUB_NAAM } from "@/lib/brand";
 import FietsTool from "@/components/tools/FietsTool";
 import LocatieTool from "@/components/tools/LocatieTool";
@@ -31,87 +32,6 @@ export function generateStaticParams() {
   return params;
 }
 
-const STAD_TEMPLATES = kies({
-  nl: {
-    "fiets-naar-werk": (s) => ({
-      title: `Fietsen naar werk in ${s}: wind en fietsweer vandaag`,
-      description: `Kan ik vandaag fietsen naar werk in ${s}? Check je rit: wind tegen per deel van de route, regen, temperatuur en een duidelijk oordeel. Gratis.`,
-      h1: `Vandaag op de fiets naar werk in ${s}?`,
-    }),
-    "was-buiten-drogen": (s) => ({
-      title: `Was buiten drogen in ${s}: droogvenster vandaag`,
-      description: `Kan de was vandaag buiten in ${s}? Zie per uur wanneer je was goed droogt: luchtvochtigheid, wind en regen, met droogtijd. Gratis.`,
-      h1: `Vandaag de was buiten in ${s}?`,
-    }),
-    "wat-trek-ik-aan": (s) => ({
-      title: `Wat trek ik vandaag aan in ${s}? Kledingadvies op gevoel`,
-      description: `Wat trek ik vandaag aan in ${s}? Praktisch kledingadvies op gevoelstemperatuur: laagjes, regenkleding en het verloop van de dag. Gratis.`,
-      h1: `Wat trek ik vandaag aan in ${s}?`,
-    }),
-    "terras": (s) => ({
-      title: `Terrasweer in ${s}: de beste terrasuren vandaag`,
-      description: `Kan ik vandaag op het terras in ${s}? Zie de beste terrasuren: gevoelstemperatuur, wind en zon per uur, vijf dagen vooruit. Gratis.`,
-      h1: `Vandaag op het terras in ${s}?`,
-    }),
-    "hooikoorts": (s) => ({
-      title: `Hooikoorts in ${s}: pollen vandaag per uur`,
-      description: `Krijg ik vandaag hooikoorts in ${s}? Zie gras-, berk- en elspollen per uur en het rustigste blok van de dag. Gratis.`,
-      h1: `Hooikoorts vandaag in ${s}?`,
-    }),
-    "zonkracht": (s) => ({
-      title: `Zonkracht in ${s}: verbrand ik vandaag?`,
-      description: `Moet ik vandaag smeren in ${s}? Zie de zonkracht per uur, het smeervenster en hoe snel jouw huidtype verbrandt. Gratis.`,
-      h1: `Verbrand ik vandaag in ${s}?`,
-    }),
-    "barbecue": (s) => ({
-      title: `Barbecueweer in ${s}: het beste avondblok vandaag`,
-      description: `Kan ik vandaag barbecue\u00ebn in ${s}? Zie het beste avondblok, of het droog blijft en waar de rook heen trekt. Gratis.`,
-      h1: `Vandaag barbecue\u00ebn in ${s}?`,
-    }),
-  },
-  en: {
-    "fiets-naar-werk": (s) => ({
-      title: `Bike to work in ${s}: wind and cycling weather today`,
-      description: `Can I bike to work in ${s} today? Check your ride: headwind per part of the route, rain, temperature and a clear verdict. Free.`,
-      h1: `Bike to work in ${s} today?`,
-    }),
-    "was-buiten-drogen": (s) => ({
-      title: `Dry laundry outside in ${s}: today's drying window`,
-      description: `Can I dry laundry outside in ${s} today? See per hour when your wash dries: humidity, wind and rain, with drying time. Free.`,
-      h1: `Dry the laundry outside in ${s} today?`,
-    }),
-    "wat-trek-ik-aan": (s) => ({
-      title: `What to wear today in ${s}? Outfit advice on feels-like`,
-      description: `What should I wear today in ${s}? Practical outfit advice on feels-like temperature: layers, rain gear and the day's swing. Free.`,
-      h1: `What to wear in ${s} today?`,
-    }),
-    "terras": (s) => ({
-      title: `Patio weather in ${s}: the best outdoor hours today`,
-      description: `Can I sit outside in ${s} today? See the best patio hours: feels-like temperature, wind and sun per hour, five days ahead. Free.`,
-      h1: `Sit outside in ${s} today?`,
-    }),
-    "hooikoorts": (s) => ({
-      title: `Hay fever in ${s}: today's pollen per hour`,
-      description: `Will I get hay fever in ${s} today? See grass, birch and alder pollen per hour and the calmest window of the day. Free.`,
-      h1: `Hay fever in ${s} today?`,
-    }),
-    "zonkracht": (s) => ({
-      title: `UV index in ${s}: will I burn today?`,
-      description: `Do I need sunscreen in ${s} today? See the UV per hour, the sunscreen window and how fast your skin type burns. Free.`,
-      h1: `Will I burn in ${s} today?`,
-    }),
-    "barbecue": (s) => ({
-      title: `BBQ weather in ${s}: the best evening window today`,
-      description: `Can I barbecue in ${s} today? See the best evening window, whether it stays dry and where the smoke will drift. Free.`,
-      h1: `Barbecue in ${s} today?`,
-    }),
-  },
-});
-
-function titelVoor(tool, stad) {
-  const maak = STAD_TEMPLATES[tool.id] ?? STAD_TEMPLATES["was-buiten-drogen"];
-  return maak(stad.naam);
-}
 
 export function generateMetadata({ params }) {
   const tool = vindTool(params.tool);

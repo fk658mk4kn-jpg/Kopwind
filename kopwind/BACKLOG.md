@@ -127,15 +127,12 @@ factorenstructuur (tegenwind, droog, temperatuur, windstoten) naast de
 pijnscore, zichtbaar als factorbalken op het dagadvies en op elke
 ritkaart via het bestaande FactorBalken-component.
 
-**Vervolgideeen (niet meegenomen dit keer):**
-- De kaart staat nu los van de ritkaarten in het werkblad; overwegen om
-  bij klikken op een ritkaart automatisch naar de kaart te scrollen op
-  mobiel, waar ze niet naast elkaar staan.
-- De 3-woordige fietstaal (prima fietsdag/pittige rit/liever niet
-  fietsen) wordt nergens meer getoond (de badge gebruikt nu de
-  vijfschaal); adviesVoorScore in lib/advice.js bestaat nog voor de
-  meldingen-drempels en interne logica maar is losgekoppeld van de UI.
-  Nalopen of dat overal klopt bij een volgende fietstool-ronde.
+**Fietstool-vervolg (v3.23.0, AF):** layout hersteld na feedback
+(builder naast de kaart, kaart vaste hoogte, stacking-context-fix
+zodat de kaart niet meer over het sticky menu schuift), ritkaart-klik
+scrollt op mobiel naar de kaart, en de adviesVoorScore-audit is
+afgerond (nergens meer in de UI; intern contract met waarschuwend
+commentaar).
 
 ## Affiliate (fundament in v3.22.0, uitrol volgt)
 
@@ -169,7 +166,11 @@ kaartstructuur (PLAYBOOK sectie 11).
 - Eenmalig een positieve end-to-end pushmelding bevestigen (timing).
 - Stemmenteller: bij volume naar een count=exact-aggregatie.
 - EN bijtrekken van wat NL-only is (o.a. het van/naar-cluster).
-- Stad-uitrol voor de kledingvraagpagina's zodra ze ranken.
+- Stad-uitrol voor de kledingvraagpagina's zodra ze ranken. Let op:
+  sinds v3.23.0 is de stedenlijst op de drie variantpagina's verborgen
+  (de links gingen naar niet-bestaande stad-URL's, dus 404). Bij de
+  uitrol: generateStaticParams uitbreiden met varianten EN de
+  verbergconditie in app/[tool]/page.js weghalen.
 
 ## Verder weg
 

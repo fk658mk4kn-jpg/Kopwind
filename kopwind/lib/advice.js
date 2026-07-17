@@ -161,7 +161,14 @@ function factorenVoorRit(metrics, thresholds) {
   ];
 }
 
-/** Vertaalt een pijnscore naar een fietsadvies. */
+/**
+ * Vertaalt een pijnscore naar een fietsadvies (3-woordige fietstaal).
+ * SINDS v3.20.0 BEWUST NIET MEER IN DE UI: de badge gebruikt de
+ * vijfschaal (VerdictBadge/labelVoor), consistent met de rest van de
+ * site. Dit veld leeft door als intern contract: tests
+ * (tests/advice.test.js) en drempellogica leunen erop. Niet opnieuw
+ * renderen; audit v3.23.0 bevestigde dat geen component het toont.
+ */
 export function adviesVoorScore(score) {
   if (score >= 60) return "liever niet fietsen";
   if (score >= 30) return "pittige rit";
