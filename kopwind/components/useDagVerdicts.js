@@ -5,6 +5,7 @@ import { useGebruiker } from "@/components/GebruikerContext";
 import { haalWeer } from "@/lib/engine/weather";
 import { BASIS_VELDEN } from "@/lib/engine/weerbasis";
 import { TOOLS } from "@/lib/tools";
+import { VARIANTEN, variantVerdict } from "@/lib/varianten";
 
 /**
  * Dagverdicten voor alle overlay-tools op een gedeelde plek (v3.10.0).
@@ -49,6 +50,17 @@ export function useDagVerdicts() {
             uit[t.id] = t.overlay(hourly, nu, g.thresholdsVoor(t.id)).dagen?.[0] ?? null;
           } catch {
             uit[t.id] = null;
+          }
+        }
+        // Varianten (v3.24.0): eigen ja/nee-verdict afgeleid uit het
+        // ouder-dagobject, zodat "Moet ik een jas aan?" ook een stip
+        // draagt. Werkt automatisch voor elke toekomstige variant met
+        // een variantVerdict-tak.
+        for (const v of VARIANTEN) {
+          try {
+            uit[v.id] = uit[v.ouderId] ? variantVerdict(v.id, uit[v.ouderId]) : null;
+          } catch {
+            uit[v.id] = null;
           }
         }
         setDagen(uit);

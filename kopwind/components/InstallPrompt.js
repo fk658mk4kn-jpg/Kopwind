@@ -20,11 +20,19 @@ export default function InstallPrompt({ interactieGedaan }) {
   const [ios, setIos] = useState(false);
 
   useEffect(() => {
-    if (!interactieGedaan || g.geinstalleerd) return;
+    if (g.geinstalleerd) return;
     if (localStorage.getItem("kopwind.installAfgewezen")) return;
+    // Mobiel (v3.24.0, feedback): toon de kaart direct, met een kleine
+    // vertraging zodat hij niet met de pagina meeknalt. Op desktop
+    // blijft de oude drempel (pas na een geslaagde check), want daar
+    // is beginscherm-installatie een nichewens en oogt een directe
+    // pop-up als spam.
+    const mobiel = window.matchMedia("(max-width: 960px)").matches;
+    if (!mobiel && !interactieGedaan) return;
     setIos(isIos());
-    // Toon pas na een geslaagde check, en alleen als er iets te bieden is.
-    if (g.installBeschikbaar || isIos()) setZichtbaar(true);
+    if (!(g.installBeschikbaar || isIos())) return;
+    const timer = setTimeout(() => setZichtbaar(true), mobiel && !interactieGedaan ? 2500 : 0);
+    return () => clearTimeout(timer);
   }, [interactieGedaan, g.installBeschikbaar, g.geinstalleerd]);
 
   if (!zichtbaar || g.geinstalleerd) return null;

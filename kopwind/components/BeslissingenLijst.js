@@ -86,13 +86,21 @@ export default function BeslissingenLijst({ groepen }) {
                   const variant = item.variantId ? VARIANTEN.find((v) => v.id === item.variantId) : null;
                   const doel = tool ? `/${tool.slug}` : variant ? `/${variant.slug}` : null;
                   if (!doel) return null;
-                  const dag = tool && dagen ? dagen[tool.id] : null;
+                  // Sinds v3.24.0 dragen ook varianten een dagverdict
+                  // (useDagVerdicts vult ze uit hun ouder), dus de stip
+                  // werkt voor beide. Het label komt bij varianten uit
+                  // variantLabel (Ja/Twijfel/Nee), bij tools uit de
+                  // vijfschaal van de tool zelf.
+                  const dag = dagen ? (tool ? dagen[tool.id] : dagen[variant.id]) ?? null : null;
                   // Stoplicht: kleurVoorSchaal geeft een klasse (groen,
                   // oranje of rood) bij het schaal-id; de stip kleurt mee
                   // via currentColor. Bugfix juli 2026: dit ging eerder
                   // als klassenaam-in-een-style, waardoor de stip
                   // onzichtbaar was.
                   const klasse = dag ? kleurVoorSchaal(schaalVoor(dag.conditie.score).id) : null;
+                  const stipLabel = dag
+                    ? (dag.variantLabel ?? labelVoor(dag.conditie.score, tool?.schaalLabels ?? {}))
+                    : null;
                   return (
                     <li key={doel}>
                       <Link href={doel} className="beslissing-link">
@@ -101,11 +109,11 @@ export default function BeslissingenLijst({ groepen }) {
                         </span>
                         <span className="beslissing-vraag">{vraagVan(item)}</span>
                         {dag && (
-                          <span className={"statuslabel " + klasse} title={labelVoor(dag.conditie.score, tool.schaalLabels)}>
-                            <span className="statusstip" role="img" aria-label={labelVoor(dag.conditie.score, tool.schaalLabels)} />
+                          <span className={"statuslabel " + klasse} title={stipLabel}>
+                            <span className="statusstip" role="img" aria-label={stipLabel} />
                           </span>
                         )}
-                        {tool && !dag && laden && (
+                        {(tool || variant) && !dag && laden && (
                           <span className="statuslabel stil">
                             <span className="statusstip" aria-hidden="true" />
                           </span>

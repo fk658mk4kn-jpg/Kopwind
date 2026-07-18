@@ -16,6 +16,7 @@ import { TOOLS } from "@/lib/tools";
 import { S } from "@/lib/strings";
 import { fmtTijd } from "@/lib/format";
 import { schaalVoor, labelVoor, kleurVoorSchaal } from "@/lib/engine/schaal";
+import { VARIANTEN, variantVerdict } from "@/lib/varianten";
 
 /**
  * Gedeelde UI voor elke locatie-tool (het overlay-contract): kies je plek,
@@ -27,7 +28,7 @@ import { schaalVoor, labelVoor, kleurVoorSchaal } from "@/lib/engine/schaal";
 
 const WEEKDAG = S.algemeen.weekdagen;
 
-export default function LocatieTool({ toolId, beginLocatie = null }) {
+export default function LocatieTool({ toolId, beginLocatie = null, variantId = null }) {
   const tool = TOOLS.find((t) => t.id === toolId);
   const g = useGebruiker();
   const [locatie, setLocatie] = useState(beginLocatie);
@@ -120,6 +121,23 @@ export default function LocatieTool({ toolId, beginLocatie = null }) {
 
         {dagen && dag && (
           <section className="paneel antwoord-paneel" aria-label="Antwoord">
+            {/* Variantpagina (v3.24.0): het eigen ja/nee-antwoord op de
+                variantvraag bovenaan, afgeleid uit hetzelfde
+                overlay-resultaat (geen tweede berekening of fetch).
+                Daaronder het volledige kledingadvies van de ouder. */}
+            {variantId && (() => {
+              const v = variantVerdict(variantId, dag);
+              const vraag = VARIANTEN.find((x) => x.id === variantId)?.vraag;
+              if (!v) return null;
+              return (
+                <p className="variant-antwoord">
+                  <span className={"badge " + kleurVoorSchaal(schaalVoor(v.conditie.score).id)}>
+                    {v.variantLabel}
+                  </span>
+                  <span className="variant-zin"><strong>{vraag}</strong> {v.zin}</span>
+                </p>
+              );
+            })()}
             <VerdictBadge score={dag.conditie.score} labels={tool.schaalLabels} />
             {dag.outfit && <OutfitFiguur outfit={dag.outfit} />}
             <p className="status-regel">{dag.status.zin}</p>

@@ -121,7 +121,7 @@ export default function ToolPagina({ params }) {
       ) : tool.inputType === "route" ? (
         <FietsTool />
       ) : (
-        <LocatieTool toolId={tool.id} />
+        <LocatieTool toolId={tool.id} variantId={tool.templateId ?? null} />
       )}
 
       <div className="feedback-rij">

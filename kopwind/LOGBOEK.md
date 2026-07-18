@@ -2108,3 +2108,56 @@ HTML (hardloopweer, gladheid, sterrenkijken NL; running-weather EN),
 ankerteksten aanwezig, variantpagina's zonder stedenlijst, geen
 em-dashes.
 
+## 2026-07-17 (vierde run) - v3.24.0 "Khamsin": zes feedbackpunten plus audit-toetsing
+
+**Opdracht**: een reeks directe punten (bouwen) plus een externe
+SEO/UX-audit toetsen tegen onze eigen documenten en strategie
+(oordelen, niet bouwen zonder go). Affiliate op verzoek gepauzeerd.
+
+**Gebouwd (directe punten).**
+(1) Variant-verdicts: de kern van "kritisch zijn op tools zonder
+statussymbool". De variantpagina's embedden de ouder-check zonder eigen
+antwoord; er bestond geen variant-verdictfunctie. Nieuw:
+variantVerdict(variantId, dag) in lib/varianten.js, gebouwd op
+laagIndex (de middag-hoofdlaag die de kledingcheck zelf kiest: 0 korte
+broek en T-shirt, 1 T-shirt met laagje, 2 trui, 3 jas, 4 winterjas),
+plus regen als doorslag bij jas-twijfel. Daardoor kan het
+variant-antwoord nooit het kledingadvies tegenspreken en volgen
+persoonlijke grenzen automatisch mee. useDagVerdicts vult varianten
+uit hun ouder-dag; alle-keuzehulpen toont de stip met Ja/Twijfel/Nee
+als label; LocatieTool toont een antwoordbanner op de variantpagina
+zelf (zelfde overlay-resultaat, geen tweede fetch). Valkuil onderweg:
+het veld heet dag.outfit, niet dag.conditie; gecorrigeerd na verificatie
+van de echte structuur. Vijf tests leggen de mapping vast, inclusief de
+regel dat een nieuwe variant zonder verdict-tak de suite laat falen.
+(2) AnkerOpener in de layout: hash-navigatie opent nu het details-doel
+en scrollt opnieuw (het uitklappen verandert de hoogte). (3) Footer:
+keuzehulpen-kolom van 24 naar de zes populaire plus een
+alle-keuzehulpen-link. (4) Verouderd FAQ-item ("Komen er meer checks
+bij?") verwijderd, NL en EN. (5) InstallPrompt: bestond al (via
+GebruikerContext, na eerste geslaagde check); op mobiel nu direct met
+2,5 seconde vertraging, desktop houdt de oude drempel. Bijna-fout
+vermeden: ik was een tweede InstallPrompt aan het bouwen voordat ik de
+bestaande vond; de bestaande verruimd in plaats van gedupliceerd.
+(6) Affiliate-pauze vastgelegd in de backlog; de twee
+placeholder-adviesblokken blijven staan als nuttig advies (weghalen is
+een regel werk).
+
+**Audit-verificaties (hard gemaakt, fixes NIET gebouwd conform
+opdracht).** (a) "Zeven checks" in het homepage-FAQ: klopt nog, staat
+in content/hub.nl.js en hub.en.js item 1, terwijl er 24 checks plus 3
+varianten zijn. Eenregelige fix ligt klaar. (b) "Droogvenster op
+hooikoorts-stadpagina's": klopt en is veel groter dan de audit zag:
+lib/steden/teksten.js kent maar twee smaken (fiets en was), dus ALLE
+22 niet-fiets-tools dragen de was-tekst als stadtekst (~264 pagina's),
+EN het bestand is NL-only zonder kies(), dus de Engelse stadpagina's
+dragen de Nederlandse was-tekst (geverifieerd: "droogvenster" in de
+gebouwde running-weather/amsterdam.html). Fixpakket uitgewerkt als
+voorstel. (c) SSR-claim: bevestigd; LocatieTool en FietsTool zijn
+client components met een fetch, dus het verdict kan per definitie
+niet in de server-HTML staan; grep op verdictwoorden in stad-HTML gaf
+alleen statische SEO-copy. Analyse en aanbeveling in het slotbericht.
+
+**Verificatie**: 142 tests groen (was 137, +5 variant-verdicts), beide
+builds volgen hierna, geen em-dashes.
+

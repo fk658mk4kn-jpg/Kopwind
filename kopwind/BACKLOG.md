@@ -134,7 +134,13 @@ scrollt op mobiel naar de kaart, en de adviesVoorScore-audit is
 afgerond (nergens meer in de UI; intern contract met waarschuwend
 commentaar).
 
-## Affiliate (fundament in v3.22.0, uitrol volgt)
+## Affiliate (GEPAUZEERD, besluit Martijn 2026-07-17)
+
+Uitrol staat stil tot de site zelf 100 procent staat. De twee
+placeholder-adviesblokken (zonkracht, was-buiten-drogen) blijven staan
+omdat het advies ook zonder commissie nuttig is; weghalen is een regel
+werk als dat toch gewenst is. Onderstaande stond al klaar en wacht op
+het startsein.
 
 **Gebouwd (v3.22.0):** het affiliate-veld op elke tool heeft nu een
 schema (lib/affiliate.js), een component (AdviesBlok: advies eerst,

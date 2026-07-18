@@ -2382,6 +2382,19 @@ a.checkkaart:hover .kaartknop { background: var(--geel); }
   color: var(--inkt-zacht);
 }
 
+/* Variant-antwoord (v3.24.0): het eigen ja/nee op de variantvraag,
+   bovenin het antwoordpaneel, gescheiden van het volledige
+   kledingadvies eronder. */
+.variant-antwoord {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--lijn);
+}
+.variant-antwoord .variant-zin { color: var(--inkt); }
+
 /* Stoplicht op alle-checks: label plus stip kleuren via de klasse. */
 .statuslabel.groen { color: var(--groen); }
 .statuslabel.oranje { color: var(--oranje); }

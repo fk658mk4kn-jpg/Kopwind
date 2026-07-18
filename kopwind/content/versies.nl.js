@@ -6,6 +6,12 @@
 
 export const VERSIES = [
   {
+    versie: "3.24.0",
+    codenaam: "Khamsin",
+    datum: "2026-07-17",
+    zin: "De kledingvragen geven nu zelf antwoord: op Moet ik een jas aan zie je meteen ja of nee, met een eigen statusstip in het overzicht. Links naar veelgestelde vragen klappen het antwoord voortaan automatisch open, de footer is opgeruimd en op je telefoon kun je de site nu direct op je beginscherm zetten.",
+  },
+  {
     versie: "3.23.0",
     codenaam: "Boreas",
     datum: "2026-07-17",

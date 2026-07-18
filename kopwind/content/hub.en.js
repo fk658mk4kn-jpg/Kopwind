@@ -19,9 +19,5 @@ export const hub = {
       v: "Can I get a notification?",
       a: "Yes. Put a check on your home screen, pick your days and times, and choose whether you want good news only or a warning on bad news. Devices link with a sync code, no email address needed.",
     },
-    {
-      v: "Are more checks coming?",
-      a: "Yes: rain timing and frost scraping are on the list. Same idea every time: a concrete question, a concrete answer.",
-    },
   ],
 };

@@ -568,3 +568,16 @@ lib/steden/stadTemplates.js. Twee vaste regels bij elke NIEUWE tool:
   relevantiesignaal).
 Varianten hebben ook een ankerterm, maar hun stedenlijst is verborgen
 tot de stad-uitrol voor varianten er is (zie backlog).
+
+## 19. Varianten dragen een eigen verdict (sinds v3.24.0)
+
+Een variant (vraagpagina op een bestaande tool) is niet alleen content:
+hij hoort een eigen ja/nee-antwoord en statusstip te hebben. De
+mechaniek: variantVerdict(variantId, dagObj) in lib/varianten.js leidt
+het antwoord af uit het dagobject van de ouder (voor kleding: de
+middag-hoofdlaag laagIndex, zodat het antwoord nooit het advies van de
+check tegenspreekt). useDagVerdicts vult varianten automatisch;
+alle-keuzehulpen toont de stip; LocatieTool toont de antwoordbanner via
+de variantId-prop. Bij een NIEUWE variant: een tak toevoegen in
+variantVerdict, anders faalt tests/variant-verdict.test.js (bewust:
+een variant zonder verdict mag niet stil live gaan).

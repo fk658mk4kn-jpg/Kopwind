@@ -3,6 +3,7 @@ import "@fontsource-variable/bricolage-grotesque";
 import "./globals.css";
 import "leaflet/dist/leaflet.css";
 import GebruikerProvider from "@/components/GebruikerContext";
+import AnkerOpener from "@/components/AnkerOpener";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import Analytics from "@/components/Analytics";
@@ -73,6 +74,7 @@ export default function RootLayout({ children }) {
             <SiteHeader />
             {children}
             <SiteFooter />
+            <AnkerOpener />
             <script
               type="application/ld+json"
               dangerouslySetInnerHTML={{

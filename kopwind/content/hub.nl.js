@@ -19,9 +19,5 @@ export const hub = {
       v: "Kan ik een seintje krijgen?",
       a: "Ja. Zet een check op je beginscherm, kies je dagen en tijden, en of je alleen goed of juist slecht nieuws wilt horen. Apparaten koppel je met een synccode, zonder e-mailadres.",
     },
-    {
-      v: "Komen er meer checks bij?",
-      a: "Ja: regen-timing en gladheid staan op de rol. Zelfde opzet: een concrete vraag, een concreet antwoord.",
-    },
   ],
 };

@@ -5,6 +5,12 @@
 
 export const VERSIES = [
   {
+    versie: "3.24.0",
+    codenaam: "Khamsin",
+    datum: "2026-07-17",
+    zin: "The clothing questions now answer themselves: on Do I need a coat you instantly see yes or no, with its own status dot in the overview. Links to frequently asked questions now unfold the answer automatically, the footer got tidied up, and on your phone you can add the site straight to your home screen.",
+  },
+  {
     versie: "3.23.0",
     codenaam: "Boreas",
     datum: "2026-07-17",

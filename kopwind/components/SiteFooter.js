@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { TOOLS } from "@/lib/tools";
+import { TOOLS, POPULAIRE_TOOL_IDS } from "@/lib/tools";
 import { CATEGORIEEN } from "@/lib/categorieen";
 import { UITLEG } from "@/content/uitleg";
 import { HUB_NAAM } from "@/lib/brand";
@@ -24,11 +24,20 @@ export default function SiteFooter() {
         </div>
         <div>
           <h2>{S.voet.checks}</h2>
-          {TOOLS.map((t) => (
-            <Link key={t.slug} href={`/${t.slug}`}>
-              {t.naam}
-            </Link>
-          ))}
+          {/* Compact sinds v3.24.0 (feedback: 24 links werd te lang):
+              de zes populaire plus een link naar het volledige
+              overzicht. De hubs en alle-keuzehulpen dragen de rest van
+              het interne linkwerk. */}
+          {POPULAIRE_TOOL_IDS.map((id) => TOOLS.find((t) => t.id === id))
+            .filter(Boolean)
+            .map((t) => (
+              <Link key={t.slug} href={`/${t.slug}`}>
+                {t.naam}
+              </Link>
+            ))}
+          <Link href={PAD.alleChecks} className="voet-alle">
+            {S.hub.alleChecksTitel}
+          </Link>
         </div>
         <div>
           <h2>{S.voet.uitleg}</h2>
