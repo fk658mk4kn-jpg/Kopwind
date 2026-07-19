@@ -7,6 +7,7 @@ export const seo = {
   title: "Road cycling weather today: is it and will it be good riding weather?",
   description:
     "Is it road cycling weather today? See the best dry window with manageable wind for a road ride, with a start time and the reason. Free.",
+  h1: "Good day for a road ride?",
   intro:
     "The road ride check finds the best window for a ride on the road bike: dry tarmac first, then wind, and only then temperature. Per day you see whether it's riding weather, when to set off and why.",
 };

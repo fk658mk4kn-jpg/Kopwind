@@ -19,7 +19,7 @@ const T = kies({
   nl: {
     slug: "strooien",
     naam: "Moet ik vannacht strooien?",
-    korteVraag: "Strooien of ruimen vannacht?",
+    korteVraag: "Moet ik vannacht strooien?",
     meldingKort: "Strooicheck",
     cta: "Check de strooinacht",
     navLabel: "Strooien",
@@ -52,7 +52,7 @@ const T = kies({
   en: {
     slug: "gritting",
     naam: "Should I grit tonight?",
-    korteVraag: "Grit or clear tonight?",
+    korteVraag: "Should I grit tonight?",
     meldingKort: "Gritting check",
     cta: "Check the gritting night",
     navLabel: "Gritting",
@@ -237,5 +237,14 @@ export const strooien = {
   },
   adviesLabels: T.adviesLabels,
   bijgewerkt: "2026-07-18",
-  affiliate: null,
+  affiliate: {
+    kop: { nl: "Op tijd gestrooid", en: "Gritted in time" },
+    advies: {
+      nl: "Wie voor de vorst strooit heeft de minste kans op gladde tegels; een emmer strooizout binnen handbereik en een schep voor de sneeuw zijn genoeg voor stoep en oprit. Strooi dun (een handvol per vierkante meter), meer werkt niet beter en is slecht voor je bestrating en de poten van huisdieren.",
+      en: "Gritting before the frost gives the least chance of icy tiles; a bucket of grit within reach and a shovel for the snow are enough for pavement and driveway. Grit thinly, more doesn't work better.",
+    },
+    items: [
+      { label: { nl: "Strooizout en sneeuwschep", en: "Grit and snow shovel" }, url: "https://www.bol.com/nl/nl/s/?searchtext=strooizout", partner: "bol.com" },
+    ],
+  },
 };

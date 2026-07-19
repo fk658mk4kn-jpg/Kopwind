@@ -205,5 +205,14 @@ export const buitenSchilderen = {
   },
   adviesLabels: T.adviesLabels,
   bijgewerkt: "2026-07-18",
-  affiliate: null,
+  affiliate: {
+    kop: { nl: "Op een droge dag schilderen", en: "Painting on a dry day" },
+    advies: {
+      nl: "Buitenverf hecht het best op een droge, niet te warme dag; kies een verf die past bij de ondergrond (hout, muur of metaal) en werk met een goede kwast of roller, want gereedschap dat de verf mooi verdeelt scheelt een laag. Reken op meerdere droge uren na het schilderen.",
+      en: "Exterior paint bonds best on a dry, not too warm day; pick paint that suits the surface (wood, wall or metal) and work with a good brush or roller. Count on several dry hours after painting.",
+    },
+    items: [
+      { label: { nl: "Buitenverf en kwasten", en: "Exterior paint and brushes" }, url: "https://www.bol.com/nl/nl/s/?searchtext=buitenverf", partner: "bol.com" },
+    ],
+  },
 };

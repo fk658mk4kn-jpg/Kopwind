@@ -7,6 +7,7 @@ export const seo = {
   title: "Can I prune today? Frost, wet and season weighed up",
   description:
     "Can I prune today? The check weighs frost around the pruning day, wet days and heat, and tells you what the season allows this month. Free.",
+  h1: "Can I prune today?",
   intro:
     "Pruning is a day decision with two layers: today's weather (frost, wet, heat) and the season (what you cut back hard in February you leave alone in October). This check weighs both and adds the month's context.",
 };

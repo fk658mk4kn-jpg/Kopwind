@@ -383,7 +383,7 @@ export const wasBuitenDrogen = {
       en: "Outside it's all about air moving past the laundry: hang with space between items and put a rack in a breezy, sheltered spot. A sturdy drying rack or a long line with enough tension helps more than you'd think; laundry packed together dries half as fast.",
     },
     items: [
-      { label: { nl: "Droogrek en waslijn", en: "Drying rack and washing line" }, url: "https://www.blokker.nl/", partner: "Blokker" },
+      { label: { nl: "Droogrek en waslijn", en: "Drying rack and washing line" }, url: "https://www.bol.com/nl/nl/s/?searchtext=wasrek", partner: "bol.com" },
     ],
   },
 };

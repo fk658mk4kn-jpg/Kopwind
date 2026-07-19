@@ -220,5 +220,14 @@ export const plantenBeschermen = {
   },
   adviesLabels: T.adviesLabels,
   bijgewerkt: "2026-07-18",
-  affiliate: null,
+  affiliate: {
+    kop: { nl: "Voor de nacht dat het telt", en: "For the night that counts" },
+    advies: {
+      nl: "Vorstdoek of tuinvlies houdt een paar graden vast en laat lucht en licht door; leg het losjes over de plant, met wat lucht ertussen, en zet het vast tegen de wind. Voor kuipplanten helpen potvoeten (koude trekt uit de grond) en een plek dicht tegen de gevel. Doek dat je zo weer opbergt gaat jaren mee.",
+      en: "Fleece holds a few degrees and lets air and light through; drape it loosely with some air underneath and pin it against the wind. For potted plants, pot feet and a spot against the wall help. Fleece you store away lasts for years.",
+    },
+    items: [
+      { label: { nl: "Vorstdoek en tuinvlies", en: "Frost fleece" }, url: "https://www.bol.com/nl/nl/s/?searchtext=vorstdoek", partner: "bol.com" },
+    ],
+  },
 };

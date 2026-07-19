@@ -2630,3 +2630,111 @@ zes tools structureel valideert. check:imports OK, em-dash nul, geen
 CSS gewijzigd. Beide builds gedraaid; NL-HTML geverifieerd op gevulde
 H1 voor de zes nieuwe tools. Affiliate blijft gepauzeerd tot Martijn de
 accounts heeft.
+
+## Run 11 - 2026-07-19 - v3.31.0 "Sirocco"
+
+**Opdracht Martijn** (na een externe audit van de hele site): audit-fixes
+op vraag-vs-content, content uitbreiden waar dun, affiliate implementeren
+(met de vraag of alleen bol en/of Coolblue beter is), en een kritische
+security- en cookie-review.
+
+**Audit-fixes (vier punten).**
+1. Regenkaart homepage: de dag-overlay van regen-timing gaf bij een droge
+   dag "Vandaag geen regen verwacht" (een of-antwoord onder de
+   wanneer-vraag). De regen-zinnen waren al timing; alleen dagGeenRegen is
+   herschreven naar "Geen bui vandaag, het blijft de hele dag droog" (NL)
+   en "No shower today, it stays dry all day" (EN). De of-vraag zit al bij
+   de paraplu-check, dus het timing-frame voorkomt overlap.
+2. Zes lege H1's: slippers-weer, wielrenweer, snoeien, onkruid,
+   water-geven en gras-zaaien misten een h1-veld in hun contentbestand
+   (seo = {title, description, intro}). h1 toegevoegd in de zes NL- en de
+   zes EN-bestanden (content/en/), gelijk aan de naam. Geverifieerd in de
+   gebouwde HTML.
+3. Dubbele slippers op /alle-checks: in het NL-blok van
+   content/beslissingen.js stond slippers twee keer (een regel met per
+   ongeluk Engelse zoektermen). Die is weg; het EN-blok miste slippers
+   juist en kreeg de variant erbij. Nu precies een NL en een EN.
+4. korteVraag != naam: het overzicht (BeslissingenLijst) toont korteVraag,
+   de H1 toont seo.h1 (gelijk aan naam). korteVraag is gelijkgetrokken aan
+   naam voor hond-uitlaten, drone-vliegen, paardrijden, zonnepanelen,
+   terras-reinigen, sneeuwpret, strooien en water-geven (naam daar
+   aangepast naar "Moet ik de planten water geven?"). Prioriteit lag bij
+   paardrijden (EN naam ook van het dubbelzinnige "ride outside" naar "go
+   horse riding") en terras-reinigen.
+
+**Content: eerst gemeten, toen pas uitgebreid.** Belangrijke correctie op
+de eigen aanname: de losse tuin-tools (snoeien, onkruid, water-geven,
+gras-zaaien) zijn met vier blokken en vijf FAQ juist de RIJKSTE van de
+site, niet dun. Bewust niet opgerekt met vulling (dat zou de kwaliteit
+verlagen en naar keyword stuffing neigen). Wel uitgebreid waar er echt een
+gat was: slippers-weer van 2/3 naar 3/5 (achter op zijn kledingzusjes
+jas/korte-broek/t-shirt) en de zes nieuwste tools van 3/4 naar 3/6 met
+twee long-tail FAQ elk. (Kanttekening: mijn eerste FAQ-telling met grep
+was fout omdat veel FAQ-items op een regel staan; de correcte telling
+liet zien dat de site site-breed solide is.)
+
+**Affiliate live.** De plumbing uit v3.22 (schema, AdviesBlok, disclosure,
+rel=sponsored nofollow noopener, geen tracking) is nu ingevuld. Toevoeging
+in lib/affiliate.js: BOL_SITE_ID (uit NEXT_PUBLIC_BOL_SITE_ID),
+bolLink(bolUrl, subid, naam) die een bol-link ombouwt naar een
+partner.bol.com-deeplink met correcte URL-encoding, ttLink(...) als
+upgrade-pad (vereist campaign/material-id na aanmelding; affiliate-id
+308800 zit erin), en metPartnerlink(items, toolId) die de items verrijkt.
+Ontwerpkeuze: de tool-bestanden bevatten een GEWONE bol-zoek-URL
+(https://www.bol.com/nl/nl/s/?searchtext=...); AdviesBlok bouwt die
+centraal om met de tool-id als subid. Zonder SiteId blijft het een
+werkende, ongetrackte bol-link, dus de blokken zijn nu al nuttig en gaan
+live op het moment dat Martijn zijn SiteId invult. Acht tools met een
+blok: zonkracht en was-buiten-drogen (van placeholder naar bol) plus
+planten-beschermen, sneeuwpret, strooien, terras-reinigen,
+buiten-schilderen en hout-behandelen. Twee nieuwe tests op de helper (met
+en zonder SiteId, en dat niet-bol-links met rust worden gelaten).
+
+**Antwoord op de bol/Coolblue-vraag** (staat uitgewerkt in AFFILIATE.md):
+houd bol als ruggengraat PLUS TradeTracker voor de huis-en-tuinmarge.
+Martijns eigen onderzoek bewijst dat TT op niche wint (TuinChamp 10
+procent/100 dagen versus bol Tuin 4 procent/5 dagen; Deverfzaak 6 procent
+versus bol 4 procent; Fietsaccessoires 8,4 procent versus bol 4 procent).
+Alleen-bol laat dus marge liggen. Coolblue met klem afgeraden: linken naar
+je eigen werkgever is een duidelijk belangenconflict en mogelijk in strijd
+met arbeidsvoorwaarden, en het is electronics dat niet bij de
+niet-electronische weertools past. Autonomie is aan Martijn, maar dit is
+het eerlijke advies.
+
+**Security- en cookie-review.** Hoofdbevinding: Google Analytics 4 laadde
+onvoorwaardelijk (afterInteractive, geen consent-gate), wat analytische
+cookies zet voordat er toestemming is. Dat is niet conform de cookiewet.
+Fix: een zelf gebouwde, minimale cookiebalk (components/CookieConsent.js,
+geen dienst van derden) zet de keuze in localStorage "kh-consent" en
+stuurt een event; components/Analytics.js laadt GA pas bij "granted" en
+reageert op het event, zodat GA na akkoord laadt zonder herladen.
+AnalyticsPageViews was al veilig (guard op window.gtag). Privacy-pagina
+bijgewerkt: statistiek alleen met toestemming, plus een blok over
+winkellinks (partnerlinks zetten hooguit een cookie op het domein van de
+winkel, niet op deze site; bij het blok staat de disclosure). Security
+headers toegevoegd in next.config.mjs: Content-Security-Policy (alleen de
+echt gebruikte bronnen na broninventarisatie: eigen origin,
+tile.openstreetmap.org voor de kaart, en na toestemming google),
+Strict-Transport-Security, X-Frame-Options DENY, X-Content-Type-Options
+nosniff, Referrer-Policy en Permissions-Policy (geolocation=self voor de
+locatie-check, de rest uit). Env-hygiene was al in orde: SERVICE_ROLE- en
+VAPID_PRIVATE-keys zijn server-only, de VAPID public key hoort publiek, en
+alleen echt-publieke waarden staan als NEXT_PUBLIC. De geocode-route is
+een open maar keyloze proxy naar een gratis publieke dienst (fair-use,
+laag risico), genoteerd in SECURITY.md.
+
+**Kanttekening bij de CSP.** De CSP is opgesteld op basis van
+broninventarisatie in de code, niet tegen productie getest. Martijn moet
+na de deploy de browserconsole even checken op CSP-waarschuwingen (vooral
+de kaart en, na cookie-akkoord, GA).
+
+**Alternatief dat de cookiebalk overbodig maakt** (in het slot benoemd,
+niet uitgevoerd): overstappen op cookieloze statistiek (Vercel Web
+Analytics of Plausible) sluit aan bij de oorspronkelijke privacy-first,
+faceless opzet en vraagt helemaal geen banner. Keuze aan Martijn.
+
+**Verificatie**: 212 tests groen (was 210: +2 op de deeplink-helper).
+check:imports OK, em-dash nul, cookiebalk-CSS toegevoegd (bewust wel CSS
+deze keer). Beide builds gedraaid; NL-HTML geverifieerd op de zes gevulde
+H1's, de gecorrigeerde overzichtsvragen, het affiliate-blok en de nieuwe
+FAQ; EN-build heel, de zes nieuwste tools nog steeds 404 (open punt).

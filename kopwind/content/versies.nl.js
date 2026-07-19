@@ -6,6 +6,12 @@
 
 export const VERSIES = [
   {
+    versie: "3.31.0",
+    codenaam: "Sirocco",
+    datum: "2026-07-19",
+    zin: "Een grote opschoonronde na een audit van de hele site. De regenkaart op de homepage geeft nu een timing-antwoord in plaats van een of-antwoord, zes pagina's die geen kop bovenaan hadden hebben er weer een, een dubbele slippers-vermelding is weg en de vragen in het overzicht kloppen weer met de titels op de pagina (geen misleidend buiten rijden of vaag reinigen meer). Verder de affiliate-adviesblokken live gezet met bol als basis, en de statistiek achter een cookiebalk gezet zodat er pas na toestemming een analytische cookie komt, met bijpassende security headers.",
+  },
+  {
     versie: "3.30.0",
     codenaam: "Mistral",
     datum: "2026-07-18",

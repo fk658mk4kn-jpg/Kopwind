@@ -7,6 +7,7 @@ export const seo = {
   title: "Should I water today? Watering or waiting for rain",
   description:
     "Should I water the plants today? The check looks a day and a half ahead: water now, or does the rain do the work? With the best watering moment. Free.",
+  h1: "Should I water the plants?",
   intro:
     "The most expensive litre of water is the one that goes into the garden an hour before the rain. This check looks a day and a half ahead and tells you honestly when the watering can may stay inside; if watering is needed, you get the best moment with it.",
 };

@@ -1,24 +1,42 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Script from "next/script";
 
 /**
  * components/Analytics.js
  *
- * Laadt Google Analytics 4 op de manier die Next.js aanraadt: via
- * next/script met strategy afterInteractive, zodat de meettag de eerste
- * render niet vertraagt. Het meet-ID komt uit NEXT_PUBLIC_GA_ID, met het
- * property-ID van kanhetvandaag.nl als fallback zodat de tag ook zonder
- * Vercel-env gewoon meet (Google's tagcontrole vereist dat de tag in de
- * HTML staat).
+ * Google Analytics 4, maar nu ACHTER cookietoestemming (v3.31.0). De
+ * GA-tag zet analytische cookies en valt daarom onder de cookiewet: die
+ * mag pas laden nadat de bezoeker in de cookiebalk op accepteren heeft
+ * geklikt. Zolang er geen (of een afwijzende) keuze is, laadt hier niets
+ * en worden er geen analytische cookies gezet.
  *
- * Belangrijk: send_page_view staat hier UIT. De eerste paginaweergave en
- * elke client-side navigatie tellen we zelf in AnalyticsPageViews, anders
- * mist GA4 de routewissels van de App Router (die geen volledige
- * paginalading zijn) of telt hij de eerste view dubbel.
+ * De keuze staat in localStorage onder "kh-consent". We lezen die bij het
+ * mounten en luisteren naar het event "kh-consent-changed" dat de
+ * cookiebalk stuurt, zodat GA meteen na akkoord laadt zonder herladen.
+ *
+ * send_page_view staat uit; AnalyticsPageViews telt de weergaven zelf,
+ * ook bij client-side navigatie.
  */
 export default function Analytics() {
   const id = process.env.NEXT_PUBLIC_GA_ID ?? "G-DRGGM053ZK";
+  const [toegestaan, setToegestaan] = useState(false);
+
+  useEffect(() => {
+    const lees = () => {
+      try {
+        setToegestaan(localStorage.getItem("kh-consent") === "granted");
+      } catch {
+        setToegestaan(false);
+      }
+    };
+    lees();
+    window.addEventListener("kh-consent-changed", lees);
+    return () => window.removeEventListener("kh-consent-changed", lees);
+  }, []);
+
+  if (!toegestaan) return null;
 
   return (
     <>

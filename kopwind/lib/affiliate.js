@@ -66,3 +66,70 @@ export function affiliateProblemen(toolId, aff) {
   }
   return p;
 }
+
+/**
+ * Deeplink-plumbing (v3.31.0). Achtergrond: de site heeft nu een echt
+ * bol.com Partner-account. Zodra Martijn zijn SiteId invult (via de
+ * omgevingsvariabele NEXT_PUBLIC_BOL_SITE_ID, of hieronder hardcoded),
+ * worden alle bol-links in de adviesblokken automatisch getrackte
+ * partnerlinks. Tot die tijd blijven het gewone, werkende bol-links
+ * (de bezoeker merkt niets, er wordt alleen nog geen commissie geteld).
+ *
+ * De tool-bestanden zetten in hun affiliate-blok een GEWONE bol-zoek-URL
+ * (https://www.bol.com/nl/nl/s/?searchtext=...). Het ombouwen naar een
+ * partnerlink gebeurt op een centrale plek (AdviesBlok via metPartnerlink),
+ * met de tool-id als subid, zodat je in het bol-dashboard per check ziet
+ * wat er converteert. Zo blijven de tools schoon en staat de tracking op
+ * een plek.
+ */
+
+// Vul hier je bol SiteId in (of zet NEXT_PUBLIC_BOL_SITE_ID in Vercel).
+// Leeg = nog niet gekoppeld: links werken wel, maar tellen geen commissie.
+export const BOL_SITE_ID =
+  (typeof process !== "undefined" && process.env && process.env.NEXT_PUBLIC_BOL_SITE_ID) || "";
+
+// TradeTracker affiliate-id van Martijn (User ID). De campagne- en
+// materiaal-id's zijn per campagne en vereisen eerst aanmelding plus
+// activatie van de webservice; die vul je pas in als je zover bent.
+export const TRADETRACKER_AFFILIATE_ID = "308800";
+
+/**
+ * Bouwt een bol-partnerlink rond een bol-URL. Zonder SiteId geeft hij
+ * de originele bol-URL terug (werkende, ongetrackte link).
+ */
+export function bolLink(bolUrl, subid = "", naam = "kanhetvandaag") {
+  if (!/^https:\/\/(www\.)?bol\.com\//.test(bolUrl)) return bolUrl;
+  if (!BOL_SITE_ID) return bolUrl;
+  const q = (v) => encodeURIComponent(v);
+  return (
+    "https://partner.bol.com/click/click?p=1&t=url" +
+    `&s=${q(BOL_SITE_ID)}&url=${q(bolUrl)}&f=PF` +
+    `&subid=${q(subid)}&name=${q(naam || subid || "kanhetvandaag")}`
+  );
+}
+
+/**
+ * TradeTracker-deeplink (upgrade-pad voor niche-categorieen als verf,
+ * tuin, fiets en sportkleding, waar TT een hogere commissie en langere
+ * cookie geeft dan bol). Werkt pas als je je voor de campagne hebt
+ * aangemeld en de campaign- en material-id kent. Zonder die id's geeft
+ * hij de doel-URL onveranderd terug.
+ */
+export function ttLink({ campaign, material, doelUrl, subid = "" }) {
+  if (!campaign || !material || !doelUrl) return doelUrl || "";
+  const q = (v) => encodeURIComponent(v);
+  return (
+    `https://tc.tradetracker.net/?c=${q(campaign)}&m=${q(material)}` +
+    `&a=${TRADETRACKER_AFFILIATE_ID}&r=${q(subid)}&u=${q(doelUrl)}`
+  );
+}
+
+/**
+ * Verrijkt de items van een affiliate-blok met partnertracking. Nu
+ * alleen voor bol-links (de enige waarvoor we een werkend account plus
+ * formaat hebben). De subid wordt de tool-id.
+ */
+export function metPartnerlink(items, toolId = "") {
+  if (!Array.isArray(items)) return items;
+  return items.map((it) => ({ ...it, url: bolLink(it.url, toolId, toolId) }));
+}

@@ -8,6 +8,7 @@ import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import Analytics from "@/components/Analytics";
 import AnalyticsPageViews from "@/components/AnalyticsPageViews";
+import CookieConsent from "@/components/CookieConsent";
 import { HUB_NAAM, HUB_KORT, HUB_CLAIM } from "@/lib/brand";
 
 import { SITE_URL as SITE } from "@/lib/site";
@@ -88,6 +89,7 @@ export default function RootLayout({ children }) {
             />
           </div>
         </GebruikerProvider>
+        <CookieConsent />
       </body>
     </html>
   );

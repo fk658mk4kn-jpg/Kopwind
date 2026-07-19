@@ -7,6 +7,7 @@ export const seo = {
   title: "Can I sow grass today? Sowing weather and the best moment",
   description:
     "Can I sow grass today? The check weighs soil warmth, rain ahead and the sowing season, for overseeding and new lawns. Free.",
+  h1: "Can I sow grass today?",
   intro:
     "Grass seed is cheap, but a failed seedbed costs you six weeks. The difference is almost always timing: the soil must be warm enough, the sowing day calm, and the two weeks after moist. This check weighs all three and knows the calendar.",
 };

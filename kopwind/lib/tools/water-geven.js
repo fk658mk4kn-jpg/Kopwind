@@ -23,7 +23,7 @@ import { kies } from "../i18n/locale.js";
 const T = kies({
   nl: {
     slug: "water-geven",
-    naam: "Moet ik vandaag water geven?",
+    naam: "Moet ik de planten water geven?",
     korteVraag: "Moet ik de planten water geven?",
     meldingKort: "Gietcheck",
     cta: "Check de gieter",
@@ -55,7 +55,7 @@ const T = kies({
   },
   en: {
     slug: "watering",
-    naam: "Should I water the garden today?",
+    naam: "Should I water the plants?",
     korteVraag: "Should I water the plants?",
     meldingKort: "Watering check",
     cta: "Check the watering can",

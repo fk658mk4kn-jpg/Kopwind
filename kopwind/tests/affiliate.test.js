@@ -43,3 +43,31 @@ test("affiliate (EN): elk ingevuld blok volgt het schema", () => {
   }).trim();
   assert.deepEqual(JSON.parse(uit), []);
 });
+
+test("bolLink: zonder SiteId de gewone bol-link, met SiteId een partnerlink", async () => {
+  // Zonder SiteId
+  delete process.env.NEXT_PUBLIC_BOL_SITE_ID;
+  const zonder = execSync(
+    `node -e "import('./lib/affiliate.js').then(m => console.log(m.bolLink('https://www.bol.com/nl/nl/s/?searchtext=slee','sneeuwpret','sneeuwpret')))"`,
+    { env: { ...process.env }, encoding: "utf8" }
+  ).trim();
+  assert.equal(zonder, "https://www.bol.com/nl/nl/s/?searchtext=slee");
+
+  // Met SiteId: partnerlink met correcte encoding en subid
+  const met = execSync(
+    `node -e "import('./lib/affiliate.js').then(m => console.log(m.bolLink('https://www.bol.com/nl/nl/s/?searchtext=slee','sneeuwpret','sneeuwpret')))"`,
+    { env: { ...process.env, NEXT_PUBLIC_BOL_SITE_ID: "99999" }, encoding: "utf8" }
+  ).trim();
+  assert.match(met, /^https:\/\/partner\.bol\.com\/click\/click\?/);
+  assert.match(met, /s=99999/);
+  assert.match(met, /subid=sneeuwpret/);
+  assert.match(met, /url=https%3A%2F%2Fwww\.bol\.com/);
+});
+
+test("bolLink: laat niet-bol-links met rust", async () => {
+  const uit = execSync(
+    `node -e "import('./lib/affiliate.js').then(m => console.log(m.bolLink('https://www.gamma.nl/verf','x','x')))"`,
+    { env: { ...process.env, NEXT_PUBLIC_BOL_SITE_ID: "99999" }, encoding: "utf8" }
+  ).trim();
+  assert.equal(uit, "https://www.gamma.nl/verf");
+});

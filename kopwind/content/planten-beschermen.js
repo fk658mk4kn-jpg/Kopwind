@@ -47,4 +47,12 @@ export const faq = [
     v: "Moet ik in de winter elke nacht afdekken?",
     a: "Niet per se. Veel kuipplanten kun je in de winter op een vaste beschutte plek zetten of eenmalig goed inpakken, in plaats van elke nacht opnieuw. De check is vooral nuttig rond de eerste najaarsvorst en de late voorjaarsvorst, wanneer een onverwachte koude nacht net uitgelopen of nog niet ingepakte planten verrast.",
   },
+  {
+    v: "Tot welke temperatuur kunnen kuipplanten buiten blijven?",
+    a: "Dat verschilt per plant. Winterharde soorten kunnen flink wat vorst hebben; mediterrane kuipplanten als olijf en laurier verdragen een korte lichte vorst tot ongeveer min twee a min vijf graden, citrus nog minder. Zakt het daaronder of houdt de vorst dagen aan, haal ze dan naar binnen of naar een vorstvrije schuur.",
+  },
+  {
+    v: "Kan vorst ook overdag schade geven?",
+    a: "De echte schade valt bijna altijd in de nacht, wanneer de temperatuur het laagst is en stralingsvorst aan de grond toeslaat. Overdag is vorst in Nederland zeldzaam en kortstondig. Wel kan een schrale, droge oostenwind blad uitdrogen; dat is geen vorstschade maar verdroging, en vraagt vooral om beschutting.",
+  },
 ];

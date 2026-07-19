@@ -20,7 +20,7 @@ const T = kies({
   nl: {
     slug: "drone-vliegen",
     naam: "Kan ik vandaag met de drone vliegen?",
-    korteVraag: "Kan ik vandaag dronen?",
+    korteVraag: "Kan ik vandaag met de drone vliegen?",
     meldingKort: "Dronecheck",
     cta: "Check de vlucht",
     navLabel: "Drone vliegen",

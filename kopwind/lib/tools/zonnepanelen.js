@@ -21,7 +21,7 @@ const T = kies({
   nl: {
     slug: "zonnepanelen",
     naam: "Leveren mijn zonnepanelen vandaag veel op?",
-    korteVraag: "Leveren mijn zonnepanelen veel op?",
+    korteVraag: "Leveren mijn zonnepanelen vandaag veel op?",
     meldingKort: "Panelencheck",
     cta: "Check de opbrengstdag",
     navLabel: "Zonnepanelen",

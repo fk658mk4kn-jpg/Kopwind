@@ -20,7 +20,7 @@ const T = kies({
   nl: {
     slug: "hond-uitlaten",
     naam: "Wanneer laat ik de hond uit vandaag?",
-    korteVraag: "Wanneer laat ik de hond uit?",
+    korteVraag: "Wanneer laat ik de hond uit vandaag?",
     meldingKort: "Uitlaatcheck",
     cta: "Check het rondje",
     navLabel: "Hond uitlaten",
@@ -56,7 +56,7 @@ const T = kies({
   en: {
     slug: "walking-the-dog",
     naam: "When to walk the dog today?",
-    korteVraag: "When to walk the dog?",
+    korteVraag: "When to walk the dog today?",
     meldingKort: "Dog walk check",
     cta: "Check the walk",
     navLabel: "Dog walking",

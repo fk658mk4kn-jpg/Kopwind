@@ -7,6 +7,7 @@ export const seo = {
   title: "Onkruid wieden of schoffelen? De beste dag en methode",
   description:
     "Kan ik vandaag onkruid aanpakken? Schoffelen wil droog en zon, wieden juist vochtige grond: de check kiest de methode van de dag. Gratis.",
+  h1: "Kan ik vandaag onkruid aanpakken?",
   intro:
     "Onkruid bestrijden kent twee scholen met tegengestelde weerwensen: schoffelen wil een droge, zonnige dag zodat het losgemaakte onkruid verdroogt, wieden wil juist vochtige grond zodat de wortel heel meekomt. Deze check scoort allebei en vertelt welke methode vandaag loont.",
 };

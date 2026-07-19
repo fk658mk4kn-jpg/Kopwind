@@ -5,6 +5,12 @@
 
 export const VERSIES = [
   {
+    versie: "3.31.0",
+    codenaam: "Sirocco",
+    datum: "2026-07-19",
+    zin: "A big clean-up after a full-site audit. The rain card on the homepage now gives a timing answer instead of a yes/no, six pages that had no heading got one back, a duplicate flip-flops entry is gone and the overview questions match the page titles again. We also switched the affiliate advice blocks live with bol as the base, and put statistics behind a cookie bar so an analytics cookie only appears after consent, with matching security headers.",
+  },
+  {
     versie: "3.30.0",
     codenaam: "Mistral",
     datum: "2026-07-18",

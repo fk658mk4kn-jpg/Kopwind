@@ -47,4 +47,12 @@ export const faq = [
     v: "Hoe weet de check hoeveel sneeuw er ligt?",
     a: "Deze check gebruikt het verwachte sneeuwdek en de verse sneeuwval uit het weermodel; het is de enige tool op de site die dat doet. Dat is een verwachting, geen meting ter plekke, dus in heuvelachtig of stedelijk gebied kan het lokaal afwijken. Gebruik het als indicatie en kijk zo nodig even buiten.",
   },
+  {
+    v: "Hoe lang blijft de sneeuw liggen?",
+    a: "Dat hangt vooral van de temperatuur af. Blijft het rond of onder nul, dan houdt een pak sneeuw zich dagen; komt er dooi met een paar graden boven nul, zon of regen, dan is het vaak binnen een dag weg. De check waarschuwt op een dooidag, zodat je er op tijd bij bent.",
+  },
+  {
+    v: "Wat trek ik aan voor een dag in de sneeuw?",
+    a: "Waterdichte, warme laagjes, waterdichte handschoenen en schoenen met grip, want natte kou koelt snel af. Voor kinderen is een reservepaar handschoenen geen overbodige luxe. Wil je weten hoe koud het echt aanvoelt, dan helpt de [kledingcheck](tool:wat-trek-ik-aan) met het laagjesadvies.",
+  },
 ];

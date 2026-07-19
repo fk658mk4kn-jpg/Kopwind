@@ -7,6 +7,7 @@ export const seo = {
   title: "Moet ik vandaag water geven? Gieten of wachten op regen",
   description:
     "Moet ik de planten water geven vandaag? De check kijkt anderhalve dag vooruit: gieten, of doet de regen het werk? Met het beste gietmoment. Gratis.",
+  h1: "Moet ik de planten water geven?",
   intro:
     "De duurste liter water is de liter die een uur voor de regenbui de tuin in gaat. Deze check kijkt anderhalve dag vooruit en zegt eerlijk wanneer je de gieter kunt laten staan; moet er wel water bij, dan krijg je het beste moment erbij.",
 };

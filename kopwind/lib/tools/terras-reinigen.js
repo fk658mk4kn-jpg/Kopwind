@@ -19,7 +19,7 @@ const T = kies({
   nl: {
     slug: "terras-reinigen",
     naam: "Kan ik vandaag het terras reinigen?",
-    korteVraag: "Kan ik vandaag reinigen?",
+    korteVraag: "Kan ik vandaag het terras reinigen?",
     meldingKort: "Reinigcheck",
     cta: "Check het klusweer",
     navLabel: "Terras reinigen",
@@ -57,7 +57,7 @@ const T = kies({
   en: {
     slug: "patio-cleaning",
     naam: "Can I clean the patio today?",
-    korteVraag: "Can I pressure-wash today?",
+    korteVraag: "Can I clean the patio today?",
     meldingKort: "Cleaning check",
     cta: "Check the job weather",
     navLabel: "Patio cleaning",
@@ -203,5 +203,14 @@ export const terrasReinigen = {
   },
   adviesLabels: T.adviesLabels,
   bijgewerkt: "2026-07-18",
-  affiliate: null,
+  affiliate: {
+    kop: { nl: "Het terras schoon", en: "A clean patio" },
+    advies: {
+      nl: "Groene aanslag gaat er het makkelijkst af op een milde, droge dag: een terrasreiniger voor de aanslag en, voor het grovere werk, een hogedrukreiniger (houd afstand van voegen en zachte steen). Wil je de tegels daarna beschermen, dan is impregneermiddel op een droge dag de moeite waard.",
+      en: "Green growth comes off easiest on a mild, dry day: a patio cleaner for the film and, for the heavier work, a pressure washer (keep your distance from joints and soft stone). To protect the tiles afterwards, an impregnator on a dry day is worthwhile.",
+    },
+    items: [
+      { label: { nl: "Terrasreiniger", en: "Patio cleaner" }, url: "https://www.bol.com/nl/nl/s/?searchtext=terrasreiniger", partner: "bol.com" },
+    ],
+  },
 };

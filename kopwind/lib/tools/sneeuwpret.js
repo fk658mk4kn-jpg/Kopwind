@@ -18,7 +18,7 @@ const T = kies({
   nl: {
     slug: "sneeuwpret",
     naam: "Kan er vandaag gesleed worden?",
-    korteVraag: "Is er sneeuwpret vandaag?",
+    korteVraag: "Kan er vandaag gesleed worden?",
     meldingKort: "Sneeuwpretcheck",
     cta: "Check de sneeuw",
     navLabel: "Sneeuwpret",
@@ -52,7 +52,7 @@ const T = kies({
   en: {
     slug: "snow-play",
     naam: "Can we go sledding today?",
-    korteVraag: "Snow fun today?",
+    korteVraag: "Can we go sledding today?",
     meldingKort: "Snow play check",
     cta: "Check the snow",
     navLabel: "Snow play",
@@ -225,5 +225,14 @@ export const sneeuwpret = {
   },
   adviesLabels: T.adviesLabels,
   bijgewerkt: "2026-07-18",
-  affiliate: null,
+  affiliate: {
+    kop: { nl: "Klaar voor de sneeuw", en: "Ready for the snow" },
+    advies: {
+      nl: "Sneeuwpret staat of valt met droog en warm blijven: een slee die glijdt, waterdichte handschoenen en een pak dat de sneeuw buiten houdt maken het verschil tussen een uur en een middag buiten. Een stevige slee gaat jaren mee en is elke winter weer raak.",
+      en: "Snow fun stands or falls with staying warm and dry: a sled that glides, waterproof gloves and a suit that keeps the snow out make the difference between an hour and an afternoon outside. A sturdy sled lasts for years.",
+    },
+    items: [
+      { label: { nl: "Sleeen en bobsleeen", en: "Sleds" }, url: "https://www.bol.com/nl/nl/s/?searchtext=slee", partner: "bol.com" },
+    ],
+  },
 };

@@ -1,4 +1,4 @@
-import { AFFILIATE_DISCLOSURE } from "@/lib/affiliate";
+import { AFFILIATE_DISCLOSURE, metPartnerlink } from "@/lib/affiliate";
 import { kies } from "@/lib/i18n/locale";
 import TekstMetLinks from "@/components/TekstMetLinks";
 import Icoon from "@/components/Icoon";
@@ -13,15 +13,16 @@ import Icoon from "@/components/Icoon";
  * Geeft null terug als de tool geen affiliate-blok heeft, zodat de
  * toolpagina hem onvoorwaardelijk kan aanroepen.
  */
-export default function AdviesBlok({ affiliate }) {
+export default function AdviesBlok({ affiliate, toolId = "" }) {
   if (!affiliate) return null;
   const disclosure = kies(affiliate.disclosure ?? AFFILIATE_DISCLOSURE);
+  const items = metPartnerlink(affiliate.items, toolId);
   return (
     <section className="adviesblok" aria-label={kies(affiliate.kop)}>
       <h2>{kies(affiliate.kop)}</h2>
       <p><TekstMetLinks tekst={kies(affiliate.advies)} /></p>
       <div className="adviesblok-links">
-        {affiliate.items.map((it, i) => (
+        {items.map((it, i) => (
           <a
             key={i}
             href={it.url}

@@ -20,7 +20,7 @@ const T = kies({
   nl: {
     slug: "paardrijden",
     naam: "Kan ik vandaag buiten paardrijden?",
-    korteVraag: "Kan ik vandaag buiten rijden?",
+    korteVraag: "Kan ik vandaag buiten paardrijden?",
     meldingKort: "Paardrijcheck",
     cta: "Check de rit",
     navLabel: "Paardrijden",
@@ -56,8 +56,8 @@ const T = kies({
   },
   en: {
     slug: "horse-riding",
-    naam: "Can I ride outside today?",
-    korteVraag: "Can I ride outside today?",
+    naam: "Can I go horse riding today?",
+    korteVraag: "Can I go horse riding today?",
     meldingKort: "Riding check",
     cta: "Check the ride",
     navLabel: "Horse riding",

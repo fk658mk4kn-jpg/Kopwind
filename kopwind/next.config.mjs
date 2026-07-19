@@ -7,6 +7,41 @@ const isEn = process.env.NEXT_PUBLIC_SITE_LOCALE === "en";
 const nextConfig = {
   reactStrictMode: true,
   basePath: isEn ? "/en" : undefined,
+  async headers() {
+    // Content Security Policy: eigen origin plus de enige externe bronnen
+    // die de site echt gebruikt (OpenStreetMap-tegels voor de kaart en,
+    // alleen na cookietoestemming, Google Analytics). 'unsafe-inline' is
+    // nodig voor de inline-scripts van Next en de GA-init; externe scripts
+    // van onbekende domeinen worden wel geblokkeerd.
+    const csp = [
+      "default-src 'self'",
+      "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com",
+      "connect-src 'self' https://*.google-analytics.com https://www.googletagmanager.com",
+      "img-src 'self' data: https://tile.openstreetmap.org https://*.google-analytics.com https://www.googletagmanager.com",
+      "style-src 'self' 'unsafe-inline'",
+      "font-src 'self' data:",
+      "worker-src 'self'",
+      "manifest-src 'self'",
+      "object-src 'none'",
+      "base-uri 'self'",
+      "form-action 'self'",
+      "frame-ancestors 'none'",
+    ].join("; ");
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          { key: "Content-Security-Policy", value: csp },
+          { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "X-Frame-Options", value: "DENY" },
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+          { key: "Permissions-Policy", value: "geolocation=(self), camera=(), microphone=(), payment=(), usb=(), browsing-topics=()" },
+          { key: "X-DNS-Prefetch-Control", value: "on" },
+        ],
+      },
+    ];
+  },
   async redirects() {
     return [
       // Kortere of oudere paden naar de canonieke toolslugs.

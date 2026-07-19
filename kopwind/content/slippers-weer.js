@@ -8,6 +8,7 @@ export const seo = {
   title: "Is het slippersweer vandaag? Direct ja of nee",
   description:
     "Is het slippersweer vandaag? Direct antwoord op gevoelstemperatuur en regen: ja, nee of een twijfelgeval met reden. Gratis, zonder account.",
+  h1: "Is het slippersweer vandaag?",
   intro:
     "Slippers vragen net iets meer van het weer dan een korte broek: warme voeten willen echte zomerse graden, en natte zolen zijn glad. Deze check geeft direct ja of nee, met het volledige kledingadvies eronder.",
 };
@@ -23,6 +24,11 @@ export const blokken = [
     tekst:
       "Rubber op natte tegels is glad, en natte voeten blijven nat. Bij buien op je momenten buiten zet de check het antwoord daarom op twijfel of nee, ook als het warm genoeg is. Handig om even mee te nemen: [wanneer gaat het regenen](tool:regen-timing) laat de buientiming op de minuut zien.",
   },
+  {
+    kop: "De ochtend en avond zijn de valkuil",
+    tekst:
+      "Op een warme dag kan het midden op de dag prima slipperweer zijn, terwijl je 's ochtends vroeg en na zonsondergang koude tenen krijgt: blote voeten koelen sneller af dan de rest van je lichaam, zeker als er wind staat. De check kijkt daarom naar het verloop van de dag en jouw momenten buiten, niet alleen naar de warmste piek. Ben je vooral 's avonds op pad, dan valt het oordeel eerder op twijfel.",
+  },
 ];
 
 export const faq = [
@@ -37,5 +43,13 @@ export const faq = [
   {
     v: "Geldt dit ook voor sandalen?",
     a: "Grotendeels wel: de temperatuurgrens is vergelijkbaar. Sandalen met een hielband zitten vaster en zijn bij een spatje regen minder glad, dus daar mag je het twijfelgeval ruimer nemen.",
+  },
+  {
+    v: "Kan ik op slippers fietsen?",
+    a: "Het mag, maar loszittende slippers kunnen van het pedaal glijden of ertussen komen, wat op de fiets gevaarlijk is. Sandalen met een hielband zitten vaster en zijn een veiliger keuze onderweg. Deze check gaat over het weer, niet over de veiligheid, dus houd dat zelf in gedachten.",
+  },
+  {
+    v: "Is het 's avonds nog slippersweer?",
+    a: "Vaak niet. Zodra de zon zakt, koelt het snel af en voelen blote voeten dat als eerste. Zet je buitentijd in de check op de avond, dan weegt het de avonduren mee en krijg je eerder een nee of twijfel dan bij een middagtrip.",
   },
 ];

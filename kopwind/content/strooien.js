@@ -47,4 +47,12 @@ export const faq = [
     v: "Ben ik verplicht mijn stoep sneeuwvrij te maken?",
     a: "In Nederland is er geen landelijke wettelijke plicht, maar veel gemeenten verwachten van bewoners dat ze de stoep voor hun deur begaanbaar houden, en je kunt aansprakelijk zijn als iemand valt door nalatigheid. Los daarvan is het gewoon prettig en veilig voor jezelf en je buren. De check helpt je op tijd te strooien of te ruimen.",
   },
+  {
+    v: "Hoeveel strooizout heb ik nodig?",
+    a: "Minder dan je denkt: een handvol per vierkante meter is genoeg om gladheid te voorkomen. Meer strooien werkt niet beter en is slecht voor je bestrating, planten en de poten van huisdieren. Strooi dun en gelijkmatig, het liefst voordat het gaat vriezen zodat het zout zich verdeelt.",
+  },
+  {
+    v: "Werkt strooizout ook bij strenge vorst?",
+    a: "Gewoon keuken- of wegenzout werkt tot ongeveer min acht a min tien graden; daaronder wordt het snel minder effectief. Bij strenge vorst helpt vooraf strooien het meest, voordat het echt koud wordt, en kun je eventueel een zout gebruiken dat tot lagere temperaturen werkt. Ruim bij sneeuw eerst mechanisch en strooi daarna op de restjes.",
+  },
 ];

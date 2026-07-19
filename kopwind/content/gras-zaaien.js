@@ -7,6 +7,7 @@ export const seo = {
   title: "Kan ik vandaag gras zaaien? Zaaiweer en het beste moment",
   description:
     "Kan ik vandaag gras zaaien? De check weegt bodemwarmte, regen vooruit en het zaaiseizoen, voor doorzaaien en een nieuw gazon. Gratis.",
+  h1: "Kan ik vandaag gras zaaien?",
   intro:
     "Graszaad is goedkoop, maar een mislukt zaaibed kost je zes weken. Het verschil zit bijna altijd in de timing: de bodem moet warm genoeg zijn, de zaaidag rustig, en de twee weken erna vochtig. Deze check weegt alle drie en kent de kalender.",
 };

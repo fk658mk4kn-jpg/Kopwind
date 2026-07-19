@@ -7,6 +7,7 @@ export const seo = {
   title: "Weeding or hoeing? The best day and the best method",
   description:
     "Can I tackle the weeds today? Hoeing wants dry and sunny, hand-weeding wants moist soil: the check picks the method of the day. Free.",
+  h1: "Can I tackle the weeds today?",
   intro:
     "Fighting weeds has two schools with opposite weather wishes: hoeing wants a dry, sunny day so the loosened weeds shrivel where they lie, hand-weeding wants moist soil so the root comes out whole. This check scores both and tells you which method pays off today.",
 };

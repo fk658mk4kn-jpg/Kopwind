@@ -7,6 +7,7 @@ export const seo = {
   title: "Wielrenweer vandaag: is het en wordt het goed rijweer?",
   description:
     "Is het wielrenweer vandaag? Zie het beste droge blok met hanteerbare wind voor een rit op de racefiets, met vertrektijd en reden. Gratis.",
+  h1: "Is het wielrenweer vandaag?",
   intro:
     "De wielrencheck zoekt het beste blok voor een rit op de racefiets: droog wegdek voorop, daarna wind, en pas dan temperatuur. Je ziet per dag of het rijweer is, wanneer je het beste vertrekt en waarom.",
 };

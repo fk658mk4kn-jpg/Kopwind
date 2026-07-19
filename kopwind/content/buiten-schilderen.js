@@ -47,4 +47,12 @@ export const faq = [
     v: "Waarin verschilt deze check van de houtbehandelcheck?",
     a: "Schilderen legt een laag op het hout of de muur, beitsen en oliën trekken juist in het hout. Voor beitsen moet het hout zelf droog zijn (dus telt de regen van eerder op de dag mee) en heeft de laag langer nodig om in te trekken. Voor die klus is er de aparte houtbehandelcheck; deze check gaat over dekkende verf op hout, muur of metaal.",
   },
+  {
+    v: "Kan ik schilderen als er die nacht vorst komt?",
+    a: "Liever niet. Verse verf is de eerste nacht nog kwetsbaar: vorst kan de laag laten barsten of slecht laten hechten voordat hij is uitgehard. Komt de temperatuur die nacht richting het vriespunt, stel het schilderen dan uit tot een periode waarin ook de nachten zacht blijven.",
+  },
+  {
+    v: "Wat is het beste moment op de dag om buiten te schilderen?",
+    a: "Laat in de ochtend tot vroeg in de middag is meestal ideaal: de dauw is opgetrokken, de temperatuur zit in de goede band en je houdt genoeg droogtijd over voor de avond. Vermijd het vroege dauw-uur en de late avond, en schilder niet op een vlak dat op dat moment in de volle middagzon staat, want dan droogt de verf te snel.",
+  },
 ];

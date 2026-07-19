@@ -129,7 +129,7 @@ export default function ToolPagina({ params }) {
         <DeelKnop />
       </div>
       <AdSlot plek="onder-tool" />
-      <AdviesBlok affiliate={tool.affiliate} />
+      <AdviesBlok affiliate={tool.affiliate} toolId={tool.id} />
 
       <section className="seotekst">
         {/* Varianten (jas, korte-broek, t-shirt) hebben bewust nog geen

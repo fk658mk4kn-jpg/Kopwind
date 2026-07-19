@@ -47,4 +47,12 @@ export const faq = [
     v: "Waarom weegt wind mee?",
     a: "Een hogedrukreiniger maakt een fijne nevel die bij stevige wind alle kanten op waait: over jezelf, de schoongemaakte gevel en de ramen. Dat maakt het werk onaangenaam en minder netjes. De check verlaagt de score bij harde wind, zodat je een luwe dag kiest.",
   },
+  {
+    v: "In welk seizoen kan ik mijn terras het best reinigen?",
+    a: "Het voorjaar is favoriet: na de winter zit er groene aanslag en vuil op de tegels, en een milde droge lentedag is prettig werken en laat de tegels daarna goed opdrogen. Reinigen kan het hele jaar op een vorstvrije, droge dag, maar sla de echte vrieskou van hartje winter over.",
+  },
+  {
+    v: "Hoe lang moet het terras drogen na het reinigen?",
+    a: "Op een milde, winderige dag is de bovenlaag na een paar uur droog genoeg om te belopen. Wil je daarna impregneren of een coating aanbrengen, reken dan op een langere droogperiode van vaak een dag, en zet in de check de optie aan dat het daarna droog moet blijven.",
+  },
 ];

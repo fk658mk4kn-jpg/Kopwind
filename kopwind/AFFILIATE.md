@@ -1,10 +1,21 @@
 # Affiliate op kanhetvandaag.nl
 
-Onderzoek en implementatiegids (v3.30.0 "Mistral", 2026-07-18). Dit
-document beantwoordt drie vragen: hoe werkt affiliate technisch, welk
-netwerk past bij deze site, en hoe vul je het per tool in. De uitrol
-staat nog gepauzeerd; dit is de voorbereiding zodat aanzetten straks
-een kwestie is van velden invullen, niet van code schrijven.
+Onderzoek en implementatiegids (bijgewerkt v3.31.0 "Sirocco",
+2026-07-19). Dit document beantwoordt drie vragen: hoe werkt affiliate
+technisch, welk netwerk past bij deze site, en hoe vul je het per tool in.
+
+**Status: bol staat live.** De plumbing is ingevuld met bol. In
+lib/affiliate.js zit een centrale deeplink-helper (BOL_SITE_ID uit de
+omgevingsvariabele NEXT_PUBLIC_BOL_SITE_ID, plus bolLink, ttLink en
+metPartnerlink). AdviesBlok bouwt elke bol-link centraal om naar een
+partner.bol.com-deeplink met de tool-id als subid. Acht tools hebben nu
+een adviesblok: zonkracht, was-buiten-drogen, planten-beschermen,
+sneeuwpret, strooien, terras-reinigen, buiten-schilderen en
+hout-behandelen. Zolang BOL_SITE_ID leeg is blijven het gewone werkende
+bol-links (geen commissie, wel functioneel); ze gaan tracken zodra jij je
+SiteId invult. Uitbreiden naar meer tools is een bol-zoek-URL in het
+affiliate-veld zetten. TradeTracker is het upgrade-pad voor de
+niche-marge (paragraaf 3 en 7).
 
 ## 1. Hoe het technisch werkt
 

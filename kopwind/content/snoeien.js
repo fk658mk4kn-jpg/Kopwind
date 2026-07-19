@@ -7,6 +7,7 @@ export const seo = {
   title: "Kan ik vandaag snoeien? Vorst, nat en seizoen gewogen",
   description:
     "Kan ik vandaag snoeien? De check weegt vorst rond de snoeidag, natte dagen en hitte, en vertelt wat het seizoen deze maand toelaat. Gratis.",
+  h1: "Kan ik vandaag snoeien?",
   intro:
     "Snoeien is een dagbesluit met twee lagen: het weer van vandaag (vorst, nat, hitte) en het seizoen (wat je in februari fors terugsnoeit, laat je in oktober met rust). Deze check weegt allebei en geeft er de maandcontext bij.",
 };

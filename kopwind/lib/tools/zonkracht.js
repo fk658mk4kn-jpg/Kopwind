@@ -244,7 +244,7 @@ export const zonkracht = {
       en: "From UV 3 sunscreen is the advice, and on peak days you want factor 30 or higher, applied generously and repeated every two hours. A high-factor bottle you actually like using gets used more often; that matters more than the exact number on the label.",
     },
     items: [
-      { label: { nl: "Zonnebrand factor 30 en hoger", en: "Sunscreen factor 30 and up" }, url: "https://www.kruidvat.nl/", partner: "Kruidvat" },
+      { label: { nl: "Zonnebrand factor 30 en hoger", en: "Sunscreen factor 30 and up" }, url: "https://www.bol.com/nl/nl/s/?searchtext=zonnebrand", partner: "bol.com" },
     ],
   },
 };

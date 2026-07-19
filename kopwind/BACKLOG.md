@@ -121,6 +121,16 @@ even een stadpagina bekijken en de bron controleren op het blok.
 
 ## Open punten (feedback Martijn, juli 2026)
 
+- **CSP verifieren op productie (v3.31.0)**: de Content-Security-Policy in
+  next.config.mjs is opgesteld op basis van broninventarisatie in de code,
+  niet tegen productie getest. Na de deploy de browserconsole checken op
+  CSP-waarschuwingen (vooral de kaart en, na cookie-akkoord, GA) en zo
+  nodig een bron toevoegen. Zie SECURITY.md.
+- **Statistiek-keuze (v3.31.0)**: GA staat nu achter de cookiebalk
+  (compliant). Alternatief zonder banner is cookieloze statistiek (Vercel
+  Web Analytics of Plausible), wat beter bij de faceless opzet past. Keuze
+  aan Martijn; zie SECURITY.md paragraaf 1.
+
 - **Engelse content voor de vijftien Ghibli-checks (v3.29.0)**: de
   motoren zijn tweetalig en de stad-templates, ankertermen en
   beslissingen staan in beide talen, maar de EN-contentbestanden
@@ -187,17 +197,31 @@ scrollt op mobiel naar de kaart, en de adviesVoorScore-audit is
 afgerond (nergens meer in de UI; intern contract met waarschuwend
 commentaar).
 
-## Affiliate (GEPAUZEERD, onderzoek gedaan v3.30.0)
+## Affiliate (LIVE met bol, v3.31.0)
 
-ONDERZOEK AFGEROND (v3.30.0, opdracht Martijn): hoe affiliate per tool
-werkt, welk netwerk en hoe, staat volledig uitgewerkt in AFFILIATE.md
-(root). Kort: bol.com als ruggengraat (breed, commissie 3-8 procent over
-de hele winkelwagen, open vanaf 18 jaar) plus TradeTracker voor de
-huis-en-tuinmarge (Gamma en Karwei exclusief daar), later eventueel Awin
-voor Decathlon-outdoor. Disclosure verplicht (AdviesBlok voldoet).
-Geflagd: nooit het Coolblue-programma (werkgeversconflict), en de
-uitbetaalkant is niet anoniem naar het netwerk. Concrete acties voor
-Martijn staan in AFFILIATE.md paragraaf 7.
+GEIMPLEMENTEERD (v3.31.0): de plumbing is ingevuld met bol. Centrale
+deeplink-helper in lib/affiliate.js (BOL_SITE_ID uit
+NEXT_PUBLIC_BOL_SITE_ID, bolLink, ttLink als upgrade-pad, metPartnerlink);
+AdviesBlok bouwt bol-links centraal om met de tool-id als subid. Acht
+tools met een blok: zonkracht, was-buiten-drogen, planten-beschermen,
+sneeuwpret, strooien, terras-reinigen, buiten-schilderen, hout-behandelen.
+Zolang BOL_SITE_ID leeg is zijn het gewone werkende bol-links; ze gaan
+tracken zodra Martijn zijn SiteId invult. Volledige uitleg, de
+netwerkkeuze en het TradeTracker-upgrade-pad per categorie staan in
+AFFILIATE.md.
+
+**Nog te doen door Martijn:**
+- bol SiteId invullen (NEXT_PUBLIC_BOL_SITE_ID in Vercel) om commissie te
+  laten tellen.
+- Optioneel TradeTracker aanzetten voor de niche-marge (verf, tuin, fiets,
+  sport): per campagne aanmelden, de webservice activeren, en de
+  campaign/material-id's invullen (ttLink staat klaar, affiliate-id 308800
+  zit erin). AFFILIATE.md paragraaf 3 heeft de mapping per categorie.
+- Uitbreiden naar meer tools volgt hetzelfde patroon: een bol-zoek-URL in
+  het affiliate-veld zetten.
+
+**Coolblue: bewust NIET.** Werkgeversconflict, en electronics past niet
+bij de niet-electronische weertools. Zie AFFILIATE.md paragraaf 6.
 
 Uitrol staat stil tot de site zelf 100 procent staat. De twee
 placeholder-adviesblokken (zonkracht, was-buiten-drogen) blijven staan

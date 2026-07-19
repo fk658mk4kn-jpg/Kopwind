@@ -47,4 +47,12 @@ export const faq = [
     v: "Wat is het verschil met de schildercheck?",
     a: "Schilderen legt een dekkende laag op het oppervlak; die hoeft niet in het hout te trekken, dus telt vooral of het oppervlak droog is tijdens het werk. Beitsen en olien trekken in het hout, dus moet het hout zelf droog zijn (eerdere regen telt mee) en heeft de laag langer nodig om droog te blijven. Voor dekkende verf is er de aparte schildercheck.",
   },
+  {
+    v: "Hoe weet ik of het hout droog genoeg is om te beitsen?",
+    a: "Vuistregel: na regen minstens een halve dag droog en zonnig weer, en het hout voelt droog aan en is lichter van kleur dan nat hout. Twijfel je, dan geeft een simpele houtvochtmeter uitsluitsel; onder ongeveer vijftien procent vocht neemt het hout beits en olie goed op. Hout in de schaduw of op het noorden heeft langer nodig.",
+  },
+  {
+    v: "Kan ik in het najaar nog beitsen?",
+    a: "Ja, mits je een droge, milde dag pakt. Let in het najaar extra op de dauw: in de vroege ochtend en de avond is het hout vaak klam, dus het bruikbare venster is korter, grofweg tussen elf en vier. De laag droogt bovendien trager bij lagere temperaturen, dus houd langer rekening met een bui erna.",
+  },
 ];

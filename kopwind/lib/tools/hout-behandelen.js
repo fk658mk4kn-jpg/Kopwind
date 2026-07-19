@@ -204,5 +204,14 @@ export const houtBehandelen = {
   },
   adviesLabels: T.adviesLabels,
   bijgewerkt: "2026-07-18",
-  affiliate: null,
+  affiliate: {
+    kop: { nl: "Beits en olie die intrekken", en: "Stain and oil that soak in" },
+    advies: {
+      nl: "Beits en olie trekken alleen goed in droog hout, dus pak een droge dag na een droge periode; kies beits voor kleur en bescherming of olie voor een natuurlijke, matte finish. Een beits die past bij je houtsoort en een goede kwast maken het verschil tussen een seizoen en jaren mee.",
+      en: "Stain and oil only soak into dry wood, so pick a dry day after a dry spell; choose stain for colour and protection or oil for a natural, matte finish. The right stain for your wood and a good brush make the difference.",
+    },
+    items: [
+      { label: { nl: "Beits en houtolie", en: "Wood stain and oil" }, url: "https://www.bol.com/nl/nl/s/?searchtext=beits", partner: "bol.com" },
+    ],
+  },
 };
