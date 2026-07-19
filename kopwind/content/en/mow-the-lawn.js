@@ -34,7 +34,7 @@ export const faq = [
   },
   {
     v: "What is the best time of day to mow?",
-    a: "The late afternoon of a dry day: the dew is long gone, the grass is at its driest and the lawn has the night to recover. Early morning is unwise because of dew, the middle of a hot day because of scorch stress.",
+    a: "The late afternoon of a dry day: the dew is long gone, the grass is at its driest and the lawn has the night to recover. Early morning is unwise because of dew, the middle of a hot day because of scorch stress. Pairing the mow with the hedge shears? [The pruning check](tool:snoeien) weighs frost, wet and the season for you.",
   },
   {
     v: "Does it matter which mower I have?",

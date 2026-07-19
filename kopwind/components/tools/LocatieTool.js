@@ -145,6 +145,12 @@ export default function LocatieTool({ toolId, beginLocatie = null, variantId = n
             {dag.conditie.redenen.length > 0 && (
               <p className="uitleg waarom">{S.locatieTool.waarom} {zinnen(dag.conditie.redenen)}</p>
             )}
+            {/* v3.26.0 (feedback): "Wat het oordeel bepaalt" hoort
+                direct onder het oordeel zelf, niet in een los paneel
+                verderop. Zelfde data, andere plek. */}
+            {hourly && (
+              <FactorBalken factoren={factorenVoor(tool.id, hourly, gekozen, dag.venster)?.factoren} />
+            )}
           </section>
         )}
       </div>
@@ -167,10 +173,6 @@ export default function LocatieTool({ toolId, beginLocatie = null, variantId = n
       {dagen && dag && (
         <section className="resultaten" aria-label="Details">
           <div className="paneel">
-            {hourly && (
-              <FactorBalken factoren={factorenVoor(tool.id, hourly, gekozen, dag.venster)?.factoren} />
-            )}
-
             <div className="dagkiezer">
               {dagen.map((d, i) => (
                 <button

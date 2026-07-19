@@ -9,7 +9,7 @@ export const hub = {
   faq: [
     {
       v: "Wat is Kan het vandaag?",
-      a: "Zeven gratis checks die live weer en pollen omzetten in een antwoord: fiets ik naar werk, kan de was buiten drogen, wordt het terrasweer, wat trek ik aan, kan de barbecue aan, moet ik smeren en krijg ik hooikoorts. Je krijgt een antwoord in gewone woorden, het beste moment en de reden erbij. Zonder account.",
+      a: "Gratis keuzehulpen die live weer en pollen omzetten in een antwoord op een concrete vraag: fiets ik naar werk, kan de was buiten drogen, wordt het terrasweer, wat trek ik aan, en tientallen meer. Je krijgt een antwoord in gewone woorden, het beste moment en de reden erbij. Zonder account.",
     },
     {
       v: "Hoe actueel is het antwoord?",
@@ -17,7 +17,7 @@ export const hub = {
     },
     {
       v: "Kan ik een seintje krijgen?",
-      a: "Ja. Zet een check op je beginscherm, kies je dagen en tijden, en of je alleen goed of juist slecht nieuws wilt horen. Apparaten koppel je met een synccode, zonder e-mailadres.",
+      a: "Ja. Zet een keuzehulp op je beginscherm, kies je dagen en tijden, en of je alleen goed of juist slecht nieuws wilt horen. Apparaten koppel je met een synccode, zonder e-mailadres.",
     },
   ],
 };

@@ -6,6 +6,42 @@
 
 export const VERSIES = [
   {
+    versie: "3.30.0",
+    codenaam: "Mistral",
+    datum: "2026-07-18",
+    zin: "Zes nieuwe keuzehulpen rond winter en klussen in en om het huis, plus uitgezocht hoe affiliate zou werken. Nieuw: buiten schilderen, hout behandelen (beitsen en olien), het terras reinigen, planten beschermen tegen nachtvorst, sneeuwpret en strooien. Bijzonder: de sneeuwpretcheck gebruikt als enige het sneeuwdek, de vorstcheck rekent stralingsvorst mee (op een heldere nacht is het aan de grond kouder dan de lucht), en de strooicheck gaat over je eigen stoep, niet over de weg. Verder een stille fout hersteld waardoor de mist- en vischeck live geen zicht- en drukdata kregen.",
+  },
+  {
+    versie: "3.29.0",
+    codenaam: "Ghibli",
+    datum: "2026-07-18",
+    zin: "Vijftien nieuwe keuzehulpen erbij, en drie vervelende bugs eruit. Nieuw: golfen, skeeleren, motorrijden, de hond uitlaten, vliegeren, de vuurkorf, drone vliegen, paardrijden, vissen, natuurijs, mist, storm, de houtkachel, het huis koel houden en kamperen. Bijzonder: de vischeck gebruikt als enige de luchtdruk, de vliegercheck zoekt juist de beste wind in plaats van de minste, en de natuurijscheck weegt de vorst maar laat het oordeel over het ijs altijd aan de ijsclub. Verder losten we een paar fouten op die het zoekverkeer raakten, waaronder de breadcrumb-melding in Search Console.",
+  },
+  {
+    versie: "3.28.0",
+    codenaam: "Ostria",
+    datum: "2026-07-18",
+    zin: "De tuin heeft nu een eigen plek: een nieuwe categorie Tuin en planten met drie nieuwe checks. De onkruidcheck kiest de methode van de dag (schoffelen bij droog en zon, wieden bij vochtige grond), de gietcheck zegt eerlijk wanneer de regen het werk doet, en de zaaicheck kent de twee zaaivensters van het gazon. Plus nieuwe antwoorden over bemesten, bladeren en de moestuin.",
+  },
+  {
+    versie: "3.27.0",
+    codenaam: "Solano",
+    datum: "2026-07-18",
+    zin: "Elke stadpagina toont het antwoord nu direct bovenaan, ook voordat de check geladen is, en de fietscheck heeft eindelijk zijn eigen statusstip (op de spitsen). Nieuw: de snoeicheck weegt vorst, nat en hitte en vertelt wat het snoeiseizoen deze maand toelaat, met een vogelnest-herinnering voor wie hagen snoeit. Plus drie nieuwe tuinvragen in het overzicht.",
+  },
+  {
+    versie: "3.26.0",
+    codenaam: "Gregale",
+    datum: "2026-07-18",
+    zin: "De adviezen klinken nu natuurlijker en kloppen beter met het moment: geen krabadvies in juli meer (dat was een echte fout), geen tips over dagdelen of buien die al voorbij zijn, en als het de hele dag goed is zeggen we dat gewoon. Op de fietstool staat na het checken de heenweg klaar, en op de homepage kun je nu direct een keuzehulp zoeken.",
+  },
+  {
+    versie: "3.25.0",
+    codenaam: "Pampero",
+    datum: "2026-07-17",
+    zin: "Nieuw: de wielrencheck zoekt het beste blok voor een rit op de racefiets, met droog wegdek en hanteerbare wind voorop. De paraplu- en regentiming-check tonen nu ook een statusstip op de homepage, en de kledingcheck kreeg er een slippersvraag bij met direct ja of nee.",
+  },
+  {
     versie: "3.24.0",
     codenaam: "Khamsin",
     datum: "2026-07-17",

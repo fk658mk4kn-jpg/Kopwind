@@ -9,7 +9,7 @@ export const hub = {
   faq: [
     {
       v: "What is Good day for it?",
-      a: "Seven free checks that turn live weather and pollen into an answer: bike to work, dry laundry outside, sit outside, what to wear, barbecue tonight, do I need sunscreen and will I get hay fever. You get an answer in plain words, the best moment and the reason. No account.",
+      a: "Free guides that turn live weather and pollen into an answer to a concrete question: bike to work, dry laundry outside, sit outside, what to wear, and dozens more. You get an answer in plain words, the best moment and the reason. No account.",
     },
     {
       v: "How fresh is the answer?",
@@ -17,7 +17,7 @@ export const hub = {
     },
     {
       v: "Can I get a notification?",
-      a: "Yes. Put a check on your home screen, pick your days and times, and choose whether you want good news only or a warning on bad news. Devices link with a sync code, no email address needed.",
+      a: "Yes. Put a guide on your home screen, pick your days and times, and choose whether you want good news only or a warning on bad news. Devices link with a sync code, no email address needed.",
     },
   ],
 };

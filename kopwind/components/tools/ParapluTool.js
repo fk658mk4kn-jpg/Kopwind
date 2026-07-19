@@ -22,7 +22,7 @@ import { fmtTijd } from "@/lib/format";
  */
 const BUITENUREN = [2, 4, 12]; // kort, uurtje, hele dag: hoeveel uur vooruit kijken
 
-export default function ParapluTool() {
+export default function ParapluTool({ beginLocatie = null }) {
   const tool = TOOLS.find((t) => t.id === "paraplu");
   const g = useGebruiker();
   const [advies, setAdvies] = useState(null);
@@ -81,7 +81,7 @@ export default function ParapluTool() {
     }
   };
 
-  const { locatie, kiesLocatie } = useLocatie("paraplu", doeCheck);
+  const { locatie, kiesLocatie } = useLocatie("paraplu", doeCheck, beginLocatie);
   const favoriet = isFavoriet(locatie, g.presets);
 
   const wijzigBuitentijd = (i) => {

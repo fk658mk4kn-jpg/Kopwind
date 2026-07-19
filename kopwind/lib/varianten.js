@@ -32,6 +32,13 @@ export const VARIANTEN = [
     vraag: kies({ nl: "Is het T-shirtweer vandaag?", en: "Is it T-shirt weather today?" }),
     bijgewerkt: "2026-07-13",
   },
+  {
+    id: "slippers",
+    ouderId: "wat-trek-ik-aan",
+    slug: kies({ nl: "slippers-weer", en: "flip-flops-weather" }),
+    vraag: kies({ nl: "Is het slippersweer vandaag?", en: "Is it flip-flop weather today?" }),
+    bijgewerkt: "2026-07-17",
+  },
 ];
 
 export function vindVariant(slug) {
@@ -70,10 +77,11 @@ export function maakPseudoTool(variant, ouder) {
  * de laagkeuze verwerkt.
  *
  * Retour is compatibel met de stip-weergave: { ja, conditie: { score,
- * redenen }, variantLabel, zin }. De score is een comfort-signaal voor
- * de stoplichtkleur, niet een oordeel over het antwoord zelf: geen jas
- * nodig kleurt groen, jas aan kleurt amber (frisser of nat), winterjas
- * kleurt rood.
+ * redenen }, variantLabel, zin }. LET OP: de score is een PIJN-score
+ * (0..100, laag is goed) omdat schaalVoor/kleurVoorSchaal daarop
+ * rekenen. Comfort-semantiek: gunstig antwoord 8 (ideaal, groen),
+ * twijfel 38 (twijfelachtig, amber), ongunstig 55 (matig), winterjas
+ * 62 (zeer slecht). Jas aan is 38: informatief, geen ramp.
  */
 export function variantVerdict(variantId, dag) {
   if (!dag?.outfit) return null;
@@ -87,17 +95,28 @@ export function variantVerdict(variantId, dag) {
 
   if (variantId === "korte-broek") {
     ja = laag === 0 ? true : laag === 1 ? "twijfel" : false;
-    score = laag === 0 ? 9 : laag === 1 ? 6 : 3;
+    score = laag === 0 ? 8 : laag === 1 ? 38 : 55;
     zin =
       ja === true
         ? kies({ nl: "Ja, korte broek kan prima.", en: "Yes, shorts are fine." })
         : ja === "twijfel"
           ? kies({ nl: "Twijfelgeval: T-shirtweer, maar de ochtend is fris.", en: "Borderline: T-shirt weather, but the morning is fresh." })
           : kies({ nl: "Nee, vandaag liever een lange broek.", en: "No, long trousers today." });
+  } else if (variantId === "slippers") {
+    ja = laag === 0 && !regen ? true : (laag === 0 && regen) || (laag === 1 && !regen) ? "twijfel" : false;
+    score = ja === true ? 8 : ja === "twijfel" ? 38 : 55;
+    zin =
+      ja === true
+        ? kies({ nl: "Ja, slippers kunnen prima vandaag.", en: "Yes, flip-flops are fine today." })
+        : ja === "twijfel"
+          ? regen
+            ? kies({ nl: "Twijfelgeval: warm genoeg, maar natte zolen zijn glad.", en: "Borderline: warm enough, but wet soles are slippery." })
+            : kies({ nl: "Twijfelgeval: kan in de middag, de randen van de dag zijn fris.", en: "Borderline: fine in the afternoon, the edges of the day are fresh." })
+          : kies({ nl: "Nee, vandaag liever dichte schoenen.", en: "No, closed shoes today." });
   } else if (variantId === "t-shirt") {
     const twijfel = laag === 2 && (dag.outfit.warmsteGevoel ?? -99) >= 16;
     ja = laag <= 1 ? true : twijfel ? "twijfel" : false;
-    score = laag <= 1 ? 9 : twijfel ? 6 : 3;
+    score = laag <= 1 ? 8 : twijfel ? 38 : 55;
     zin =
       ja === true
         ? kies({ nl: "Ja, het is T-shirtweer.", en: "Yes, it's T-shirt weather." })
@@ -106,7 +125,7 @@ export function variantVerdict(variantId, dag) {
           : kies({ nl: "Nee, vandaag is het geen T-shirtweer.", en: "No, not T-shirt weather today." });
   } else if (variantId === "jas") {
     ja = laag >= 3 || (laag === 2 && regen) ? true : laag === 2 ? "twijfel" : false;
-    score = laag >= 4 ? 3 : ja === true ? 4 : ja === "twijfel" ? 6 : 9;
+    score = laag >= 4 ? 62 : ja === true ? 38 : ja === "twijfel" ? 30 : 8;
     zin =
       ja === true
         ? regen && laag < 4

@@ -34,7 +34,7 @@ const T = kies({
     navLabel: "Terras",
     diepte: "Zon, wind en temperatuur zonder gedoe.",
     locatieHint: "Zoek je stad, dat is genoeg...",
-    schaalLabels: { ideaal: "Heerlijk terrasweer", goed: "Prima terrasweer", twijfelachtig: "Prima uit de wind", matig: "Alleen met jas", "zeer-slecht": "Geen terrasdag" },
+    schaalLabels: { ideaal: "Heerlijk terrasweer", goed: "Prima terrasweer", twijfelachtig: "Prima uit de wind", matig: "Met een jas te doen", "zeer-slecht": "Geen terrasdag" },
     adviesLabels: { goed: "terrasweer", matig: "kan, met een vestje", slecht: "geen terrasweer" },
     legenda: { links: "binnen blijven", rechts: "terrasweer" },
     redenNat: "te nat voor het terras",

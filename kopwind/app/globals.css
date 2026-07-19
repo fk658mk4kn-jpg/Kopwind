@@ -2395,6 +2395,51 @@ a.checkkaart:hover .kaartknop { background: var(--geel); }
 }
 .variant-antwoord .variant-zin { color: var(--inkt); }
 
+/* Keuzehulp-zoeker op de homepage (v3.26.0). */
+.zoekchecks { margin: 14px 0 4px; }
+.zoekchecks input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--lijn);
+  border-radius: 10px;
+  font: inherit;
+  background: #fff;
+}
+.zoekchecks-uit { margin-top: 8px; padding: 10px 14px; }
+.zoekchecks-lijst { list-style: none; margin: 0; padding: 0; }
+.zoekchecks-lijst li + li { border-top: 1px solid var(--lijn); }
+.zoekchecks-leeg { margin: 4px 0; color: var(--inkt-zacht); }
+/* Server-antwoordblok op stadpagina's (v3.27.0). */
+.stad-antwoord {
+  margin: 10px 0 4px;
+  padding: 12px 14px;
+  background: #fff;
+  border: 1px solid var(--lijn);
+  border-radius: 12px;
+}
+.stad-antwoord-kern {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  flex-wrap: wrap;
+}
+.stad-antwoord-zin { font-weight: 600; }
+.stad-antwoord-metric { margin: 6px 0 0; }
+.stad-antwoord-noot {
+  margin: 6px 0 0;
+  font-size: 12px;
+  color: var(--inkt-zacht);
+}
+
+.zoekchecks-alle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  font-weight: 600;
+}
+
 /* Stoplicht op alle-checks: label plus stip kleuren via de klasse. */
 .statuslabel.groen { color: var(--groen); }
 .statuslabel.oranje { color: var(--oranje); }

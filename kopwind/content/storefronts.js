@@ -265,7 +265,6 @@ export const STOREFRONTS = kies({
           { situatie: "De was kan misschien naar buiten", toolId: "was-buiten-drogen" },
           { situatie: "De auto is vies en je hebt een uurtje", toolId: "auto-wassen" },
           { situatie: "Schilderen, beitsen of kitten buiten", anchor: "kan-ik-buiten-schilderen-of-beitsen", linkTekst: "Kan ik buiten schilderen of beitsen?" },
-          { situatie: "Het gras wacht op een maaibeurt", toolId: "grasmaaien" },
           { situatie: "Ramen wassen of zemen", toolId: "ramen-wassen" },
           { situatie: "Wasmachine of auto laden op zonnestroom", toolId: "zonnepanelen" },
         ],
@@ -292,20 +291,78 @@ export const STOREFRONTS = kies({
       seizoen: {
         kop: "Klussen rond het huis per seizoen in Nederland",
         items: [
-          { naam: "Lente", tekst: "Veel wisselvalligheid en pollen die net gewassen auto's en tuinmeubels geel kleuren. Benut de korte droge vensters en spoel na een pollenpiek gewoon nog een keer na." },
-          { naam: "Zomer", tekst: "Klus vroeg of laat op de dag: de felle middagzon geeft strepen op ramen en lak, en verf droogt te snel. Planten water geven doe je ook liever buiten de volle zon." },
+          { naam: "Lente", tekst: "Veel wisselvalligheid en pollen die een net gewassen auto geel kleuren. Benut de korte droge vensters en spoel na een pollenpiek gewoon nog een keer na." },
+          { naam: "Zomer", tekst: "Klus vroeg of laat op de dag: de felle middagzon geeft strepen op ramen en lak, en verf droogt te snel. Voor de tuinklussen, van gieter tot gazon, is er [een eigen overzicht](hub:tuin#kan-ik-tuinieren-vandaag)." },
           { naam: "Herfst", tekst: "Langere natte periodes en bladval. De eerste droge dag na een natte week is goud: gras, ramen en de laatste beitsbeurt voor de winter." },
           { naam: "Winter", tekst: "Vorst en dauw beperken het meeste buitenwerk. De auto wassen bij vorst kan beter niet (bevriezende sloten en rubbers); het huis luchten kan bijna altijd, juist met droge koude lucht." },
         ],
       },
       faq: [
-        { id: "kan-ik-tuinieren-vandaag", v: "Kan ik tuinieren vandaag?", a: "Tuinieren luistert minder nauw dan andere klussen: lichte regen is voor planten en pas verzette grond zelfs prettig. Zware grond bewerk je liever niet kletsnat, en planten of zaaien doe je bij voorkeur voor een zachte regendag, niet voor een hittegolf." },
+        { id: "kan-ik-mijn-terras-schoonmaken", v: "Kan ik vandaag mijn terras schoonmaken?", a: "Kies een droge, liefst bewolkte dag boven de tien graden: schoonmaakmiddel en groene aanslagreiniger werken dan het best en drogen niet te snel op. Na een regendag is het vuil bovendien al losgeweekt. Bij vorst laat je de hogedrukspuit staan, want water in voegen dat bevriest drukt tegels los." },
+        { id: "droogt-verf-vandaag-goed", v: "Droogt verf vandaag goed?", a: "Buitenverf en beits willen 10 tot 25 graden, een lage kans op regen tot een paar uur na het verven, en geen volle zon op het werkvlak (dan droogt de huid te snel en hecht de laag slecht). Ook luchtvochtigheid telt: boven de 85 procent droogt het merkbaar trager. De avonddauw is de stille spelbreker: stop ruim voor die valt." },
         { id: "kan-ik-buiten-schilderen-of-beitsen", v: "Kan ik buiten schilderen of beitsen vandaag?", a: "Buiten schilderen of beitsen vraagt het meest van het weer: droog tijdens de klus en de uren erna, ruwweg 10 tot 25 graden, geen felle zon op het werkvlak en geen dauwnacht direct erna. Plan het op twee droge dagen achter elkaar, niet op een enkel droog middagje." },
         { id: "kan-ik-dekbedden-buiten-luchten", v: "Kan ik dekbedden buiten luchten?", a: "Dekbedden luchten werkt hetzelfde als de was buiten drogen: droge lucht en een briesje doen het werk. Een paar uur op een droge, winderige dag is genoeg; haal ze binnen voor de avondvocht toeslaat. [De wascheck](tool:was-buiten-drogen) geeft voor jouw plek het beste moment." },
         { id: "kan-ik-mijn-huis-luchten-vandaag", v: "Kan ik mijn huis luchten vandaag?", a: "Luchten kan bijna elke dag en werkt het best als de buitenlucht droger is dan binnen: koele ochtenden en droge, frisse dagen zijn ideaal. Alleen bij mist, langdurige regen of een hoge pollenpiek (zie de hooikoortscheck) kun je het raam beter even dichthouden." },
         { id: "klusweer-droogste-dag", v: "Klusweer: welke dag deze week is het droogst?", a: "Klusweer is vooral droog weer: voor schilderen, ramen, gras en de auto wil je een dag zonder buien en zonder klamme ochtend. Elke check hier kijkt vijf dagen vooruit; de dag met het langste droge blok is je klusdag. Voor verf en kit geldt extra: ook de nacht erna het liefst droog en boven de 5 graden." },
       ],
-      gerelateerd: ["regen", "winter"],
+      gerelateerd: ["tuin", "regen", "winter"],
+    },
+    tuin: {
+      voorWie: {
+        kop: "Voor wie is deze pagina?",
+        regels: [
+          "Je tuin vraagt aandacht (het gras, de heg, het onkruid, de border) en je wilt je vrije uren steken in de klus die vandaag ook echt loont.",
+          "Tuinklussen hangen aan twee dingen tegelijk: het weer van vandaag en het seizoen. Schoffelen wil zon, wieden wil juist vochtige grond, en zaaien of snoeien heeft zijn eigen kalender. Deze pagina helpt je de juiste klus bij de juiste dag te kiezen.",
+        ],
+      },
+      keuzehulp: {
+        kop: "Tuinklus kiezen: wat wil je weten?",
+        intro: "Kies de situatie die het meest op de jouwe lijkt; je komt direct bij de check of het antwoord uit.",
+        keuzes: [
+          { situatie: "Het gras wacht op een maaibeurt", toolId: "grasmaaien" },
+          { situatie: "De heg of de heesters moeten in vorm", toolId: "snoeien" },
+          { situatie: "Het onkruid neemt de borders over", toolId: "onkruid" },
+          { situatie: "Twijfel of de gieter vandaag nodig is", toolId: "water-geven" },
+          { situatie: "Kale plekken in het gazon bijzaaien", toolId: "gras-zaaien" },
+          { situatie: "Gewoon lekker tuinieren", anchor: "kan-ik-tuinieren-vandaag", linkTekst: "Kan ik tuinieren vandaag?" },
+        ],
+      },
+      beslislogica: {
+        kop: "Waar hangt een tuinklus vandaag van af?",
+        punten: [
+          "Het seizoen is de eerste filter: snoeien en zaaien hebben een kalender, en buiten het juiste venster helpt het mooiste weer niets. De checks tonen de maandcontext er automatisch bij.",
+          "Vocht werkt twee kanten op: natte grond is goud voor wieden en zaaien, maar funest voor maaien, snoeien en schoffelen. Dezelfde regenbui maakt de ene klus makkelijker en de andere onmogelijk.",
+          "Vorst is de harde stop: verse snoeiwonden bevriezen, jong gras kiemt niet en de grond laat zich niet bewerken. Ook een vriesnacht na een zachte dag telt.",
+          "Hitte verschuift het werk naar de randen van de dag: water geven doe je in de ochtend of avond, en zwaar tuinwerk in de volle middagzon is voor jou en de planten geen goed idee.",
+          "Wat er na de klus komt telt mee: gras zaaien voor een zachte regenweek is gratis beregening, bemesten voor een bui laat de korrels inregenen, en schoffelen voor een droge dag laat het onkruid verdrogen.",
+        ],
+      },
+      situaties: {
+        kop: "Veelvoorkomende situaties",
+        items: [
+          { naam: "Zaterdag vrij, van alles te doen", tekst: "Laat het weer de volgorde kiezen: is de grond vochtig van gisteren, begin dan met wieden of zaaien; wordt het een droge zonnige dag, dan winnen schoffelen, maaien en snoeien." },
+          { naam: "Weekje weg geweest", tekst: "Check eerst de gieter-vraag (potten eerst), dan het gras. Onkruid dat een week voorsprong heeft pak je het makkelijkst op de eerstvolgende dag na regen." },
+          { naam: "Hittegolf op komst", tekst: "Geef de avond ervoor ruim water, maai het gras niet te kort (langer gras beschermt de wortels) en stel snoeien en zaaien uit tot het zachter weer is." },
+          { naam: "Eerste zachte week van maart", tekst: "De klassieke valkuil: alles tegelijk willen. De hoofdsnoei mag af, maar wacht met zaaien tot de bodem echt op temperatuur is; een nachtvorstje later in de maand verpest anders het kiembed." },
+        ],
+      },
+      seizoen: {
+        kop: "De tuin per seizoen in Nederland",
+        items: [
+          { naam: "Lente", tekst: "Alles start tegelijk: de eerste maaibeurt (niet te kort), zaaien zodra de bodem boven de tien graden komt, en wieden nu het onkruid nog klein is. Let vanaf half maart op broedende vogels in de heg." },
+          { naam: "Zomer", tekst: "Onderhoudsmodus: maaien op hoogte, water geven in de avond, schoffelen op zonnige dagen en de haag in vorm. Bij droogte mag het gazon geel worden; dat herstelt vanzelf." },
+          { naam: "Herfst", tekst: "De tweede topper voor het gazon: september is de beste zaaimaand van het jaar. Verder bladeren van het gras houden, de laatste maaibeurt hoger afstellen en vorstgevoelige potten naar binnen." },
+          { naam: "Winter", tekst: "Rust in de tuin en ruimte voor plannen. Snoeien van fruit en zomerbloeiers kan op vorstvrije dagen; verder blijft de grond met rust tot het voorjaar." },
+        ],
+      },
+      faq: [
+        { id: "kan-ik-tuinieren-vandaag", v: "Kan ik tuinieren vandaag?", a: "Tuinieren luistert minder nauw dan andere klussen: lichte regen is voor planten en pas verzette grond zelfs prettig. Zware grond bewerk je liever niet kletsnat, en planten of zaaien doe je bij voorkeur voor een zachte regendag, niet voor een hittegolf." },
+        { id: "kan-ik-mijn-tuinmeubels-schoonmaken", v: "Kan ik vandaag mijn tuinmeubels schoonmaken?", a: "Een droge, zachte dag met een beetje wind is ideaal: hout en kussens drogen dan snel genoeg om schimmel geen kans te geven. Zet kussens pas terug als ze kurkdroog zijn, en olie houten meubels alleen bij een dag of twee droog weer vooruit." },
+        { id: "kan-ik-het-gazon-bemesten", v: "Kan ik vandaag het gazon bemesten?", a: "Strooi mest op droog gras met regen op komst: de bui regent de korrels de bodem in. Bemesten in volle zon op een droog gazon geeft verbrandingsplekken, en strooien vlak voor een hoosbui spoelt de mest juist weg. Maai eerst, bemest daarna." },
+        { id: "moet-ik-bladeren-ruimen", v: "Moet ik bladeren ruimen vandaag?", a: "Van het gazon wel (blad verstikt het gras binnen een week of twee), uit de borders liever niet: daar is bladerdek juist wintervoer voor het bodemleven en beschutting voor egels. Harken of blazen gaat het lichtst op een droge dag; nat blad weegt drie keer zo veel en plakt aan alles." },
+        { id: "kan-ik-de-moestuin-zaaien", v: "Kan ik de moestuin zaaien?", a: "Buiten zaaien kan grofweg van april tot juli, zodra de bodem boven de tien graden komt en de nachtvorst uit de lucht is. Zaai bij voorkeur in vochtige grond met een zachte regendag op komst, en houd het zaaischema van de soort aan: sla en radijs kunnen vroeg, bonen en courgette wachten tot na half mei (IJsheiligen)." },
+      ],
+      gerelateerd: ["huis-tuin", "buiten"],
     },
     gezondheid: {
       voorWie: {
@@ -652,7 +709,6 @@ export const STOREFRONTS = kies({
           { situatie: "The laundry could go outside", toolId: "was-buiten-drogen" },
           { situatie: "The car is dirty and you've got an hour", toolId: "auto-wassen" },
           { situatie: "Painting, staining or sealing outside", anchor: "kan-ik-buiten-schilderen-of-beitsen", linkTekst: "Can I paint or stain outside?" },
-          { situatie: "The lawn needs mowing", toolId: "grasmaaien" },
           { situatie: "Washing the windows", toolId: "ramen-wassen" },
           { situatie: "Running the laundry or charging on solar power", toolId: "zonnepanelen" },
         ],
@@ -686,13 +742,71 @@ export const STOREFRONTS = kies({
         ],
       },
       faq: [
-        { id: "kan-ik-tuinieren-vandaag", v: "Can I garden today?", a: "Gardening is less fussy than other jobs: light rain is actually pleasant for plants and freshly moved soil. Avoid working heavy soil when it's soaked, and plant or sow ahead of a soft rainy day rather than a heatwave." },
+        { id: "kan-ik-mijn-terras-schoonmaken", v: "Can I clean my patio today?", a: "Pick a dry, preferably overcast day above ten degrees: cleaner and algae remover work best then and don't dry out too fast. After a rainy day the dirt is already loosened, too. In frost, leave the pressure washer inside: water in joints that freezes pushes tiles loose." },
+        { id: "droogt-verf-vandaag-goed", v: "Will paint dry well today?", a: "Exterior paint and stain want 10 to 25 degrees, a low rain chance until a few hours after painting, and no full sun on the surface (the skin dries too fast and the coat bonds poorly). Humidity counts too: above 85 percent drying slows noticeably. Evening dew is the quiet spoiler: stop well before it falls." },
         { id: "kan-ik-buiten-schilderen-of-beitsen", v: "Can I paint or stain outside today?", a: "Outdoor painting and staining ask the most of the weather: dry during the job and the hours after, roughly 10 to 25 degrees, no harsh sun on the surface and no dewy night straight after. Plan it on two dry days in a row, not a single dry afternoon." },
         { id: "kan-ik-dekbedden-buiten-luchten", v: "Can I air duvets outside?", a: "Airing duvets works like drying laundry outside: dry air and a breeze do the work. A few hours on a dry, breezy day is enough; bring them in before the evening damp sets in. [The laundry check](tool:was-buiten-drogen) gives the best moment for your location." },
         { id: "kan-ik-mijn-huis-luchten-vandaag", v: "Can I air the house today?", a: "Airing works almost every day and is most effective when the outside air is drier than inside: cool mornings and dry, fresh days are ideal. Only with fog, prolonged rain or a high pollen peak (see the hay fever check) is it better to keep the window shut for a bit." },
         { id: "klusweer-droogste-dag", v: "DIY weather: which day this week is driest?", a: "DIY weather is above all dry weather: for painting, windows, the lawn and the car you want a day without showers and without a clammy morning. Every check here looks five days ahead; the day with the longest dry window is your DIY day. For paint and sealant one extra rule: the night after should ideally stay dry and above 5 degrees." },
       ],
-      gerelateerd: ["regen", "winter"],
+      gerelateerd: ["tuin", "regen", "winter"],
+    },
+    tuin: {
+      voorWie: {
+        kop: "Who is this page for?",
+        regels: [
+          "Your garden wants attention (the lawn, the hedge, the weeds, the border) and you want to spend your free hours on the job that actually pays off today.",
+          "Garden jobs hang on two things at once: today's weather and the season. Hoeing wants sun, hand-weeding wants moist soil, and sowing or pruning has its own calendar. This page helps you match the right job to the right day.",
+        ],
+      },
+      keuzehulp: {
+        kop: "Pick a garden job: what do you want to know?",
+        intro: "Pick the situation closest to yours; it takes you straight to the check or the answer.",
+        keuzes: [
+          { situatie: "The lawn needs mowing", toolId: "grasmaaien" },
+          { situatie: "The hedge or shrubs need shaping", toolId: "snoeien" },
+          { situatie: "Weeds are taking over the borders", toolId: "onkruid" },
+          { situatie: "Not sure the watering can is needed today", toolId: "water-geven" },
+          { situatie: "Overseeding bare patches in the lawn", toolId: "gras-zaaien" },
+          { situatie: "Just some general gardening", anchor: "kan-ik-tuinieren-vandaag", linkTekst: "Can I garden today?" },
+        ],
+      },
+      beslislogica: {
+        kop: "What does a garden job depend on today?",
+        punten: [
+          "The season is the first filter: pruning and sowing have a calendar, and outside the right window the finest weather won't help. The checks show the month's context automatically.",
+          "Moisture cuts both ways: damp soil is gold for weeding and sowing, but hopeless for mowing, pruning and hoeing. The same shower makes one job easier and another impossible.",
+          "Frost is the hard stop: fresh pruning cuts freeze, young grass won't germinate and the soil won't be worked. A freezing night after a mild day counts too.",
+          "Heat pushes the work to the edges of the day: watering happens in the morning or evening, and heavy garden work in full midday sun is a bad idea for you and the plants.",
+          "What comes after the job matters: sowing ahead of a soft rainy week is free irrigation, feeding before a shower washes the granules in, and hoeing ahead of a dry day leaves the weeds to shrivel.",
+        ],
+      },
+      situaties: {
+        kop: "Common situations",
+        items: [
+          { naam: "Free Saturday, plenty to do", tekst: "Let the weather set the order: if the soil is moist from yesterday, start with weeding or sowing; on a dry sunny day, hoeing, mowing and pruning win." },
+          { naam: "Back from a week away", tekst: "Check the watering question first (pots first), then the lawn. Weeds with a week's head start are easiest to pull on the first day after rain." },
+          { naam: "Heatwave coming", tekst: "Water generously the evening before, don't mow too short (longer grass protects the roots) and postpone pruning and sowing until it's milder." },
+          { naam: "First mild week of March", tekst: "The classic trap: wanting everything at once. Main pruning can be finished, but wait to sow until the soil truly warms up; a night frost later in the month ruins the seedbed otherwise." },
+        ],
+      },
+      seizoen: {
+        kop: "The garden through the Dutch seasons",
+        items: [
+          { naam: "Spring", tekst: "Everything starts at once: the first mow (not too short), sowing once the soil passes ten degrees, and weeding while the weeds are still small. Watch for nesting birds in the hedge from mid March." },
+          { naam: "Summer", tekst: "Maintenance mode: mow at height, water in the evening, hoe on sunny days and keep the hedge in shape. In drought the lawn may go yellow; it recovers by itself." },
+          { naam: "Autumn", tekst: "The second peak for the lawn: September is the best sowing month of the year. Keep leaves off the grass, raise the final mow and bring frost-sensitive pots inside." },
+          { naam: "Winter", tekst: "Rest in the garden and room to plan. Pruning fruit and summer bloomers works on frost-free days; beyond that the soil rests until spring." },
+        ],
+      },
+      faq: [
+        { id: "kan-ik-tuinieren-vandaag", v: "Can I garden today?", a: "Gardening is less fussy than other jobs: light rain is actually pleasant for plants and freshly moved soil. Avoid working heavy soil when it's soaked, and plant or sow ahead of a soft rainy day rather than a heatwave." },
+        { id: "kan-ik-mijn-tuinmeubels-schoonmaken", v: "Can I clean my garden furniture today?", a: "A dry, mild day with a little wind is ideal: wood and cushions dry fast enough to give mould no chance. Only put cushions back once bone dry, and oil wooden furniture only with a day or two of dry weather ahead." },
+        { id: "kan-ik-het-gazon-bemesten", v: "Can I fertilise the lawn today?", a: "Spread feed on dry grass with rain on the way: the shower washes the granules into the soil. Feeding in full sun on a dry lawn scorches patches, and spreading right before a downpour washes the feed away. Mow first, feed after." },
+        { id: "moet-ik-bladeren-ruimen", v: "Should I rake leaves today?", a: "Off the lawn, yes (leaves smother grass within a week or two); out of the borders, better not: there the leaf layer is winter food for soil life and shelter for hedgehogs. Raking or blowing is lightest on a dry day; wet leaves weigh three times as much and stick to everything." },
+        { id: "kan-ik-de-moestuin-zaaien", v: "Can I sow the vegetable garden?", a: "Outdoor sowing runs roughly from April to July, once the soil passes ten degrees and night frost is out of the air. Prefer moist soil with a soft rainy day ahead, and follow the crop's schedule: lettuce and radish can go early, beans and courgette wait until after mid May." },
+      ],
+      gerelateerd: ["huis-tuin", "buiten"],
     },
     gezondheid: {
       voorWie: {

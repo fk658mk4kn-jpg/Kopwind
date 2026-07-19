@@ -10,7 +10,8 @@
  * Eerlijke kanttekening, ook in de content: er is geen
  * wegdektemperatuur beschikbaar (Open-Meteo meet de lucht), dus dit is
  * een goede benadering, geen strooiwagen-informatie. Conventie als bij
- * de zonkrachtcheck: hoge score = geen gedoe, antwoord.ja = "ja, glad".
+ * de zonkrachtcheck: conditie.score is pijn (laag = geen gedoe),
+ * antwoord.ja = "ja, glad".
  */
 
 import { clamp, maakScore, adviesVoorScore } from "../engine/score.js";
@@ -148,7 +149,9 @@ export function overlay(hourly, nu = new Date(), instellingen = GLADHEID_DEFAULT
     }));
     const { risico, minTemp: ruwMin, natUren = 0 } = dagRisico(dagUren, inst);
     const minTemp = Math.round(ruwMin);
-    const score = 100 - risico;
+    // Bugfix v3.26.0: pijn-score, zie de krabcheck; de oude
+    // 100-minus-risico draaide het stoplicht en het advieslabel om.
+    const score = risico;
     const ja = risico >= inst.risicoJa;
     const twijfel = !ja && risico >= 20;
 

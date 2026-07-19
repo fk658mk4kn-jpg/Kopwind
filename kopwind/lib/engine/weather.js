@@ -19,6 +19,13 @@ export const WEER_VELDEN = [
   "uv_index",
   "cloud_cover",
   "is_day",
+  // Optionele extra velden die specifieke tools opvragen. Ze MOETEN hier
+  // in de whitelist staan, anders stript valideerVelden ze uit het
+  // fetch-verzoek en krijgt de tool in productie null terug.
+  "visibility", // mistcheck (v3.29.0)
+  "surface_pressure", // vischeck (v3.29.0)
+  "snowfall", // sneeuwpret + strooien (v3.30.0)
+  "snow_depth", // sneeuwpret (v3.30.0)
 ];
 
 export const STANDAARD_VELDEN = [

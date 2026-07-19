@@ -21,20 +21,28 @@ export default function DagBanner({ dag }) {
   if (!dag) return null;
   const cijfer = fmtCijfer(dag.score);
   const top = (dag.redenen ?? []).slice(0, 3);
+  // Een rit is geen dag (v3.26.0, feedback): bij een enkele etappe
+  // dragen we de rit-labels ("Ideaal voor deze rit") en verdwijnen de
+  // zwaarste-rit-regel en de heen-en-terug-noot, want die slaan dan
+  // nergens op.
+  const enkel = (dag.aantal ?? 2) === 1;
+  const labels = enkel ? fietsNaarWerk.ritSchaalLabels : fietsNaarWerk.schaalLabels;
 
   return (
     <div className="dagbanner">
       <div className="dagbanner-kop">
-        <VerdictBadge score={dag.score} labels={fietsNaarWerk.schaalLabels} />
+        <VerdictBadge score={dag.score} labels={labels} />
         <span className="dagbanner-cijfer">{cijfer}</span>
       </div>
 
       {dag.windZin && <p className="dagbanner-wind">{dag.windZin}</p>}
 
-      <p className="dagbanner-zwaarste">
-        {kies({ nl: "Zwaarste rit: ", en: "Toughest leg: " })}
-        <strong>{dag.worstLabel}</strong>
-      </p>
+      {!enkel && (
+        <p className="dagbanner-zwaarste">
+          {kies({ nl: "Zwaarste rit: ", en: "Toughest leg: " })}
+          <strong>{dag.worstLabel}</strong>
+        </p>
+      )}
 
       {top.length > 0 && (
         <ul className="dagbanner-redenen">
@@ -53,12 +61,14 @@ export default function DagBanner({ dag }) {
         })}
       </p>
 
-      <p className="noot">
-        {kies({
-          nl: "Heen en terug tellen allebei mee: de zwaarste rit van je dag bepaalt het advies.",
-          en: "Outbound and return both count: the toughest leg of your day sets the verdict.",
-        })}
-      </p>
+      {!enkel && (
+        <p className="noot">
+          {kies({
+            nl: "Heen en terug tellen allebei mee: de zwaarste rit van je dag bepaalt het advies.",
+            en: "Outbound and return both count: the toughest leg of your day sets the verdict.",
+          })}
+        </p>
+      )}
     </div>
   );
 }

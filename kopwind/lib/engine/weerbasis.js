@@ -45,6 +45,11 @@ export function bouwBasis(hourly) {
       rh: hourly.relative_humidity_2m?.[i] ?? null,
       bewolking: hourly.cloud_cover?.[i] ?? null,
       uv: hourly.uv_index?.[i] ?? null,
+      // Optionele velden (alleen gevuld als de tool ze opvraagt).
+      zicht: hourly.visibility?.[i] ?? null,
+      druk: hourly.surface_pressure?.[i] ?? null,
+      sneeuw: hourly.snowfall?.[i] ?? null, // verse sneeuw (cm/uur)
+      sneeuwdek: hourly.snow_depth?.[i] ?? null, // sneeuwdek (meter)
       dag: (hourly.is_day?.[i] ?? 1) === 1,
     });
   }

@@ -8,11 +8,14 @@ import { stadTekst, buurSteden } from "@/lib/steden/teksten";
 import { titelVoor } from "@/lib/steden/stadTemplates";
 import { HUB_NAAM } from "@/lib/brand";
 import FietsTool from "@/components/tools/FietsTool";
+import RegenTimingTool from "@/components/tools/RegenTimingTool";
+import ParapluTool from "@/components/tools/ParapluTool";
 import LocatieTool from "@/components/tools/LocatieTool";
 import Broodkruimel from "@/components/Broodkruimel";
 import { kies } from "@/lib/i18n/locale";
 import StemPeiling from "@/components/StemPeiling";
 import AdSlot from "@/components/AdSlot";
+import ServerAntwoord from "@/components/ServerAntwoord";
 
 /**
  * Programmatische stadpagina (§9): de live tool bovenaan, vooraf ingesteld
@@ -22,7 +25,10 @@ import AdSlot from "@/components/AdSlot";
  */
 
 export const dynamicParams = false;
-export const revalidate = 86400;
+// v3.27.0: van 24 uur naar 30 minuten, want het server-antwoordblok
+// draagt nu een live verdict. ISR ververst per pagina on-demand, dus
+// alleen bezochte pagina's kosten een weer-call.
+export const revalidate = 1800;
 
 export function generateStaticParams() {
   const params = [];
@@ -58,15 +64,6 @@ export default function StadPagina({ params }) {
   const andereTools = TOOLS.filter((x) => x.slug !== tool.slug);
   const centrum = { naam: `${stad.naam}, centrum`, lat: stad.lat, lon: stad.lon };
 
-  const breadcrumbJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: HUB_NAAM, item: "/" },
-      { "@type": "ListItem", position: 2, name: tool.naam, item: `/${tool.slug}` },
-      { "@type": "ListItem", position: 3, name: stad.naam, item: `/${tool.slug}/${stad.slug}` },
-    ],
-  };
   const appJsonLd = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
@@ -99,10 +96,20 @@ export default function StadPagina({ params }) {
 
       <section className="tool-hero">
         <h1>{t.h1}</h1>
+        {/* v3.27.0: het antwoord in de server-HTML, direct onder de H1
+            (audit plus go Martijn). Faalt stil naar niets. */}
+        <ServerAntwoord tool={tool} stad={stad} />
         <p>{basis}</p>
       </section>
 
-      {tool.inputType === "route" ? (
+      {/* Zelfde renderketen als de toolpagina (fix p.overlay-crash op
+          de stadpagina's van de nowcast-checks): eigen component eerst,
+          dan route, dan de generieke locatietool. */}
+      {tool.eigenComponent === "RegenTimingTool" ? (
+        <RegenTimingTool beginLocatie={centrum} />
+      ) : tool.eigenComponent === "ParapluTool" ? (
+        <ParapluTool beginLocatie={centrum} />
+      ) : tool.inputType === "route" ? (
         <FietsTool beginStops={[centrum, null]} />
       ) : (
         <LocatieTool toolId={tool.id} beginLocatie={centrum} />
@@ -138,7 +145,6 @@ export default function StadPagina({ params }) {
         ))}
       </section>
 
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(appJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
     </main>

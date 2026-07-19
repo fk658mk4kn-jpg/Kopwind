@@ -2161,3 +2161,472 @@ alleen statische SEO-copy. Analyse en aanbeveling in het slotbericht.
 **Verificatie**: 142 tests groen (was 137, +5 variant-verdicts), beide
 builds volgen hierna, geen em-dashes.
 
+## 2026-07-17 (vijfde run) - v3.25.0 "Pampero": wielrencheck, dag-stips en slippers
+
+**Opdracht**: twee besluiten (wielrennen als eigen tool; ja op de
+dag-samenvatting-stip voor paraplu en regen-timing) plus doorbouwen
+wat geen beslissing vraagt. Bewust NIET opgepakt: de snoei-tool
+(vooral plantenkennis, verkeerd seizoen, verweven met de gepauzeerde
+affiliate-strategie) en de comfort-categorie (weervragen zonder
+beslissing, botst met het format; als besluit vastgelegd in de
+backlog). SSR-blok en stadtekst-fixpakket wachten op expliciete go.
+
+**Eerst een bugfix op eigen werk.** Bij het lezen van
+lib/engine/schaal.js bleek dat schaalVoor op een PIJN-score rekent
+(0..100, laag is goed, grenzen 12/30/45/62), terwijl de
+variant-verdicts uit v3.24.0 scores van 3 tot 9 leverden op een
+omgekeerde schaal. Gevolg: elke variantstip kleurde groen, ook bij
+"nee" of "winterjas". Scores staan nu op de pijnschaal (gunstig 8,
+twijfel 38, ongunstig 55, winterjas 62) en een regressietest legt de
+kleurmapping vast, zodat dit nooit meer stil kan verschuiven.
+
+**Wielrencheck (eigen tool, besluit Martijn).** Motivering vastgelegd
+in het bestand zelf: een forens MOET en wil wind per rijrichting; een
+wielrenner KIEST zijn moment en zoekt het beste trainingsblok, dus een
+locatie-check op de venstermotor, geen routeplanner. Scorekarakter
+anders gewogen dan wandelen of hardlopen: nat wegdek nult het uur
+(remmen, dunne banden; motregen weegt 0,7), wind straft steiler dan
+elke andere buitencheck met windstoten boven 45 als apart minpunt via
+extraFactoren, en kou is mild tot rond de vijf graden (instelbaar).
+Onderweg twee leerpunten die nu in PLAYBOOK 20 staan: de
+registervalidatie eist een uniek icoon (racefiets-pad getekend in
+Icoon.js) en tests/i18n.test.js bewaakt de exacte EN-sluglijst, die
+dus bewust meegroeit. Volledige route gelopen: register, content NL/EN
+met kruislinks van en naar de fietscheck, stad-template plus ankerterm
+(twaalf stadpagina's ontstaan vanzelf), RELATIES (fiets-set uitgebreid
+met wielrennen), beslissingen-items NL/EN. Drempels beredeneerd, niet
+gevalideerd; kanttekening bij de andere motors in de backlog gevoegd.
+
+**Dag-stips paraplu en regen-timing (besluit Martijn).** De v3.10-
+keuze (nowcast-checks geen stip) is teruggedraaid via een
+dag-samenvatting-overlay per tool: paraplu telt natte uren in het
+venster 8:00-22:00 vanaf nu (droog 8, een bui 38 met het uur erbij,
+twee of drie 55, meer 70), regen-timing vat het dagkarakter samen
+(eerste bui, of het eerste droge uur als het al regent). Valkuil
+onderweg: mijn eerste versie las een verzonnen hourly-vorm; de echte
+vorm loopt via bouwBasis/basisPerDag (veld heet kans, niet
+neerslagkans), gecorrigeerd na verificatie. De toolpagina's zelf
+blijven op de 15-minutenreeks draaien (eigenComponent-keten staat voor
+de LocatieTool-fallback, geverifieerd). Bonus zonder extra werk: de
+meldingen-cron geeft elke overlay-tool automatisch meldingen, dus
+regen- en paraplumeldingen bestaan nu ook. Vier tests met synthetische
+Open-Meteo-data leggen beide overlays vast, inclusief het dagvenster
+(nachtbui telt niet) en de nul-dag na 22:00.
+
+**Slippersweer (variant, uit de voorraad).** Eigen verdict-tak,
+strenger dan korte broek: laag 0 en droog is ja; laag 0 met regen of
+laag 1 droog is twijfel (natte zolen zijn glad); anders nee. Content
+NL/EN met links naar regen-timing en korte-broek, beslissingen-items
+in beide talen (de t-shirt-ankertekst bleek anders dan gegokt; de
+assert ving het af voor er iets geschreven was). De bestaande
+variantentest dekt de nieuwe tak automatisch, precies zoals bedoeld.
+
+**Backlog**: drie afgehandelde open punten opgeruimd (recent-gebruikt,
+homepage-kop, inklapbaarheid; alle v3.22.0), vragenlijst-labels
+bijgewerkt (wielrennen, slippers), comfort-sectie als bewust besluit
+gemarkeerd, typo gefixt.
+
+**Verificatie**: 147 tests groen (was 143: +1 schaal-regressie, +4
+dag-overlays; de varianten- en registertests dekken slippers en
+wielrennen binnen de bestaande tellingen), beide builds volgen hierna.
+
+## 2026-07-18 (zesde run) - v3.26.0 "Gregale": natuurlijk advies, contextregels en de homepage-zoeker
+
+**Opdracht**: een uitgebreide stijl- en logica-gids van Martijn voor
+natuurlijker, contextgevoeliger advies, plus de keuzehulp-zoeker op de
+homepage. Uitgevoerd als zeven clusters.
+
+**1. De grote vondst: winterchecks stonden om.** Martijns voorbeeld
+("Zeker krabben bij 16 graden") bleek geen copy-probleem maar een
+score-richtingsbug: krabben en gladheid leverden conditie.score als
+100 minus risico (hoog is goed), terwijl schaalVoor, adviesVoorScore
+en de stips pijn verwachten (laag is goed). Een zomernacht kreeg dus
+het zeer-slecht-label en een vriesnacht "Geen krabber nodig"; de
+motors zijn nooit tegen echt weer gezien (gebouwd in juli, zie de
+backlog-kanttekening bij v3.16.0). Fix: score = risico, in beide
+tools; tests/winter-scores.test.js legt zomer- en winternachten vast.
+De gewenste zachte zinnen ("zachte nacht, minimum 16 graden")
+bestonden al en worden nu eindelijk met het juiste label getoond.
+PLAYBOOK 20 kreeg de regel: conditie.score is ALTIJD pijn.
+
+**2. Verleden telt niet meer als actueel.** Drie lekken gedicht: (a)
+het kledingadvies rekende de hoofdlaag altijd op de middag en nam de
+ochtend altijd mee als meeneem-advies; om 20:00 kon dat "Vandaag:
+T-shirt, vanochtend vroeg een jas" opleveren met een bui van 08:00
+erbij. Nu vallen voorbije dagdelen en buien weg en verschuift de
+hoofdlaag mee met de klok (tests/kleding-verleden.test.js, drie
+scenario's). Bijeffect: de variant-verdicts (jas, slippers) rekenen
+'s avonds automatisch op de avondlaag. (b) De metric-zin van de
+venstermotor koos het beste uur uit het DAGvenster terwijl de
+statuszin al met resterende uren rekent; nu delen ze dezelfde bron.
+(c) Paraplu en regen-timing filterden al op nu (v3.25.0), geverifieerd.
+
+**3. Hele-dag-vensters heten nu zo.** Centraal in de venstermotor:
+als het beste blok het dagvenster vrijwel volledig dekt (van binnen
+dagStart+1 tot binnen dagEind-1), zegt de status "Vrijwel de hele dag
+{adviesLabels.goed}" in de woorden van de tool zelf, zonder
+kunstmatig eindtijdstip. Een echt begrensd blok houdt zijn tijden
+(tests/heledag.test.js). Valkuil onderweg: de kies-import ontbrak
+even waardoor de halve suite rood sloeg; de conditie-check in mijn
+patch gaf een vals "bestond al".
+
+**4. Fietstool rit-bewust.** dagAdvies geeft nu aantal mee en laat
+bij een enkele etappe de zwaarste-rit-taal weg; de tool kreeg
+ritSchaalLabels ("Ideaal voor deze rit" in plaats van "Ideale
+fietsdag") die LegCard overal draagt en de DagBanner gebruikt zodra er
+maar een rit is, waarbij ook de heen-en-terug-noot verdwijnt. Na het
+checken staat standaard de heenweg geselecteerd in plaats van de
+zwaarste rit (bewuste omkering van de v3.20-keuze, expliciete wens).
+De blokvolgorde per ritkaart voldeed al aan de gewenste lijst (titel,
+oordeel, meta, weer, strip, samenvatting, redenen, factorbalken).
+
+**5. Oordeel en toelichting bij elkaar.** In LocatieTool verhuisde
+"Wat het oordeel bepaalt" (FactorBalken) van het losse resultatenpaneel
+naar het antwoordpaneel, direct onder de waarom-regel. Het factorlabel
+Droog heet nu Neerslag (NL en EN), en het terraslabel "Alleen met jas"
+werd "Met een jas te doen".
+
+**6. Homepage-zoeker.** Nieuwe ZoekChecks-component boven het
+populaire grid: zelfde catalogus en zoeklogica als alle-keuzehulpen
+(vraag plus zoektermen), compact met maximaal acht directe links naar
+checks, vraagpagina's en FAQ-ankers (die de AnkerOpener ter plekke
+openklapt); geplande vragen zonder bestemming blijven buiten beeld.
+
+**7. Klein**: advice-test uitgebreid met het enkele-rit-scenario.
+
+**Verificatie**: 156 tests groen (was 150: +2 winterscores, +2
+hele-dag, +3 kleding-verleden, +1 advice-enkel, minus 2 die in
+bestaande bestanden opgingen; nettotelling klopt met de suite), beide
+builds volgen hierna, geen em-dashes.
+
+## 2026-07-18 (zevende run) - v3.27.0 "Solano": de go-run plus de snoeicheck
+
+**Opdracht**: akkoord Martijn op alle wachtende punten (SSR-antwoordblok
+met fiets-regioverdict, stadtekst-fixpakket, zeven-checks-regel) plus
+de snoeitool in totaliteit met het tuincluster eromheen.
+
+**1. Server-antwoordblok.** Het verdict staat nu in de server-HTML van
+elke stadpagina, direct onder de H1: badge, kernzin, eventuele metric
+en een tijdstempel met de kanttekening dat het op standaardinstellingen
+rekent. Opzet: een pure kern (lib/steden/serverAntwoord.js,
+bouwStadAntwoord) die onder test staat met synthetische weerdata, plus
+een dunne async servercomponent (components/ServerAntwoord.js) die
+haalHourly uit lib/server/externe.js hergebruikt; dezelfde bron als de
+cron en de browser-proxy, dus overal identieke berekening. Promise.race
+met vier seconden timeout en elke fout geeft null: de pagina blijft
+heel. ISR van 24 uur naar 30 minuten. Vercel draait UTC, dus
+nuInNederland() rekent de klok eerst naar Europe/Amsterdam; zonder die
+stap zou elk serververdicts twee uur achterlopen. Sandbox-beperking:
+Open-Meteo is hier geblokkeerd (403 na 121 ms), dus de build blijft
+vlot maar de gebouwde HTML toont het blok lokaal niet; napunt in de
+backlog om het na deploy in de paginabron te controleren.
+
+**2. Fiets-regioverdict.** Een locatie-oordeel zonder route, op de
+spitsen (7-10 en 16-19): de zwaarste telt, consistent met dagAdvies,
+en voorbije spitsen vallen weg (na de avondspits zegt hij eerlijk dat
+de spitsen geweest zijn). Wind is de steilste straf, nat weegt zwaar,
+kou in de ochtend telt licht mee. Drie gaten in een klap: de
+fietscheck draagt een statusstip (elke check op de site heeft er nu
+een), de fiets-stadpagina's krijgen het serverblok, en meldingen
+liften mee op het overlay-contract. De toolpagina zelf blijft de
+routecheck: inputType route wint in de renderketen.
+
+**3. Stadtekst-fixpakket.** lib/steden/teksten.js herbouwd: drie
+smaken (fiets, was, algemeen weerkarakter) maal zes liggingen, alles
+tweetalig via kies(). De 22 niet-was-tools praten niet langer over
+droogvensters en de Engelse stadpagina's dragen geen Nederlands meer.
+paarTekst bleef bewust NL-only (het van/naar-cluster bestaat alleen op
+de Nederlandse site, zie backlog). Test dekt alle drie de smaken per
+ligging plus een en-subprocess.
+
+**4. Zeven-checks-regel.** Het homepage-FAQ noemt geen hard getal
+meer ("gratis keuzehulpen die..." plus "tientallen meer") en item drie
+spreekt van een keuzehulp op je beginscherm, beide talen.
+
+**5. Snoeicheck.** Eigen dagmotor, geen venstermotor: snoeien is een
+dagbesluit. De vorstregel telt de nacht na de snoeidag mee (verse
+wonden bevriezen; zelfde leen-patroon als de krabcheck), natte dagen
+wegen zwaar (schimmels in verse wonden), volle hitte drukt het
+oordeel. De seizoenslaag is een maandkalender (MAAND_ADVIES, twaalf
+maanden, beide talen) als metric-zin bij elk antwoord, plus een
+nestcontrole-noot voor wie hagen snoeit in het broedseizoen (15 maart
+tot en met 15 juli, Wet natuurbescherming; inBroedseizoen met
+randgevallen onder test). Registertest-lessen onderweg: de kleur moet
+de categorie-accentkleur zijn (huis-tuin #8C6239, mijn eigen groen
+werd geweigerd) en elke tool zonder eigen component eist minstens drie
+instelvelden; de kou- en hittegrens die daaruit rolden zijn echt
+nuttig (teerdere planten wachten langer). Affiliate bewust null:
+uitrol gepauzeerd, het veld staat klaar.
+
+**6. Tuincluster.** Kruislinks grasmaaien-snoeien in beide
+richtingen en beide talen, RELATIES bijgewerkt, en drie nieuwe
+FAQ-ankers op de huis-en-tuin-storefront (terras schoonmaken,
+tuinmeubels schoonmaken, droogt verf vandaag goed), doorzoekbaar via
+alle-keuzehulpen en de homepage-zoeker. De backlog-vragenlijst is
+opgeschoond: snoeien draagt een tool-label, de drie vragen een
+anker-label.
+
+**Verificatie**: 173 tests groen (was 156: +4 stadteksten met
+en-subprocess, +4 regioverdict, +4 serverantwoord, +5 snoeien),
+em-dash-check nul, beide builds met HTML-verificaties, zip geleverd.
+
+## 2026-07-18 (achtste run) - v3.28.0 "Ostria": de tuincategorie plus drie checks
+
+**Opdracht Martijn**: meer tools, mogelijk een aparte tuin/planten-
+categorie, zoveel mogelijk uitbreiden (onkruid bestrijden et cetera).
+
+**Categorie-beslissing (mijn keuze, verantwoord in het slot).** Tuin is
+NU afgesplitst omdat het moment het goedkoopst is: de site is twee
+weken live, dus de anker-verhuizingen (tuinieren, tuinmeubels) kosten
+vrijwel niets aan bestaande rankings, terwijl dezelfde splitsing over
+een half jaar wel pijn doet. De fragment-ankers hebben geen redirects
+nodig (fragmenten zijn geen eigen pagina's voor Google); alle interne
+links volgen automatisch via beslissingen.js. De oude categorie
+behoudt bewust zijn slug huis-tuin-auto (URL-stabiliteit boven
+cosmetiek) maar heet voortaan Huis en auto. Nieuwe categorie: id tuin,
+slug tuin-planten / garden-plants, bladgroen #5A7D3C, eigen storefront
+met alle zeven secties in beide talen.
+
+**Toolselectie op de drie filters.** Drie echte beslistools gebouwd;
+bemesten, bladeren ruimen en moestuin zaaien werden bewust ANKERS,
+geen tools: het zijn goede vragen maar dunne beslissingen, en meer
+dunne tools zou de site verwateren (anti-cannibalisatie-principe).
+
+**Onkruidcheck.** De USP is het methode-antwoord: schoffelen en wieden
+willen tegengesteld weer, dus de motor scoort beide en adviseert de
+methode van de dag. Vocht-proxy zonder bodemdata: regen eerder op de
+dag, een nat uur nu, of een klamme dag (RV vanaf 78 zonder zon); let
+op, weerbasis noemt dat veld u.rh, niet u.vocht (kostte een fix). Een
+kalibratieles uit de eigen test: schoffelen op vochtige grond kreeg
+eerst geen straf en won daardoor de tie van wieden, terwijl
+geschoffeld onkruid op natte grond gewoon weer aanwortelt; nu plus 14
+pijn bij vochtige grond. De vaste schoffelaar krijgt bij een bui op
+komst het uur erbij ("wat je nu losschoffelt, wortelt dan weer aan"),
+en de brander-instelling hangt bij 20 km/u wind een veiligheidsnoot
+aan het antwoord.
+
+**Gietcheck.** De omgekeerde vraag: het beste antwoord is vaak nee.
+Doorlopende vooruitblik van 36 uur over de daggrens heen (alle.slice
+vanaf het huidige uur); vanaf 5 mm komende regen blijft de gieter
+binnen, 2 tot 5 mm is potten-en-pas-geplant. Zonder regen loopt de
+urgentie op met het gevoel boven de 22 graden plus een windopslag.
+Instellingen verschuiven het eindcijfer (potten plus 8, gazon min 8,
+tuintype maal 6) buiten de factorpunten om; comment in de code legt
+dat uit. Tweede kalibratieles: de zin "Gieter verplicht" verscheen al
+op matig-niveau; zin volgt nu de schaal (pas vanaf 62). Metric is het
+gietmoment naar voorkeur (avond na 19:00 of ochtend voor 9:00).
+
+**Zaaicheck.** Kalender plus weer, zelfde patroon als de snoeicheck
+maar met een eigen inZaaiseizoen met grond-nuance: zand opent het
+voorjaarsvenster eind maart, klei rekt het najaar tot 20 oktober. De
+septemberzin claimt expliciet dat september van april wint. Binnen het
+venster: etmaalgemiddelde als bodemproxy (11 graden voor een nieuw
+gazon, 10 voor doorzaaien), zware buien spoelen het zaad weg, wind
+vanaf 28 verwaait het, en zonder regen in drie dagen en zonder eigen
+beregening is het oordeel liever wachten. MAAND_ZAAI twaalf maanden in
+beide talen als metric.
+
+**Verhuizing en integratie.** grasmaaien en snoeien dragen nu
+categorieId tuin en het bladgroen; beslissingen.js kreeg een
+tuin-groep in beide talen (met een leerpunt: de tweede insert matchte
+opnieuw de NL-plek waardoor de Engelse groep even in de Nederlandse
+array zat, negen groepen tegen acht categorieen; chirurgisch
+verplaatst). Storefront huis-tuin is opgeschoond (grasmaaien-keuze
+eruit, zomer-tekst verwijst naar het tuinoverzicht), RELATIES zijn nu
+een tuinfamilie, en de i18n-sluglijst groeide met weeding, watering en
+sowing-grass. Drie nieuwe iconen: schoffel, gieter, graszaad, plus
+spruit voor de categorie.
+
+**Verificatie**: 183 tests groen (was 173: +10 tuintools inclusief
+zaaiseizoen-randen), registertests valideerden kleur, iconen en de
+drie-instelvelden-eis voor alle drie de tools, em-dash nul, beide
+builds, zip geleverd. Affiliate blijft gepauzeerd; graszaad, gieters
+en schoffels staan genoteerd als sterkste kandidatencluster.
+
+
+---
+
+## Run 9 - 2026-07-18 - v3.29.0 "Ghibli"
+
+Opdracht Martijn: vijftien nieuwe checks bouwen, Engels helemaal
+overslaan, en drie productiebugs fixen die verkeer kosten. Van 30 naar
+45 tools.
+
+**Bug 1 - Search Console "Item: n.v.t." (padel-of-tennis/amsterdam,
+utrecht, leiden).** Oorzaak was dubbel breadcrumb-schema. De stadpagina
+(app/[tool]/[stad]/page.js) en de van-naar-pagina bouwden allebei een
+eigen, handmatig BreadcrumbList-JSON-LD met RELATIEVE item-URL's
+(item: "/", item: `/${tool.slug}`) bovenop het correcte schema uit
+components/Broodkruimel.js, dat de URL's juist absoluut maakt via een
+helper met SITE_URL. Google keurt een relatieve URL in het item-veld
+af; vandaar de niet-af te ronden validatie. Fix: beide handmatige
+schema-blokken plus hun script-tags verwijderd (Broodkruimel dekt de
+kruimels al, en de van-naar-pagina gebruikte Broodkruimel ook al).
+Regressietest tests/jsonld.test.js scant alle app/**/page.js en
+verbiedt zowel een eigen "BreadcrumbList" als het patroon item: "/...".
+Actie voor Martijn: na de deploy in Search Console op "Validatie
+opnieuw uitvoeren" klikken.
+
+**Bug 2 - "p.overlay is not a function" op de nowcast-stadpagina's
+(Delft-melding op regen-timing).** De stadpagina had maar twee
+rendertakken (route -> FietsTool, anders -> LocatieTool). LocatieTool
+roept tool.overlay(...) aan (regel 80), maar regen-timing en paraplu
+hebben geen overlay: ze draaien op een eigen component met de
+15-minutenreeks. Op de toolpagina zonder stad ging het goed (die had de
+eigenComponent-tak wel), op de stadpagina crashte het. Fix:
+renderketen-pariteit aangebracht (eigenComponent eerst: RegenTimingTool
+/ ParapluTool met beginLocatie={centrum}, dan route, dan LocatieTool).
+useLocatie kreeg een derde parameter `begin` die van localStorage wint
+en meteen een check start; RegenTimingTool en ParapluTool geven hun
+nieuwe prop beginLocatie daaraan door. Zo is de stad meteen
+voorgevuld en gecheckt, net als bij LocatieTool.
+
+**Bug 3 - Delft-wastekst op regentiming en Emmen-title op
+wat-trek-ik-aan.** Allebei al in v3.27 gefixt (de stadtekst-smaken die
+was/fiets/algemeen scheiden, en het title-vangnet in stadTemplates.js
+dat uit navLabel/korteVraag put in plaats van andermans template te
+lenen). Deze keer in de NL-build-HTML geverifieerd dat het klopt en aan
+Martijn gemeld dat een deploy het live oplost.
+
+**De vijftien checks.** Acht venstertools (gedeelde venstermotor) en
+zeven dagmotoren (snoeien-patroon). Keuze per motor zat in het eigen
+mechaniek, niet in de drempels:
+
+- golfen: wind weegt zwaarder dan bij welke sportcheck ook (windF
+  vanaf maxWind*0.45), minVensterUren 3 want een ronde duurt uren.
+- skeeleren: nat is hard nee (grip), plus een opdroogfactor die na een
+  bui nog uren straft als het venster kort na de laatste natte uren valt.
+- motorrijden: gladheids-dagfactor (minTemp<=3 en vocht -> +40) en kou
+  op snelheid als aparte reden; regenpak-instelling verzacht nat.
+- hond-uitlaten: geen ja/nee maar wanneer; mild op regen, hard op hitte
+  met de 7-secondentest-asfaltwaarschuwing en instelbare hittegrens.
+- vliegeren: windBAND met twee flanken rond het midden in plaats van een
+  plafond; vlaagF op de stoten/wind-ratio met plek-beschutting.
+- vuurkorf: dubbele windgrens (windstil <5 km/u houdt rook laag met
+  burenweging; lerp-straf boven maxWind*0.7 voor vonken).
+- drone-vliegen: !dag -> 4 (daglichtregel), regen hard nee, kouF via
+  winter-instelling, vlaagF op de ratio.
+- paardrijden: niet de wind maar de vlagen (schrikFactor per paardtype),
+  bodemwaarschuwing +30 bij vorst.
+- vissen: enige met surface_pressure; drukverloop over de dag volgens de
+  vissersvuistregels, expliciet gelabeld als ervaringskennis.
+- schaatsen: vorstsom van de etmaalgemiddelden onder nul; VEILIGHEID
+  voorop: zegt nooit zelf dat ijs draagt, elke zin verwijst naar de
+  ijsclub en 10-13 cm zwart ijs, strenger met kinderen.
+- mist: enige met visibility; minZicht in de spits in KNMI-klassen
+  (<200 dicht, <1000 mist, <5000 nevel), metric = optrek-uur.
+- storm: piek van de stoten -> vastzet-checklist per drempel (60/75/100),
+  balkon strenger, aanhanger-waarschuwing.
+- houtkachel: stookalert-logica (gemWind<8 en rh>=85 -> afraden),
+  pelletkachel milder, terugslag bij harde stoten.
+- huis-koelen: spui-venster (koele nachturen <20 graden) plus
+  tropennacht-waarschuwing (minNacht>=20).
+- kamperen: de nacht erna draagt het oordeel (min-gevoel, nachtregen,
+  stoten op de tent) plus een droog opzetvenster voor 20:00.
+
+**Engels bewust overgeslagen.** Op verzoek van Martijn. De motoren zelf
+zijn tweetalig (kies() met nl+en), en de stad-templates, ankertermen en
+beslissingen zijn ook in beide talen aangelegd. Maar de vijftien
+Engelse contentbestanden ontbreken en in content/index.js is alleen de
+NL-tak gevuld. Gevolg: de EN-toolpagina's van deze vijftien geven een
+404 (notFound bij ontbrekende inhoud) tot de EN-content-run. Dat is een
+bewuste keuze, geen bug, en staat als open punt in de backlog. Een lek
+van NL-content naar de EN-build is er niet.
+
+**Verificatie**: 201 tests groen (was 185: +16 in
+tests/nieuwe-checks.test.js, twee kernasserts per motor op het eigen
+mechaniek). check:imports OK, em-dash nul, geen CSS gewijzigd. Beide
+builds gedraaid; NL-HTML geverifieerd op de drie bugfixes. Affiliate
+blijft gepauzeerd; nieuwe kandidatenclusters: motorkleding,
+hondenspullen, vuurkorven en tenten.
+
+## Run 10 - 2026-07-18 - v3.30.0 "Mistral"
+
+**Opdracht Martijn**: "Sla engels nog steeds over. Bouw winter uit en
+bouw de tuinonderhoud/huisonderhoud dingen uit. Doe tevens onderzoek
+naar hoe ik affiliate kan implementeren per tool en welke site en hoe
+dit dan werkt."
+
+**Zes nieuwe checks (45 naar 51).** Drie huisonderhoud (categorie
+huis-tuin): buiten-schilderen en hout-behandelen op de venstermotor,
+terras-reinigen idem. Een tuin: planten-beschermen op de
+nacht-erna-dagmotor. Twee winter: sneeuwpret (dagmotor met sneeuwdek)
+en strooien (nacht-erna-dagmotor).
+
+Motorkeuzes en waarom:
+- schilderen en hout-behandelen delen de venstermotor maar zijn bewust
+  verschillend gehouden om kannibalisatie te vermijden en twee
+  zoekintenties te dekken. Schilderen: dekkende verf, oppervlak moet
+  droog zijn tijdens en kort na (naregen-straf), temperatuurband per
+  verftype, vochtstraf, zon-heet-straf. Hout-behandelen: beits/olie
+  trekken in het hout, dus een opdroog-lookback VOOR het venster (nat
+  hout van eerdere regen) en een strengere naregen-straf, want de laag
+  moet uren intrekken. Schaduwhout krijgt een langere opdroogtijd.
+- terras-reinigen: simpele venstermotor met vorst als harde nul
+  (bevriezend spoelwater, gladde tegels), lichte-regenstraf klein (je
+  wordt toch nat), en een impregneer-optie die droog-erna afdwingt.
+- planten-beschermen: het interessantste stuk. Stralingsvorst-model:
+  op een heldere (bewolking < 40), windstille (wind < 10) nacht trek ik
+  een aftrek van de luchtminimum af (open 3.5, half 2.5, beschut 1
+  graad) om de effectieve grondtemperatuur te schatten. Drempel per
+  plantgevoeligheid (winterhard -4, kuipplant 0, zaailing +3). Inverse
+  polariteit zoals storm: hoge pijn = bescherming nodig, antwoord.ja
+  (score < 45) = veilig, geen actie. Metric-doektip alleen als er iets
+  te beschermen valt en de gebruiker geen doek heeft.
+- sneeuwpret: eerste en enige gebruik van snow_depth (sneeuwdek, meter)
+  plus snowfall (verse sneeuw, cm). Drempel voor genoeg sneeuw schaalt
+  met behoefte en activiteit (sleeen wil meer, kinderen minder). Dooi
+  (maxTemp > 4) en regen-op-sneeuw drukken het oordeel.
+- strooien: bewust losgetrokken van gladheid. Gladheid = jouw
+  reisrisico onderweg; strooien = de actie op je eigen stoep en oprit.
+  Nacht-erna: vriest het en zijn de tegels nat (nachtregen, hoge rh bij
+  dauwpunt, of natte dag), dan preventief strooien; nachtsneeuw dan
+  ruimen. Metric noemt het beste strooimoment (uur voor de eerste
+  vorst). Kruislink naar gladheid in de content.
+
+**Productiebugfix (uit v3.29).** visibility en surface_pressure stonden
+in STANDAARD_VELDEN (de fallback) maar niet in WEER_VELDEN (de
+whitelist waar valideerVelden tegen filtert). Gevolg: in productie
+werden zicht en druk uit het fetch-verzoek van mist en vissen gestript,
+dus die tools kregen null terug. De node-tests misten het omdat ze
+overlay() met handmatige hourly voeden en de fetch-laag overslaan. Fix:
+WEER_VELDEN kreeg visibility, surface_pressure, snowfall en snow_depth
+(met commentaar waarom ze in de whitelist MOETEN); STANDAARD_VELDEN
+terug naar de basale zeven. weerbasis.js mapt nu sneeuw (snowfall) en
+sneeuwdek (snow_depth).
+
+**Affiliate-onderzoek (AFFILIATE.md).** Web search gedaan. Bevindingen:
+het plumbing bestaat al (schema, AdviesBlok, disclosure, sponsored
+nofollow, geen tracking), dus implementeren is het veld invullen; de
+tracking zit in de URL (subid), niet in code. Aanbeveling: bol.com als
+ruggengraat (commissie 3-8 procent over de hele winkelwagen, open
+vanaf 18 jaar, dekt bijna alle clusters) plus TradeTracker voor de
+huis-en-tuinmarge (Gamma en Karwei draaien daar exclusief), later
+eventueel Awin voor Decathlon-outdoor. Skip Daisycon/CJ/PayPro,
+gokken blijft af. Start met een netwerk, bewijs conversie, breid dan
+uit. Disclosure is wettelijk verplicht en het AdviesBlok voldoet.
+Geflagd: nooit het Coolblue-programma (werkgeversconflict), en de
+uitbetaalkant is niet anoniem naar het netwerk (identiteit plus bank,
+soms KvK), al blijft de publieke site faceless. Inkomen is belastbaar;
+geen belastingadvies gegeven, verwezen naar Belastingdienst/accountant.
+
+**Engels-besluit.** Opnieuw overgeslagen op verzoek. Tool-objecten,
+stad-templates, ankertermen en beslissingen zijn tweetalig (verplicht,
+anders breekt de EN-build), maar de zes EN-contentbestanden ontbreken
+en in content/index.js is alleen de NL-tak gevuld. De EN-toolpagina's
+van de zes geven dus 404, geen NL-lek. Staat als open punt in de
+backlog naast de vijftien Ghibli-checks.
+
+**Beslissingen-index opgeschoond.** De drie huis-tuin FAQ-ankers die nu
+een echte tool hebben (schilderen, verf, terras) zijn in
+content/beslissingen.js vervangen door de toolId-items van
+buiten-schilderen, hout-behandelen en terras-reinigen (NL en EN). De
+losse anker-teksten op de categoriepagina zelf staan als opruimpunt in
+de backlog, om cannibalisatie tussen anker en tool te vermijden.
+
+**Verificatie**: 210 tests groen (was 201: +9 in
+tests/nieuwe-checks-mistral.test.js), inclusief de registertest die de
+zes tools structureel valideert. check:imports OK, em-dash nul, geen
+CSS gewijzigd. Beide builds gedraaid; NL-HTML geverifieerd op gevulde
+H1 voor de zes nieuwe tools. Affiliate blijft gepauzeerd tot Martijn de
+accounts heeft.

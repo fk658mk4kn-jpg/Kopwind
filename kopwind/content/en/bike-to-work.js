@@ -30,7 +30,7 @@ export const blokken = [
 export const faq = [
   {
     v: "When is it a good day to bike to work?",
-    a: "Dry, a feels-like above your own limit and no strong headwind on your specific route. The check answers in plain words, from Give it a miss to Ideal bike day, and names the reasons: headwind halfway, showers around eight, that kind of thing. In winter the road surface joins in: in frost, glance at [the icy roads check](tool:gladheid).",
+    a: "Dry, a feels-like above your own limit and no strong headwind on your specific route. The check answers in plain words, from Give it a miss to Ideal bike day, and names the reasons: headwind halfway, showers around eight, that kind of thing. In winter the road surface joins in: in frost, glance at [the icy roads check](tool:gladheid). And if you train on the road bike rather than commute, [the road ride check](tool:wielrennen) finds the best window of the day.",
   },
   {
     v: "How does the check know my headwind?",

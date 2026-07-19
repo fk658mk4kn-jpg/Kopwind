@@ -34,7 +34,7 @@ export const faq = [
   },
   {
     v: "Wat is het beste tijdstip om te maaien?",
-    a: "De late namiddag van een droge dag: de dauw is dan allang weg, het gras is op zijn droogst en het gazon heeft de nacht om te herstellen. Vroeg in de ochtend maaien is af te raden vanwege dauw, midden op een hete dag vanwege verbrandingsstress.",
+    a: "De late namiddag van een droge dag: de dauw is dan allang weg, het gras is op zijn droogst en het gazon heeft de nacht om te herstellen. Vroeg in de ochtend maaien is af te raden vanwege dauw, midden op een hete dag vanwege verbrandingsstress. Combineer je de maaibeurt met de heggenschaar, dan weegt [de snoeicheck](tool:snoeien) vorst, nat en het seizoen voor je.",
   },
   {
     v: "Maakt het uit welke maaier ik heb?",

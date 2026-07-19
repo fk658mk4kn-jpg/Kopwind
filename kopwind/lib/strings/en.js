@@ -115,7 +115,7 @@ export const S = {
     stoten: "Gusts",
     vocht: "Humidity",
     zon: "Sun",
-    droog: "Dry",
+    droog: "Precipitation",
     uv: "UV",
     uitleg: "How favourable each factor is right now for this activity. The bar shows favourability, the percentage its weight in the verdict.",
   },

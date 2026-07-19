@@ -59,7 +59,7 @@ export default function LegCard({ leg, index, actief, onClick, onKiesRoute }) {
           {index + 1}. {leg.van.naam.split(",")[0]} → {leg.naar.naam.split(",")[0]}
         </span>
         <span className={"badge " + kleurVoor(a.score)}>
-          {labelVoor(a.score, fietsNaarWerk.schaalLabels)}
+          {labelVoor(a.score, fietsNaarWerk.ritSchaalLabels)}
         </span>
       </div>
 
@@ -111,9 +111,9 @@ export default function LegCard({ leg, index, actief, onClick, onKiesRoute }) {
                 key={j}
                 className={"routechip" + (j === leg.gekozenIndex ? " actief" : "")}
                 onClick={() => onKiesRoute(index, alt.index)}
-                title={`${labelVoor(alt.advies.score, fietsNaarWerk.schaalLabels)}, ${fmtKm(alt.distance)}`}
+                title={`${labelVoor(alt.advies.score, fietsNaarWerk.ritSchaalLabels)}, ${fmtKm(alt.distance)}`}
               >
-                {rol} · {labelVoor(alt.advies.score, fietsNaarWerk.schaalLabels)}
+                {rol} · {labelVoor(alt.advies.score, fietsNaarWerk.ritSchaalLabels)}
                 {dtxt}
                 {minsteWind && <span className="minstewind"> minste wind</span>}
               </button>

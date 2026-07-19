@@ -13,7 +13,10 @@ import { VARIANTEN, variantVerdict } from "@/lib/varianten";
  * tool het overlay-contract; zo krijgen ook pollen-checks hun velden.
  * De plek is dezelfde als op de homepage (kopwind.hubLocatie), met De
  * Bilt als landelijk beginpunt, zodat home en alle-checks een status
- * tonen. Route- en nowcast-checks hebben geen overlay en dus geen stip.
+ * tonen. Sinds v3.25.0 dragen ook paraplu en regen-timing een
+ * dag-samenvatting-overlay, en sinds v3.27.0 heeft de fietscheck een
+ * regio-spitsverdict (go Martijn): elke check op de site draagt nu
+ * een stip.
  */
 export const NEDERLAND = { naam: "Nederland", lat: 52.11, lon: 5.181 };
 

@@ -580,4 +580,41 @@ check tegenspreekt). useDagVerdicts vult varianten automatisch;
 alle-keuzehulpen toont de stip; LocatieTool toont de antwoordbanner via
 de variantId-prop. Bij een NIEUWE variant: een tak toevoegen in
 variantVerdict, anders faalt tests/variant-verdict.test.js (bewust:
-een variant zonder verdict mag niet stil live gaan).
+een variant zonder verdict mag niet stil live gaan). LET OP: scores
+zijn PIJN (0..100, laag is goed; schaalgrenzen 12/30/45/62), want
+schaalVoor en kleurVoorSchaal rekenen daarop. De v3.24-scores stonden
+andersom en kleurden alles groen; de regressietest in
+variant-verdict.test.js bewaakt de kleurmapping sindsdien.
+
+## 20. Nieuwe tool: het lijstje (sinds v3.25.0)
+
+De tests vangen het meeste, maar dit is de volledige route (wielrennen
+was de eerste die hem na alle v3.23-v3.24-infrastructuur liep):
+1. lib/tools/<naam>.js: T-blok tweetalig, defaults, uurScore, overlay
+   (venstermotor waar mogelijk), registerobject met UNIEK icoon
+   (registertest eist dat; teken zo nodig een nieuw pad in Icoon.js).
+2. lib/tools/index.js: import plus plek in de TOOLS-volgorde
+   (bepaalt menu- en categorievolgorde).
+3. Content NL en EN plus registratie in content/index.js (PER_SLUG in
+   beide taaltakken).
+4. lib/steden/stadTemplates.js: stad-template EN ankerterm, beide
+   talen (tests/stad-templates.test.js faalt anders, bewust).
+5. components/GerelateerdBlok.js: RELATIES-set voor de nieuwe tool en
+   waar logisch de nieuwe tool toevoegen aan bestaande sets.
+6. content/beslissingen.js: item in de juiste categorie, NL en EN.
+7. tests/i18n.test.js: de verwachte EN-sluglijst groeit mee (bewuste
+   bewaking van de sluglijst).
+8. Kruislinks overwegen: in-tekst link van en naar de sterkste
+   intentie-buur (inline-links-test valideert de doelen).
+9. Kanttekening in BACKLOG als de drempels beredeneerd maar niet tegen
+   echt weer gevalideerd zijn.
+10. conditie.score is ALTIJD pijn (0..100, laag is goed), ook als de
+   motor intern met een risico of comfortcijfer rekent.
+11. De registertest dwingt af: kleur = de accentkleur van de categorie
+   (een kleur per categorie), en minstens drie instelvelden per tool
+   zonder eigen component, met precies een keuze die de defaults
+   matcht. Bedenk de instellingen als echte gebruikersvragen, geen
+   opvulling (snoeien: haag ja/nee, kougrens, hittegrens). De krab- en
+   gladheidscheck leverden tot v3.26.0 100-minus-risico en toonden
+   daardoor in juli "Zeker krabben"; tests/winter-scores.test.js
+   bewaakt de richting sindsdien.

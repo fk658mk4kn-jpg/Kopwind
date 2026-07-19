@@ -119,7 +119,7 @@ export const S = {
     stoten: "Windstoten",
     vocht: "Luchtvochtigheid",
     zon: "Zon",
-    droog: "Droog",
+    droog: "Neerslag",
     uv: "Zonkracht",
     uitleg: "Hoe gunstig elke factor nu is voor deze bezigheid. De balk toont de gunstigheid, het percentage het gewicht in het oordeel.",
   },

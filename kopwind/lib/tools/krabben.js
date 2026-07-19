@@ -11,8 +11,8 @@
  * windstille nacht (uitstraling: de ruit wordt kouder dan de lucht) met
  * een minimum rond of onder het vriespunt. Een carport halveert het
  * risico ruwweg; binnen geparkeerd is het antwoord altijd nee.
- * Conventie als bij de zonkrachtcheck: hoge score = geen gedoe, en
- * antwoord.ja betekent "ja, krabben".
+ * Conventie als bij de zonkrachtcheck: conditie.score is pijn (laag =
+ * geen gedoe), en antwoord.ja betekent "ja, krabben".
  */
 
 import { clamp, maakScore, adviesVoorScore } from "../engine/score.js";
@@ -155,7 +155,11 @@ export function overlay(hourly, nu = new Date(), instellingen = KRAB_DEFAULTS) {
     const gemBewolking = ochtend.reduce((a, u) => a + (u.bewolking ?? 60), 0) / ochtend.length;
     const helder = gemBewolking <= 40;
     const risico = nachtRisico(ochtend, inst);
-    const score = 100 - risico;
+    // Bugfix v3.26.0: de dagscore is een PIJN-score (laag is goed),
+    // net als overal. De oude 100-minus-risico draaide de schaal om,
+    // waardoor een zomernacht van 16 graden "Zeker krabben (of dek
+    // af)" toonde en een vriesnacht "Geen krabber nodig".
+    const score = risico;
     const ja = risico >= inst.risicoJa;
     const twijfel = !ja && risico >= 20;
 

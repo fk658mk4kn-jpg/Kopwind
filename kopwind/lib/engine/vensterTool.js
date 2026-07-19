@@ -16,6 +16,7 @@
 import { lerp, maakScore, adviesVoorScore } from "./score.js";
 import { jaVoor } from "./schaal.js";
 import { bouwBasis, basisPerDag, dagKeyVan } from "./weerbasis.js";
+import { kies } from "../i18n/locale.js";
 
 const pad2 = (n) => String(n).padStart(2, "0");
 
@@ -117,7 +118,23 @@ export function maakVensterOverlay(cfg) {
    * nu is het de motor-default, zodat alle venstertools zonder eigen
    * override er automatisch van profiteren.
    */
-  function statusVandaag(uren, nu, zoekBlok) {
+  /**
+   * Hele-dag-dekking (v3.26.0, feedback Martijn): als het beste blok
+   * feitelijk het hele dagvenster beslaat, is "het blok loopt tot
+   * 21:00" misleidend precies. Dan zeggen we dat het vrijwel de hele
+   * dag goed is, in de woorden van de tool zelf (adviesLabels.goed).
+   */
+  function dektDag(blok, inst) {
+    if (!blok) return false;
+    return blok.van <= (inst.dagStart ?? 8) + 1 && blok.tot >= (inst.dagEind ?? 22) - 1;
+  }
+
+  const heleDagZin = kies({
+    nl: (label) => `Vrijwel de hele dag ${label}.`,
+    en: (label) => `${label.charAt(0).toUpperCase()}${label.slice(1)} pretty much all day.`,
+  });
+
+  function statusVandaag(uren, nu, zoekBlok, inst) {
     const resterend = uren.filter((u) => u.uur >= nu.getHours());
     const blok = zoekBlok(resterend);
     if (!blok) {
@@ -127,15 +144,21 @@ export function maakVensterOverlay(cfg) {
       }
       return { soort: "nee", zin: T.statusNiks };
     }
-    const tijd = `${pad2(Math.max(blok.van, nu.getHours()))}:00-${pad2(blok.tot)}:00`;
     if (blok.van <= nu.getHours()) {
+      if (dektDag(zoekBlok(uren), inst)) {
+        return { soort: "nu", zin: heleDagZin(adviesLabels.goed) };
+      }
       return { soort: "nu", zin: T.statusNu(`${pad2(blok.tot)}:00`) };
     }
+    const tijd = `${pad2(Math.max(blok.van, nu.getHours()))}:00-${pad2(blok.tot)}:00`;
     return { soort: "later", zin: T.statusBeste(tijd) };
   }
 
-  function statusToekomst(venster) {
+  function statusToekomst(venster, inst) {
     if (!venster) return { soort: "nee", zin: T.toekomstGeen };
+    if (dektDag(venster, inst)) {
+      return { soort: "info", zin: heleDagZin(adviesLabels.goed) };
+    }
     return {
       soort: "info",
       zin: T.toekomstBeste(`${pad2(venster.van)}:00-${pad2(venster.tot)}:00`),
@@ -218,11 +241,20 @@ export function maakVensterOverlay(cfg) {
               inst,
               zoekBlok,
             })
-          : statusVandaag(uren, nu, zoekBlok)
-        : statusToekomst(venster);
+          : statusVandaag(uren, nu, zoekBlok, inst)
+        : statusToekomst(venster, inst);
 
-      const top = venster
-        ? venster.blok.reduce((a, u) => (u.score > a.score ? u : a), venster.blok[0])
+      // Het topuur voor de metric-zin (v3.26.0, feedback: geen verleden
+      // als actueel advies): op de vandaag-tab komt het beste uur uit
+      // het RESTERENDE blok, net als de statuszin. Is er niets
+      // resterends meer, dan valt de metric terug op het dagvenster;
+      // naast "is voor vandaag geweest" is dat informatief, geen
+      // advies.
+      const metricBron = isVandaag
+        ? zoekBlok(uren.filter((u) => u.uur >= nu.getHours())) ?? venster
+        : venster;
+      const top = metricBron
+        ? metricBron.blok.reduce((a, u) => (u.score > a.score ? u : a), metricBron.blok[0])
         : null;
 
       const antwoord = {

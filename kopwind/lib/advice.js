@@ -218,20 +218,24 @@ export function dagAdvies(legs) {
   const wind = typeof worst.samenvatting === "string" ? worst.samenvatting.trim() : "";
   const extra = redenen.length ? ` ${hoofdletter(redenen.join(", "))}.` : "";
 
+  // Bij een enkele rit is "zwaarste rit"-taal onzin (feedback v3.26.0):
+  // dan is de uitleg gewoon het verhaal van die ene rit.
+  const enkel = legs.length === 1;
   let uitleg;
   if (!wind && !redenen.length) {
-    uitleg = "Alle ritten zijn goed te doen.";
+    uitleg = enkel ? "Deze rit is goed te doen." : "Alle ritten zijn goed te doen.";
   } else if (!wind) {
     // Geen samenvatting beschikbaar (bv. handmatige legs in een test): oude vorm.
-    uitleg = `Zwaarste rit: ${label} (${redenen.join(", ")}).`;
+    uitleg = enkel ? `${hoofdletter(redenen.join(", "))}.` : `Zwaarste rit: ${label} (${redenen.join(", ")}).`;
   } else {
-    uitleg = `Zwaarste rit: ${label}. ${wind}${extra}`;
+    uitleg = enkel ? `${wind}${extra}` : `Zwaarste rit: ${label}. ${wind}${extra}`;
   }
 
   return {
     score,
     advies: adviesVoorScore(score),
     ja: score < 45, // zelfde jaVoor-grens als de rest van de site
+    aantal: legs.length,
     worstIdx,
     worstLabel: label,
     redenen,

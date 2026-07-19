@@ -175,7 +175,16 @@ export function overlay(hourly, nu = new Date(), instellingen = KLEDING_DEFAULTS
       },
       {
         punten: Math.round(lerp(fractieNat, 0.05, 0.6, 0, 30)),
-        reden: natUren.length ? T.redenRegen(String(natUren[0].uur).padStart(2, "0")) : null,
+        reden: natUren.length
+          ? T.redenRegen(
+              String(
+                (datum === vandaagKey
+                  ? (natUren.find((u) => u.uur >= nu.getHours()) ?? natUren[natUren.length - 1])
+                  : natUren[0]
+                ).uur
+              ).padStart(2, "0")
+            )
+          : null,
       },
       {
         punten: spreiding >= 7 ? Math.round(lerp(spreiding, 7, 14, 6, 16)) : 0,
@@ -190,15 +199,23 @@ export function overlay(hourly, nu = new Date(), instellingen = KLEDING_DEFAULTS
     const conditie = { score, redenen, advies: adviesVoorScore(score, kleding.adviesLabels) };
 
     // Het advies zelf: hoofdlaag op de middag, meeneem-advies uit de
-    // koudere dagdelen, regen-timing erbij.
-    const ochtend = dagdeel(uren, inst.dagStart, 12);
-    const middag = dagdeel(uren, 12, 18) ?? ochtend;
-    const avond = dagdeel(uren, 18, inst.dagEind);
+    // koudere dagdelen, regen-timing erbij. Voor VANDAAG telt alleen
+    // wat nog komt (v3.26.0, feedback Martijn: om 15:00 is
+    // "vanochtend vroeg een jas" verleden tijd, en een bui van 08:00
+    // hoort niet meer in het advies): voorbije dagdelen vallen weg en
+    // na 18:00 verschuift de hoofdlaag naar de avond.
+    const isVandaagAdvies = datum === vandaagKey;
+    const uurNu = isVandaagAdvies ? nu.getHours() : 0;
+    const ochtend = uurNu < 12 ? dagdeel(uren, inst.dagStart, 12) : null;
+    const middagDeel = uurNu < 18 ? dagdeel(uren, Math.max(12, uurNu), 18) : null;
+    const avond = dagdeel(uren, Math.max(18, uurNu), inst.dagEind);
+    const middag = middagDeel ?? avond ?? ochtend;
 
     const hoofd = laagVoor(middag?.min ?? minG, inst);
     let zin = T.vandaagPrefix(hoofd.advies);
     const koudsteAndere = [ochtend, avond]
       .filter(Boolean)
+      .filter((d) => d !== middag)
       .map((d) => ({ ...d, laag: laagVoor(d.min, inst) }))
       .filter((d) => d.laag.index > hoofd.index)
       .sort((a, b) => b.laag.index - a.laag.index)[0];
@@ -206,8 +223,11 @@ export function overlay(hourly, nu = new Date(), instellingen = KLEDING_DEFAULTS
       const wanneer = koudsteAndere === avond ? T.vanavond : T.vanochtend;
       zin += T.neemMee(koudsteAndere.laag.item, wanneer, Math.round(koudsteAndere.min));
     }
-    if (natUren.length) {
-      zin += T.regenjas(String(natUren[0].uur).padStart(2, "0"));
+    const komendeNatteUren = isVandaagAdvies
+      ? natUren.filter((u) => u.uur >= uurNu)
+      : natUren;
+    if (komendeNatteUren.length) {
+      zin += T.regenjas(String(komendeNatteUren[0].uur).padStart(2, "0"));
     }
     zin += ".";
 

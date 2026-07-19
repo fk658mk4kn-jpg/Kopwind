@@ -29,7 +29,7 @@ function dagdeelStatus(punten, vanUur, totUur) {
   return inBlok.some((p) => p.nat) ? "bui" : "droog";
 }
 
-export default function RegenTimingTool() {
+export default function RegenTimingTool({ beginLocatie = null }) {
   const tool = TOOLS.find((t) => t.id === "regen-timing");
   const g = useGebruiker();
   const [analyse, setAnalyse] = useState(null);
@@ -55,7 +55,7 @@ export default function RegenTimingTool() {
     }
   };
 
-  const { locatie, kiesLocatie } = useLocatie("regen-timing", doeCheck);
+  const { locatie, kiesLocatie } = useLocatie("regen-timing", doeCheck, beginLocatie);
   const favoriet = isFavoriet(locatie, g.presets);
 
   const dagdelen = analyse

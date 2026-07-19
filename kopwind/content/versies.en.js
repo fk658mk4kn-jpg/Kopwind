@@ -5,6 +5,42 @@
 
 export const VERSIES = [
   {
+    versie: "3.30.0",
+    codenaam: "Mistral",
+    datum: "2026-07-18",
+    zin: "Six new helpers around winter and jobs in and around the house, plus research into how affiliate would work. New: exterior painting, wood treatment (staining and oiling), patio cleaning, protecting plants from night frost, snow play and gritting. Notable: the snow play check is the only one using the snow layer, the frost check accounts for radiation frost (on a clear night the ground is colder than the air), and the gritting check is about your own pavement, not the road. We also fixed a quiet bug that left the fog and fishing checks without visibility and pressure data.",
+  },
+  {
+    versie: "3.29.0",
+    codenaam: "Ghibli",
+    datum: "2026-07-18",
+    zin: "Fifteen new helpers added, and three annoying bugs removed. New: golfing, inline skating, motorcycling, walking the dog, kite flying, the fire pit, drone flying, horse riding, fishing, natural ice, fog, storm, the wood stove, keeping the house cool and camping. Notable: the fishing check is the only one using air pressure, the kite check looks for the best wind rather than the least, and the natural ice check weighs the frost but always leaves the ice verdict to the ice club. We also fixed a few issues affecting search traffic, including the breadcrumb warning in Search Console.",
+  },
+  {
+    versie: "3.28.0",
+    codenaam: "Ostria",
+    datum: "2026-07-18",
+    zin: "The garden now has a home of its own: a new Garden and plants category with three new checks. The weeding check picks the method of the day (hoeing when dry and sunny, hand-weeding on moist soil), the watering check tells you honestly when the rain does the work, and the sowing check knows the lawn's two sowing windows. Plus new answers on feeding, leaves and the vegetable patch.",
+  },
+  {
+    versie: "3.27.0",
+    codenaam: "Solano",
+    datum: "2026-07-18",
+    zin: "Every city page now shows the answer right at the top, even before the check loads, and the bike check finally has its own status dot (based on rush hours). New: the pruning check weighs frost, wet and heat and tells you what the pruning season allows this month, with a bird's nest reminder for hedge trimmers. Plus three new garden questions in the overview.",
+  },
+  {
+    versie: "3.26.0",
+    codenaam: "Gregale",
+    datum: "2026-07-18",
+    zin: "Advice now sounds more natural and matches the moment: no more scraping advice in July (a genuine bug), no tips about parts of the day or showers that have already passed, and when the whole day is good we simply say so. The bike tool starts on your outbound leg after checking, and the homepage now has a search box for every check.",
+  },
+  {
+    versie: "3.25.0",
+    codenaam: "Pampero",
+    datum: "2026-07-17",
+    zin: "New: the road ride check finds the best window for a ride on the road bike, putting dry tarmac and manageable wind first. The umbrella and rain timing checks now show a status dot on the homepage too, and the clothing check gained a flip-flop question with an instant yes or no.",
+  },
+  {
     versie: "3.24.0",
     codenaam: "Khamsin",
     datum: "2026-07-17",

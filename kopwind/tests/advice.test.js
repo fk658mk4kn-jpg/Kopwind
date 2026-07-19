@@ -102,6 +102,20 @@ test("dagAdvies: pakt de zwaarste rit van de keten", () => {
   assert.ok(dag.uitleg.includes("Sportschool"), dag.uitleg);
 });
 
+test("dagAdvies: een enkele rit spreekt niet over de zwaarste rit", () => {
+  const dag = dagAdvies([
+    {
+      van: { naam: "Thuis" },
+      naar: { naam: "Werk" },
+      samenvatting: "Vrijwel de hele route rustig.",
+      advies: { score: 12, redenen: [], factoren: [] },
+    },
+  ]);
+  assert.equal(dag.aantal, 1);
+  assert.ok(!dag.uitleg.includes("Zwaarste rit"), dag.uitleg);
+  assert.ok(dag.uitleg.includes("rustig"), dag.uitleg);
+});
+
 test("dagAdvies: gebruikt de windsamenvatting van de zwaarste rit", () => {
   const legs = [
     {

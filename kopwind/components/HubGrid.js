@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import LocatieZoek from "@/components/LocatieZoek";
+import ZoekChecks from "@/components/ZoekChecks";
 import Icoon from "@/components/Icoon";
 import { useDagVerdicts } from "@/components/useDagVerdicts";
 import { schaalVoor, labelVoor, kleurVoorSchaal } from "@/lib/engine/schaal";
@@ -116,6 +117,10 @@ export default function HubGrid() {
       </div>
 
       {(fout ?? lokaleFout) && <div className="fout">{fout ?? lokaleFout}</div>}
+
+      {/* v3.26.0 (feedback): keuzehulp zoeken kan nu ook hier, niet
+          alleen op alle-keuzehulpen. */}
+      <ZoekChecks />
 
       {recent.length > 0 && (
         <>

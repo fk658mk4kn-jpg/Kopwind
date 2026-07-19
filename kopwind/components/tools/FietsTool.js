@@ -156,7 +156,10 @@ export default function FietsTool({ beginStops = null }) {
       setLegsRaw(raw);
       setSelection(zeros);
       setPlanTijd(new Date());
-      setActieveLeg(plan0.dag?.worstIdx ?? 0);
+      // Feedback v3.26.0: na het checken staat standaard de HEENWEG
+      // geselecteerd, niet de zwaarste rit (die vaak de terugweg is).
+      // De zwaarste rit blijft benoemd in de dagbanner.
+      setActieveLeg(0);
       g.meldInteractie();
     } catch (e) {
       setLegsRaw(null);

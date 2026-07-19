@@ -10,13 +10,23 @@ import { useEffect, useRef, useState } from "react";
  *
  * @param {string} toolId
  * @param {(plek: {lat:number, lon:number, naam:string}) => Promise<void>} doeCheck
+ * @param {{lat:number, lon:number, naam:string}|null} begin Vooraf
+ *   ingestelde plek (stadpagina's): wint van de onthouden locatie en
+ *   start direct een check, zelfde gedrag als LocatieTool.
  */
-export function useLocatie(toolId, doeCheck) {
-  const [locatie, setLocatie] = useState(null);
+export function useLocatie(toolId, doeCheck, begin = null) {
+  const [locatie, setLocatie] = useState(begin);
   const lsSleutel = `kopwind.locatie.${toolId}`;
   const autoRan = useRef(false);
 
   useEffect(() => {
+    if (begin?.lat) {
+      if (!autoRan.current) {
+        autoRan.current = true;
+        doeCheck(begin);
+      }
+      return;
+    }
     try {
       const l =
         JSON.parse(localStorage.getItem(lsSleutel) ?? "null") ??

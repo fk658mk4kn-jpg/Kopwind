@@ -32,8 +32,35 @@ import * as hooikoorts from "./hooikoorts.js";
 import * as korteBroek from "./korte-broek-weer.js";
 import * as jasAan from "./jas-aan-of-uit.js";
 import * as tShirt from "./t-shirt-weer.js";
+import * as slippersNl from "./slippers-weer.js";
 import * as wanneerRegen from "./wanneer-gaat-het-regenen.js";
 import * as parapluMee from "./paraplu-mee.js";
+import * as wielrenweerNl from "./wielrenweer.js";
+import * as snoeienNl from "./snoeien.js";
+import * as onkruidNl from "./onkruid.js";
+import * as waterGevenNl from "./water-geven.js";
+import * as grasZaaienNl from "./gras-zaaien.js";
+import * as golfenNl from "./golfen.js";
+import * as skeelerenNl from "./skeeleren.js";
+import * as motorrijdenNl from "./motorrijden.js";
+import * as hondUitlatenNl from "./hond-uitlaten.js";
+import * as vliegerenNl from "./vliegeren.js";
+import * as vuurkorfNl from "./vuurkorf.js";
+import * as droneVliegenNl from "./drone-vliegen.js";
+import * as paardrijdenNl from "./paardrijden.js";
+import * as vissenNl from "./vissen.js";
+import * as schaatsenNl from "./schaatsen.js";
+import * as mistNl from "./mist.js";
+import * as stormNl from "./storm.js";
+import * as houtkachelNl from "./houtkachel.js";
+import * as huisKoelenNl from "./huis-koelen.js";
+import * as kamperenNl from "./kamperen.js";
+import * as buitenSchilderenNl from "./buiten-schilderen.js";
+import * as houtBehandelenNl from "./hout-behandelen.js";
+import * as terrasReinigenNl from "./terras-reinigen.js";
+import * as plantenBeschermenNl from "./planten-beschermen.js";
+import * as sneeuwpretNl from "./sneeuwpret.js";
+import * as strooienNl from "./strooien.js";
 
 import * as bikeToWork from "./en/bike-to-work.js";
 import * as dryLaundryOutside from "./en/dry-laundry-outside.js";
@@ -60,13 +87,24 @@ import * as hayFever from "./en/hay-fever.js";
 import * as shorts from "./en/shorts-weather.js";
 import * as coat from "./en/coat-or-no-coat.js";
 import * as tShirtEn from "./en/t-shirt-weather.js";
+import * as flipFlopsEn from "./en/flip-flops-weather.js";
 import * as whenRain from "./en/when-will-it-rain.js";
 import * as umbrella from "./en/umbrella-today.js";
+import * as roadCyclingEn from "./en/road-cycling-weather.js";
+import * as pruningEn from "./en/pruning.js";
+import * as weedingEn from "./en/weeding.js";
+import * as wateringEn from "./en/watering.js";
+import * as sowingGrassEn from "./en/sowing-grass.js";
 
 const PER_SLUG =
   LOCALE === "en"
     ? {
         "bike-to-work": bikeToWork,
+        "road-cycling-weather": roadCyclingEn,
+        "pruning": pruningEn,
+        "weeding": weedingEn,
+        "watering": wateringEn,
+        "sowing-grass": sowingGrassEn,
         "dry-laundry-outside": dryLaundryOutside,
         "what-to-wear": whatToWear,
         "patio-weather": patioWeather,
@@ -91,11 +129,38 @@ const PER_SLUG =
         "shorts-weather": shorts,
         "coat-or-no-coat": coat,
         "t-shirt-weather": tShirtEn,
+        "flip-flops-weather": flipFlopsEn,
         "when-will-it-rain": whenRain,
         "umbrella-today": umbrella,
       }
     : {
         "fietsen-naar-werk": fietsenNaarWerk,
+        "wielrenweer": wielrenweerNl,
+        "snoeien": snoeienNl,
+        "onkruid": onkruidNl,
+        "water-geven": waterGevenNl,
+        "gras-zaaien": grasZaaienNl,
+        "golfen": golfenNl,
+        "skeeleren": skeelerenNl,
+        "motorrijden": motorrijdenNl,
+        "hond-uitlaten": hondUitlatenNl,
+        "vliegeren": vliegerenNl,
+        "vuurkorf": vuurkorfNl,
+        "drone-vliegen": droneVliegenNl,
+        "paardrijden": paardrijdenNl,
+        "vissen": vissenNl,
+        "schaatsen": schaatsenNl,
+        "mist": mistNl,
+        "storm": stormNl,
+        "houtkachel": houtkachelNl,
+        "huis-koelen": huisKoelenNl,
+        "kamperen": kamperenNl,
+        "buiten-schilderen": buitenSchilderenNl,
+        "hout-behandelen": houtBehandelenNl,
+        "terras-reinigen": terrasReinigenNl,
+        "planten-beschermen": plantenBeschermenNl,
+        "sneeuwpret": sneeuwpretNl,
+        "strooien": strooienNl,
         "was-buiten-drogen": wasBuitenDrogen,
         "wat-trek-ik-aan": watTrekIkAan,
         "terrasweer": terras,
@@ -120,6 +185,7 @@ const PER_SLUG =
         "korte-broek-weer": korteBroek,
         "jas-aan-of-uit": jasAan,
         "t-shirt-weer": tShirt,
+        "slippers-weer": slippersNl,
         "wanneer-gaat-het-regenen": wanneerRegen,
         "paraplu-mee": parapluMee,
       };

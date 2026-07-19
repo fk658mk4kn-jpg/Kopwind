@@ -46,7 +46,7 @@ export const faq = [
   },
   {
     v: "Wat is goed fietsweer?",
-    a: "Droog, een gevoelstemperatuur boven een graad of 5 en weinig wind tegen (of wind mee). In de check is dat Goed of Ideaal: een prima fietsdag. In de winter komt het wegdek erbij: check bij vorst even [de gladheidscheck](tool:gladheid).",
+    a: "Droog, een gevoelstemperatuur boven een graad of 5 en weinig wind tegen (of wind mee). In de check is dat Goed of Ideaal: een prima fietsdag. In de winter komt het wegdek erbij: check bij vorst even [de gladheidscheck](tool:gladheid). En train je op de racefiets in plaats van forenzen, dan zoekt [de wielrencheck](tool:wielrennen) het beste rijblok van de dag.",
   },
   {
     v: "Kan ik ook mijn terugrit en tussenstops checken?",

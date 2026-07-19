@@ -85,7 +85,67 @@ uitlegteksten; site-breed staan er 93 in-tekst links.
   kleding-hub): bij volume per graad-variant promoveren, te beginnen
   met de best presterende.
 
+## Gedaan met go (v3.29.0, opdracht Martijn 2026-07-18)
+
+Vijftien nieuwe checks (acht venstertools, zeven dagmotoren) plus drie
+productiebugfixes (dubbel relatief breadcrumb-schema, ontbrekende
+eigenComponent-rendertak op de nowcast-stadpagina's, en verificatie van
+de al in v3.27 gefixte title/tekst-kwesties). Engels bewust
+overgeslagen (zie open punten). Nieuwe affiliate-kandidatenclusters
+zodra de uitrol hervat: motorkleding en helmen (motorcheck),
+hondenspullen en poelzalf (uitlaatcheck), vuurkorven en haardhout
+(vuurkorf- en houtkachelcheck), tenten en slaapmatten (kampeercheck),
+vliegers en powerkites (vliegercheck), hengelsport (vischeck),
+schaatsen en ventilatoren/airco's (schaats- en koelcheck).
+
+## Gedaan met go (v3.28.0, opdracht Martijn 2026-07-18)
+
+Categorie Tuin en planten afgesplitst (grasmaaien en snoeien verhuisd,
+slug huis-tuin-auto bewust behouden), drie nieuwe checks (onkruid met
+methode-advies, water geven met omgekeerd antwoord, gras zaaien met
+kalender) en drie tuin-ankers (bemesten, bladeren, moestuin).
+Affiliate-kandidaten zodra de uitrol hervat: graszaad en gazonmest
+(zaaicheck), gieters en druppelslang (gietcheck), schoffels en
+voegkrabbers (onkruidcheck), snoeigereedschap (snoeicheck): het
+sterkste cluster van de site.
+
+## Gedaan met go (v3.27.0, akkoord Martijn 2026-07-18)
+
+SSR-antwoordblok op alle stadpagina's (verdict, kernzin en tijdstempel
+in de server-HTML, ISR 30 minuten, faalt stil), fiets-regioverdict
+(spitsen; geeft de fietscheck stip, stadblok en meldingen), het
+stadtekst-fixpakket (drie smaken, volledig tweetalig) en de
+zeven-checks-regel in het homepage-FAQ. Napunt: het serverblok is in
+de sandbox niet tegen echte weerdata te zien (geen netwerk); na deploy
+even een stadpagina bekijken en de bron controleren op het blok.
+
 ## Open punten (feedback Martijn, juli 2026)
+
+- **Engelse content voor de vijftien Ghibli-checks (v3.29.0)**: de
+  motoren zijn tweetalig en de stad-templates, ankertermen en
+  beslissingen staan in beide talen, maar de EN-contentbestanden
+  (content/*.js met Engelse seo/intro/blokken/faq) en de EN-registratie
+  in content/index.js ontbreken. Daardoor geven de EN-toolpagina's van
+  golfen, skeeleren, motorrijden, hond-uitlaten, vliegeren, vuurkorf,
+  drone-vliegen, paardrijden, vissen, schaatsen, mist, storm,
+  houtkachel, huis-koelen en kamperen nu een 404. Bewust uitgesteld op
+  verzoek van Martijn ("Engels helemaal vergeten"). Oppakken zodra de
+  EN-markt weer aan de beurt is: vijftien EN-contentbestanden schrijven
+  en in de en-tak van content/index.js registreren.
+- **Engelse content voor de zes Mistral-checks (v3.30.0)**: zelfde
+  situatie voor buiten-schilderen, hout-behandelen, terras-reinigen,
+  planten-beschermen, sneeuwpret en strooien. Tool-objecten en
+  stad-templates zijn tweetalig, EN-content ontbreekt, EN-pagina's
+  geven 404. Meenemen in dezelfde EN-content-run.
+- **Opruimen: overbodige huis-tuin FAQ-ankers**: de losse
+  anker-teksten kan-ik-buiten-schilderen-of-beitsen,
+  droogt-verf-vandaag-goed en kan-ik-mijn-terras-schoonmaken op de
+  huis-tuin-categoriepagina overlappen nu met de echte tools
+  buiten-schilderen, hout-behandelen en terras-reinigen. In de
+  beslissingen-index zijn ze al vervangen; verwijder of herschrijf de
+  anker-content zelf om kannibalisatie tussen anker en tool te
+  voorkomen (de tool is de canonieke pagina).
+
 
 - **Meldingen-bug (een melding, daarna stilte)**: code-fix geleverd in
   v3.16.0 (hersync bij elk bezoek, pushsubscriptionchange-handler,
@@ -96,16 +156,9 @@ uitlegteksten; site-breed staan er 93 in-tekst links.
   AI-gegenereerde afbeelding of illustratie aan; tot die tijd is het
   achtergrondmodel (paginatint plus categorie-icoon) de visuele laag.
   Geen stockfoto's (licenties, faceless).
-- **Recent-gebruikt uitbreiden**: varianten (jas, korte broek, T-shirt)
-  registreren nu nog geen bezoek voor het Recent-blok; ouder-tool
-  meetellen bij variantbezoek.
-- **Homepage-kop**: staat nu op "Populaire checks" (consistent met de
-  sitetaal); Martijn vroeg letterlijk "Populaire tools". Een
-  string-wijziging als hij toch "tools" wil.
-- **Inklapbaarheid breder doorvoeren**: menu en meldingen zijn om
-  (v3.16.0); nalopen welke blokken met verdieping nog volgen
-  (storefront-uitlegblokken, instellingen-uitleg). Richtlijn staat in
-  PLAYBOOK sectie 7.
+- (Opgeruimd 2026-07-17: recent-gebruikt met varianten, de
+  homepage-kop en de bredere inklapbaarheid zijn alle drie in v3.22.0
+  afgehandeld en naar de changelog verhuisd.)
 
 ## Verwerkt in v3.16.0 (deze ronde)
 
@@ -134,7 +187,17 @@ scrollt op mobiel naar de kaart, en de adviesVoorScore-audit is
 afgerond (nergens meer in de UI; intern contract met waarschuwend
 commentaar).
 
-## Affiliate (GEPAUZEERD, besluit Martijn 2026-07-17)
+## Affiliate (GEPAUZEERD, onderzoek gedaan v3.30.0)
+
+ONDERZOEK AFGEROND (v3.30.0, opdracht Martijn): hoe affiliate per tool
+werkt, welk netwerk en hoe, staat volledig uitgewerkt in AFFILIATE.md
+(root). Kort: bol.com als ruggengraat (breed, commissie 3-8 procent over
+de hele winkelwagen, open vanaf 18 jaar) plus TradeTracker voor de
+huis-en-tuinmarge (Gamma en Karwei exclusief daar), later eventueel Awin
+voor Decathlon-outdoor. Disclosure verplicht (AdviesBlok voldoet).
+Geflagd: nooit het Coolblue-programma (werkgeversconflict), en de
+uitbetaalkant is niet anoniem naar het netwerk. Concrete acties voor
+Martijn staan in AFFILIATE.md paragraaf 7.
 
 Uitrol staat stil tot de site zelf 100 procent staat. De twee
 placeholder-adviesblokken (zonkracht, was-buiten-drogen) blijven staan
@@ -149,12 +212,15 @@ nofollow noopener", geen tracking) en een test die elk blok in beide
 talen valideert. Ingevuld voor zonkracht (zonnebrand) en
 was-buiten-drogen (drooggerei), met PLACEHOLDER-winkellinks.
 
-**Nu te doen door Martijn:**
-- Echte affiliate-accounts en -links regelen en de placeholder-URL's
-  (Kruidvat, Blokker) vervangen. Kandidaat-programma's: Praxis of
-  Gamma (tuin, klussen), bol.com partner (breed), Decathlon (sport).
-- Pas dan echt uitrollen naar meer tools; de plek en het patroon staan
-  klaar.
+**Nu te doen door Martijn (uit het onderzoek, zie AFFILIATE.md):**
+- Aanmelden bij bol.com Partnerprogramma (laagste drempel, breedste
+  dekking), optioneel meteen TradeTracker erbij voor de Gamma/Karwei-
+  klusmarge (verf, beits, hogedrukreiniger, strooizout).
+- Het affiliate-veld invullen op de twee of drie tools met het meeste
+  verkeer, met een subid per tool; de placeholder-URL's (Blokker) in
+  zonkracht en was-buiten-drogen vervangen door echte partnerlinks.
+- Conversie bewijzen op een netwerk voordat je uitbreidt naar de rest
+  van de clusters (tabel in AFFILIATE.md paragraaf 3).
 
 **Kandidaten per categorie (invulling volgt zodra links er zijn):**
 regen (regenjassen, paraplu's), was (wasrekken, gedaan als voorbeeld),
@@ -189,7 +255,7 @@ kaartstructuur (PLAYBOOK sectie 11).
   niet gedaan om de gekozen thematische mix niet te laten verdringen
   door bijvoorbeeld drie zomer-tools. Overwegen zodra er
   stemvolume is.
-- SEO-werkwoordvarianten book breder dan de title (v3.22.0 deed 11
+- SEO-werkwoordvarianten nog breder dan de title (v3.22.0 deed 11
   titles): eventueel ook intro's en H1's laten afwisselen, en de
   resterende tools meenemen. Alleen als Search Console laat zien dat de
   varianten volume trekken; anders niet mechanisch uitbreiden.
@@ -228,7 +294,7 @@ geen label = nog niet opgepakt.
 - Is het T-shirtweer vandaag? [variant: t-shirt]
 - Heb ik handschoenen, muts of sjaal nodig? [anker]
 - Heb ik vandaag een zonnebril nodig? [anker]
-- Is het slippers-weer vandaag?
+- Is het slippersweer vandaag? [variant: slippers, v3.25.0]
 - Wat trek ik aan met sporten?
 
 ### Buiten en vrije tijd
@@ -249,6 +315,7 @@ geen label = nog niet opgepakt.
 - Kan ik wandelen vandaag? [tool: wandelen, v3.17.0]
 - Kan ik vandaag padellen of tennissen? [tool: padel-of-tennis, v3.17.0]
 - Kan ik vandaag suppen of kajakken? [tool: suppen-of-kajakken, v3.17.0]
+- Is het wielrenweer vandaag? [tool: wielrennen, v3.25.0]
 - Kan ik vandaag basketballen buiten?
 - Is het te warm om buiten te sporten? [anker]
 
@@ -261,19 +328,13 @@ geen label = nog niet opgepakt.
 - Kan ik mijn huis luchten vandaag? [anker]
 - Kan ik dekbedden buiten luchten? [anker]
 - Kan ik buiten schilderen of beitsen? [anker]
-- Droogt verf vandaag goed?
-- Kan ik vandaag mijn terras schoonmaken?
-- Kan ik vandaag mijn tuinmeubels schoonmaken?
+- Droogt verf vandaag goed? [anker, v3.27.0]
+- Kan ik vandaag mijn terras schoonmaken? [anker, v3.27.0]
+- Kan ik vandaag mijn tuinmeubels schoonmaken? [anker, v3.27.0]
 - Leveren mijn zonnepanelen vandaag veel op? [tool: zonnepanelen, v3.17.0]
-- Kan ik vandaag snoeien? (idee Martijn 2026-07-17) Sterke
-  affiliate-kandidaat: advies "welke planten wel, welke niet, en
-  wanneer wel of niet snoeien" (vorstrisico, groeiseizoen, bloei na of
-  voor de bloei), plus een AdviesBlok naar snoeigereedschap bij Praxis
-  of Gamma. Afweging vooraf: dit is deels weer (vorst, nat blad) maar
-  vooral plantenkennis, dus het kan een eigen tool worden met een
-  lichte weer-overlay plus een steviger adviesblok dan gemiddeld.
-  Waarschijnlijk het beste eerste echte affiliate-onderwerp, want de
-  koopintentie (gereedschap) is hoog en het advies is evergreen.
+- Kan ik vandaag snoeien? [tool: snoeien, v3.27.0] Affiliate-laag
+  (snoeigereedschap) bewust nog leeg: uitrol gepauzeerd; het veld op
+  het register staat klaar.
 - Plantenadvies breder: per plant/klus wat wel en niet kan bij dit
   weer (dezelfde advies-plus-affiliate-vorm als snoeien).
 
@@ -289,7 +350,11 @@ geen label = nog niet opgepakt.
 - Moet ik morgen krabben? [tool: krabben, v3.16.0]
 - Is het glad op de weg? [tool: gladheid, v3.16.0]
 
-### Comfort en gevoel (nog niet ingedeeld)
+### Comfort en gevoel (bewust geen tools, besluit 2026-07-17)
+Dit zijn weervragen zonder beslissing ("is het koud" vraagt om een
+getal, niet om een ja/nee met een beste moment) en botsen daarmee met
+het format van de site. Ze blijven in de voorraad voor eventuele
+FAQ-ankers, maar worden geen eigen checks of categorie.
 - Is het koud vandaag? / Is het warm vandaag?
 - Waait het hard vandaag?
 - Is de luchtvochtigheid vandaag hoog?

@@ -56,20 +56,6 @@ export default function PaarPagina({ params }) {
     { naam: `${naar.naam}, centrum`, lat: naar.lat, lon: naar.lon },
   ];
 
-  const breadcrumbJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: HUB_NAAM, item: "/" },
-      { "@type": "ListItem", position: 2, name: tool.naam, item: `/${tool.slug}` },
-      {
-        "@type": "ListItem",
-        position: 3,
-        name: `Van ${van.naam} naar ${naar.naam}`,
-        item: `/van/${van.slug}/naar/${naar.slug}`,
-      },
-    ],
-  };
 
   return (
     <main>
@@ -109,7 +95,6 @@ export default function PaarPagina({ params }) {
         </div>
       </section>
 
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
     </main>
   );
 }

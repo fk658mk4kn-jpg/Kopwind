@@ -26,6 +26,7 @@
 
 import { fietsNaarWerk } from "./fiets-naar-werk.js";
 import { hardloopweer } from "./hardloopweer.js";
+import { wielrennen } from "./wielrennen.js";
 import { strandweer } from "./strandweer.js";
 import { autoWassen } from "./auto-wassen.js";
 import { krabben } from "./krabben.js";
@@ -38,6 +39,25 @@ import { picknickweer } from "./picknickweer.js";
 import { buitenZwemmen } from "./buiten-zwemmen.js";
 import { sterrenkijken } from "./sterrenkijken.js";
 import { grasmaaien } from "./grasmaaien.js";
+import { snoeien } from "./snoeien.js";
+import { onkruid } from "./onkruid.js";
+import { waterGeven } from "./water-geven.js";
+import { grasZaaien } from "./gras-zaaien.js";
+import { golfen } from "./golfen.js";
+import { skeeleren } from "./skeeleren.js";
+import { motorrijden } from "./motorrijden.js";
+import { hondUitlaten } from "./hond-uitlaten.js";
+import { vliegeren } from "./vliegeren.js";
+import { vuurkorf } from "./vuurkorf.js";
+import { droneVliegen } from "./drone-vliegen.js";
+import { paardrijden } from "./paardrijden.js";
+import { vissen } from "./vissen.js";
+import { schaatsen } from "./schaatsen.js";
+import { mist } from "./mist.js";
+import { storm } from "./storm.js";
+import { houtkachel } from "./houtkachel.js";
+import { huisKoelen } from "./huis-koelen.js";
+import { kamperen } from "./kamperen.js";
 import { ramenWassen } from "./ramen-wassen.js";
 import { zonnepanelen } from "./zonnepanelen.js";
 import { CATEGORIEEN } from "../categorieen.js";
@@ -49,12 +69,20 @@ import { zonkracht } from "./zonkracht.js";
 import { hooikoorts } from "./hooikoorts.js";
 import { regenTiming } from "./regen-timing.js";
 import { paraplu } from "./paraplu.js";
+// v3.30.0 "Mistral": huis/tuinonderhoud + winter
+import { buitenSchilderen } from "./buiten-schilderen.js";
+import { houtBehandelen } from "./hout-behandelen.js";
+import { terrasReinigen } from "./terras-reinigen.js";
+import { plantenBeschermen } from "./planten-beschermen.js";
+import { sneeuwpret } from "./sneeuwpret.js";
+import { strooien } from "./strooien.js";
 import { VARIANTEN, maakPseudoTool } from "../varianten.js";
 
 export const TOOLS = [
   // Sport
   fietsNaarWerk,
   hardloopweer,
+  wielrennen,
   wandelen,
   buitenSporten,
   padelOfTennis,
@@ -62,8 +90,31 @@ export const TOOLS = [
   wasBuitenDrogen,
   autoWassen,
   grasmaaien,
+  snoeien,
+  onkruid,
+  waterGeven,
+  grasZaaien,
+  golfen,
+  skeeleren,
+  motorrijden,
+  hondUitlaten,
+  vliegeren,
+  vuurkorf,
+  droneVliegen,
+  paardrijden,
+  vissen,
+  schaatsen,
+  mist,
+  storm,
+  houtkachel,
+  huisKoelen,
+  kamperen,
   ramenWassen,
   zonnepanelen,
+  buitenSchilderen,
+  houtBehandelen,
+  terrasReinigen,
+  plantenBeschermen,
   // Kleding
   kleding,
   // Buiten
@@ -83,6 +134,8 @@ export const TOOLS = [
   // Winter
   krabben,
   gladheid,
+  sneeuwpret,
+  strooien,
 ];
 
 export function vindTool(slug) {
