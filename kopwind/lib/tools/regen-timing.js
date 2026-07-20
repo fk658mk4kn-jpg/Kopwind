@@ -50,7 +50,7 @@ const T = kies({
 });
 
 /**
- * Dag-samenvatting-overlay (v3.25.0 "Pampero", besluit Martijn): het
+ * Dag-samenvatting-overlay (v3.25.0 "Pampero", besluit de eigenaar): het
  * dagkarakter voor de statusstip. De toolpagina zelf blijft de
  * 15-minutenreeks gebruiken (RegenTimingTool); dit is de grove
  * uur-versie voor home en alle-keuzehulpen. Score is pijn (0..100):

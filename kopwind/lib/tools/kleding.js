@@ -200,7 +200,7 @@ export function overlay(hourly, nu = new Date(), instellingen = KLEDING_DEFAULTS
 
     // Het advies zelf: hoofdlaag op de middag, meeneem-advies uit de
     // koudere dagdelen, regen-timing erbij. Voor VANDAAG telt alleen
-    // wat nog komt (v3.26.0, feedback Martijn: om 15:00 is
+    // wat nog komt (v3.26.0, feedback van de eigenaar: om 15:00 is
     // "vanochtend vroeg een jas" verleden tijd, en een bui van 08:00
     // hoort niet meer in het advies): voorbije dagdelen vallen weg en
     // na 18:00 verschuift de hoofdlaag naar de avond.

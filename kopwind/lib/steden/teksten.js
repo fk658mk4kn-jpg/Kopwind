@@ -6,7 +6,7 @@
  * (ligging, provincie, buursteden, afstand tot de kust), niet dezelfde
  * alinea met alleen de stadsnaam vervangen.
  *
- * Herbouwd in v3.27.0 "Solano" (audit plus go Martijn): het oude
+ * Herbouwd in v3.27.0 "Solano" (audit plus akkoord eigenaar): het oude
  * bestand kende maar twee smaken (fiets en was) waardoor alle 22
  * andere tools de wastekst droegen ("het droogvenster van vandaag" op
  * de hardlooppagina), en het was NL-only waardoor de Engelse

@@ -95,12 +95,12 @@ nieuwe kleurformaat.
   nu een besluit, geen vergeten hoekje.
 - Android-installatie, iOS-beginscherm en push zijn NIET op een echt
   toestel geverifieerd; de sandbox heeft geen browser. Dat is de
-  eerstvolgende teststap voor Martijn (acceptatie P1-A).
+  eerstvolgende teststap voor de eigenaar (acceptatie P1-A).
 - De P0-B-acceptatie op productie (canonical, og:url, robots, sitemap
   tonen het live domein) vergt de env-var in Vercel plus een steekproef
   na deploy.
 - De kleurenblind-simulatorcheck (Coblis of Sim Daltonism) is een
-  visuele verificatiestap voor Martijn; de ramps zijn wel gekozen uit
+  visuele verificatiestap voor de eigenaar; de ramps zijn wel gekozen uit
   colorblind-veilige families en betekenis is overal redundant.
 - VandaagHier toont het wasverdict live; voor fietsen toont hij het weer
   van dit uur als regel, want een fietscijfer vergt een route.
@@ -357,9 +357,9 @@ De live-test van Mistral legde vier dingen bloot: het wascijfer strafte "te laat
 77 groen, waaronder de vier acceptatiescenario's uit de brief (18:24-geval conditie >= 8 met status te-laat en morgenvroeg-hint; warm/winderig/droog 9 tot 10; koel/vochtig/droog 6 tot 7 met traag-uitleg; regendag <= 3), spreiding over vijf dagen, de consistentie-cap, droogsnelheid-gedrag, terras- en kledingankers en de deeplink-formaten.
 
 ### Bekende beperkingen
-- Devicetests liggen bij Martijn: installkaart op Android/iPhone, push end-to-end, en of Apple Maps `dirflg=c` op iOS echt de fietsmodus opent (onbekende vlaggen negeert Maps; dan opent de route in je voorkeursmodus). Apple's URL-schema kan geen tussenstops aan; die route gaat van start naar eind, met uitleg in de UI.
+- Devicetests liggen bij de eigenaar: installkaart op Android/iPhone, push end-to-end, en of Apple Maps `dirflg=c` op iOS echt de fietsmodus opent (onbekende vlaggen negeert Maps; dan opent de route in je voorkeursmodus). Apple's URL-schema kan geen tussenstops aan; die route gaat van start naar eind, met uitleg in de UI.
 - De drempel werkt bewust niet op de vertrekherinnering (besluit uit v2.0.0): een herinnering is een afspraak met jezelf, geen advies.
-- Kleurcontrast is per rampkleur berekend (WCAG), maar de kleurenblind-simulator-check op echte schermen is een visuele taak voor Martijn.
+- Kleurcontrast is per rampkleur berekend (WCAG), maar de kleurenblind-simulator-check op echte schermen is een visuele taak voor de eigenaar.
 - Het comfortcijfer van de kledingcheck beoordeelt hoe makkelijk de keuze is, niet hoe lekker het weer is; dat staat in de instellingen-uitleg maar kan gebruikers verrassen.
 - BBQ, regen-timing en gladheid zijn teasers, nog geen tools; de brief-batches 2 en 3 zijn de logische volgende stap op dezelfde overlay.
 
@@ -443,14 +443,14 @@ De cron-route gebruikte schaalVoor zonder import: een eerdere patch-guard ("alle
 
 ### Keuzes
 - Engels is bewust doorgeschoven naar een eigen release (routing, vertaalde content, hreflang; half Engels is erger dan geen Engels).
-- Logo-richting staat open tot Martijn een kant kiest; de kaartstijl is de eerste stap weg van het template-gevoel.
+- Logo-richting staat open tot de eigenaar een kant kiest; de kaartstijl is de eerste stap weg van het template-gevoel.
 - Nederland is technisch De Bilt; eerlijk benoemd in de code.
 
 ### Tests
 80 groen, inclusief de nieuwe middenstand-check op keuze-velden en labelVoor via de bestaande schaaltests.
 
 ### Bekende beperkingen
-- De kleurrichting (tinten, accenten) verdient een blik van Martijn op echte schermen; richting bijsturen kan zonder structuurwerk.
+- De kleurrichting (tinten, accenten) verdient een blik van de eigenaar op echte schermen; richting bijsturen kan zonder structuurwerk.
 - color-mix vereist een moderne browser (alles vanaf 2023); de kaart valt zonder terug op wit met standaardrand.
 - Instellingen-migratie: bestaande afwijkende drempelwaarden matchen geen keuzeknop en tonen dan geen actieve keuze; de waarden blijven gewoon werken.
 
@@ -523,7 +523,7 @@ icoon-chip, korteVraag en de verdictbadge rechts; rij 2 een toelichting
 uit de engine, geklemd op exact twee regels (min-height, line-clamp);
 rij 3 de tool-eigen CTA als tekstlink. Drie CTA's per kaart is bewust
 afgewezen (prikkerij op mobiel); de hele kaart is klikbaar. Het
-watermerk blijft op Martijns verzoek en zit rechtsonder achter de
+watermerk blijft op de eigenaars verzoek en zit rechtsonder achter de
 tekst, weg van de badge.
 
 **Zonkracht**: score is een omgekeerde as (veel uv = hoge pijnscore =
@@ -539,7 +539,7 @@ de registergroepen (Elke dag, Rondom huis, Onderweg), uitleg, over en
 de taalwissel. Groepslabels lopen via S.menu.groepen zodat de Engelse
 site meeschakelt.
 
-**Taal onder een domein**: besluit met Martijn: geen apart .com-domein
+**Taal onder een domein**: besluit met de eigenaar: geen apart .com-domein
 maar en.kanhetvandaag.nl als tweede Vercel-project op dezelfde repo.
 Een runtime-taalknop is afgewezen: elke taal heeft eigen URL's nodig
 voor indexering en de architectuur bakt de taal bewust bij de build.
@@ -567,7 +567,7 @@ sticky antwoordbalk op mobiel.
 
 ## v3.4.0 "Ponente" - 2026-07-13
 
-**Wat**: de vervolgronde na Meltemi. Vijf feedbackpunten van Martijn plus
+**Wat**: de vervolgronde na Meltemi. Vijf feedbackpunten van de eigenaar plus
 de v3.4-backlog (hooikoorts, /alle-checks, kledingvraagpagina's).
 
 **Toelichting bij elk oordeel**: de redenen werden al gerenderd, maar
@@ -614,7 +614,7 @@ De categorieen zijn bewust breder dan het aanbod zodat sport, eten en
 buitenactiviteiten hier later in groeien, zonder NoorYES exact te
 kopieren.
 
-**Engels onder een domein**: besluit met Martijn uitgevoerd. Geen apart
+**Engels onder een domein**: besluit met de eigenaar uitgevoerd. Geen apart
 .com meer: de EN-build draait met basePath /en (eigen Vercel-project),
 en het NL-project stuurt /en via multi-zone rewrites (EN_ZONE_URL) naar
 dat project. Zo staat de Engelse site op kanhetvandaag.nl/en/, met eigen
@@ -638,7 +638,7 @@ meldingen, GA, Search Console, env-vars) in een aparte sessie.
 verbeteringen (weerfactoren-balken, cron-fix). Affiliate bewust nog niet;
 eerst de structuur.
 
-**Storefront-besluit (met Martijn)**: de CATEGORIE wordt de storefront,
+**Storefront-besluit (met de eigenaar)**: de CATEGORIE wordt de storefront,
 niet de losse tool. Twee affiliate-lagen (later): breed op de categorie,
 specifiek op de toolpagina. Een domein, een engine. Zie BACKLOG.md voor
 de volledige redenering, categorie-indeling en vraagvariant-lijst.
@@ -677,7 +677,7 @@ header, zodat zowel Vercel Cron als een externe cron werkt.
 
 **Nulmeting uitgevoerd**: zie het antwoord in de chat en straks AUDIT.md
 (v3.6). Kort: 7 tools, 2 databronnen, alle fallbacks netjes. Env-vars
-die Martijn moet zetten voor volledige werking: Supabase (stemmen),
+die de eigenaar moet zetten voor volledige werking: Supabase (stemmen),
 VAPID (push), plus expliciete SITE_URL/GA/GSC. Cron-gat nu gedicht.
 
 **Beperkingen**: factorbalken en categoriepagina's niet op echte devices
@@ -791,7 +791,7 @@ schakel die dit bedienbaar maakt.
 faalde. Oorzaak: de tabellen (stemmen, en vooral profielen) bestonden nog
 niet. /api/stem logt nu de detailfout. AUDIT.md bevat de volledige SQL
 voor beide tabellen plus de complete env- en verificatiechecklist. Dit is
-een configuratiestap aan Martijns kant; de code valt correct terug.
+een configuratiestap aan de eigenaars kant; de code valt correct terug.
 
 **Header sticky**: de leisteen-kopbalk blijft bovenaan bij scrollen
 (position sticky, top 8, met schaduw). De mobiele sticky-antwoordbalk
@@ -831,7 +831,7 @@ productie-502. Verificatie in Search Console loopt nog (kan dagen duren).
 
 **Waarom**: Overname van het project door een nieuwe sessie. Eerst een
 kritische diagnose van de twee productieproblemen (502 op /api/stem, geen
-pushmeldingen) en de rommelige fietstool-output, daarna pas bouwen. Martijn
+pushmeldingen) en de rommelige fietstool-output, daarna pas bouwen. de eigenaar
 bevestigde de diagnose op alle punten en gaf akkoord op de fietstool-fixes
 (optie B voor de kilometers) en op de cron-aanpak.
 
@@ -842,20 +842,20 @@ met RLS aan zonder policies geeft 200 met een lege lijst. Kandidaten:
 schema-cache of ontbrekende tabel (404 PGRST205), afwijkende kolom (400),
 verminkte key (401), of trailing slash in SUPABASE_URL (dubbele slash). De
 gedeployde build stond waarschijnlijk nog op onder v3.7.1 (de response
-miste het detail-veld). Martijn pusht v3.7.1 en levert de detail-regel plus
+miste het detail-veld). de eigenaar pusht v3.7.1 en levert de detail-regel plus
 de uitkomst van /api/sync (GET) aan; dan is de oorzaak exact te benoemen.
 
 **Diagnose pushmeldingen (twee oorzaken, allebei bevestigd)**: de
 testmelding werkt omdat die direct via push_abos verstuurt, zonder klok,
 zonder melding_log, zonder het schema uit profielen.data. De geplande
 meldingen hangen aan alle drie. (1) Tabelnaam: de code en supabase/
-schema.sql gebruiken melding_log (enkelvoud); Martijn had meldingen_log
+schema.sql gebruiken melding_log (enkelvoud); de eigenaar had meldingen_log
 (meervoud). De cron-dedupe-insert in die tabel faalt dan met 404, wordt per
-route gevangen en in fouten gestopt, dus er vertrekt niets. Martijn hernoemt
+route gevangen en in fouten gestopt, dus er vertrekt niets. de eigenaar hernoemt
 de tabel. (2) Klok: het LOGBOEK schreef al een externe cron voor omdat
 Vercel Hobby maar 1x per dag draait, maar er stond later een vercel.json met
 */5 in, wat op Hobby bij de deploy faalt (bevestigd via Vercels eigen docs).
-Martijn zit op Hobby en had geen externe cron. Besluit: vercel.json crons
+de eigenaar zit op Hobby en had geen externe cron. Besluit: vercel.json crons
 leeggemaakt en cron-job.org wordt de enige klok met de x-cron-secret-header.
 Sluiten zodra de handmatige cron-curl {gecheckt,verzonden,fouten} laat zien.
 
@@ -888,27 +888,27 @@ NavKnoppen rendert al nette knoppen (het was de RSC-payload).
 **Beperkingen**: de sandbox heeft geen netwerk naar Open-Meteo of Supabase,
 dus de fietstool-UI en de meldingen zijn hier niet end-to-end getest; alleen
 de tests, de import-check en beide builds (NL en EN) zijn groen. De
-meldingen worden gesloten zodra Martijn de probe-output aanlevert.
+meldingen worden gesloten zodra de eigenaar de probe-output aanlevert.
 
-**Bevestigd na de diagnose (deze ronde)**: Martijn gaf expliciet akkoord op
+**Bevestigd na de diagnose (deze ronde)**: de eigenaar gaf expliciet akkoord op
 alle drie de fietstool-fixes, bevestigde dat hij de Supabase-tabel
 meldingen_log naar melding_log hernoemt (oorzaak 2), en koos ervoor de */5
 uit vercel.json te halen en volledig op de externe cron te leunen. Mijn
 advies daarop: eruit halen is de juiste keuze, want op Hobby is een cron
 vaker dan 1x per dag niet toegestaan en blokkeert de deploy. Dus schadelijk,
-niet slechts genegeerd. vercel.json staat al op { "crons": [] }. Aan Martijn
+niet slechts genegeerd. vercel.json staat al op { "crons": [] }. Aan de eigenaar
 is een stap-voor-stap-instructie voor een leek meegegeven (tabel hernoemen,
 v3.7.1 pushen en de detail-JSON ophalen, cron-job.org opzetten, de lege
 vercel.json via GitHub Desktop syncen, de cron-curl draaien, /api/sync
 checken).
 
-**Volgende**: probes van Martijn (502-detail, sync-GET, cron-curl), dan de
+**Volgende**: probes van de eigenaar (502-detail, sync-GET, cron-curl), dan de
 502 en de cron sluiten. Daarna fase 2 fietstool, of de tweede storefront
 Huis-tuin-auto. Affiliate blijft fase 5.
 
 ## v3.7.3 "Etesian patch 3" - 2026-07-14
 
-**Waarom**: Martijn leverde de probes. De detail-logging staat live en gaf op
+**Waarom**: de eigenaar leverde de probes. De detail-logging staat live en gaf op
 /api/stem?tool=terras&dag=2026-07-14 dit terug: PGRST125 "Invalid path
 specified in request URL". Daarmee is de 502-oorzaak eindelijk exact te
 benoemen in plaats van te gokken.
@@ -923,10 +923,10 @@ zonder normalisatie. Een trailing slash in SUPABASE_URL maakt daardoor
 weigert dat pad. Dit was al de nummer-1-kandidaat uit de eerste diagnose.
 
 **Eerlijke wrijving die ik heb benoemd**: de testmelding leest push_abos via
-exact dezelfde url-helper en werkte bij Martijn. Als de basis-URL kapot was,
+exact dezelfde url-helper en werkte bij de eigenaar. Als de basis-URL kapot was,
 zou die lezing net zo hard vallen. Dus of de testmelding is niet opnieuw
 getest sinds de env-var veranderde, of de basis-URL is schoon en er speelt
-iets anders. Om dat te sluiten heb ik Martijn gevraagd de exacte vorm van
+iets anders. Om dat te sluiten heb ik de eigenaar gevraagd de exacte vorm van
 SUPABASE_URL te bevestigen (eindigt hij op een slash?) en na de deploy /api/stem
 opnieuw te openen. Als de fout dan verandert naar PGRST205, bestaat de
 stemmen-tabel niet (de SQL staat alleen in de README, niet in schema.sql) en
@@ -944,7 +944,7 @@ dit raakt stemmen, sync en de meldingen-cron in een keer.
 niet, want cron-job.org gaf 401 "Geen toegang" (onze eigen secret-check).
 Oorzaak: OF CRON_SECRET staat niet in Vercel, OF de header x-cron-secret die
 cron-job.org stuurt matcht de waarde niet (verkeerd veld, spatie, of niet
-opgeslagen). Advies aan Martijn: CRON_SECRET in Vercel controleren en als
+opgeslagen). Advies aan de eigenaar: CRON_SECRET in Vercel controleren en als
 robuuste route ?secret=<waarde> aan de cron-URL hangen (de route accepteert
 naast de header ook de query-param), of zelf de curl draaien om te isoleren.
 Pas als de auth klopt zegt de {gecheckt,verzonden,fouten}-output iets, en dan
@@ -957,17 +957,17 @@ maskeren). Geen extra logging van de volle URL in de foutmelding (zou de
 Supabase-ref lekken); de PGRST-code plus de env-check volstaan.
 
 **Beperkingen**: de sandbox heeft geen netwerk naar Supabase, dus de echte
-bevestiging (stem geeft weer een telling, cron verstuurt) komt uit Martijns
+bevestiging (stem geeft weer een telling, cron verstuurt) komt uit de eigenaars
 productie na de deploy. Tests, import-check en beide builds zijn hier groen.
 
-**Volgende**: Martijn deployt v3.7.3, bevestigt de SUPABASE_URL-vorm en hertest
+**Volgende**: de eigenaar deployt v3.7.3, bevestigt de SUPABASE_URL-vorm en hertest
 /api/stem; fixt de cron-auth en draait de curl in een open meldingsvenster.
 Dan de 502 en de meldingen definitief sluiten. Daarna fase 2 fietstool of de
 tweede storefront Huis-tuin-auto. Affiliate blijft fase 5.
 
 ## Notitie - 2026-07-14 (probes bevestigd, bugs dicht, nieuwe UX-backlog)
 
-**502 dicht.** Na de v3.7.3-deploy meldt Martijn dat Supabase weer werkt. De
+**502 dicht.** Na de v3.7.3-deploy meldt de eigenaar dat Supabase weer werkt. De
 restUrl-fix (trailing slash strippen) was het; de dubbele slash uit een
 trailing slash in SUPABASE_URL veroorzaakte de PGRST125. De stemmen-tabel
 bleek gewoon te bestaan (geen PGRST205).
@@ -982,7 +982,7 @@ keer binnen een echt venster draaien om een binnenkomende push te bevestigen.
 Advies: briefingtijd een paar minuten vooruit zetten, dag aan, drempel op
 altijd melden, en de cron (die elke 5 min vanzelf loopt) het laten oppikken.
 
-**Beveiliging.** Martijn plakte zijn CRON_SECRET in platte tekst in de chat
+**Beveiliging.** de eigenaar plakte zijn CRON_SECRET in platte tekst in de chat
 (in de ?secret=-URL). Laag risico (ergste geval: iemand triggert de
 meldingen-cron), maar geadviseerd om te roteren: nieuwe waarde in Vercel,
 redeploy, dezelfde waarde in cron-job.org.
@@ -993,7 +993,7 @@ prominenter met duidelijkere duimen, resultaat-layout (antwoord rechts van
 Jouw plek), de twee nieuwste tools (paraplu, regen-timing) gelijktrekken met
 de oude opzet inclusief de ontbrekende herlaad-knop, en een SEO-gevoelige
 titel-herziening (het versus ik, hooikoorts logischer). Titel-richting eerst
-met Martijn afstemmen voordat er code in gaat; bij elke wijziging de
+met de eigenaar afstemmen voordat er code in gaat; bij elke wijziging de
 instellingen en meldingen mee bijwerken.
 
 **Volgende**: richting kiezen op de titels (SEO), en bepalen welk pakket het
@@ -1003,7 +1003,7 @@ ook open.
 ## Notitie - 2026-07-14 (playbook opgeslagen, backlog-audit)
 
 **PLAYBOOK.md toegevoegd** als derde vaste document naast BACKLOG.md en
-LOGBOEK.md, aangeleverd door Martijn: de tool-standaard (vaste opbouw,
+LOGBOEK.md, aangeleverd door de eigenaar: de tool-standaard (vaste opbouw,
 copy-/titelregels, feedback, register-velden, huisstijl, checklist). Neem ik
 voortaan elke sessie mee. Twee accuraatheidscorrecties gedaan ("pas aan waar
 nodig"): sectie 6 aangevuld met de echte registervelden die ontbraken
@@ -1012,7 +1012,7 @@ weertools), en sectie 8 bijgewerkt omdat de fietstool-bugs (dubbel verdict,
 km-optelling) al opgelost zijn in v3.7.2; alleen de fase-2-herindeling staat
 nog open.
 
-**Backlog-audit.** Martijn vroeg terecht of alle eerder genoemde punten in de
+**Backlog-audit.** de eigenaar vroeg terecht of alle eerder genoemde punten in de
 backlog staan. Nagelopen tegen de transcript en de huidige BACKLOG. Stond er
 al in: de UX-/copy-sprint (pakket 1 t/m 4), de nieuwe tools uit de originele
 opdracht (strand, hardlopen, auto wassen, tuinieren, krabben, gladheid, in de
@@ -1024,20 +1024,20 @@ tool als toekomst-item. Ook de storefront-volgorde (Huis-tuin-auto eerst)
 expliciet gemaakt en een verwijzing naar PLAYBOOK.md in de backlog-intro.
 
 **Beantwoord.** Search Console-bug: al gefixt in v3.7.1 (broodkruimel levert
-schone absolute URL's); enige rest is Googles hervalidatie, die Martijn in
+schone absolute URL's); enige rest is Googles hervalidatie, die de eigenaar in
 Search Console kan aanzwengelen. Totaal-teller zichtbaar voor gebruikers:
-staat in de backlog (pakket 1). Titels: Martijn akkoord op het voorstel.
+staat in de backlog (pakket 1). Titels: de eigenaar akkoord op het voorstel.
 Layout: naast elkaar op desktop/tablet, gestapeld op mobiel, bevestigd.
 
 **Volgende**: klaar om pakket 1 te bouwen (totaal-teller + duidelijkere duimen
-en feedback/deel), tenzij Martijn een ander pakket eerst wil. Bij die bouw de
+en feedback/deel), tenzij de eigenaar een ander pakket eerst wil. Bij die bouw de
 titels (pakket 4) en de layout (pakket 2) meenemen zoals afgesproken, en de
 instellingen/meldingen bijwerken.
 
 ## v3.7.4 "Etesian patch 4" - 2026-07-14
 
 **Wat**: pakket 1 van de UX-sprint, de feedback onder elke check. Akkoord van
-Martijn om hiermee te starten.
+de eigenaar om hiermee te starten.
 
 **All-time teller**: de teller naast de duim omhoog toonde het aantal van
 vandaag (t.omhoog). Nu toont hij het totaal ooit. In /api/stem berekent
@@ -1076,7 +1076,7 @@ pakket 3 (nieuwe tools gelijktrekken). Fase 2 fietstool blijft open.
 ## v3.7.5 "Etesian patch 5" - 2026-07-14
 
 **Wat**: pakket 2 van de UX-sprint, de resultaat-layout van de locatie-checks.
-Akkoord van Martijn (naast elkaar op desktop/tablet, gestapeld op mobiel).
+Akkoord van de eigenaar (naast elkaar op desktop/tablet, gestapeld op mobiel).
 
 **Layout**: LocatieTool zette de plek-sectie en daaronder het resultaatpaneel
 (met verdict, status, factoren, dagkiezer, uren, waarom, bron) allemaal onder
@@ -1110,7 +1110,7 @@ gelijktrekken). Fase 2 fietstool en de meldingen-verbeteringen staan ook open.
 
 ## v3.7.6 "Etesian patch 6" - 2026-07-14
 
-**Wat**: pakket 4 van de UX-sprint, de titels. Martijn had het voorstel al
+**Wat**: pakket 4 van de UX-sprint, de titels. de eigenaar had het voorstel al
 goedgekeurd. Bij het bouwen bleek de opbouw belangrijk: de zichtbare H1 en de
 meta-titel komen niet uit tool.naam maar uit content/<slug>.js (seo.h1 en
 seo.title). tool.naam voedt alleen de broodkruimel, de structured data en de
@@ -1140,7 +1140,7 @@ fietsen?") en terras ("Kan het vandaag terrasweer zijn?") laat ik staan. Het
 voedt de "{naam} per stad"-kop; een volledige ik-vraag maakt die kop lelijk
 ("Kan ik vandaag op het terras zitten per stad"). Barbecue-naam had een echt
 ongelukkig "het" maar dat is even secundair; ik heb barbecue-naam deze ronde
-niet aangepast (alleen H1 en korteVraag). Voorstel aan Martijn: of naam toch
+niet aangepast (alleen H1 en korteVraag). Voorstel aan de eigenaar: of naam toch
 aligneren, of eerst de "per stad"-kop naar een zelfstandig naamwoord
 refactoren. Staat als restpunt onder pakket 4 in de backlog.
 
@@ -1157,7 +1157,7 @@ fietstool en de meldingen-verbeteringen staan ook open.
 ## v3.7.7 "Etesian patch 7" - 2026-07-14
 
 **Wat**: pakket 3 (nowcast-tools gelijktrekken) plus het titel-restpunt (optie 2).
-Martijn koos optie 2 en gaf pakket 3 vrij.
+de eigenaar koos optie 2 en gaf pakket 3 vrij.
 
 **Optie 2 (titels afgemaakt)**: de "X per stad"-kop in app/[tool]/page.js
 gebruikte tool.naam.replace("?","") en dwong daarmee tool.naam in een vorm die
@@ -1202,7 +1202,7 @@ verder te harmoniseren.
 
 ## v3.8.0 "Mistral" - 2026-07-14
 
-**Wat**: het meldingen-format in een keer goed neergezet, zoals Martijn vroeg:
+**Wat**: het meldingen-format in een keer goed neergezet, zoals de eigenaar vroeg:
 niet doorbouwen op een half format en later verbouwen, maar de basis nu vast.
 Drie punten uit de backlog in een sprint: per weekdag instelbaar, de push zelf
 rijker, en tijden nooit in het verleden. Plus het storefront-format vastgelegd
@@ -1261,10 +1261,10 @@ raakt hard laten falen (terugvallen op de dag is vriendelijker).
 
 **Beperkingen**: geen Supabase, push of UI-rendering in de sandbox; de
 end-to-end-controle (paneel opslaan, cron-tick, push met deep link) loopt via
-productie bij Martijn. Tests, import-check en beide builds zijn groen.
+productie bij de eigenaar. Tests, import-check en beide builds zijn groen.
 
 **Volgende**: de storefront-bouwsessie volgens PLAYBOOK sectie 11 (eerste:
-Huis-tuin-auto). Open vraag aan Martijn: klopt de lezing van punt 3? Er is
+Huis-tuin-auto). Open vraag aan de eigenaar: klopt de lezing van punt 3? Er is
 nergens een datumveld, dus dit is gebouwd als tijden-springen-naar-vandaag bij
 het openen en laden in de fietscheck.
 
@@ -1320,11 +1320,11 @@ import-check en beide builds zijn groen.
 
 **Volgende**: per categorie de storefront-content uitwerken (buiten en sport
 liggen voor de hand: meeste live tools), of nieuwe tools uit de vragenlijst
-bouwen die de storefronts vullen. Afstemmen met Martijn welke eerst.
+bouwen die de storefronts vullen. Afstemmen met de eigenaar welke eerst.
 
 ## v3.10.0 "Levante" - 2026-07-15
 
-**Wat**: de feedbackronde van Martijn (negen punten), gebouwd rond punt 1 (de
+**Wat**: de feedbackronde van de eigenaar (negen punten), gebouwd rond punt 1 (de
 vaste categorie-set) omdat de rest daaraan hangt.
 
 **Punt 1, een categorie-set**: de wortel was dat content/beslissingen.js een
@@ -1370,7 +1370,7 @@ gelijkgetrokken met hun categorie-kleur en valideerRegister dwingt dit af
 kleurtint en het categorie-icoon als wazig watermerk rechts (half zichtbaar,
 achter de tekst). Bewust niet gedaan: echte foto's per storefront; dat is een
 licentie- en aanleverkwestie op een faceless site, als open punt in de
-backlog met twee opties (eigen SVG-illustraties of door Martijn aangeleverde
+backlog met twee opties (eigen SVG-illustraties of door de eigenaar aangeleverde
 gelicenseerde beelden).
 
 **Punt 7**: was al af in v3.9.0 (ChecksGrid met de homepage-kaartstijl);
@@ -1399,7 +1399,7 @@ openstond: storefront-content voor buiten en sport, of nieuwe tools.
 
 ## v3.11.0 "Libeccio" - 2026-07-16
 
-**Wat**: de template-audit van Martijn. Hij inspecteerde alle zeven
+**Wat**: de template-audit van de eigenaar. Hij inspecteerde alle zeven
 storefronts en vond drie templates naast elkaar: A (rijk: regen,
 huis-tuin), B (kaal met kaarten: kleding, buiten, sport, gezondheid) en C
 (leeg: winter). De diagnose onder de bevinding: het template bestond wel,
@@ -1426,7 +1426,7 @@ sf.faq-bron, dus punt 5 is per constructie gegarandeerd.
 terwijl de site op www draait. Fallback en instructie staan nu op
 https://www.kanhetvandaag.nl; interne links zijn relatief en volgen mee.
 De env-var op Vercel en de 301 van non-www naar www zijn acties voor
-Martijn (staan in de slotboodschap).
+de eigenaar (staan in de slotboodschap).
 
 **P2, metadata**: og:type stond wel in de layout, maar page-level
 openGraph-objecten vervangen het layout-object volledig (shallow merge per
@@ -1453,7 +1453,7 @@ meer en nul tools, dus het checks-grid verdwijnt daar bewust; de
 keuzehulp en FAQ dekken de vragen, en het grid verschijnt vanzelf zodra de
 eerste wintercheck live gaat.
 
-**Visueel**: op verzoek van Martijn is de gekleurde hero-banner met rand
+**Visueel**: op verzoek van de eigenaar is de gekleurde hero-banner met rand
 en watermerk vervangen door een subtiele paginabrede tint
 (color-mix 4 procent categorie-kleur) met het categorie-icoon groot en
 rustig (opacity 0,055) rechts op de achtergrond van de hele pagina, via
@@ -1467,16 +1467,16 @@ variantId-keuzes zelfs falen).
 **Beperkingen**: geen UI-rendering in de sandbox; het achtergrondmodel,
 de gedempte kaarten en de heading-hierarchie (P3 punt 14) visueel nalopen
 op productie. De Vercel-kant van het canonieke domein (env-var plus 301)
-kan alleen Martijn doen.
+kan alleen de eigenaar doen.
 
 **Volgende**: de storefront-content is hiermee af; logische vervolgen zijn
 nieuwe tools uit de vragenlijst (de ankers zijn er al), de
-HubGrid-harmonisatie met useDagVerdicts, of de AI-visuals zodra Martijn
+HubGrid-harmonisatie met useDagVerdicts, of de AI-visuals zodra de eigenaar
 die aanlevert.
 
 ## v3.12.0 "Gregale" - 2026-07-16
 
-**Wat**: Martijns definitieve storefront-briefing verwerkt. Het gros van de
+**Wat**: de eigenaars definitieve storefront-briefing verwerkt. Het gros van de
 briefing (een template met afdwingende tests, alle secties gevuld, FAQ
 gelijk aan JSON-LD, ItemList bij de checks, www-canonical, og:type,
 meta-descriptions, het kaartenblok met Binnenkort-kaarten, een
@@ -1492,7 +1492,7 @@ na context en keuzehulp of dichter bij de uitkomst, later duidelijk
 onderscheid interne versus externe links).
 
 **Visueel ritme**: de storefronts waren te tekstueel na het weghalen van
-de banner; Martijn noemde het huidige model "saai (geen)" en wees het
+de banner; de eigenaar noemde het huidige model "saai (geen)" en wees het
 checks-kaartenblok aan als de interessante taal. Die taal is doorgetrokken:
 keuzehulp-rijen renderen nu als lichte kaarten in de categorie-kleur
 (tint 5 procent, rand 22 procent, link in de kleur), de
@@ -1521,13 +1521,13 @@ achtergrond-opacity moeten op productie beoordeeld worden. De inline
 color-mix-waarden (5/22 procent) zijn startwaarden om op zicht bij te
 stellen.
 
-**Volgende**: Martijns oordeel over het ritme, daarna nieuwe tools uit de
+**Volgende**: de eigenaars oordeel over het ritme, daarna nieuwe tools uit de
 vragenlijst (ankers liggen klaar), de HubGrid-harmonisatie, of de
 cross-links uit de backlog.
 
 ## v3.13.0 "Solano" - 2026-07-16
 
-**Wat**: de homepage-ronde van Martijn (thema's boven de tools, alle-checks
+**Wat**: de homepage-ronde van de eigenaar (thema's boven de tools, alle-checks
 duidelijker, uitleg-verwijzing naar onderen, achtergrond-icoon onzichtbaar)
 plus mijn aanvullingen uit backlog en code.
 
@@ -1545,7 +1545,7 @@ de veelgestelde vragen, precies zoals gevraagd.
 **Bugfix achtergrondmodel**: de storefront-achtergrondlaag stond op
 z-index -1, maar body heeft een dekkende achtergrond (var(--papier));
 daardoor lag de hele laag erachter en waren tint en icoon nooit zichtbaar.
-Dat verklaart Martijns "saai (geen)" beter dan de opacity: er viel niets te
+Dat verklaart de eigenaars "saai (geen)" beter dan de opacity: er viel niets te
 zien. Fix: de laag op z-index 0 en alle andere directe kinderen van
 .storefront-pagina op position relative met z-index 1. De
 opacity-verhoging van Gregale (0,085) wordt nu dus pas echt beoordeeld.
@@ -1568,12 +1568,12 @@ alle-checks-kaart en vooral het nu pas zichtbare achtergrondmodel (tint 4
 procent, icoon 0,085) moeten op productie beoordeeld worden; de
 achtergrond kan na de fix ineens te aanwezig blijken.
 
-**Volgende**: Martijns oordeel over homepage en achtergrond, daarna nieuwe
+**Volgende**: de eigenaars oordeel over homepage en achtergrond, daarna nieuwe
 tools uit de vragenlijst of de cross-links tussen tools uit de backlog.
 
 ## v3.14.0 "Ostro" - 2026-07-16
 
-**Wat**: Martijns ronde over homepage en storefronts, met drie echte bugs
+**Wat**: de eigenaars ronde over homepage en storefronts, met drie echte bugs
 die zijn waarnemingen verklaren.
 
 **Bug 1, de verdwenen footer**: mijn Solano-fix zette de
@@ -1625,12 +1625,12 @@ de mobiele achtergrond en het recent-blok op productie beoordelen. Het
 recent-blok vult zich pas na toolbezoeken; varianten registreren nog
 niet (alleen hoofdtoolpagina's).
 
-**Volgende**: Martijns oordeel, daarna nieuwe tools uit de vragenlijst
+**Volgende**: de eigenaars oordeel, daarna nieuwe tools uit de vragenlijst
 of de cross-links tussen tools uit de backlog.
 
 ## v3.15.0 "Marin" - 2026-07-16
 
-**Wat**: Martijns keuze uit de backlog (nieuwe tools bouwen) plus zijn
+**Wat**: de eigenaars keuze uit de backlog (nieuwe tools bouwen) plus zijn
 vier UI-punten, en de nieuwe vaste werkregel: de backlog wordt elke
 sessie bijgewerkt en tussendoor-feedback gaat er direct in.
 
@@ -1652,7 +1652,7 @@ registervolgorde en is bijgewerkt.
 
 **Kleuren**: alle zeven hexcodes waren uniek, maar drie paren zaten in
 dezelfde familie (twee blauwen, twee groenen, twee oranjes); dat was
-wat Martijn zag. Nieuw palet in zeven families: regen blauw #3C7DC4,
+wat de eigenaar zag. Nieuw palet in zeven families: regen blauw #3C7DC4,
 kleding paars #7A5EA8, buiten koraalrood #C24E3F, sport groen #2F7D62,
 huis-tuin aardebruin #8C6239, gezondheid amber #D97C1B, winter
 staalblauw #44607A. Vier toolbestanden volgden mee en valideerRegister
@@ -1660,7 +1660,7 @@ eist nu ook unieke categoriekleuren.
 
 **Homepage-kop**: "Alle checks" boven het grid klopte niet (het zijn
 niet alle checks) en heet nu "Populaire checks". Bewuste afwijking van
-Martijns letterlijke "Populaire tools": de hele site zegt checks
+de eigenaars letterlijke "Populaire tools": de hele site zegt checks
 (canonieke naamgeving is zijn eigen regel); een string-wijziging als
 hij toch tools wil. De alle-checks-kaart eronder blijft.
 
@@ -1685,7 +1685,7 @@ gladheid, wandelen/buiten sporten), of de cross-links tussen tools.
 
 ## v3.16.0 "Maestro" - 2026-07-16
 
-**Wat**: Martijns keuze: batch 2 plus zijn zes UI- en meldingenpunten.
+**Wat**: de eigenaars keuze: batch 2 plus zijn zes UI- en meldingenpunten.
 Geleverd: drie nieuwe checks (auto-wassen, krabben, gladheid), de
 meldingen-bugfix, inklapbaar menu en meldingenpaneel, populair op zes,
 en twee alle-checks-fixes.
@@ -1741,7 +1741,7 @@ picknick), of de cross-links tussen tools.
 
 ## 2026-07-16 (avond) - v3.17.0 "Passaat": batch 3, tien checks en de meldingen-nesting
 
-**Opdracht Martijn**: batch 3 met tien tools ("doe wat jij denkt dat
+**Opdracht eigenaar**: batch 3 met tien tools ("doe wat jij denkt dat
 het beste is"), plus twee meldingen-punten: routes zijn geen checks en
 horen genest onder de fietscheck, en een route moet in het paneel zelf
 aan te maken zijn zonder eerst de fietscheck te openen.
@@ -1840,7 +1840,7 @@ zelf is byte-identiek verplaatst en ongewijzigd.
 
 ## 2026-07-16 (avond, derde run) - v3.19.0 "Harmattan": de SEO-run
 
-**Werkwijze**: op verzoek van Martijn eerst een volledig voorstel
+**Werkwijze**: op verzoek van de eigenaar eerst een volledig voorstel
 (huidig weefsel, gaten, elke link en elke vraag met reden en
 cannibalisatie-markering), daarna bouwen na expliciet akkoord. Uit het
 akkoord: sterrenkijken-krabben geschrapt, zonnepanelen-zonkracht en de
@@ -1878,7 +1878,7 @@ grotere blok (4 links) idem.
 ## 2026-07-16 (avond, vierde run) - v3.20.0 "Bayamo": drie backlog-items (1, 6, 8)
 
 **Opdracht**: uit de backlog-lijst die ik zelf presenteerde koos
-Martijn 1 (status-upgrade motor-default), 6 (fietstool fase 2) en 8
+de eigenaar 1 (status-upgrade motor-default), 6 (fietstool fase 2) en 8
 (in-tekst links).
 
 **1) Statusbug, gevonden en gefixt.** Bij het lezen van de motor-
@@ -1975,7 +1975,7 @@ intentie-regel: strand naar terras (de tekst vergelijkt de windgrens
 letterlijk met het terras), korte-broek naar wandelen (wrap van een
 bestaande opsomming), wat-trek-ik-aan naar de regentiming (het blok
 heet "En de regen-timing") en de EN what-to-wear-variant daarvan. Geen
-door Martijn afgewezen paren gebruikt (sterrenkijken-krabben blijft
+door de eigenaar afgewezen paren gebruikt (sterrenkijken-krabben blijft
 eruit; sterrenkijken linkt naar de kledingcheck, conform de set).
 
 **EN-spiegels**: de EN-teksten zijn geen letterlijke vertalingen, dus
@@ -1994,10 +1994,10 @@ em-dashes.
 ## 2026-07-17 (tweede run) - v3.22.0 "Foehn": vijf feedbackpunten
 
 **Opdracht**: vijf punten uit een feedbackronde, oplopend in omvang.
-Onderweg twee keuzevragen aan Martijn voorgelegd voordat ik de
+Onderweg twee keuzevragen aan de eigenaar voorgelegd voordat ik de
 zwaardere stukken bouwde.
 
-**1. Terminologie.** Martijn koos geen losse termvervanging maar een
+**1. Terminologie.** de eigenaar koos geen losse termvervanging maar een
 contextregel voor de hele site: "check" voor de handeling ("doe de
 check"), "keuzehulp(en)" voor het instrument. 11 NL plus 11 EN strings
 herzien; de afwijker "Alle tools" (die in EN al "All checks" was)
@@ -2010,16 +2010,16 @@ dus HubGrid vond hem niet terug. Fix: RecentTracker en de toolpagina
 registreren nu de canonieke id (templateId ?? id), zodat een
 variantbezoek meetelt als bezoek aan de ouder. Werkt automatisch voor
 elke toekomstige variant, geen aanpassing per tool nodig, precies wat
-Martijn vroeg.
+de eigenaar vroeg.
 
-**3. Inklapbaarheid.** Keuze aan Martijn: reikwijdte. Hij koos
+**3. Inklapbaarheid.** Keuze aan de eigenaar: reikwijdte. Hij koos
 storefront-uitleg inklapbaar, standaard dicht. UitlegBlokken.js: de
 drie secties (beslislogica, situaties, seizoen) zijn nu <details> met
 de h2 in de summary en een draaipijl, aansluitend op het menu-patroon.
 Instellingen bewust NIET aangeraakt (uitleg die je moet openklappen om
 een instelling te snappen werkt averechts).
 
-**4. Populaire keuzehulpen op stemmen.** Keuze aan Martijn: build-time,
+**4. Populaire keuzehulpen op stemmen.** Keuze aan de eigenaar: build-time,
 server-runtime of client-side. Hij koos client-side (optie 3), passend
 bij hoe recent-gebruikt al werkt. Nieuwe populair-modus op de
 stem-API (?populair=1) telt alle positieve stemmen per tool; HubGrid
@@ -2028,14 +2028,14 @@ tellingen binnen zijn. Degradeert netjes zonder database. Bewust
 herschikken BINNEN de vaste zes, niet aanvullen van buiten (zou de
 thematische mix kunnen verdringen); die optie staat in de backlog.
 
-**5a. SEO-werkwoordvarianten.** Martijn twijfelde tussen title-
+**5a. SEO-werkwoordvarianten.** de eigenaar twijfelde tussen title-
 verbreding en aparte pagina's; ik heb uitgelegd dat title-verbreding de
 SEO-beste optie IS (Google clustert query-varianten naar een resultaat;
 aparte pagina's kannibaliseren). 11 NL plus 11 EN titles vangen nu naast
 "kan het/kan ik vandaag" ook "wordt het", "gaat het" en "is het X-weer"
 af, zonder een enkele nieuwe URL.
 
-**5b + affiliate-fundament.** Martijn was het eens: geen locatiedienst
+**5b + affiliate-fundament.** de eigenaar was het eens: geen locatiedienst
 ("zwemplekken bij jou"), wel tekstueel advies plus affiliate. Het
 bestaande lege affiliate-veld heeft nu een schema (lib/affiliate.js),
 een component (AdviesBlok: advies eerst, disclosure verplicht,
@@ -2051,7 +2051,7 @@ foutloos, adviesblok geverifieerd aanwezig op zonkracht en
 was-buiten-drogen en afwezig op tools zonder affiliate, rel-attributen
 correct in de HTML, geen em-dashes.
 
-**Aandachtspunt voor Martijn**: de affiliate-links zijn placeholders
+**Aandachtspunt voor de eigenaar**: de affiliate-links zijn placeholders
 naar winkelhomepages. Vervang ze door echte affiliate-links zodra de
 accounts er zijn, anders lever je verkeer zonder commissie.
 
@@ -2078,7 +2078,7 @@ bevestigde dat de 3-woordige fietstaal nergens meer gerenderd wordt;
 het veld blijft als intern contract (tests, drempels) met een
 waarschuwend commentaar erbij.
 
-**Stedenknoppen, en de bug die eronder vandaan kwam.** Martijns
+**Stedenknoppen, en de bug die eronder vandaan kwam.** de eigenaars
 voorstel (hele vraag in de ankertekst) heb ik beargumenteerd
 bijgestuurd naar de zoekterm-kern plus stad ("Terrasweer Amsterdam"):
 sterker relevantiesignaal dan alleen de stadsnaam, natuurlijker dan
@@ -2096,7 +2096,7 @@ beide talen, en vangt ook zwerf-entries voor onbestaande ids.
 
 **Bijvangst.** De drie kledingvariant-pagina's toonden twaalf
 stedenknoppen naar niet-bestaande stad-URL's (404): de stad-uitrol
-voor varianten wacht bewust tot ze ranken (eerder besluit Martijn),
+voor varianten wacht bewust tot ze ranken (eerder besluit de eigenaar),
 maar generateStaticParams genereert ze dus niet, terwijl de lijst wel
 rendert. De lijst is op variantpagina's verborgen met een commentaar
 dat de conditie weg kan zodra de uitrol er komt; het backlog-item is
@@ -2180,7 +2180,7 @@ omgekeerde schaal. Gevolg: elke variantstip kleurde groen, ook bij
 twijfel 38, ongunstig 55, winterjas 62) en een regressietest legt de
 kleurmapping vast, zodat dit nooit meer stil kan verschuiven.
 
-**Wielrencheck (eigen tool, besluit Martijn).** Motivering vastgelegd
+**Wielrencheck (eigen tool, besluit de eigenaar).** Motivering vastgelegd
 in het bestand zelf: een forens MOET en wil wind per rijrichting; een
 wielrenner KIEST zijn moment en zoekt het beste trainingsblok, dus een
 locatie-check op de venstermotor, geen routeplanner. Scorekarakter
@@ -2197,7 +2197,7 @@ met kruislinks van en naar de fietscheck, stad-template plus ankerterm
 met wielrennen), beslissingen-items NL/EN. Drempels beredeneerd, niet
 gevalideerd; kanttekening bij de andere motors in de backlog gevoegd.
 
-**Dag-stips paraplu en regen-timing (besluit Martijn).** De v3.10-
+**Dag-stips paraplu en regen-timing (besluit de eigenaar).** De v3.10-
 keuze (nowcast-checks geen stip) is teruggedraaid via een
 dag-samenvatting-overlay per tool: paraplu telt natte uren in het
 venster 8:00-22:00 vanaf nu (droog 8, een bui 38 met het uur erbij,
@@ -2232,11 +2232,11 @@ wielrennen binnen de bestaande tellingen), beide builds volgen hierna.
 
 ## 2026-07-18 (zesde run) - v3.26.0 "Gregale": natuurlijk advies, contextregels en de homepage-zoeker
 
-**Opdracht**: een uitgebreide stijl- en logica-gids van Martijn voor
+**Opdracht**: een uitgebreide stijl- en logica-gids van de eigenaar voor
 natuurlijker, contextgevoeliger advies, plus de keuzehulp-zoeker op de
 homepage. Uitgevoerd als zeven clusters.
 
-**1. De grote vondst: winterchecks stonden om.** Martijns voorbeeld
+**1. De grote vondst: winterchecks stonden om.** de eigenaars voorbeeld
 ("Zeker krabben bij 16 graden") bleek geen copy-probleem maar een
 score-richtingsbug: krabben en gladheid leverden conditie.score als
 100 minus risico (hoog is goed), terwijl schaalVoor, adviesVoorScore
@@ -2301,7 +2301,7 @@ builds volgen hierna, geen em-dashes.
 
 ## 2026-07-18 (zevende run) - v3.27.0 "Solano": de go-run plus de snoeicheck
 
-**Opdracht**: akkoord Martijn op alle wachtende punten (SSR-antwoordblok
+**Opdracht**: akkoord eigenaar op alle wachtende punten (SSR-antwoordblok
 met fiets-regioverdict, stadtekst-fixpakket, zeven-checks-regel) plus
 de snoeitool in totaliteit met het tuincluster eromheen.
 
@@ -2372,7 +2372,7 @@ em-dash-check nul, beide builds met HTML-verificaties, zip geleverd.
 
 ## 2026-07-18 (achtste run) - v3.28.0 "Ostria": de tuincategorie plus drie checks
 
-**Opdracht Martijn**: meer tools, mogelijk een aparte tuin/planten-
+**Opdracht eigenaar**: meer tools, mogelijk een aparte tuin/planten-
 categorie, zoveel mogelijk uitbreiden (onkruid bestrijden et cetera).
 
 **Categorie-beslissing (mijn keuze, verantwoord in het slot).** Tuin is
@@ -2448,7 +2448,7 @@ en schoffels staan genoteerd als sterkste kandidatencluster.
 
 ## Run 9 - 2026-07-18 - v3.29.0 "Ghibli"
 
-Opdracht Martijn: vijftien nieuwe checks bouwen, Engels helemaal
+Opdracht eigenaar: vijftien nieuwe checks bouwen, Engels helemaal
 overslaan, en drie productiebugs fixen die verkeer kosten. Van 30 naar
 45 tools.
 
@@ -2464,7 +2464,7 @@ schema-blokken plus hun script-tags verwijderd (Broodkruimel dekt de
 kruimels al, en de van-naar-pagina gebruikte Broodkruimel ook al).
 Regressietest tests/jsonld.test.js scant alle app/**/page.js en
 verbiedt zowel een eigen "BreadcrumbList" als het patroon item: "/...".
-Actie voor Martijn: na de deploy in Search Console op "Validatie
+Actie voor de eigenaar: na de deploy in Search Console op "Validatie
 opnieuw uitvoeren" klikken.
 
 **Bug 2 - "p.overlay is not a function" op de nowcast-stadpagina's
@@ -2486,7 +2486,7 @@ wat-trek-ik-aan.** Allebei al in v3.27 gefixt (de stadtekst-smaken die
 was/fiets/algemeen scheiden, en het title-vangnet in stadTemplates.js
 dat uit navLabel/korteVraag put in plaats van andermans template te
 lenen). Deze keer in de NL-build-HTML geverifieerd dat het klopt en aan
-Martijn gemeld dat een deploy het live oplost.
+de eigenaar gemeld dat een deploy het live oplost.
 
 **De vijftien checks.** Acht venstertools (gedeelde venstermotor) en
 zeven dagmotoren (snoeien-patroon). Keuze per motor zat in het eigen
@@ -2524,7 +2524,7 @@ mechaniek, niet in de drempels:
 - kamperen: de nacht erna draagt het oordeel (min-gevoel, nachtregen,
   stoten op de tent) plus een droog opzetvenster voor 20:00.
 
-**Engels bewust overgeslagen.** Op verzoek van Martijn. De motoren zelf
+**Engels bewust overgeslagen.** Op verzoek van de eigenaar. De motoren zelf
 zijn tweetalig (kies() met nl+en), en de stad-templates, ankertermen en
 beslissingen zijn ook in beide talen aangelegd. Maar de vijftien
 Engelse contentbestanden ontbreken en in content/index.js is alleen de
@@ -2542,7 +2542,7 @@ hondenspullen, vuurkorven en tenten.
 
 ## Run 10 - 2026-07-18 - v3.30.0 "Mistral"
 
-**Opdracht Martijn**: "Sla engels nog steeds over. Bouw winter uit en
+**Opdracht eigenaar**: "Sla engels nog steeds over. Bouw winter uit en
 bouw de tuinonderhoud/huisonderhoud dingen uit. Doe tevens onderzoek
 naar hoe ik affiliate kan implementeren per tool en welke site en hoe
 dit dan werkt."
@@ -2628,12 +2628,12 @@ de backlog, om cannibalisatie tussen anker en tool te vermijden.
 tests/nieuwe-checks-mistral.test.js), inclusief de registertest die de
 zes tools structureel valideert. check:imports OK, em-dash nul, geen
 CSS gewijzigd. Beide builds gedraaid; NL-HTML geverifieerd op gevulde
-H1 voor de zes nieuwe tools. Affiliate blijft gepauzeerd tot Martijn de
+H1 voor de zes nieuwe tools. Affiliate blijft gepauzeerd tot de eigenaar de
 accounts heeft.
 
 ## Run 11 - 2026-07-19 - v3.31.0 "Sirocco"
 
-**Opdracht Martijn** (na een externe audit van de hele site): audit-fixes
+**Opdracht eigenaar** (na een externe audit van de hele site): audit-fixes
 op vraag-vs-content, content uitbreiden waar dun, affiliate implementeren
 (met de vraag of alleen bol en/of Coolblue beter is), en een kritische
 security- en cookie-review.
@@ -2684,7 +2684,7 @@ Ontwerpkeuze: de tool-bestanden bevatten een GEWONE bol-zoek-URL
 (https://www.bol.com/nl/nl/s/?searchtext=...); AdviesBlok bouwt die
 centraal om met de tool-id als subid. Zonder SiteId blijft het een
 werkende, ongetrackte bol-link, dus de blokken zijn nu al nuttig en gaan
-live op het moment dat Martijn zijn SiteId invult. Acht tools met een
+live op het moment dat de eigenaar zijn SiteId invult. Acht tools met een
 blok: zonkracht en was-buiten-drogen (van placeholder naar bol) plus
 planten-beschermen, sneeuwpret, strooien, terras-reinigen,
 buiten-schilderen en hout-behandelen. Twee nieuwe tests op de helper (met
@@ -2692,13 +2692,13 @@ en zonder SiteId, en dat niet-bol-links met rust worden gelaten).
 
 **Antwoord op de bol/Coolblue-vraag** (staat uitgewerkt in AFFILIATE.md):
 houd bol als ruggengraat PLUS TradeTracker voor de huis-en-tuinmarge.
-Martijns eigen onderzoek bewijst dat TT op niche wint (TuinChamp 10
+de eigenaars eigen onderzoek bewijst dat TT op niche wint (TuinChamp 10
 procent/100 dagen versus bol Tuin 4 procent/5 dagen; Deverfzaak 6 procent
 versus bol 4 procent; Fietsaccessoires 8,4 procent versus bol 4 procent).
 Alleen-bol laat dus marge liggen. Coolblue met klem afgeraden: linken naar
 je eigen werkgever is een duidelijk belangenconflict en mogelijk in strijd
 met arbeidsvoorwaarden, en het is electronics dat niet bij de
-niet-electronische weertools past. Autonomie is aan Martijn, maar dit is
+niet-electronische weertools past. Autonomie is aan de eigenaar, maar dit is
 het eerlijke advies.
 
 **Security- en cookie-review.** Hoofdbevinding: Google Analytics 4 laadde
@@ -2724,14 +2724,14 @@ een open maar keyloze proxy naar een gratis publieke dienst (fair-use,
 laag risico), genoteerd in SECURITY.md.
 
 **Kanttekening bij de CSP.** De CSP is opgesteld op basis van
-broninventarisatie in de code, niet tegen productie getest. Martijn moet
+broninventarisatie in de code, niet tegen productie getest. de eigenaar moet
 na de deploy de browserconsole even checken op CSP-waarschuwingen (vooral
 de kaart en, na cookie-akkoord, GA).
 
 **Alternatief dat de cookiebalk overbodig maakt** (in het slot benoemd,
 niet uitgevoerd): overstappen op cookieloze statistiek (Vercel Web
 Analytics of Plausible) sluit aan bij de oorspronkelijke privacy-first,
-faceless opzet en vraagt helemaal geen banner. Keuze aan Martijn.
+faceless opzet en vraagt helemaal geen banner. Keuze aan de eigenaar.
 
 **Verificatie**: 212 tests groen (was 210: +2 op de deeplink-helper).
 check:imports OK, em-dash nul, cookiebalk-CSS toegevoegd (bewust wel CSS
@@ -2741,10 +2741,10 @@ FAQ; EN-build heel, de zes nieuwste tools nog steeds 404 (open punt).
 
 ## Run 12 - 2026-07-19 - v3.32.0 "Levante"
 
-**Opdracht Martijn** (vervolg op Sirocco): de cookiebalk mag blijven
+**Opdracht eigenaar** (vervolg op Sirocco): de cookiebalk mag blijven
 staan voor de betrouwbaarheid (geen cookieloze switch; zo faceless hoeft
 het niet), de echte bol SiteId invullen (1532808), de CSP zelf verifieren
-in plaats van het aan Martijn over te laten, en opnieuw meerdere tools
+in plaats van het aan de eigenaar over te laten, en opnieuw meerdere tools
 toevoegen.
 
 **Cookiebalk blijft.** Besluit genomen: GA blijft achter de zelf gebouwde
@@ -2775,7 +2775,7 @@ CSP dichtgetimmerd:
   Referrer-Policy, Permissions-Policy) correct worden meegestuurd op zowel
   de homepage als een toolpagina.
 - Conclusie: de allowlist is compleet en de headers werken. Een
-  consolecheck aan Martijns kant is niet meer nodig. Genoteerd in
+  consolecheck aan de eigenaars kant is niet meer nodig. Genoteerd in
   SECURITY.md.
 
 **Vier nieuwe checks (51 naar 55).** Selectie op de drie filters (echte
@@ -2809,3 +2809,66 @@ tak via parameter getest) en de i18n-slug-snapshot (vier nieuwe EN-slugs).
 check:imports OK, em-dash nul over de hele repo. Beide builds slagen;
 NL-HTML geverifieerd op de vier nieuwe H1's en de bol-partnerlinks, EN
 heel met de vier nieuwe tools op 404 (open punt, zoals eerder).
+
+## Run 13 - 2026-07-20 - v3.33.0 "Autan"
+
+**Opdracht** (drie delen): (1) Engels volledig overslaan tot de eigenaar er
+weer over begint. (2) Vijf nieuwe tools. (3) De bol-afwijzing oplossen en de
+hele site zo veilig mogelijk en niet naar de eigenaar te herleiden maken.
+
+Naamkeuze: "Marin" bleek al gebruikt bij v3.15.0, dus deze run heet Autan
+om een dubbele codenaam te vermijden.
+
+**Bol-afwijzing.** De affiliate-aanmelding van de site is door bol afgewezen
+(artikel 2.6 of "geen match"). De waarschijnlijke reden is dat een faceless
+weer-utility met generieke zoeklinks niet als content-affiliate telt. In
+lib/affiliate.js staat nu een schakelaar BOL_AFFILIATE_ACTIEF
+(NEXT_PUBLIC_BOL_ACTIEF, standaard false). Zolang die uit is geeft bolLink
+gewone bol-links terug (geen partnerwrapper), toont AdviesBlok rel
+"nofollow noopener" zonder "sponsored" en zonder disclosure, want er is geen
+affiliate-relatie om te melden. De plumbing (SiteId, bolLink, ttLink,
+metPartnerlink) blijft staan voor als er wel een actieve relatie komt. De
+affiliate-test kreeg een inactief-geval (SiteId aanwezig maar niet actief ->
+gewone link) en het actieve geval zet nu beide envs. AFFILIATE.md herschreven:
+niet opnieuw op bol als fundament, maar Amazon Partnernet als brede basis
+en/of TradeTracker voor de niche-marge; schakelaar pas aan bij goedkeuring.
+SECURITY.md-actiepunt bijgewerkt. In de gebouwde site nul partner.bol.com.
+
+**Veiligheid en onherleidbaarheid.** De naam van de eigenaar is uit 25
+bronbestanden verwijderd (comments en interne docs; die worden sowieso uit
+de gebouwde JavaScript geminificeerd), met een geordend vervangingsscript,
+nul resterend. Anonimiteitsaudit bevestigde dat de gedeployde site al schoon
+was: geen account, naam of e-mail, Organization-JSON-LD met alleen de
+merknaam, geen author-metadata, geen social links, random apparaatcodes,
+versleutelde synccode-afgeleide, en de enige e-mail in de code is een
+placeholder (beheer@example.com in de VAPID-subject). Nieuw document
+ANONIMITEIT.md: deel 1 (wat de site al anoniem maakt), deel 2 (herleidbaarheid
+buiten de site: WHOIS, git-identiteit, service-accounts met 2FA, en de
+affiliate-uitbetaling als fundamentele en onvermijdelijke identiteitslink,
+mitigatie via een bedrijfsvorm), deel 3 (beveiliging: wat af is en het
+doorlopende onderhoud), deel 4 (honderd procent bestaat niet, zo kom je zo
+dichtbij mogelijk). De open API-proxies (geocode, weather, route) staan als
+optioneel hardeningspunt (rate-limit of herkomstcheck) genoemd zonder de
+werkende fetches te breken.
+
+**Vijf tools** (samenvatting; details in de CHANGELOG). springkussen (buiten,
+venstermotor, windveiligheid met maxWind-gate en windstoten-straf),
+speeltuin (buiten, venstermotor, droog plus warmtecomfort plus UV-noot),
+bestrating-leggen (huis en auto, venstermotor, droog venster plus naregen
+bij mortel plus nachtvorst), dekbed-luchten (huis en auto, venstermotor,
+lage luchtvochtigheid plus zon-bonus), buitenkraan-aftappen (winter,
+dagmotor met nacht-vooruitblik, vorstwaarschuwing, inverse: groen = geen
+actie). Elk met alle touchpoints: lib/tools, content (drie blokken, vier
+FAQ, NL, interne link), import en TOOLS-array, content/index.js NL-tak,
+stad-template en ankerterm (NL en EN, gekeyd op tool-id), uniek icoon,
+plek in beslissingen.js (NL en EN). De iconen springkussen, glijbaan,
+tegels, dekbed en kraan zijn als nieuwe PADEN-paden toegevoegd.
+
+**Verificatie**: 212 tests groen. De i18n-slug-snapshot bijgewerkt met de
+vijf nieuwe EN-slugs in TOOLS-volgorde (laying-paving, airing-bedding,
+bouncy-castle, playground, drain-outdoor-tap) en de affiliate-test op de
+nieuwe schakelaar. check:imports OK, em-dash nul over de hele repo, naam
+nul over de hele repo. Beide builds slagen; NL-HTML geverifieerd op de vijf
+nieuwe H1's en op gewone bol-links (nul partner.bol.com), EN heel met de
+vijf nieuwe tools op 404 (open punt, zoals eerder). Engels verder volledig
+overgeslagen op verzoek.

@@ -81,6 +81,12 @@ import { betonStorten } from "./beton-storten.js";
 import { dakOp } from "./dak-op.js";
 import { zwembadOpzetten } from "./zwembad-opzetten.js";
 import { muggen } from "./muggen.js";
+// v3.33.0 "Autan": buiten, klus, huis-tuin en winter
+import { springkussen } from "./springkussen.js";
+import { speeltuin } from "./speeltuin.js";
+import { bestratingLeggen } from "./bestrating-leggen.js";
+import { dekbedLuchten } from "./dekbed-luchten.js";
+import { buitenkraanAftappen } from "./buitenkraan-aftappen.js";
 import { VARIANTEN, maakPseudoTool } from "../varianten.js";
 
 export const TOOLS = [
@@ -122,6 +128,8 @@ export const TOOLS = [
   plantenBeschermen,
   betonStorten,
   dakOp,
+  bestratingLeggen,
+  dekbedLuchten,
   // Kleding
   kleding,
   // Buiten
@@ -133,6 +141,8 @@ export const TOOLS = [
   suppenOfKajakken,
   sterrenkijken,
   zwembadOpzetten,
+  springkussen,
+  speeltuin,
   // Zon en gezondheid
   zonkracht,
   hooikoorts,
@@ -145,6 +155,7 @@ export const TOOLS = [
   gladheid,
   sneeuwpret,
   strooien,
+  buitenkraanAftappen,
 ];
 
 export function vindTool(slug) {
@@ -243,7 +254,7 @@ export function toolsInCategorie(categorieId) {
  * De meest gebruikte checks, bovenaan het menu als Populair-blok
  * (feedbackronde juli 2026): kleding, paraplu en de fietscheck.
  */
-// Maximaal zes (wens Martijn, juli 2026): de homepage en het menu tonen
+// Maximaal zes (wens de eigenaar, juli 2026): de homepage en het menu tonen
 // deze selectie onder "Populaire checks"; alle-checks is het volledige
 // overzicht.
 export const POPULAIRE_TOOL_IDS = ["wat-trek-ik-aan", "paraplu", "fiets-naar-werk", "terras", "was-buiten-drogen", "zonkracht"];

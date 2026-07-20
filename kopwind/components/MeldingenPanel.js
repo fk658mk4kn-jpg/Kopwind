@@ -490,7 +490,7 @@ function weekSamenvatting(s) {
 /**
  * De fietscheck als groep in het meldingenpaneel: routes zijn geen
  * checks maar ritten binnen de fietscheck, dus ze staan genest onder
- * een kop (feedback Martijn, juli 2026). Routes kun je hier ook
+ * een kop (feedback van de eigenaar, juli 2026). Routes kun je hier ook
  * aanmaken, zonder eerst de fietscheck te openen: naam plus een van-
  * en naar-adres is genoeg; verfijnen (tussenstops, tijden) kan later
  * altijd in de fietscheck zelf.

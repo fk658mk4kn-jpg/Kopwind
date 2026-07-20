@@ -44,7 +44,7 @@ const T = kies({
 });
 
 /**
- * Dag-samenvatting-overlay (v3.25.0 "Pampero", besluit Martijn): de
+ * Dag-samenvatting-overlay (v3.25.0 "Pampero", besluit de eigenaar): de
  * eigen toolpagina blijft op de 15-minutenreeks draaien (ParapluTool),
  * maar voor de statusstip op home en alle-keuzehulpen vat deze overlay
  * de resterende uren samen tot een dagantwoord. Natte uren = neerslag

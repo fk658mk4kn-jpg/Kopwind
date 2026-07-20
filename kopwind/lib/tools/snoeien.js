@@ -1,7 +1,7 @@
 /**
  * lib/tools/snoeien.js
  *
- * De snoeicheck (v3.27.0 "Solano", go Martijn). Anders dan de meeste
+ * De snoeicheck (v3.27.0 "Solano", akkoord eigenaar). Anders dan de meeste
  * buitenchecks is snoeien geen uur-optimalisatie maar een dagbesluit
  * met twee lagen: het WEER (vorst rond de snoeidag laat wonden
  * bevriezen, natte dagen jagen schimmels in verse wonden, volle hitte

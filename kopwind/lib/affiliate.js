@@ -69,7 +69,7 @@ export function affiliateProblemen(toolId, aff) {
 
 /**
  * Deeplink-plumbing (v3.31.0). Achtergrond: de site heeft nu een echt
- * bol.com Partner-account. Zodra Martijn zijn SiteId invult (via de
+ * bol.com Partner-account. Zodra de eigenaar zijn SiteId invult (via de
  * omgevingsvariabele NEXT_PUBLIC_BOL_SITE_ID, of hieronder hardcoded),
  * worden alle bol-links in de adviesblokken automatisch getrackte
  * partnerlinks. Tot die tijd blijven het gewone, werkende bol-links
@@ -85,11 +85,20 @@ export function affiliateProblemen(toolId, aff) {
 
 // Bol SiteId van kanhetvandaag.nl (registratie 18-07-2026). Via
 // NEXT_PUBLIC_BOL_SITE_ID in Vercel te overschrijven; de fallback zorgt
-// dat de links ook zonder env meteen tracken.
+// dat de links ook zonder env meteen tracken zodra de affiliate actief is.
 export const BOL_SITE_ID =
   (typeof process !== "undefined" && process.env && process.env.NEXT_PUBLIC_BOL_SITE_ID) || "1532808";
 
-// TradeTracker affiliate-id van Martijn (User ID). De campagne- en
+// Staat er een ACTIEVE bol-affiliate-relatie? De aanmelding is op
+// 2026-07-19 afgewezen (bol: geen match / artikel 2.6), dus dit staat
+// standaard UIT. Zolang het uit staat blijven de bol-links gewone,
+// werkende links zonder partnerwrapper, zonder "sponsored"-rel en zonder
+// affiliate-disclosure, want er is geen affiliate-relatie om te melden.
+// Zet NEXT_PUBLIC_BOL_ACTIEF="true" zodra je (opnieuw) bent goedgekeurd.
+export const BOL_AFFILIATE_ACTIEF =
+  typeof process !== "undefined" && process.env && process.env.NEXT_PUBLIC_BOL_ACTIEF === "true";
+
+// TradeTracker affiliate-id van de eigenaar (User ID). De campagne- en
 // materiaal-id's zijn per campagne en vereisen eerst aanmelding plus
 // activatie van de webservice; die vul je pas in als je zover bent.
 export const TRADETRACKER_AFFILIATE_ID = "308800";
@@ -100,7 +109,7 @@ export const TRADETRACKER_AFFILIATE_ID = "308800";
  */
 export function bolLink(bolUrl, subid = "", naam = "kanhetvandaag", siteId = BOL_SITE_ID) {
   if (!/^https:\/\/(www\.)?bol\.com\//.test(bolUrl)) return bolUrl;
-  if (!siteId) return bolUrl;
+  if (!BOL_AFFILIATE_ACTIEF || !siteId) return bolUrl;
   const q = (v) => encodeURIComponent(v);
   return (
     "https://partner.bol.com/click/click?p=1&t=url" +

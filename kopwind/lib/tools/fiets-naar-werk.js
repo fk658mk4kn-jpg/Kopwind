@@ -40,7 +40,7 @@ const REGIO_T = kies({
 });
 
 /**
- * Regio-dagverdict (v3.27.0 "Solano", go Martijn): een locatie-
+ * Regio-dagverdict (v3.27.0 "Solano", akkoord eigenaar): een locatie-
  * gebaseerd fietsoordeel ZONDER route, voor drie plekken die de
  * routecheck nooit kon bedienen: de statusstip op home en
  * alle-keuzehulpen, het server-antwoordblok op de stadpagina's, en

@@ -4,18 +4,37 @@ Onderzoek en implementatiegids (bijgewerkt v3.31.0 "Sirocco",
 2026-07-19). Dit document beantwoordt drie vragen: hoe werkt affiliate
 technisch, welk netwerk past bij deze site, en hoe vul je het per tool in.
 
-**Status: bol staat live.** De plumbing is ingevuld met bol. In
-lib/affiliate.js zit een centrale deeplink-helper (BOL_SITE_ID uit de
-omgevingsvariabele NEXT_PUBLIC_BOL_SITE_ID, plus bolLink, ttLink en
-metPartnerlink). AdviesBlok bouwt elke bol-link centraal om naar een
-partner.bol.com-deeplink met de tool-id als subid. Acht tools hebben nu
-een adviesblok: zonkracht, was-buiten-drogen, planten-beschermen,
-sneeuwpret, strooien, terras-reinigen, buiten-schilderen en
-hout-behandelen. Zolang BOL_SITE_ID leeg is blijven het gewone werkende
-bol-links (geen commissie, wel functioneel); ze tracken nu met jouw echte SiteId (1532808), die als fallback in de
-code staat. Uitbreiden naar meer tools is een bol-zoek-URL in het
-affiliate-veld zetten. TradeTracker is het upgrade-pad voor de
-niche-marge (paragraaf 3 en 7).
+**Status: bol heeft de aanmelding AFGEWEZEN (2026-07-19).** De aanmelding
+van kanhetvandaag.nl is door bol afgewezen op grond van artikel 2.6 van
+hun voorwaarden, of "geen match tussen de website en het programma". Dat
+laatste is de meest waarschijnlijke reden: een faceless weer-utility met
+generieke bol-zoeklinks is voor bol geen typische content-affiliate (geen
+reviews, geen productpagina's, geen redactionele context). De
+bol-tracking staat daarom nu UIT via de schakelaar BOL_AFFILIATE_ACTIEF
+(standaard false). De adviesblokken tonen gewone, werkende bol-links
+zonder partnerwrapper, zonder "sponsored"-rel en zonder disclosure, want er
+is geen affiliate-relatie om te melden. De plumbing (bolLink, ttLink,
+metPartnerlink, de SiteId 1532808) blijft in de code staan, klaar voor het
+moment dat er wel een actieve relatie is.
+
+**Wat nu (advies).** Drie realistische paden:
+1. **Opnieuw aanmelden bij bol, maar sterker.** Alleen kansrijk als je de
+   site content-rijker maakt (echte uitlegartikelen, productcontext bij de
+   adviesblokken in plaats van kale zoeklinks). Zelfs dan kan "geen match"
+   opnieuw komen; de faceless utility past nu eenmaal slecht bij bol.
+2. **Amazon Partnernet (Amazon.nl).** Meestal soepele goedkeuring, brede
+   catalogus en product-agnostisch linken werkt prima. De makkelijkste
+   vervanger voor de brede productlinks die je nu naar bol legt.
+3. **TradeTracker of Daisycon voor de niche-marge.** Voor verf, tuin, fiets
+   en sport geven die vaak hogere commissie en langere cookies dan bol
+   (zie paragraaf 3), en niche-netwerken accepteren kleinere/specifieke
+   sites doorgaans makkelijker. ttLink staat al klaar.
+
+Aanbeveling: zet niet opnieuw in op bol als fundament. Ga voor Amazon
+Partnernet als brede basis en/of TradeTracker voor de huis-en-tuinmarge, en
+zet BOL_AFFILIATE_ACTIEF pas aan als je (alsnog) een goedgekeurd
+bol-account hebt. Coolblue blijft uitgesloten (werkgever-conflict). Zeg het
+maar als je een netwerk kiest, dan draad ik de helper daarop aan.
 
 ## 1. Hoe het technisch werkt
 

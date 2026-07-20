@@ -53,15 +53,23 @@ test("bolLink: zonder SiteId de gewone bol-link, met SiteId een partnerlink", as
   ).trim();
   assert.equal(zonder, "https://www.bol.com/nl/nl/s/?searchtext=slee");
 
-  // Met SiteId: partnerlink met correcte encoding en subid
+  // Met SiteId en actieve affiliate: partnerlink met correcte encoding en subid
   const met = execSync(
     `node -e "import('./lib/affiliate.js').then(m => console.log(m.bolLink('https://www.bol.com/nl/nl/s/?searchtext=slee','sneeuwpret','sneeuwpret')))"`,
-    { env: { ...process.env, NEXT_PUBLIC_BOL_SITE_ID: "99999" }, encoding: "utf8" }
+    { env: { ...process.env, NEXT_PUBLIC_BOL_SITE_ID: "99999", NEXT_PUBLIC_BOL_ACTIEF: "true" }, encoding: "utf8" }
   ).trim();
   assert.match(met, /^https:\/\/partner\.bol\.com\/click\/click\?/);
   assert.match(met, /s=99999/);
   assert.match(met, /subid=sneeuwpret/);
   assert.match(met, /url=https%3A%2F%2Fwww\.bol\.com/);
+
+  // Wel een SiteId maar affiliate niet actief (huidige stand na afwijzing):
+  // gewone bol-link, geen partnerwrapper.
+  const inactief = execSync(
+    `node -e "import('./lib/affiliate.js').then(m => console.log(m.bolLink('https://www.bol.com/nl/nl/s/?searchtext=slee','sneeuwpret','sneeuwpret')))"`,
+    { env: { ...process.env, NEXT_PUBLIC_BOL_SITE_ID: "99999", NEXT_PUBLIC_BOL_ACTIEF: "false" }, encoding: "utf8" }
+  ).trim();
+  assert.equal(inactief, "https://www.bol.com/nl/nl/s/?searchtext=slee");
 });
 
 test("bolLink: laat niet-bol-links met rust", async () => {

@@ -6,6 +6,12 @@
 
 export const VERSIES = [
   {
+    versie: "3.33.0",
+    codenaam: "Autan",
+    datum: "2026-07-20",
+    zin: "Vijf nieuwe checks: kan het springkussen buiten (windveiligheid voor luchtkussens), kan ik naar de speeltuin (droog en aangenaam voor kinderen), kan ik bestrating leggen (droog venster en geen nachtvorst), kan ik mijn dekbed buiten luchten (droogste en zonnigste blok) en moet ik de buitenkraan aftappen (vorstwaarschuwing voor de komende nachten). Verder is de bol-partneraanmelding afgewezen, dus de tracking staat nu uit en de links zijn gewone winkellinks tot je een ander netwerk kiest. En de site is grondig nagelopen op onherleidbaarheid: de naam is overal uit de code gehaald en er staat een volledige veiligheids- en anonimiteitschecklist bij.",
+  },
+  {
     versie: "3.32.0",
     codenaam: "Levante",
     datum: "2026-07-19",

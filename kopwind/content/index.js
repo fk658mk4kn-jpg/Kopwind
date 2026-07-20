@@ -65,6 +65,11 @@ import * as betonStortenNl from "./beton-storten.js";
 import * as dakOpNl from "./dak-op.js";
 import * as zwembadOpzettenNl from "./zwembad-opzetten.js";
 import * as muggenNl from "./muggen.js";
+import * as springkussenNl from "./springkussen.js";
+import * as speeltuinNl from "./speeltuin.js";
+import * as bestratingLeggenNl from "./bestrating-leggen.js";
+import * as dekbedLuchtenNl from "./dekbed-luchten.js";
+import * as buitenkraanAftappenNl from "./buitenkraan-aftappen.js";
 
 import * as bikeToWork from "./en/bike-to-work.js";
 import * as dryLaundryOutside from "./en/dry-laundry-outside.js";
@@ -169,6 +174,11 @@ const PER_SLUG =
         "dak-op": dakOpNl,
         "zwembad-opzetten": zwembadOpzettenNl,
         "muggen": muggenNl,
+        "springkussen": springkussenNl,
+        "speeltuin": speeltuinNl,
+        "bestrating-leggen": bestratingLeggenNl,
+        "dekbed-luchten": dekbedLuchtenNl,
+        "buitenkraan-aftappen": buitenkraanAftappenNl,
         "was-buiten-drogen": wasBuitenDrogen,
         "wat-trek-ik-aan": watTrekIkAan,
         "terrasweer": terras,

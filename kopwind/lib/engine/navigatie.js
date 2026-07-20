@@ -14,7 +14,7 @@
  *   niet in Apples archieftabel. Een onbekende vlag wordt door Maps
  *   genegeerd (dan pakt hij de voorkeursmodus van de gebruiker), dus c is
  *   een veilige inzet. Waypoints ondersteunt het schema niet: bij
- *   tussenstops krijgt Apple begin naar eind. Devicetest: Martijn.
+ *   tussenstops krijgt Apple begin naar eind. Devicetest: de eigenaar.
  */
 
 const co = (s) => `${s.lat},${s.lon}`;

@@ -6,7 +6,7 @@ import { STEDEN } from "../lib/steden/nl.js";
 import { TOOLS } from "../lib/tools/index.js";
 
 /**
- * Stadtekst-fixpakket (v3.27.0, audit plus go Martijn): drie smaken in
+ * Stadtekst-fixpakket (v3.27.0, audit plus akkoord eigenaar): drie smaken in
  * plaats van twee, en tweetalig. De oude staat gaf ALLE niet-fiets-
  * tools de wastekst ("het droogvenster van vandaag" op de
  * hardlooppagina) en Nederlandse tekst op de Engelse stadpagina's.

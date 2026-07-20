@@ -3,7 +3,8 @@
 Review en maatregelen (v3.31.0 "Sirocco", 2026-07-19). Opdracht: kritisch
 kijken naar de veiligheid en de cookieregeling, en het goed zetten. Dit
 document beschrijft wat er is gevonden, wat er is aangepast, en wat er nog
-aan Martijn is.
+aan de eigenaar is. Voor de anonimiteit (niet naar de eigenaar herleidbaar)
+en een bredere veiligheidschecklist: zie ANONIMITEIT.md.
 
 ## 1. Cookies (de belangrijkste bevinding)
 
@@ -36,7 +37,7 @@ dekt het.
 **Alternatief dat de balk overbodig maakt:** overstappen op cookieloze
 statistiek (Vercel Web Analytics of Plausible) vraagt helemaal geen
 cookiebalk en sluit aan bij de oorspronkelijke privacy-first opzet. Dan
-vervalt zowel GA als de balk. Dit is een keuze voor Martijn; de huidige
+vervalt zowel GA als de balk. Dit is een keuze voor de eigenaar; de huidige
 oplossing (GA achter toestemming) is compliant en houdt je GA-meting.
 
 ## 2. Security headers
@@ -98,10 +99,13 @@ regel toe te voegen.
 - **Cookieloze statistiek** (zie paragraaf 1) haalt zowel GA als de balk
   weg; overweeg dit als de banner niet bij de faceless opzet past.
 
-## 5. Actiepunten voor Martijn
+## 5. Actiepunten voor de eigenaar
 
-1. bol SiteId (1532808) staat live in de code; niets meer te doen. Zie
-   AFFILIATE.md.
+1. bol heeft de affiliate-aanmelding afgewezen (2026-07-19). De
+   bol-tracking staat daarom UIT (BOL_AFFILIATE_ACTIEF=false); de links
+   zijn nu gewone bol-links zonder partnerwrapper of disclosure. Kies een
+   vervolg (opnieuw aanmelden of een ander netwerk) en zet de schakelaar
+   pas aan als je een actieve relatie hebt. Zie AFFILIATE.md.
 2. CSP is geverifieerd (zie paragraaf 2); geen actie meer nodig.
 3. Beslis over de statistiek: GA achter de cookiebalk houden (nu zo), of
    overstappen op cookieloze statistiek zonder banner.

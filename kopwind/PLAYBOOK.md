@@ -201,7 +201,7 @@ GerelateerdBlok-relaties + `valideerRegister` groen (vangt dubbele slugs).
 ### Inklapbaarheid (richtlijn, sinds v3.16.0)
 
 Alles met meer informatie dan een regel of twee is inklapbaar (wens
-Martijn, juli 2026). Het vaste patroon is een native `details` met een
+de eigenaar, juli 2026). Het vaste patroon is een native `details` met een
 `summary` die de kop plus een korte samenvatting toont (bijvoorbeeld
 "aan op 3 dagen" of een teller), zodat de dichte staat al informatie
 geeft. Toegepast op: de categoriegroepen in het menu (dicht bij openen,
@@ -348,7 +348,7 @@ zonder eigen URL). valideerRegister eist dat elke tool aan een bestaande
 categorie hangt.
 
 De vaste bouwblokken, in deze volgorde (blok 3 en 5 gewisseld op verzoek
-van Martijn, juli 2026: het checks-grid heeft de sterkste CTA en staat
+van de eigenaar, juli 2026: het checks-grid heeft de sterkste CTA en staat
 daarom voor de keuzehulp; we meten op gedrag of de begeleiding hieronder
 lijdt):
 
@@ -391,7 +391,7 @@ duidelijke hierarchie: informatieve blokken zijn tekstueel rustig,
 keuze-blokken (keuzehulp, checks-grid) dragen kleur en kaarten. De pijl
 is overal het dikkere, naar rechts wijzende pijl-icoon (richting, geen
 decoratie). Rijkere AI-visuals of illustraties zijn P3 en komen alleen
-waar ze echt waarde toevoegen (levert Martijn aan; backlog).
+waar ze echt waarde toevoegen (levert de eigenaar aan; backlog).
 
 Affiliate-visie: een optionele laag, nooit het fundament. Zonder
 relevante affiliate is de storefront volledig en sterk zonder dat blok;

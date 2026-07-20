@@ -1,22 +1,25 @@
-import { AFFILIATE_DISCLOSURE, metPartnerlink } from "@/lib/affiliate";
+import { AFFILIATE_DISCLOSURE, BOL_AFFILIATE_ACTIEF, metPartnerlink } from "@/lib/affiliate";
 import { kies } from "@/lib/i18n/locale";
 import TekstMetLinks from "@/components/TekstMetLinks";
 import Icoon from "@/components/Icoon";
 
 /**
- * Rendert het affiliate-adviesblok van een tool (v3.22.0). Advies eerst,
- * links als hulpmiddel, met een verplichte disclosure eronder. Alle
- * uitgaande links krijgen rel="sponsored nofollow noopener" en openen
- * in een nieuw tabblad. Geen tracking, geen banner: gewoon tekst plus
- * nette links, zodat het bij de privacy-first opzet past.
+ * Rendert het adviesblok van een tool (v3.22.0). Advies eerst, links als
+ * hulpmiddel. Bij een ACTIEVE affiliate-relatie krijgen de links
+ * rel="sponsored nofollow noopener" plus een verplichte disclosure
+ * eronder; zonder actieve relatie zijn het gewone product-links
+ * (rel="nofollow noopener", geen disclosure), zodat we niets melden wat
+ * niet klopt. Geen tracking-pixels, geen banner: nette tekst plus links,
+ * passend bij de privacy-first opzet.
  *
- * Geeft null terug als de tool geen affiliate-blok heeft, zodat de
+ * Geeft null terug als de tool geen adviesblok heeft, zodat de
  * toolpagina hem onvoorwaardelijk kan aanroepen.
  */
 export default function AdviesBlok({ affiliate, toolId = "" }) {
   if (!affiliate) return null;
   const disclosure = kies(affiliate.disclosure ?? AFFILIATE_DISCLOSURE);
   const items = metPartnerlink(affiliate.items, toolId);
+  const rel = BOL_AFFILIATE_ACTIEF ? "sponsored nofollow noopener" : "nofollow noopener";
   return (
     <section className="adviesblok" aria-label={kies(affiliate.kop)}>
       <h2>{kies(affiliate.kop)}</h2>
@@ -28,7 +31,7 @@ export default function AdviesBlok({ affiliate, toolId = "" }) {
             href={it.url}
             className="adviesblok-link"
             target="_blank"
-            rel="sponsored nofollow noopener"
+            rel={rel}
           >
             <span>{kies(it.label)}</span>
             <span className="adviesblok-partner">
@@ -38,7 +41,9 @@ export default function AdviesBlok({ affiliate, toolId = "" }) {
           </a>
         ))}
       </div>
-      <p className="adviesblok-disclosure">{disclosure}</p>
+      {BOL_AFFILIATE_ACTIEF && (
+        <p className="adviesblok-disclosure">{disclosure}</p>
+      )}
     </section>
   );
 }

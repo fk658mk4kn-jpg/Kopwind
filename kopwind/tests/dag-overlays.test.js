@@ -6,7 +6,7 @@ import { schaalVoor } from "../lib/engine/schaal.js";
 
 /**
  * Dag-samenvatting-overlays (v3.25.0): paraplu en regen-timing kregen
- * een overlay voor de statusstip (besluit Martijn). Synthetische
+ * een overlay voor de statusstip (besluit de eigenaar). Synthetische
  * Open-Meteo-uurdata (arrays per veld) voor een vaste dag; het
  * peilmoment is 9:00, zodat ochtend en middag allebei "resterend" zijn.
  */

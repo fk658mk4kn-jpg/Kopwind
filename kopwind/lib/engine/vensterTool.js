@@ -119,7 +119,7 @@ export function maakVensterOverlay(cfg) {
    * override er automatisch van profiteren.
    */
   /**
-   * Hele-dag-dekking (v3.26.0, feedback Martijn): als het beste blok
+   * Hele-dag-dekking (v3.26.0, feedback van de eigenaar): als het beste blok
    * feitelijk het hele dagvenster beslaat, is "het blok loopt tot
    * 21:00" misleidend precies. Dan zeggen we dat het vrijwel de hele
    * dag goed is, in de woorden van de tool zelf (adviesLabels.goed).

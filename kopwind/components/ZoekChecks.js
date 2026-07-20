@@ -12,7 +12,7 @@ import { S } from "@/lib/strings";
 import Icoon from "@/components/Icoon";
 
 /**
- * Keuzehulp-zoeker voor de homepage (v3.26.0, feedback Martijn: het
+ * Keuzehulp-zoeker voor de homepage (v3.26.0, feedback van de eigenaar: het
  * zoeken naar een check hoort niet alleen op alle-keuzehulpen te
  * staan). Zelfde catalogus en zoeklogica als BeslissingenLijst
  * (vraag plus zoektermen), maar compact: bij twee of meer tekens

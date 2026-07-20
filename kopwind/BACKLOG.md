@@ -6,7 +6,7 @@ standaarden (huisstijl, toolopbouw, storefront-format) in PLAYBOOK.md.
 **Werkregels (vast, sinds 2026-07-16):**
 - De backlog wordt ELKE werksessie bijgewerkt: afgeronde punten eruit
   (naar de changelog), nieuwe inzichten erin.
-- Feedback en ideeen die Martijn tussendoor geeft worden direct als
+- Feedback en ideeen die de eigenaar tussendoor geeft worden direct als
   backlog-item vastgelegd, zodat niets verloren gaat.
 
 ---
@@ -75,7 +75,7 @@ wraps op bestaande vermeldingen plus korte verwijzende slotzinnen waar
 die er niet waren. De integriteitstest dekt sindsdien ook de
 uitlegteksten; site-breed staan er 93 in-tekst links.
 
-**Geparkeerd uit de SEO-run (akkoord Martijn):**
+**Geparkeerd uit de SEO-run (akkoord eigenaar):**
 - Winterbanden-anchor (7-gradenregel): rand van de weer-scope.
 
 **Promoveren naar eigen pagina zodra GSC volume toont:**
@@ -85,7 +85,22 @@ uitlegteksten; site-breed staan er 93 in-tekst links.
   kleding-hub): bij volume per graad-variant promoveren, te beginnen
   met de best presterende.
 
-## Gedaan met go (v3.29.0, opdracht Martijn 2026-07-18)
+## Gedaan met go (v3.33.0, opdracht eigenaar 2026-07-20)
+
+Vijf nieuwe checks (springkussen, speeltuin en bestrating-leggen,
+dekbed-luchten en buitenkraan-aftappen), allemaal op de bestaande venster-
+of dagmotor zonder nieuw weer-veld (bewust, om de whitelist-bug uit Mistral
+te vermijden). De bol-afwijzing verwerkt (zie de affiliate-sectie) en de
+hele site nagelopen op onherleidbaarheid: de naam uit 25 bronbestanden
+gehaald, een audit gedaan die bevestigt dat de gedeployde site al schoon is,
+en ANONIMITEIT.md toegevoegd met een volledige veiligheids- en
+anonimiteitschecklist. Engels volledig overgeslagen op verzoek. Nieuwe
+affiliate-kandidaten (zodra er een actief netwerk is): grondharingen en
+verankering (springkussen), zonnebrand en zonnehoedjes (speeltuin),
+straatgereedschap en trilplaat (bestrating), droogrek en mattenklopper
+(dekbed), kraanisolatie en leidinglint (buitenkraan).
+
+## Gedaan met go (v3.29.0, opdracht de eigenaar 2026-07-18)
 
 Vijftien nieuwe checks (acht venstertools, zeven dagmotoren) plus drie
 productiebugfixes (dubbel relatief breadcrumb-schema, ontbrekende
@@ -98,7 +113,7 @@ hondenspullen en poelzalf (uitlaatcheck), vuurkorven en haardhout
 vliegers en powerkites (vliegercheck), hengelsport (vischeck),
 schaatsen en ventilatoren/airco's (schaats- en koelcheck).
 
-## Gedaan met go (v3.28.0, opdracht Martijn 2026-07-18)
+## Gedaan met go (v3.28.0, opdracht de eigenaar 2026-07-18)
 
 Categorie Tuin en planten afgesplitst (grasmaaien en snoeien verhuisd,
 slug huis-tuin-auto bewust behouden), drie nieuwe checks (onkruid met
@@ -109,7 +124,7 @@ Affiliate-kandidaten zodra de uitrol hervat: graszaad en gazonmest
 voegkrabbers (onkruidcheck), snoeigereedschap (snoeicheck): het
 sterkste cluster van de site.
 
-## Gedaan met go (v3.27.0, akkoord Martijn 2026-07-18)
+## Gedaan met go (v3.27.0, akkoord eigenaar 2026-07-18)
 
 SSR-antwoordblok op alle stadpagina's (verdict, kernzin en tijdstempel
 in de server-HTML, ISR 30 minuten, faalt stil), fiets-regioverdict
@@ -119,22 +134,34 @@ zeven-checks-regel in het homepage-FAQ. Napunt: het serverblok is in
 de sandbox niet tegen echte weerdata te zien (geen netwerk); na deploy
 even een stadpagina bekijken en de bron controleren op het blok.
 
-## Open punten (feedback Martijn, juli 2026)
+## Open punten (feedback van de eigenaar, juli 2026)
 
-- **Engelse content nieuwe tools (v3.32.0)**: beton-storten, dak-op,
-  zwembad-opzetten en muggen hebben nog geen EN-content en geven 404 in de
-  EN-build (net als de zes Mistral-tools). De tool-objecten, stad-templates
-  en ankertermen zijn wel tweetalig; alleen content/en/ ontbreekt. Zelfde
-  open punt als de andere NL-only tools.
+- **Engelse content nieuwe tools (v3.32.0 en v3.33.0)**: beton-storten,
+  dak-op, zwembad-opzetten, muggen (Levante) plus springkussen, speeltuin,
+  bestrating-leggen, dekbed-luchten en buitenkraan-aftappen (Autan) hebben
+  nog geen EN-content en geven 404 in de EN-build (net als de zes
+  Mistral-tools). De tool-objecten, stad-templates en ankertermen zijn wel
+  tweetalig; alleen content/en/ ontbreekt. Zelfde open punt als de andere
+  NL-only tools.
 
 - **CSP geverifieerd (v3.32.0, afgerond)**: alle externe bronnen zijn
   geinventariseerd en de headers zijn tegen een draaiende productieserver
   met curl bevestigd. De allowlist is compleet (eigen origin, OSM-tegels,
   GA na consent); een consolecheck is niet meer nodig. Zie SECURITY.md.
+- **Anonimiteit en veiligheid (v3.33.0, afgerond in de code)**: de naam is
+  uit alle bronbestanden gehaald en de gedeployde site is aantoonbaar
+  anoniem (geen account, geen author-metadata, alleen de merknaam in de
+  JSON-LD). ANONIMITEIT.md bevat de checklist voor wat buiten de site ligt
+  en aan de eigenaar is: WHOIS-bescherming controleren, git-identiteit
+  pseudonimiseren, 2FA op alle service-accounts, een neutraal e-mailadres
+  voor VAPID/Resend, en de affiliate-uitbetaling (de enige onvermijdelijke
+  identiteitslink) eventueel via een bedrijfsvorm. Optioneel code-punt:
+  rate-limit of herkomstcheck op de open API-proxies (geocode, weather,
+  route).
 - **Statistiek-keuze (v3.31.0)**: GA staat nu achter de cookiebalk
   (compliant). Alternatief zonder banner is cookieloze statistiek (Vercel
   Web Analytics of Plausible), wat beter bij de faceless opzet past. Keuze
-  aan Martijn; zie SECURITY.md paragraaf 1.
+  aan de eigenaar; zie SECURITY.md paragraaf 1.
 
 - **Engelse content voor de vijftien Ghibli-checks (v3.29.0)**: de
   motoren zijn tweetalig en de stad-templates, ankertermen en
@@ -144,7 +171,7 @@ even een stadpagina bekijken en de bron controleren op het blok.
   golfen, skeeleren, motorrijden, hond-uitlaten, vliegeren, vuurkorf,
   drone-vliegen, paardrijden, vissen, schaatsen, mist, storm,
   houtkachel, huis-koelen en kamperen nu een 404. Bewust uitgesteld op
-  verzoek van Martijn ("Engels helemaal vergeten"). Oppakken zodra de
+  verzoek van de eigenaar ("Engels helemaal vergeten"). Oppakken zodra de
   EN-markt weer aan de beurt is: vijftien EN-contentbestanden schrijven
   en in de en-tak van content/index.js registreren.
 - **Engelse content voor de zes Mistral-checks (v3.30.0)**: zelfde
@@ -167,7 +194,7 @@ even een stadpagina bekijken en de bron controleren op het blok.
   vervang-route, verlopen-teller in de cron-output). Bevestiging op
   productie staat nog open: controleren of de externe cron nog draait
   met de juiste secret, en of `verlopen` in de cron-response daalt.
-- **Visuals per storefront**: Martijn levert later per storefront een
+- **Visuals per storefront**: de eigenaar levert later per storefront een
   AI-gegenereerde afbeelding of illustratie aan; tot die tijd is het
   achtergrondmodel (paginatint plus categorie-icoon) de visuele laag.
   Geen stockfoto's (licenties, faceless).
@@ -202,23 +229,33 @@ scrollt op mobiel naar de kaart, en de adviesVoorScore-audit is
 afgerond (nergens meer in de UI; intern contract met waarschuwend
 commentaar).
 
-## Affiliate (LIVE met bol, v3.31.0)
+## Affiliate (bol AFGEWEZEN, tracking uit, v3.33.0)
 
-GEIMPLEMENTEERD (v3.31.0): de plumbing is ingevuld met bol. Centrale
-deeplink-helper in lib/affiliate.js (BOL_SITE_ID uit
-NEXT_PUBLIC_BOL_SITE_ID, bolLink, ttLink als upgrade-pad, metPartnerlink);
-AdviesBlok bouwt bol-links centraal om met de tool-id als subid. Acht
-tools met een blok: zonkracht, was-buiten-drogen, planten-beschermen,
-sneeuwpret, strooien, terras-reinigen, buiten-schilderen, hout-behandelen.
-Zolang BOL_SITE_ID leeg is zijn het gewone werkende bol-links; ze gaan
-tracken zodra Martijn zijn SiteId invult. Volledige uitleg, de
-netwerkkeuze en het TradeTracker-upgrade-pad per categorie staan in
-AFFILIATE.md.
+STATUS (v3.33.0): de affiliate-aanmelding van de site is door bol AFGEWEZEN
+(2026-07-19, artikel 2.6 of "geen match"). De bol-tracking staat nu achter
+een schakelaar BOL_AFFILIATE_ACTIEF (NEXT_PUBLIC_BOL_ACTIEF, standaard
+false). Zolang die uit is zijn het gewone, werkende bol-links zonder
+partnerwrapper, zonder "sponsored"-rel en zonder disclosure, want er is geen
+affiliate-relatie om te melden. De plumbing (bolLink, ttLink, metPartnerlink,
+SiteId 1532808) blijft in de code voor als er wel een actieve relatie komt.
+Tien tools hebben een adviesblok: zonkracht, was-buiten-drogen,
+planten-beschermen, sneeuwpret, strooien, terras-reinigen, buiten-schilderen,
+hout-behandelen, plus de Levante- en Autan-tools met een blok. De volledige
+netwerkkeuze en het advies staan in AFFILIATE.md.
 
-**Nog te doen door Martijn:**
-- bol SiteId: INGEVULD (1532808, live als fallback in de code sinds
-  v3.32.0). Eventueel nog in Vercel als NEXT_PUBLIC_BOL_SITE_ID zetten om
-  het buiten de code te beheren, maar niet nodig.
+**Advies voor het vervolg (zie AFFILIATE.md):** niet opnieuw op bol als
+fundament (een faceless weer-utility past slecht bij bol). Ga voor Amazon
+Partnernet als brede basis (meestal soepele goedkeuring, product-agnostisch)
+en/of TradeTracker voor de huis-en-tuinmarge (verf, tuin, fiets), en zet de
+schakelaar pas aan zodra je een goedgekeurd account hebt. Coolblue blijft
+uitgesloten (werkgeversconflict).
+
+**Nog te doen door de eigenaar:**
+- bol: AFGEWEZEN (2026-07-19). Niet opnieuw op bol als fundament inzetten.
+  Kies een vervolg: Amazon Partnernet als brede basis en/of TradeTracker
+  voor de niche-marge, en zet dan BOL_AFFILIATE_ACTIEF (of het gekozen
+  netwerk) aan. Zeg welk netwerk het wordt, dan wordt de helper daarop
+  aangedraaid.
 - Optioneel TradeTracker aanzetten voor de niche-marge (verf, tuin, fiets,
   sport): per campagne aanmelden, de webservice activeren, en de
   campaign/material-id's invullen (ttLink staat klaar, affiliate-id 308800
@@ -242,7 +279,7 @@ nofollow noopener", geen tracking) en een test die elk blok in beide
 talen valideert. Ingevuld voor zonkracht (zonnebrand) en
 was-buiten-drogen (drooggerei), met PLACEHOLDER-winkellinks.
 
-**Nu te doen door Martijn (uit het onderzoek, zie AFFILIATE.md):**
+**Nu te doen door de eigenaar (uit het onderzoek, zie AFFILIATE.md):**
 - Aanmelden bij bol.com Partnerprogramma (laagste drempel, breedste
   dekking), optioneel meteen TradeTracker erbij voor de Gamma/Karwei-
   klusmarge (verf, beits, hogedrukreiniger, strooizout).
@@ -278,7 +315,7 @@ kaartstructuur (PLAYBOOK sectie 11).
 
 - Dagdeel- en situatie-advies per tool (ochtend/middag/avond).
 - Bezoekersteller per tool: pas als de cijfers indrukwekkend genoeg
-  zijn om te tonen (wens Martijn, 2026-07-14: nu te vroeg).
+  zijn om te tonen (wens de eigenaar, 2026-07-14: nu te vroeg).
 - Populaire keuzehulpen AANVULLEN van buiten de vaste zes (nu:
   herschikken binnen POPULAIRE_TOOL_IDS op stemmen, v3.22.0). Optie om
   een tool buiten de zes met veel stemmen te laten instromen; bewust
@@ -356,7 +393,7 @@ geen label = nog niet opgepakt.
 - Kan ik tuinieren vandaag? [anker]
 - Kan ik mijn ramen wassen vandaag? [tool: ramen-wassen, v3.17.0]
 - Kan ik mijn huis luchten vandaag? [anker]
-- Kan ik dekbedden buiten luchten? [anker]
+- Kan ik dekbedden buiten luchten? [tool: dekbed-luchten, v3.33.0]
 - Kan ik buiten schilderen of beitsen? [anker]
 - Droogt verf vandaag goed? [anker, v3.27.0]
 - Kan ik vandaag mijn terras schoonmaken? [anker, v3.27.0]

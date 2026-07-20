@@ -2,7 +2,7 @@
  * lib/steden/serverAntwoord.js
  *
  * De pure kern van het server-antwoordblok op de stadpagina's
- * (v3.27.0 "Solano", audit plus go Martijn): vertaalt een
+ * (v3.27.0 "Solano", audit plus akkoord eigenaar): vertaalt een
  * overlay-resultaat naar de renderdata voor het blok onder de H1.
  * Gescheiden van de servercomponent zodat dit onder test staat met
  * synthetische weerdata; de component zelf is alleen fetch plus

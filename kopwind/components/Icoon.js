@@ -6,6 +6,11 @@
  */
 
 const PADEN = {
+  springkussen: "M4 20V11c0-1.7 1.3-3 3-3 0-2.7 3-2.7 3 0h4c0-2.7 3-2.7 3 0 1.7 0 3 1.3 3 3v9ZM10 20v-5h4v5",
+  kraan: "M3 9h7v4h4v3M10 9V6M7 6h6M14 18v2",
+  tegels: "M3 6h18v12H3zM3 12h18M9 6v6M15 6v6M6 12v6M12 12v6M18 12v6",
+  glijbaan: "M6 6v9M9 6v9M6 9h3M6 12h3M5 6h6M11 7c4.5 0 5 5.5 1 7.5L10 18",
+  dekbed: "M4 17v-6c0-1 1-2 2-2h12c1 0 2 1 2 2v6M3 14h18M6 11h5",
   kruiwagen: "M4 7l2.5 7h7l2-5M4 7l10 2M13.5 14a2 2 0 1 0 0 .01M6 14l-1.5 3.5M13.5 14H8",
   ladder: "M8 3v18M16 3v18M8 7.5h8M8 12h8M8 16.5h8",
   zwembad: "M4 10h16v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zM6 13q2-1.6 4 0t4 0 4 0M9 10V5a2 2 0 0 1 4 0",

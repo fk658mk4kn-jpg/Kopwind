@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { kleding } from "../lib/tools/kleding.js";
 
 /**
- * Verleden-lekken in het kledingadvies (v3.26.0, feedback Martijn):
+ * Verleden-lekken in het kledingadvies (v3.26.0, feedback van de eigenaar):
  * om 20:00 hoort het advies over de avond te gaan, niet over een
  * voorbije warme middag; "vanochtend vroeg een jas" en een bui van
  * 08:00 horen dan uit de zin. Testdag: bui om 08:00, warme middag

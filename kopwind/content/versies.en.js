@@ -5,6 +5,12 @@
 
 export const VERSIES = [
   {
+    versie: "3.33.0",
+    codenaam: "Autan",
+    datum: "2026-07-20",
+    zin: "Five new checks: can the bouncy castle go outside (wind safety for inflatables), can we go to the playground (dry and pleasant for kids), can I lay paving (dry window and no night frost), can I air my duvet outside (driest and sunniest window) and should I drain the outdoor tap (a frost warning for the coming nights). The bol partner application was also rejected, so tracking is off and the links are plain shop links until another network is chosen. And the site was thoroughly checked for untraceability, with the owner's name removed from the code and a full security and anonymity checklist added.",
+  },
+  {
     versie: "3.32.0",
     codenaam: "Levante",
     datum: "2026-07-19",

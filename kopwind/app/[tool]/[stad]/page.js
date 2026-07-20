@@ -97,7 +97,7 @@ export default function StadPagina({ params }) {
       <section className="tool-hero">
         <h1>{t.h1}</h1>
         {/* v3.27.0: het antwoord in de server-HTML, direct onder de H1
-            (audit plus go Martijn). Faalt stil naar niets. */}
+            (audit plus akkoord eigenaar). Faalt stil naar niets. */}
         <ServerAntwoord tool={tool} stad={stad} />
         <p>{basis}</p>
       </section>

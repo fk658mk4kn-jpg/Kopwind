@@ -1,7 +1,7 @@
 /**
  * lib/tools/wielrennen.js
  *
- * De wielrencheck (v3.25.0 "Pampero", besluit Martijn: eigen tool, geen
+ * De wielrencheck (v3.25.0 "Pampero", besluit de eigenaar: eigen tool, geen
  * preset op de fietscheck). Andere intentie dan fietsen-naar-werk: een
  * forens MOET en wil weten hoe erg het wordt per rijrichting; een
  * wielrenner KIEST zijn moment en wil het beste trainingsblok van de
