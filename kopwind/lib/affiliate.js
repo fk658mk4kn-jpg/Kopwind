@@ -83,10 +83,11 @@ export function affiliateProblemen(toolId, aff) {
  * een plek.
  */
 
-// Vul hier je bol SiteId in (of zet NEXT_PUBLIC_BOL_SITE_ID in Vercel).
-// Leeg = nog niet gekoppeld: links werken wel, maar tellen geen commissie.
+// Bol SiteId van kanhetvandaag.nl (registratie 18-07-2026). Via
+// NEXT_PUBLIC_BOL_SITE_ID in Vercel te overschrijven; de fallback zorgt
+// dat de links ook zonder env meteen tracken.
 export const BOL_SITE_ID =
-  (typeof process !== "undefined" && process.env && process.env.NEXT_PUBLIC_BOL_SITE_ID) || "";
+  (typeof process !== "undefined" && process.env && process.env.NEXT_PUBLIC_BOL_SITE_ID) || "1532808";
 
 // TradeTracker affiliate-id van Martijn (User ID). De campagne- en
 // materiaal-id's zijn per campagne en vereisen eerst aanmelding plus
@@ -97,13 +98,13 @@ export const TRADETRACKER_AFFILIATE_ID = "308800";
  * Bouwt een bol-partnerlink rond een bol-URL. Zonder SiteId geeft hij
  * de originele bol-URL terug (werkende, ongetrackte link).
  */
-export function bolLink(bolUrl, subid = "", naam = "kanhetvandaag") {
+export function bolLink(bolUrl, subid = "", naam = "kanhetvandaag", siteId = BOL_SITE_ID) {
   if (!/^https:\/\/(www\.)?bol\.com\//.test(bolUrl)) return bolUrl;
-  if (!BOL_SITE_ID) return bolUrl;
+  if (!siteId) return bolUrl;
   const q = (v) => encodeURIComponent(v);
   return (
     "https://partner.bol.com/click/click?p=1&t=url" +
-    `&s=${q(BOL_SITE_ID)}&url=${q(bolUrl)}&f=PF` +
+    `&s=${q(siteId)}&url=${q(bolUrl)}&f=PF` +
     `&subid=${q(subid)}&name=${q(naam || subid || "kanhetvandaag")}`
   );
 }

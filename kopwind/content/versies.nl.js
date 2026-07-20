@@ -6,6 +6,12 @@
 
 export const VERSIES = [
   {
+    versie: "3.32.0",
+    codenaam: "Levante",
+    datum: "2026-07-19",
+    zin: "Vier nieuwe checks: kan ik vandaag beton storten (met de vorst van de nacht erna erbij), kan ik veilig het dak op (een veiligheidscheck op wind en gladheid), kan ik het zwembad opzetten (warm en zonnig genoeg) en is het muggenweer vanavond (waarbij groen juist weinig muggen betekent). Verder de bol-partnerlinks definitief live gezet met de echte SiteId, en de security headers geverifieerd tegen een draaiende server.",
+  },
+  {
     versie: "3.31.0",
     codenaam: "Sirocco",
     datum: "2026-07-19",

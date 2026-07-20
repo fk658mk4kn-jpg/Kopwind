@@ -2738,3 +2738,74 @@ check:imports OK, em-dash nul, cookiebalk-CSS toegevoegd (bewust wel CSS
 deze keer). Beide builds gedraaid; NL-HTML geverifieerd op de zes gevulde
 H1's, de gecorrigeerde overzichtsvragen, het affiliate-blok en de nieuwe
 FAQ; EN-build heel, de zes nieuwste tools nog steeds 404 (open punt).
+
+## Run 12 - 2026-07-19 - v3.32.0 "Levante"
+
+**Opdracht Martijn** (vervolg op Sirocco): de cookiebalk mag blijven
+staan voor de betrouwbaarheid (geen cookieloze switch; zo faceless hoeft
+het niet), de echte bol SiteId invullen (1532808), de CSP zelf verifieren
+in plaats van het aan Martijn over te laten, en opnieuw meerdere tools
+toevoegen.
+
+**Cookiebalk blijft.** Besluit genomen: GA blijft achter de zelf gebouwde
+cookiebalk (compliant), we stappen niet over op cookieloze statistiek.
+Geen codewijziging nodig.
+
+**bol SiteId live.** De echte SiteId (1532808, registratie 18-07-2026)
+staat nu als fallback in lib/affiliate.js
+(NEXT_PUBLIC_BOL_SITE_ID || "1532808"), net als het patroon bij het
+GA-id. Zo tracken de partnerlinks ook zonder omgevingsvariabele. De
+gebouwde pagina's tonen nu partner.bol.com-deeplinks met s=1532808 en de
+tool-id als subid. bolLink kreeg een optionele siteId-parameter (default
+de constante) zodat de lege tak testbaar blijft naast de live-fallback;
+de affiliate-test is daarop aangepast.
+
+**CSP zelf geverifieerd.** In plaats van "check de console maar" heb ik de
+CSP dichtgetimmerd:
+- Alle externe origins in de code en de gebouwde HTML geinventariseerd.
+  Resultaat: de enige externe resource-loads zijn de OpenStreetMap-tegels
+  (img, al toegestaan) en Google Analytics na toestemming (script/connect/
+  img, al toegestaan). De kaart gebruikt circleMarkers en een divIcon met
+  inline SVG, dus geen externe marker-afbeeldingen (de klassieke
+  Leaflet-valkuil). De bol-links en schema.org/canonical-URL's in de HTML
+  zijn gewone navigatie of JSON-LD-tekst, geen resource-loads, dus die
+  hebben geen CSP-regel nodig.
+- De productieserver gedraaid (npm start) en met curl -D - bevestigd dat
+  alle headers (CSP, HSTS, X-Frame-Options DENY, X-Content-Type-Options,
+  Referrer-Policy, Permissions-Policy) correct worden meegestuurd op zowel
+  de homepage als een toolpagina.
+- Conclusie: de allowlist is compleet en de headers werken. Een
+  consolecheck aan Martijns kant is niet meer nodig. Genoteerd in
+  SECURITY.md.
+
+**Vier nieuwe checks (51 naar 55).** Selectie op de drie filters (echte
+zoekvraag, past bij het weerthema, gebruikt bestaande databronnen zonder
+nieuwe engine-velden, want die gaven bij Mistral nog een whitelist-bug):
+- **beton-storten** (huis en auto, dagmotor met vorst-vooruitblik). De
+  nacht na het storten telt mee (verse beton mag niet bevriezen), plus
+  regen die cement uitspoelt en uitdroging door warmte en wind.
+- **dak-op** (huis en auto, venstermotor). Veiligheid, geen comfort: wind
+  en windstoten als zwaarste factor (grens schuift met het daktype), een
+  nat dak als harde nee, vorst als gladheid. Nadrukkelijk geen vervanging
+  van beveiliging.
+- **zwembad-opzetten** (buiten, venstermotor). Warmste, zonnigste blok;
+  gevoelstemperatuur, zon die het water opwarmt, koude wind op natte huid.
+  Warmtegrens hoger voor kleine kinderen.
+- **muggen** (gezondheid, dagmotor, avondgericht). Muggenactiviteit uit
+  warmte, vocht, wind en schemering, met omgekeerde logica zoals bij de
+  plantencheck: groen betekent WEINIG muggen. Wind en kou leggen ze stil,
+  water in de buurt maakt het erger.
+
+Alle vier kregen de volledige set touchpoints: config in lib/tools/, een
+contentpagina (drie blokken, vier FAQ, NL) met een interne link, een eigen
+uniek icoon in Icoon.js, een tweetalig stad-template en ankerterm, een
+plek in het overzicht (beslissingen.js, NL en EN) en een bol-adviesblok.
+Register-, stad-template- en beslissingen-tests dwongen alle touchpoints
+af.
+
+**Verificatie**: 212 tests groen. Twee snapshot-tests bijgewerkt omdat de
+werkelijkheid bewust veranderde: de affiliate-test (SiteId nu live, lege
+tak via parameter getest) en de i18n-slug-snapshot (vier nieuwe EN-slugs).
+check:imports OK, em-dash nul over de hele repo. Beide builds slagen;
+NL-HTML geverifieerd op de vier nieuwe H1's en de bol-partnerlinks, EN
+heel met de vier nieuwe tools op 404 (open punt, zoals eerder).

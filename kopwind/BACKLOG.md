@@ -121,11 +121,16 @@ even een stadpagina bekijken en de bron controleren op het blok.
 
 ## Open punten (feedback Martijn, juli 2026)
 
-- **CSP verifieren op productie (v3.31.0)**: de Content-Security-Policy in
-  next.config.mjs is opgesteld op basis van broninventarisatie in de code,
-  niet tegen productie getest. Na de deploy de browserconsole checken op
-  CSP-waarschuwingen (vooral de kaart en, na cookie-akkoord, GA) en zo
-  nodig een bron toevoegen. Zie SECURITY.md.
+- **Engelse content nieuwe tools (v3.32.0)**: beton-storten, dak-op,
+  zwembad-opzetten en muggen hebben nog geen EN-content en geven 404 in de
+  EN-build (net als de zes Mistral-tools). De tool-objecten, stad-templates
+  en ankertermen zijn wel tweetalig; alleen content/en/ ontbreekt. Zelfde
+  open punt als de andere NL-only tools.
+
+- **CSP geverifieerd (v3.32.0, afgerond)**: alle externe bronnen zijn
+  geinventariseerd en de headers zijn tegen een draaiende productieserver
+  met curl bevestigd. De allowlist is compleet (eigen origin, OSM-tegels,
+  GA na consent); een consolecheck is niet meer nodig. Zie SECURITY.md.
 - **Statistiek-keuze (v3.31.0)**: GA staat nu achter de cookiebalk
   (compliant). Alternatief zonder banner is cookieloze statistiek (Vercel
   Web Analytics of Plausible), wat beter bij de faceless opzet past. Keuze
@@ -211,8 +216,9 @@ netwerkkeuze en het TradeTracker-upgrade-pad per categorie staan in
 AFFILIATE.md.
 
 **Nog te doen door Martijn:**
-- bol SiteId invullen (NEXT_PUBLIC_BOL_SITE_ID in Vercel) om commissie te
-  laten tellen.
+- bol SiteId: INGEVULD (1532808, live als fallback in de code sinds
+  v3.32.0). Eventueel nog in Vercel als NEXT_PUBLIC_BOL_SITE_ID zetten om
+  het buiten de code te beheren, maar niet nodig.
 - Optioneel TradeTracker aanzetten voor de niche-marge (verf, tuin, fiets,
   sport): per campagne aanmelden, de webservice activeren, en de
   campaign/material-id's invullen (ttLink staat klaar, affiliate-id 308800

@@ -5,6 +5,12 @@
 
 export const VERSIES = [
   {
+    versie: "3.32.0",
+    codenaam: "Levante",
+    datum: "2026-07-19",
+    zin: "Four new checks: can I pour concrete today (including the frost the night after), is it safe to go on the roof (a safety check on wind and slipperiness), can I set up the pool (warm and sunny enough) and are the mosquitoes out tonight (where green means few mosquitoes). We also switched the bol partner links fully live with the real SiteId, and verified the security headers against a running server.",
+  },
+  {
     versie: "3.31.0",
     codenaam: "Sirocco",
     datum: "2026-07-19",

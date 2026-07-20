@@ -76,6 +76,11 @@ import { terrasReinigen } from "./terras-reinigen.js";
 import { plantenBeschermen } from "./planten-beschermen.js";
 import { sneeuwpret } from "./sneeuwpret.js";
 import { strooien } from "./strooien.js";
+// v3.31.0 "Sirocco": klus, veiligheid, zomer en gezondheid
+import { betonStorten } from "./beton-storten.js";
+import { dakOp } from "./dak-op.js";
+import { zwembadOpzetten } from "./zwembad-opzetten.js";
+import { muggen } from "./muggen.js";
 import { VARIANTEN, maakPseudoTool } from "../varianten.js";
 
 export const TOOLS = [
@@ -115,6 +120,8 @@ export const TOOLS = [
   houtBehandelen,
   terrasReinigen,
   plantenBeschermen,
+  betonStorten,
+  dakOp,
   // Kleding
   kleding,
   // Buiten
@@ -125,9 +132,11 @@ export const TOOLS = [
   buitenZwemmen,
   suppenOfKajakken,
   sterrenkijken,
+  zwembadOpzetten,
   // Zon en gezondheid
   zonkracht,
   hooikoorts,
+  muggen,
   // Regen
   regenTiming,
   paraplu,

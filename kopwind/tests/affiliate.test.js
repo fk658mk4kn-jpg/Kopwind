@@ -45,10 +45,10 @@ test("affiliate (EN): elk ingevuld blok volgt het schema", () => {
 });
 
 test("bolLink: zonder SiteId de gewone bol-link, met SiteId een partnerlink", async () => {
-  // Zonder SiteId
-  delete process.env.NEXT_PUBLIC_BOL_SITE_ID;
+  // Zonder SiteId (expliciet leeg meegegeven; de live-fallback staat nu op
+  // de echte SiteId, dus de lege tak testen we via de parameter).
   const zonder = execSync(
-    `node -e "import('./lib/affiliate.js').then(m => console.log(m.bolLink('https://www.bol.com/nl/nl/s/?searchtext=slee','sneeuwpret','sneeuwpret')))"`,
+    `node -e "import('./lib/affiliate.js').then(m => console.log(m.bolLink('https://www.bol.com/nl/nl/s/?searchtext=slee','sneeuwpret','sneeuwpret','')))"`,
     { env: { ...process.env }, encoding: "utf8" }
   ).trim();
   assert.equal(zonder, "https://www.bol.com/nl/nl/s/?searchtext=slee");

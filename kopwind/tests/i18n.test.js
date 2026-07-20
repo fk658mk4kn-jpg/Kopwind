@@ -42,7 +42,7 @@ test("en-build: register levert Engelse slugs en het merk klopt", () => {
       console.log(t.TOOLS.map(x => x.slug).join(',') + '|' + b.HUB_NAAM);
     });
   `);
-  assert.equal(uit, "bike-to-work,running-weather,road-cycling-weather,walking,outdoor-workout,padel-or-tennis,dry-laundry-outside,wash-the-car,mow-the-lawn,pruning,weeding,watering,sowing-grass,golfing,inline-skating,motorcycling,walking-the-dog,kite-flying,fire-pit,drone-flying,horse-riding,fishing,ice-skating,fog,storm,wood-stove,cooling-the-house,camping,clean-the-windows,solar-panels,exterior-painting,wood-treatment,patio-cleaning,frost-protection,what-to-wear,patio-weather,bbq-weather,beach-weather,picnic-weather,outdoor-swimming,sup-or-kayak,stargazing,sunscreen,hay-fever,when-will-it-rain,umbrella-today,windscreen-frost,icy-roads,snow-play,gritting|Good day for it?");
+  assert.equal(uit, "bike-to-work,running-weather,road-cycling-weather,walking,outdoor-workout,padel-or-tennis,dry-laundry-outside,wash-the-car,mow-the-lawn,pruning,weeding,watering,sowing-grass,golfing,inline-skating,motorcycling,walking-the-dog,kite-flying,fire-pit,drone-flying,horse-riding,fishing,ice-skating,fog,storm,wood-stove,cooling-the-house,camping,clean-the-windows,solar-panels,exterior-painting,wood-treatment,patio-cleaning,frost-protection,pouring-concrete,onto-the-roof,what-to-wear,patio-weather,bbq-weather,beach-weather,picnic-weather,outdoor-swimming,sup-or-kayak,stargazing,setting-up-the-pool,sunscreen,hay-fever,mosquito-weather,when-will-it-rain,umbrella-today,windscreen-frost,icy-roads,snow-play,gritting|Good day for it?");
 });
 
 test("nl blijft de standaard zonder env", () => {

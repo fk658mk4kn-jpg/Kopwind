@@ -61,6 +61,10 @@ import * as terrasReinigenNl from "./terras-reinigen.js";
 import * as plantenBeschermenNl from "./planten-beschermen.js";
 import * as sneeuwpretNl from "./sneeuwpret.js";
 import * as strooienNl from "./strooien.js";
+import * as betonStortenNl from "./beton-storten.js";
+import * as dakOpNl from "./dak-op.js";
+import * as zwembadOpzettenNl from "./zwembad-opzetten.js";
+import * as muggenNl from "./muggen.js";
 
 import * as bikeToWork from "./en/bike-to-work.js";
 import * as dryLaundryOutside from "./en/dry-laundry-outside.js";
@@ -161,6 +165,10 @@ const PER_SLUG =
         "planten-beschermen": plantenBeschermenNl,
         "sneeuwpret": sneeuwpretNl,
         "strooien": strooienNl,
+        "beton-storten": betonStortenNl,
+        "dak-op": dakOpNl,
+        "zwembad-opzetten": zwembadOpzettenNl,
+        "muggen": muggenNl,
         "was-buiten-drogen": wasBuitenDrogen,
         "wat-trek-ik-aan": watTrekIkAan,
         "terrasweer": terras,

@@ -58,10 +58,15 @@ oplossing (GA achter toestemming) is compliant en houdt je GA-meting.
 - Permissions-Policy: geolocation=(self) (nodig voor de locatie-check),
   camera/microphone/payment/usb/browsing-topics uit.
 
-**Kanttekening:** de CSP is opgesteld op basis van de code, niet tegen
-productie getest. Check na de deploy even de browserconsole op
-CSP-waarschuwingen, vooral bij de kaart en, na cookie-akkoord, GA. Als er
-iets legitiems geblokkeerd wordt, staat de bron toevoegen in een regel.
+**Geverifieerd (v3.32.0):** alle externe bronnen in de code en de
+gebouwde HTML zijn geinventariseerd; de enige externe resource-loads zijn
+de OpenStreetMap-tegels en, na toestemming, Google Analytics (beide staan
+in de allowlist). De kaart gebruikt inline-SVG-markers, dus geen externe
+afbeeldingen. De productieserver is gedraaid en met curl is bevestigd dat
+alle headers correct worden meegestuurd op de homepage en op een
+toolpagina. De allowlist is compleet; een consolecheck is niet meer nodig.
+Blijkt er later toch iets legitiems geblokkeerd, dan is de bron in een
+regel toe te voegen.
 
 ## 3. Wat al goed was
 
@@ -95,8 +100,8 @@ iets legitiems geblokkeerd wordt, staat de bron toevoegen in een regel.
 
 ## 5. Actiepunten voor Martijn
 
-1. Vul je bol SiteId in (NEXT_PUBLIC_BOL_SITE_ID in Vercel) om affiliate
-   live te laten tellen; zie AFFILIATE.md.
-2. Check na de deploy de browserconsole op CSP-waarschuwingen (kaart, GA).
+1. bol SiteId (1532808) staat live in de code; niets meer te doen. Zie
+   AFFILIATE.md.
+2. CSP is geverifieerd (zie paragraaf 2); geen actie meer nodig.
 3. Beslis over de statistiek: GA achter de cookiebalk houden (nu zo), of
    overstappen op cookieloze statistiek zonder banner.

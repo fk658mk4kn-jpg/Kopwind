@@ -12,8 +12,8 @@ partner.bol.com-deeplink met de tool-id als subid. Acht tools hebben nu
 een adviesblok: zonkracht, was-buiten-drogen, planten-beschermen,
 sneeuwpret, strooien, terras-reinigen, buiten-schilderen en
 hout-behandelen. Zolang BOL_SITE_ID leeg is blijven het gewone werkende
-bol-links (geen commissie, wel functioneel); ze gaan tracken zodra jij je
-SiteId invult. Uitbreiden naar meer tools is een bol-zoek-URL in het
+bol-links (geen commissie, wel functioneel); ze tracken nu met jouw echte SiteId (1532808), die als fallback in de
+code staat. Uitbreiden naar meer tools is een bol-zoek-URL in het
 affiliate-veld zetten. TradeTracker is het upgrade-pad voor de
 niche-marge (paragraaf 3 en 7).
 
