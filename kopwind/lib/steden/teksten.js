@@ -111,12 +111,12 @@ const CONTEXT = {
     en: (stad, buren) => `The check below is already set to ${stad.naam} (${stad.provincie}): add your work address and you'll see the headwind per stretch of route, with a score per leg. Similar checks exist for ${buren}.`,
   }),
   was: kies({
-    nl: (stad, buren) => `De check hieronder staat al op ${stad.naam} (${stad.provincie}): je ziet direct het droogvenster van vandaag en de komende dagen. Ook beschikbaar voor ${buren}.`,
-    en: (stad, buren) => `The check below is already set to ${stad.naam} (${stad.provincie}): you'll instantly see today's drying window and the days ahead. Also available for ${buren}.`,
+    nl: (stad, buren) => `De check hieronder staat al op ${stad.naam} (${stad.provincie}): het droogvenster van vandaag en de komende dagen staat er meteen voor je klaar. Ook beschikbaar voor ${buren}.`,
+    en: (stad, buren) => `The check below is already set to ${stad.naam} (${stad.provincie}): today's drying window and the days ahead are ready for you straight away. Also available for ${buren}.`,
   }),
   algemeen: kies({
-    nl: (stad, buren) => `De check hieronder staat al op ${stad.naam} (${stad.provincie}): je ziet direct het antwoord voor vandaag en de dagen erna, met het beste moment en de reden. Ook beschikbaar voor ${buren}.`,
-    en: (stad, buren) => `The check below is already set to ${stad.naam} (${stad.provincie}): you'll instantly see the answer for today and the days ahead, with the best moment and the reason. Also available for ${buren}.`,
+    nl: (stad, buren) => `De check hieronder staat al op ${stad.naam} (${stad.provincie}): het antwoord voor vandaag en de dagen erna staat er meteen, met het beste moment en de reden. Ook beschikbaar voor ${buren}.`,
+    en: (stad, buren) => `The check below is already set to ${stad.naam} (${stad.provincie}): the answer for today and the days ahead is there straight away, with the best moment and the reason. Also available for ${buren}.`,
   }),
 };
 

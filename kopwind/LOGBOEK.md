@@ -2872,3 +2872,55 @@ nul over de hele repo. Beide builds slagen; NL-HTML geverifieerd op de vijf
 nieuwe H1's en op gewone bol-links (nul partner.bol.com), EN heel met de
 vijf nieuwe tools op 404 (open punt, zoals eerder). Engels verder volledig
 overgeslagen op verzoek.
+
+
+## Run 14 (2026-07-26, v3.34.0 "Libeccio"): de originaliteitsrun
+
+**Aanleiding**: Google Search Console-melding (claim 25 juli, WNC-594600):
+NoorYES.today claimt auteursrechtinbreuk op teksten, koppen en structuur;
+Google haalde /alle-checks, /barbecueweer, /korte-broek-weer, /terrasweer
+en /was-buiten-drogen wereldwijd uit de index. Besluit eigenaar na advies:
+geen verweer (vereist naam en adres onder ede richting de klager, dat
+breekt de anonimiteit en raakt de werkgeversituatie); in plaats daarvan de
+complete site herschrijven zodat er niets meer te melden valt, en een
+vaste toets die herhaling voorkomt. De eigenaar bevestigde dat de site
+destijds is gestart met NoorYES als conceptinspiratie; de oudste content
+(precies de vijf gemelde pagina's) droeg daar nog sporen van.
+
+**Fingerprint**: homepage plus was-, korte-broek- en terraspagina van
+NoorYES gefetcht. Kenmerken: JA of NEE als merkframe, "een duidelijk
+antwoord", "Geen grafieken, geen gedoe", "Kort antwoord:"-openers,
+"Twijfel je of"-intros, "draait niet alleen om temperatuur", "op jouw
+locatie", weerapp-vergelijkingen, tabellen met Spelbrekers, de koppen
+"Geen weerbericht, maar een antwoord" en "Ook handig vandaag" (beide
+stonden LETTERLIJK ook bij ons), en hun kernterm "weerbeslissingen".
+Opvallend andersom: zij gebruiken inmiddels "droogvenster" en "beste
+moment van de dag", termen die bij ons horen. Het snijdt dus van twee
+kanten; onze kant is nu schoon.
+
+**Scan**: 90 treffers in 47 bestanden (patroonlijst in de test). Na de
+herschrijvingen resteren nul treffers buiten comments; comments zijn niet
+publiek en de merknaam is ook daar verboden.
+
+**Herschreven**: korte-broek-weer volledig nieuw (was de sterkste
+overlap, tot de titel aan toe); alle-checks, over-pagina, footer-regel,
+gerelateerd-kop ("Past hierbij"), zoeklabel, lege-staat, instellingen-
+uitleg, stadteksten, homepage-hero, categorie-intro regen, paraplu, jas,
+wat-trek-ik-aan, fietsen, slippers, hardloop-opener, regen-timing,
+hond-uitlaten, beton-storten, was (intro), terras (H1 en intro),
+barbecue (spelbreker-zin), llms.txt, versie-omschrijvingen, en de
+EN-spiegels. SEO-invariant: URL's, H1-vragen en title-keywords bleven
+staan; alleen formuleringen zijn nieuw.
+
+**Preventie**: tests/originaliteit.test.js (34 verboden frases, comments
+gestript, merknaam overal verboden) plus PLAYBOOK-sectie "Originaliteit
+en concurrentie-afstand". Schrijfregel: begin bij de eigen motor, nooit
+bij een concurrentpagina.
+
+**Verificatie**: 213 tests groen, check:imports OK, em-dash nul, naam
+eigenaar nul, beide builds groen.
+
+**Open**: de vijf URL's blijven uit Google zolang er geen verweer ligt;
+herindexering gebeurt niet vanzelf door de herschrijving. Opties staan in
+de backlog. GSC monitoren op nieuwe meldingen; de Lumen-melding nalezen
+zodra die online staat.

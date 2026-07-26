@@ -5,7 +5,7 @@
 
 export const hub = {
   intro:
-    "Pick your place and instantly see whether biking, laundry, the patio, the barbecue or sunscreen is smart today. Best moment included.",
+    "Pick your place and the checks tell you what today has in store: biking, laundry, the patio, the barbecue or sunscreen. Best moment included.",
   faq: [
     {
       v: "What is Good day for it?",

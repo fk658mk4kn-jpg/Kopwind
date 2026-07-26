@@ -26,7 +26,7 @@ export const blokken = [
   {
     kop: "Het beste moment om naar werk te fietsen",
     tekst:
-      "Het weer om 8 uur is niet het weer om 17 uur. De check gebruikt de uurvoorspelling: je heenrit en je terugrit krijgen elk hun eigen wind, regen en temperatuur. Schuif met je vertrektijd en je ziet direct of een uurtje eerder of later vertrekken een droge of snellere rit oplevert.",
+      "Het weer om 8 uur is niet het weer om 17 uur. De check gebruikt de uurvoorspelling: je heenrit en je terugrit krijgen elk hun eigen wind, regen en temperatuur. Schuif met je vertrektijd en de check laat zien of een uurtje eerder of later vertrekken een droge of snellere rit oplevert.",
   },
   {
     kop: "Meldingen op je telefoon: elke ochtend je fietsadvies",
@@ -38,7 +38,7 @@ export const blokken = [
 export const faq = [
   {
     v: "Kan ik vandaag fietsen naar werk?",
-    a: "Vul je route in (thuis naar werk, eventueel met een tussenstop) en kies vertrekken nu of een vertrektijd. Je ziet direct het fietsweer voor jouw rit: wind per deel van de route, regen, temperatuur en een duidelijk ja of nee met advies.",
+    a: "Vul je route in (thuis naar werk, eventueel met een tussenstop) en kies vertrekken nu of een vertrektijd. Je krijgt het fietsweer voor jouw rit: wind per deel van de route, regen, temperatuur en een concreet advies per rit.",
   },
   {
     v: "Hoeveel wind is te veel om te fietsen?",

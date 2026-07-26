@@ -6,6 +6,12 @@
 
 export const VERSIES = [
   {
+    versie: "3.34.0",
+    codenaam: "Libeccio",
+    datum: "2026-07-26",
+    zin: "Alle teksten van de site nagelopen en aangescherpt in eigen stem, van de catalogus tot de kleinste knopteksten. De catalogus heet nu Alle keuzehulpen op een rij, het blok onder elke check heet Past hierbij, en de korte-broekpagina is volledig opnieuw geschreven rond het instelbare omslagpunt en de urenstrip. Een nieuwe automatische toets bewaakt voortaan dat elke tekst in de eigen stem van de site blijft geschreven.",
+  },
+  {
     versie: "3.33.0",
     codenaam: "Autan",
     datum: "2026-07-20",
@@ -57,13 +63,13 @@ export const VERSIES = [
     versie: "3.25.0",
     codenaam: "Pampero",
     datum: "2026-07-17",
-    zin: "Nieuw: de wielrencheck zoekt het beste blok voor een rit op de racefiets, met droog wegdek en hanteerbare wind voorop. De paraplu- en regentiming-check tonen nu ook een statusstip op de homepage, en de kledingcheck kreeg er een slippersvraag bij met direct ja of nee.",
+    zin: "Nieuw: de wielrencheck zoekt het beste blok voor een rit op de racefiets, met droog wegdek en hanteerbare wind voorop. De paraplu- en regentiming-check tonen nu ook een statusstip op de homepage, en de kledingcheck kreeg er een slippersvraag bij met direct wel of niet.",
   },
   {
     versie: "3.24.0",
     codenaam: "Khamsin",
     datum: "2026-07-17",
-    zin: "De kledingvragen geven nu zelf antwoord: op Moet ik een jas aan zie je meteen ja of nee, met een eigen statusstip in het overzicht. Links naar veelgestelde vragen klappen het antwoord voortaan automatisch open, de footer is opgeruimd en op je telefoon kun je de site nu direct op je beginscherm zetten.",
+    zin: "De kledingvragen geven nu zelf antwoord: op Moet ik een jas aan krijg je meteen het antwoord, met een eigen statusstip in het overzicht. Links naar veelgestelde vragen klappen het antwoord voortaan automatisch open, de footer is opgeruimd en op je telefoon kun je de site nu direct op je beginscherm zetten.",
   },
   {
     versie: "3.23.0",
@@ -225,7 +231,7 @@ export const VERSIES = [
     versie: "3.4.0",
     codenaam: "Ponente",
     datum: "2026-07-13",
-    zin: "Toelichting bij elk oordeel (waarom-regel met de doorslaggevende reden), en bij een bekende plek toont elke check meteen de uitslag zonder extra tik. Nieuwe hooikoortscheck op een eigen pollenbron (CAMS) met het rustigste blok van de dag, en drie kledingvraagpagina's (korte broek, jas, T-shirtweer). Nieuwe overzichtspagina met alle weerbeslissingen en zoekfunctie, de feedbackknoppen die niet meer wegflitsen, en op mobiel vierkante tegels plus een sticky antwoordbalk.",
+    zin: "Toelichting bij elk oordeel (waarom-regel met de doorslaggevende reden), en bij een bekende plek toont elke check meteen de uitslag zonder extra tik. Nieuwe hooikoortscheck op een eigen pollenbron (CAMS) met het rustigste blok van de dag, en drie kledingvraagpagina's (korte broek, jas, T-shirtweer). Nieuwe overzichtspagina met alle keuzehulpen en zoekfunctie, de feedbackknoppen die niet meer wegflitsen, en op mobiel vierkante tegels plus een sticky antwoordbalk.",
   },
   {
     versie: "3.3.0",
@@ -249,7 +255,7 @@ export const VERSIES = [
     versie: "3.0.0",
     codenaam: "Levante",
     datum: "2026-07-13",
-    zin: "Antwoorden in woorden: elke check zegt nu eerst Ja of Nee met een schaalwoord van Zeer slecht tot Ideaal. De homepage werd compacter en toont het live antwoord per kaart, je kunt per dag met een duim laten weten of het advies klopte, de kledingcheck kreeg een outfit-figuurtje en de teksten op de hele site werden directer.",
+    zin: "Antwoorden in woorden: elke check zegt nu eerst het antwoord met een schaalwoord van Zeer slecht tot Ideaal. De homepage werd compacter en toont het live antwoord per kaart, je kunt per dag met een duim laten weten of het advies klopte, de kledingcheck kreeg een outfit-figuurtje en de teksten op de hele site werden directer.",
   },
   {
     versie: "2.2.0",

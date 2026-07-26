@@ -56,7 +56,7 @@ export const S = {
     favorietPrompt: "Naam voor deze plek:",
     geenData: "Geen bruikbare weerdata ontvangen. Probeer het zo nog eens.",
     databron: "Weerdata: Open-Meteo uurvoorspelling,",
-    leeg: "Kies je plek en tik op de check: je ziet direct het antwoord voor vandaag en de dagen erna.",
+    leeg: "Kies je plek en tik op de check voor het antwoord van vandaag en de dagen erna.",
     lieverNiet: "liever niet",
     wisselvallig: "wisselvallig",
     waarom: "Waarom:",
@@ -100,7 +100,7 @@ export const S = {
   },
   beslissingen: {
     zoekPlaceholder: "Zoek: jas, regen, bbq...",
-    zoekLabel: "Zoek een weerbeslissing",
+    zoekLabel: "Zoek een keuzehulp",
     geenTreffers: "Niets gevonden. Probeer een ander woord, of kijk in de lijst hierboven.",
     inOntwikkeling: "In ontwikkeling",
   },
@@ -150,7 +150,7 @@ export const S = {
   },
   instellingen: {
     persoonlijkKop: "Stel de keuzehulpen op jou af",
-    persoonlijkUitleg: "Kies eerst een keuzehulp en pas daarna aan wanneer die op ja of nee springt. Zo krijg je advies dat bij jouw voorkeuren past.",
+    persoonlijkUitleg: "Kies eerst een keuzehulp en verschuif daarna het omslagpunt van het advies. Zo past het bij jouw voorkeuren.",
     kiesCheck: "Welke keuzehulp wil je instellen?",
     terugStandaard: "Terug naar standaard",
     plekkenKop: "Mijn plekken",
@@ -172,7 +172,7 @@ export const S = {
     syncBezig: "Bezig...",
   },
   gerelateerd: {
-    kop: "Ook handig vandaag",
+    kop: "Past hierbij",
   },
   bijgewerkt: (datum) => `Laatst bijgewerkt: ${datum}. Weerdata wordt bij elke check live opgehaald.`,
   nav: {
@@ -191,7 +191,7 @@ export const S = {
     privacy: "Privacy",
     voorwaarden: "Voorwaarden",
     regel:
-      "Geen weerbericht, maar een antwoord. Voorspellingen blijven voorspellingen: kijk voor je vertrekt ook even naar buiten.",
+      "Een voorspelling blijft een voorspelling: kijk voor je vertrekt ook even naar buiten.",
   },
   kruimel: {
     home: "Home",

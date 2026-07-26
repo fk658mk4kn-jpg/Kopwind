@@ -30,7 +30,7 @@ export const blokken = [
 export const faq = [
   {
     v: "Wanneer is het barbecueweer?",
-    a: "Als het avondblok droog is en het gevoel boven jouw grens komt (standaard 13 graden: met een vest prima). Ideaal is een droge, zwoele avond met een zuchtje wind. Harde wind is de spelbreker: vonken, omvallende borden en een grill die niet op temperatuur komt.",
+    a: "Als het avondblok droog is en het gevoel boven jouw grens komt (standaard 13 graden: met een vest prima). Ideaal is een droge, zwoele avond met een zuchtje wind. Harde wind verpest het feest: vonken, omvallende borden en een grill die niet op temperatuur komt.",
   },
   {
     v: "Waar zet ik de barbecue neer met deze wind?",

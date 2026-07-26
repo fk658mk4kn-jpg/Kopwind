@@ -6,7 +6,7 @@ import { kies } from "@/lib/i18n/locale";
 import Icoon from "./Icoon";
 
 /**
- * "Ook handig vandaag": het interne linkweefsel per check (v3.19.0
+ * "Past hierbij": het interne linkweefsel per check (v3.19.0
  * "Harmattan", SEO-run met akkoord eigenaar). Elke check linkt naar 2
  * tot 4 verwante checks, gekozen op echte intentie-overlap en waar
  * zinnig wederkerig; ankertekst is altijd de canonieke vraag van de

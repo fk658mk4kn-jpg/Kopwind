@@ -11,6 +11,27 @@ standaarden (huisstijl, toolopbouw, storefront-format) in PLAYBOOK.md.
 
 ---
 
+## Auteursrechtklacht (v3.34.0, urgent monitoren)
+
+Context: DMCA-melding NoorYES.today (25 juli, WNC-594600), vijf URL's uit
+de Google-index: /alle-checks, /barbecueweer, /korte-broek-weer,
+/terrasweer, /was-buiten-drogen. Geen verweer ingediend (anonimiteit).
+Alle teksten herschreven in v3.34.0; originaliteit-test bewaakt herhaling.
+
+- **GSC wekelijks checken** op nieuwe meldingen of statuswijzigingen.
+- **Lumen-melding nalezen** zodra gepost (lumendatabase.org, id 15710816):
+  staat er meer in dan de vijf URL's, dan de scan-lijst uitbreiden.
+- **Herindexering**: de vijf URL's komen NIET vanzelf terug door de
+  herschrijving; ze blijven eruit zolang er geen verweer ligt. Opties,
+  alleen afwegen als het verkeersverlies gaat knellen: (a) accepteren en
+  de linkwaarde intern doorgeven (de pagina's bestaan nog), (b) verweer
+  via een IE-jurist die als gemachtigde optreedt (kost geld, houdt de
+  eigen naam mogelijk uit beeld; eerst juridisch checken), (c) nieuwe
+  URL-varianten voor die vijf vragen (verliest opgebouwde linkwaarde en
+  schuurt met de anti-cannibalisatieregel; laatste redmiddel).
+- **Bij een directe juridische brief** (niet via Google): een uur
+  IE-jurist inschakelen voordat er ook maar iets wordt beantwoord.
+
 ## Nieuwe tools (hoofdlijn: hier komt het verkeer vandaan)
 
 De vragenlijst onderaan is de voorraad. Per vraag blijft de afweging:

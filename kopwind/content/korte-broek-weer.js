@@ -1,51 +1,51 @@
 /** content/korte-broek-weer.js: vraagpagina op de kledingcheck. */
 
 export const seo = {
-  title: "Kan ik een korte broek aan vandaag? Check het per dagdeel",
+  title: "Kan ik een korte broek aan vandaag? Reken met het gevoel",
   description:
-    "Kan ik vandaag een korte broek aan? Check het op gevoelstemperatuur, wind en zon per dagdeel, afgestemd op jouw eigen grens. Gratis.",
+    "Korte broek of lange broek? De check rekent per uur met de gevoelstemperatuur voor jouw plek en met een grens die je zelf verschuift. Gratis, zonder account.",
   h1: "Kan ik een korte broek aan vandaag?",
   intro:
-    "Voor de meeste mensen begint korte-broekenweer rond de 18 graden gevoel, maar zon, wind en wat je gaat doen verschuiven die grens flink. De check hieronder rekent per uur met de gevoelstemperatuur voor jouw plek, zodat je het antwoord ziet voor ochtend, middag en avond.",
+    "Blote benen merken alles: zon maakt 17 graden aangenaam, een straffe wind maakt 19 graden kil. Daarom rekent deze check niet met de kale thermometer maar met de gevoelstemperatuur per uur, afgezet tegen een omslagpunt dat je zelf kunt verschuiven. Zo weet je per moment van de dag waar je aan toe bent.",
 };
 
 export const blokken = [
   {
-    kop: "Vanaf hoeveel graden kan een korte broek?",
+    kop: "Blote benen voelen de wind het eerst",
     tekst:
-      "Vuistregel: vanaf 18 graden gevoelstemperatuur is een korte broek voor de meesten prima, vanaf 20 een makkelijke keuze. Maar 17 graden in de volle zon en uit de wind voelt beter dan 19 met een straffe noordwester. Daarom rekent de check met het gevoel per uur, niet met een kale thermometerwaarde. Jouw grens anders? Stel hem in bij de instellingen.",
+      "Stof houdt een dun laagje warme lucht vast rond je huid; blote benen missen die buffer. Een matige bries drukt het gevoel daardoor al gauw een paar graden, en in de schaduw komt daar nog wat bij. De check verwerkt wind, zon en vocht in een gevoelstemperatuur per uur en zet die af tegen jouw grens. Het oordeel loopt van Zeer slecht tot Ideaal, net als bij de andere kledingchecks.",
   },
   {
-    kop: "Fietsen en sporten verschuiven de grens",
+    kop: "Jouw omslagpunt is instelbaar",
     tekst:
-      "Op de fiets koelt rijwind je benen extra af: reken op een graad of twee strenger. Bij hardlopen of sporten werkt het andersom: je lichaam warmt op en 15 tot 17 graden voelt al snel prima met blote benen. Kijk dus vooral naar het dagdeel waarin je actief bent.",
+      "De een loopt in april al met blote benen, de ander wacht op de zomer. Standaard hanteert de check een omslagpunt rond de 18 graden gevoel, maar in de instellingen schuif je dat naar jouw smaak. Ook wat je gaat doen telt: wie flink beweegt maakt eigen warmte en kan de grens een paar graden lager leggen, wie stil op het [terras](tool:terras) zit juist niet.",
   },
   {
-    kop: "De ochtend liegt",
+    kop: "Kijk naar het uur waarin jij buiten bent",
     tekst:
-      "De klassieke fout: om 8 uur naar buiten kijken en de korte broek afschrijven, terwijl het om 14 uur zomers is. De check toont het verloop over de dag, zodat je ziet of de frisse start doorzet of dat de middag ruimschoots korte-broekenweer wordt. Twijfel? Laagjes boven, korte broek onder.",
+      "Een dag heeft zelden maar een antwoord: de vroege rit naar werk kan fris zijn terwijl de namiddag ruim boven je grens uitkomt. De urenstrip toont het gevoel per uur, zodat je de korte broek plant op het moment dat jij echt buiten bent. Voor de terugweg geldt hetzelfde: na zonsondergang zakt het gevoel snel, dus op randdagen is een lange broek als wissel geen overbodige luxe.",
   },
 ];
 
 export const faq = [
   {
-    v: "Kan een korte broek bij 15 graden?",
-    a: "Stilzittend wordt dat voor de meesten fris, zeker met wind of bewolking. Actief ([wandelen](tool:wandelen), sporten, fietsen met inspanning) kan 15 graden prima aanvoelen. De check weegt wind en zon mee in het gevoel, dus kijk naar het getal dat hij toont, niet naar de thermometer.",
+    v: "Vanaf welke gevoelstemperatuur kan een korte broek?",
+    a: "De check hanteert standaard een omslagpunt rond de 18 graden gevoelstemperatuur; daarboven kleurt het oordeel groen. Dat is een gemiddelde, geen wet: via de instellingen leg je de grens waar die voor jou hoort. Belangrijker dan het getal is dat het om het gevoel gaat, want dezelfde thermometerstand kan met zon en zonder wind prima zijn en met bewolking en wind te fris.",
   },
   {
-    v: "Telt wind echt zo zwaar op blote benen?",
-    a: "Ja. Wind blaast de dunne warme luchtlaag rond je huid weg, en blote benen hebben geen stof die dat tegenhoudt. Windkracht 4 kan het gevoel zomaar drie tot vier graden drukken. Daarom kan dezelfde 19 graden de ene dag heerlijk zijn en de andere dag te fris.",
+    v: "Korte broek op de fiets: waar let ik op?",
+    a: "Fietsen voegt eigen wind toe: bij een stevig tempo komt er zomaar 15 tot 20 km/u schijnbare wind bij, en die trekt warmte weg van onbedekte huid. Reken op de fiets dus een paar graden strenger dan wandelend, zeker op de vroege rit. Voor een sportieve rit op de racefiets heeft de [wielrencheck](tool:wielrennen) een eigen, strengere weging.",
   },
   {
-    v: "En als er buien voorspeld zijn?",
-    a: "Natte blote benen drogen sneller dan een natte lange broek, dus regen hoeft geen dealbreaker te zijn. De check noemt de buientiming, zodat je weet of je er droog tussendoor kunt. Combineer eventueel met een regenjack.",
+    v: "Kan ik een korte broek aan naar werk of school?",
+    a: "Kijk dan niet naar het dagmaximum maar naar de uren waarin je onderweg en buiten bent. De vroege ochtend zit vaak enkele graden onder de middag, en wie de hele dag binnen zit heeft alleen met die randmomenten te maken. De urenstrip laat precies zien of die momenten boven jouw grens uitkomen.",
   },
   {
-    v: "Geldt dit advies ook voor kinderen?",
-    a: "Kinderen zijn vaak actiever en merken kou minder snel, maar koelen bij stilzitten ook sneller af. Houd voor het schoolplein de gewone grens aan en geef bij twijfel een lange broek of trainingsbroek mee als wissel.",
+    v: "Wat als er een bui voorspeld is?",
+    a: "Regen op blote benen is vooral even koud en daarna snel weer droog, dus een bui hoeft de korte broek niet tegen te houden. De check weegt neerslag wel mee in het oordeel, en met [wanneer gaat het regenen](tool:regen-timing) leg je de buientiming ernaast om er droog tussendoor te plannen.",
   },
   {
-    v: "Korte broek naar werk of school: wanneer kan dat?",
-    a: "Korte broek naar werk of school kan comfortabel vanaf een graad of 18 gevoelstemperatuur in de ochtend, want je zit er de hele dag mee. De valkuil is de vroege fietsrit: om 8:00 is het vaak vijf graden koeler dan het middagmaximum belooft. Check dus het ochtendgevoel, niet de dagpiek.",
+    v: "Is een korte broek in de avond nog comfortabel?",
+    a: "Na zonsondergang zakt de gevoelstemperatuur snel, vaak drie tot vijf graden binnen anderhalf uur. Blijf je buiten zitten of eten, kijk dan in de urenstrip hoe lang de avond boven jouw grens blijft, en neem op randdagen iets langs mee voor erover.",
   },
 ];

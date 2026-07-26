@@ -6,7 +6,7 @@ export const seo = {
     "Is het hardloopweer vandaag? Zie het beste loopblok op basis van gevoelstemperatuur, wind en regen, vijf dagen vooruit. Gratis en zonder gedoe.",
   h1: "Is het hardloopweer vandaag?",
   intro:
-    "Twijfel je tussen buiten lopen of de sportschool? De check zoekt per uur het beste loopblok van vandaag, op basis van gevoelstemperatuur, wind en regen. Kies je stad, meer is niet nodig.",
+    "Buiten lopen of toch de loopband? De check zoekt per uur het beste loopblok van vandaag, op basis van gevoelstemperatuur, wind en regen. Kies je stad, meer is niet nodig.",
 };
 
 export const blokken = [

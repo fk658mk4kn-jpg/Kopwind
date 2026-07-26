@@ -96,7 +96,7 @@ export const S = {
   },
   beslissingen: {
     zoekPlaceholder: "Search: coat, rain, bbq...",
-    zoekLabel: "Search a weather decision",
+    zoekLabel: "Search a guide",
     geenTreffers: "Nothing found. Try another word, or browse the list above.",
     inOntwikkeling: "In development",
   },
@@ -146,7 +146,7 @@ export const S = {
   },
   instellingen: {
     persoonlijkKop: "Tune the guides to you",
-    persoonlijkUitleg: "First pick a guide, then set when it flips to yes or no. That way the advice matches your preferences.",
+    persoonlijkUitleg: "First pick a guide, then shift where its advice tips over. That way it matches your preferences.",
     kiesCheck: "Which guide do you want to set up?",
     terugStandaard: "Back to defaults",
     plekkenKop: "My places",
@@ -168,7 +168,7 @@ export const S = {
     syncBezig: "Working...",
   },
   gerelateerd: {
-    kop: "Also handy today",
+    kop: "Pairs well with this",
   },
   bijgewerkt: (datum) => `Last updated: ${datum}. Weather data is fetched live with every check.`,
   nav: {
@@ -187,7 +187,7 @@ export const S = {
     privacy: "Privacy",
     voorwaarden: "Terms",
     regel:
-      "Not a weather report, an answer. Forecasts stay forecasts: have a look outside before you head out.",
+      "Forecasts stay forecasts: have a look outside before you head out.",
   },
   kruimel: {
     home: "Home",

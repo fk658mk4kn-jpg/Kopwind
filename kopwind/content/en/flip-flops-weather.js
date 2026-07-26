@@ -5,12 +5,12 @@
  */
 
 export const seo = {
-  title: "Is it flip-flop weather today? Instant yes or no",
+  title: "Is it flip-flop weather today? Checked in one tap",
   description:
     "Is it flip-flop weather today? An instant answer on feels-like temperature and rain: yes, no or a borderline call with the reason. Free, no account.",
   h1: "Is it flip-flop weather today?",
   intro:
-    "Flip-flops ask a little more of the weather than shorts do: warm feet want proper summer degrees, and wet soles are slippery. This check gives an instant yes or no, with the full clothing advice below.",
+    "Flip-flops ask a little more of the weather than shorts do: warm feet want proper summer degrees, and wet soles are slippery. This check gives an instant a straight answer, with the full clothing advice below.",
 };
 
 export const blokken = [

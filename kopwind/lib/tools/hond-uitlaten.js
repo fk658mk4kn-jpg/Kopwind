@@ -51,7 +51,7 @@ const T = kies({
     instDagEind: "Laatste rondje",
     instUur: "uur",
     instUitleg:
-      "De hond moet er toch uit, dus de check zoekt het comfortabelste en veiligste blok in plaats van ja of nee te zeggen. Hitte weegt het zwaarst: asfalt in de zon wordt veel heter dan de lucht (7-secondentest: kun je je handrug er niet 7 tellen op houden, dan is het te heet voor voetzolen). Kortsnuitige rassen krijgen strengere grenzen. Regen maakt het rondje alleen natter, niet onmogelijk.",
+      "De hond moet er toch uit, dus de check zoekt het comfortabelste en veiligste blok in plaats van een hard wel of niet te geven. Hitte weegt het zwaarst: asfalt in de zon wordt veel heter dan de lucht (7-secondentest: kun je je handrug er niet 7 tellen op houden, dan is het te heet voor voetzolen). Kortsnuitige rassen krijgen strengere grenzen. Regen maakt het rondje alleen natter, niet onmogelijk.",
   },
   en: {
     slug: "walking-the-dog",
@@ -87,7 +87,7 @@ const T = kies({
     instDagEind: "Latest walk",
     instUur: "h",
     instUitleg:
-      "The dog has to go out anyway, so the check finds the most comfortable and safest window rather than saying yes or no. Heat weighs heaviest: tarmac in the sun gets far hotter than the air (7-second test: if you can't hold the back of your hand on it for 7 counts, it's too hot for paws). Flat-nosed breeds get stricter limits. Rain only makes the loop wetter, not impossible.",
+      "The dog has to go out anyway, so the check finds the most comfortable and safest window rather than giving a flat go or no-go. Heat weighs heaviest: tarmac in the sun gets far hotter than the air (7-second test: if you can't hold the back of your hand on it for 7 counts, it's too hot for paws). Flat-nosed breeds get stricter limits. Rain only makes the loop wetter, not impossible.",
   },
 });
 

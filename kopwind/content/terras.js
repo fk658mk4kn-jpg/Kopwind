@@ -4,9 +4,9 @@ export const seo = {
   title: "Terrasweer vandaag: kan ik op het terras en wordt het lekker?",
   description:
     "Kan ik vandaag op het terras? Zie de beste uren, of de zon er dan bij is en wanneer de wind gaat liggen. Vijf dagen vooruit. Gratis.",
-  h1: "Kan ik vandaag op het terras zitten?",
+  h1: "Wordt het vandaag terrasweer?",
   intro:
-    "Wordt het wat op het terras? Je ziet de beste uren van vandaag, of de zon er dan bij is en wanneer de wind gaat liggen. Kies je stad, meer is niet nodig.",
+    "Wordt het wat op het terras? De check wijst de beste uren van vandaag aan, met de zon en het moment dat de wind gaat liggen erbij. Kies je stad, meer is niet nodig.",
 };
 
 export const blokken = [

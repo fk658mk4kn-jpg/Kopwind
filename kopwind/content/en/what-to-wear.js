@@ -13,7 +13,7 @@ export const blokken = [
   {
     kop: "Feels-like, not thermometer",
     tekst:
-      "Your body loses heat faster in wind and humid air. The check therefore works with the feels-like temperature per hour, the same reason you zip up on a windy dike while the weather app says it's mild.",
+      "Your body loses heat faster in wind and humid air. The check therefore works with the feels-like temperature per hour, the same reason you zip up on a windy dike while the thermometer says it's mild.",
   },
   {
     kop: "The whole day in one line",

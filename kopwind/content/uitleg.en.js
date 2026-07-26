@@ -63,7 +63,7 @@ export const UITLEG = [
     vraag: "Why does wind decide your bike ride?",
     titel: "Wind and cycling: why the direction matters more than the speed",
     intro:
-      "Rain is annoying, but wind is what makes or breaks a Dutch bike commute. And not the wind speed on the weather app: the angle between the wind and your route.",
+      "Rain is annoying, but wind is what makes or breaks a Dutch bike commute. And not the wind speed in the forecast: the angle between the wind and your route.",
     blokken: [
       {
         kop: "Headwind is a hill that never ends",

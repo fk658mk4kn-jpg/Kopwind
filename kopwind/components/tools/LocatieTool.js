@@ -203,7 +203,7 @@ export default function LocatieTool({ toolId, beginLocatie = null, variantId = n
 
       {!dagen && !fout && (
         <p className="leeg">
-          Kies je plek en tik op {tool.cta}: je ziet direct het antwoord voor vandaag en de dagen erna.
+          Kies je plek en tik op {tool.cta} voor het antwoord van vandaag en de dagen erna.
         </p>
       )}
     </div>

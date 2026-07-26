@@ -6,14 +6,14 @@ export const seo = {
     "Direct antwoord of je vandaag een paraplu nodig hebt, op basis van regen, timing en hoe lang je buiten bent. Wel of niet, geen twijfel.",
   h1: "Moet ik vandaag een paraplu mee?",
   intro:
-    "Deze check vertaalt het weer niet naar een voorspelling, maar naar een beslissing: wel of geen paraplu. Op basis van de regen per kwartier, de timing en hoe lang jij buiten bent. Stel je buitentijd in en je krijgt een helder ja of nee.",
+    "Deze check vertaalt het weer niet naar een voorspelling, maar naar een beslissing: wel of geen paraplu. Op basis van de regen per kwartier, de timing en hoe lang jij buiten bent. Stel je buitentijd in en het advies zegt gewoon: meenemen of thuislaten.",
 };
 
 export const blokken = [
   {
-    kop: "Wel of niet, geen weerbericht",
+    kop: "Meenemen of thuislaten",
     tekst:
-      "De meeste weerapps geven je een percentage en laten de keuze aan jou. Deze check maakt de keuze: als de regen samenvalt met het moment dat jij buiten bent, luidt het advies meenemen. Blijft het droog in jouw tijdvenster, dan kan de paraplu thuis.",
+      "Een buienkans van veertig procent laat de keuze aan jou. Deze check maakt hem: als de regen samenvalt met het moment dat jij buiten bent, luidt het advies meenemen. Blijft het droog in jouw tijdvenster, dan kan de paraplu thuis.",
   },
   {
     kop: "Jouw buitentijd bepaalt het advies",

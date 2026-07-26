@@ -9,7 +9,7 @@ export const seo = {
     "Kun je vandaag veilig beton storten? De check beoordeelt de storttemperatuur, de vorst van de nacht erna, de regen op de stortdag en de uitdroging. Gratis en zonder account.",
   h1: "Kan ik vandaag beton storten?",
   intro:
-    "Beton storten is een weerbeslissing met een harde randvoorwaarde: verse beton mag de eerste nacht niet bevriezen, want dan zet het water in het mengsel uit en verzwakt de boel. Daarom telt de vorst van de komende nacht net zo zwaar als de temperatuur overdag. Deze check kijkt vijf dagen vooruit en zegt per dag of het stortweer is, of dat je beter kunt wachten of maatregelen nemen.",
+    "Beton storten kent een harde weer-randvoorwaarde: verse beton mag de eerste nacht niet bevriezen, want dan zet het water in het mengsel uit en verzwakt de boel. Daarom telt de vorst van de komende nacht net zo zwaar als de temperatuur overdag. Deze check kijkt vijf dagen vooruit en zegt per dag of het stortweer is, of dat je beter kunt wachten of maatregelen nemen.",
 };
 
 export const blokken = [

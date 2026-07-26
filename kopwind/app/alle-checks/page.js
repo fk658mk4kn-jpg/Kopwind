@@ -7,14 +7,14 @@ import { PAD } from "@/lib/i18n/paden";
 
 const T = kies({
   nl: {
-    titel: "Alle weerbeslissingen op een plek",
-    oms: "Van jas tot barbecue en van regen tot sporten: vind direct jouw ja of nee. Live checks plus alles wat eraan komt.",
-    sub: "Vind direct jouw ja of nee. Van jas tot barbecue, van regen tot sporten.",
+    titel: "Alle keuzehulpen op een rij",
+    oms: "De complete catalogus: elke check en elke vraag, gegroepeerd per situatie, met een statusstip die het oordeel van nu toont. Van jas tot barbecue en van regen tot winter.",
+    sub: "Elke check en elke vraag, gegroepeerd per situatie. De stip toont het oordeel van nu.",
   },
   en: {
-    titel: "All weather decisions in one place",
-    oms: "From coat to barbecue and from rain to sport: find your yes or no right away. Live checks plus everything on the way.",
-    sub: "Find your yes or no right away. From coat to barbecue, from rain to sport.",
+    titel: "Every guide at a glance",
+    oms: "The full catalogue: every check and every question, grouped by situation, with a status dot showing the current verdict. From coat to barbecue and from rain to winter.",
+    sub: "Every check and every question, grouped by situation. The dot shows the current verdict.",
   },
 });
 

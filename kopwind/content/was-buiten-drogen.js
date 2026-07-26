@@ -6,7 +6,7 @@ export const seo = {
     "Kan de was vandaag buiten? Zie per uur wanneer je was goed droogt, hoe lang het duurt en het beste ophangmoment. Vijf dagen vooruit. Gratis.",
   h1: "Kan de was vandaag buiten?",
   intro:
-    "Hang je 'm nu op, of wordt het morgenvroeg? De check kijkt per uur naar vocht, wind, temperatuur en buien en zegt het gewoon: ja of nee, het beste blok en hoe lang drogen duurt.",
+    "Hang je 'm nu op, of wordt het morgenvroeg? De check kijkt per uur naar vocht, wind, temperatuur en buien en zegt het gewoon: of het kan, het beste ophangmoment en hoe lang drogen duurt.",
 };
 
 export const blokken = [
@@ -50,6 +50,6 @@ export const faq = [
   },
   {
     v: "Was drogen bij bewolkt weer: hoe lang duurt het?",
-    a: "Was drogen bij bewolkt weer lukt prima; wind en droge lucht doen het meeste werk, niet de zon. Reken bij 15 graden en een stevige bries op drie tot vijf uur, windstil en klam eerder op een dagdeel. De check schat de droogtijd per moment, dus je ziet of ochtend- of middaghang slimmer is.",
+    a: "Was drogen bij bewolkt weer lukt prima; de zon is mooi meegenomen, maar wind en droge lucht doen het echte werk. Reken bij 15 graden en een stevige bries op drie tot vijf uur, windstil en klam eerder op een dagdeel. De check schat de droogtijd per moment, dus je ziet of ochtend- of middaghang slimmer is.",
   },
 ];

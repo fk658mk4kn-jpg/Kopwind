@@ -6,10 +6,10 @@ import { PAD } from "@/lib/i18n/paden";
 const T = kies({
   nl: {
     metaTitel: `Over ${HUB_NAAM}`,
-    metaOms: "Waarom Kan het vandaag? bestaat: dagelijkse beslissingen verdienen een antwoord, geen weerkaart.",
-    heroSub: "Geen weerbericht, maar een antwoord. Met het wanneer en waar erbij.",
+    metaOms: "Waarom Kan het vandaag? bestaat, hoe de checks rekenen en waar de grenzen liggen.",
+    heroSub: "Een oordeel, het beste moment en de reden erbij. Daar heb je wat aan.",
     kop1: "Waarom dit bestaat",
-    p1: (naam) => `Weerapps geven je een kaart vol getallen en laten het denkwerk aan jou. ${naam} draait dat om. Elke check weegt de factoren die er voor die ene beslissing toe doen en geeft ja of nee, het beste moment en een uitleg in gewone taal.`,
+    p1: (naam) => `Een weersverwachting vertelt wat er uit de lucht komt; jij wilt weten of je plan doorgaat. ${naam} pakt het daarom per vraag aan: elke check weegt precies de factoren die voor die ene beslissing tellen en komt terug met een oordeel, het beste moment en een uitleg in gewone taal.`,
     kop2: "Hoe het werkt",
     p2: "Elke check haalt live de uurvoorspelling op voor jouw plek en rekent daar per uur op. Het oordeel (van Zeer slecht tot Ideaal) zegt hoe goed de omstandigheden zijn; een aparte statusregel zegt of je het nu nog redt en wanneer het beste blok valt. Alles werkt zonder account, is gratis en draait op je beginscherm als app, met meldingen op de momenten die jij kiest.",
     kop3: "Eerlijk over de grenzen",
@@ -20,10 +20,10 @@ const T = kies({
   },
   en: {
     metaTitel: `About ${HUB_NAAM}`,
-    metaOms: "Why Good day for it? exists: daily decisions deserve an answer, not a weather map.",
-    heroSub: "Not a weather report, an answer. With the when and where included.",
+    metaOms: "Why Good day for it? exists, how the checks calculate and where the limits are.",
+    heroSub: "A verdict, the best moment and the reason. That is what you can act on.",
     kop1: "Why this exists",
-    p1: (naam) => `Weather apps hand you a map full of numbers and leave the thinking to you. ${naam} flips that. Every check weighs the factors that matter for that one decision and gives you yes or no, the best moment and an explanation in plain words.`,
+    p1: (naam) => `A forecast tells you what falls out of the sky; you want to know whether your plan goes ahead. ${naam} therefore works per question: every check weighs exactly the factors that matter for that one decision and comes back with a verdict, the best moment and an explanation in plain words.`,
     kop2: "How it works",
     p2: "Every check fetches the live hourly forecast for your place and works per hour. The verdict (from Very poor to Ideal) says how good the conditions are; a separate status line says whether you can still make it and when the best window falls. Everything works without an account, is free and runs on your home screen as an app, with notifications at the moments you choose.",
     kop3: "Honest about the limits",

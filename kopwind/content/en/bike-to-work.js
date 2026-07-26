@@ -6,7 +6,7 @@ export const seo = {
     "Can I bike to work today? Check your ride: headwind per part of the route, rain, feels-like temperature and a clear verdict. Free, no account.",
   h1: "Bike to work today?",
   intro:
-    "The Netherlands runs on bikes, and the wind runs the show. This check looks at your actual route: where the headwind hits, whether you'll get rained on, and when to leave. One clear answer instead of a weather map.",
+    "The Netherlands runs on bikes, and the wind runs the show. This check looks at your actual route: where the headwind hits, whether you'll get rained on, and when to leave. A concrete answer instead of a weather map.",
 };
 
 export const blokken = [

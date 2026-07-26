@@ -5,12 +5,12 @@
  */
 
 export const seo = {
-  title: "Is het slippersweer vandaag? Direct ja of nee",
+  title: "Is het slippersweer vandaag? Check het in een tik",
   description:
-    "Is het slippersweer vandaag? Direct antwoord op gevoelstemperatuur en regen: ja, nee of een twijfelgeval met reden. Gratis, zonder account.",
+    "Is het slippersweer vandaag? Direct antwoord op gevoelstemperatuur en regen: het antwoord met de reden erbij, ook bij een twijfelgeval. Gratis, zonder account.",
   h1: "Is het slippersweer vandaag?",
   intro:
-    "Slippers vragen net iets meer van het weer dan een korte broek: warme voeten willen echte zomerse graden, en natte zolen zijn glad. Deze check geeft direct ja of nee, met het volledige kledingadvies eronder.",
+    "Slippers vragen net iets meer van het weer dan een korte broek: warme voeten willen echte zomerse graden, en natte zolen zijn glad. Deze check geeft het antwoord in een tik, met het volledige kledingadvies eronder.",
 };
 
 export const blokken = [

@@ -15,7 +15,7 @@ import { kies } from "./i18n/locale.js";
 
 export const CATEGORIEEN = kies({
   nl: [
-    { id: "regen", slug: "regen-en-droog", titel: "Regen en droog", kort: "Word ik nat, wanneer regent het, paraplu mee", intro: "Twijfel je of het droog blijft? Zie direct of je nat wordt, wanneer de bui valt en of een paraplu slim is: een concreet antwoord, geen algemeen weerbericht.", icoon: "druppel", kleur: "#3C7DC4" },
+    { id: "regen", slug: "regen-en-droog", titel: "Regen en droog", kort: "Word ik nat, wanneer regent het, paraplu mee", intro: "Blijft het droog of ga je nat? Hier zie je wanneer de bui valt, welke uren veilig zijn en of een paraplu zin heeft: concreet, met de timing erbij.", icoon: "druppel", kleur: "#3C7DC4" },
     { id: "kleding", slug: "kleding", titel: "Kleding", kort: "Wat trek je aan vandaag?", intro: "Jas of geen jas, korte broek of lange, T-shirt of trui? De kledingchecks kijken naar het gevoel per dagdeel, niet naar de kale thermometer.", icoon: "shirt", kleur: "#7A5EA8" },
     { id: "buiten", slug: "buiten-vrije-tijd", titel: "Buiten en vrije tijd", kort: "Terras, barbecue en meer", intro: "Kan het buiten vandaag? Van de eerste terrasborrel tot de barbecue op een zwoele avond: hier zie je of het weer meezit voor je plannen, en op welk moment.", icoon: "parasol", kleur: "#C24E3F" },
     { id: "sport", slug: "sport-beweging", titel: "Sport en beweging", kort: "Fietsen, hardlopen, buiten sporten", intro: "Kun je vandaag naar buiten om te bewegen? De checks kijken naar wind, regen en hoe zwaar het buiten aanvoelt tijdens je training.", icoon: "fiets", kleur: "#2F7D62" },

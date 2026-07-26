@@ -33,8 +33,8 @@ export const faq = [
     a: "On a dry, still, sunny day: often not, especially if you move. With wind or cloud 16 soon feels like 12 to 13 and a light jacket is pleasant. Look at the feels-like per part of the day; that number answers it better than the thermometer.",
   },
   {
-    v: "Why does it feel colder than the weather app says?",
-    a: "Weather apps show the measured temperature at 1.5 metres above a lawn, out of the wind. You're in the wind, sometimes in the drizzle. Feels-like corrects for that and sits much closer to what your skin experiences.",
+    v: "Why does it feel colder than the measured temperature?",
+    a: "A weather station measures at 1.5 metres above a lawn, out of the wind. You're in the wind, sometimes in the drizzle. Feels-like corrects for that and sits much closer to what your skin experiences.",
   },
   {
     v: "Coat on or coat in the bag for work?",

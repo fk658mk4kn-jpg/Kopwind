@@ -5,6 +5,12 @@
 
 export const VERSIES = [
   {
+    versie: "3.34.0",
+    codenaam: "Libeccio",
+    datum: "2026-07-26",
+    zin: "Every text on the site reviewed and sharpened in its own voice, from the catalogue down to the smallest button labels. The catalogue is now called Every guide at a glance, the block under every check is called Pairs well with this, and the shorts page has been rewritten from scratch around the adjustable tipping point and the hour strip. A new automated test now guards that every text stays in the site's own voice.",
+  },
+  {
     versie: "3.33.0",
     codenaam: "Autan",
     datum: "2026-07-20",
@@ -56,13 +62,13 @@ export const VERSIES = [
     versie: "3.25.0",
     codenaam: "Pampero",
     datum: "2026-07-17",
-    zin: "New: the road ride check finds the best window for a ride on the road bike, putting dry tarmac and manageable wind first. The umbrella and rain timing checks now show a status dot on the homepage too, and the clothing check gained a flip-flop question with an instant yes or no.",
+    zin: "New: the road ride check finds the best window for a ride on the road bike, putting dry tarmac and manageable wind first. The umbrella and rain timing checks now show a status dot on the homepage too, and the clothing check gained a flip-flop question with an instant a go or a no-go.",
   },
   {
     versie: "3.24.0",
     codenaam: "Khamsin",
     datum: "2026-07-17",
-    zin: "The clothing questions now answer themselves: on Do I need a coat you instantly see yes or no, with its own status dot in the overview. Links to frequently asked questions now unfold the answer automatically, the footer got tidied up, and on your phone you can add the site straight to your home screen.",
+    zin: "The clothing questions now answer themselves: on Do I need a coat the answer shows up straight away, with its own status dot in the overview. Links to frequently asked questions now unfold the answer automatically, the footer got tidied up, and on your phone you can add the site straight to your home screen.",
   },
   {
     versie: "3.23.0",
@@ -224,7 +230,7 @@ export const VERSIES = [
     versie: "3.4.0",
     codenaam: "Ponente",
     datum: "2026-07-13",
-    zin: "An explanation under every verdict (a why line with the decisive reason), and with a known place every check shows its answer straight away without an extra tap. New hay fever check on its own pollen source (CAMS) with the calmest window of the day, plus three clothing question pages (shorts, coat, T-shirt weather). New overview page with all weather decisions and search, feedback buttons that no longer flash away, and on mobile square tiles plus a sticky answer bar.",
+    zin: "An explanation under every verdict (a why line with the decisive reason), and with a known place every check shows its answer straight away without an extra tap. New hay fever check on its own pollen source (CAMS) with the calmest window of the day, plus three clothing question pages (shorts, coat, T-shirt weather). New overview page with all guides and search, feedback buttons that no longer flash away, and on mobile square tiles plus a sticky answer bar.",
   },
   {
     versie: "3.3.0",
@@ -248,7 +254,7 @@ export const VERSIES = [
     versie: "3.0.0",
     codenaam: "Levante",
     datum: "2026-07-13",
-    zin: "Answers in words: every check now leads with Yes or No plus a verdict word from Very poor to Ideal. The homepage got more compact and shows the live answer per card, you can rate the advice per day with a thumb, the outfit check got a little figure and the copy across the site got more direct.",
+    zin: "Answers in words: every check now leads with the answer plus a verdict word from Very poor to Ideal. The homepage got more compact and shows the live answer per card, you can rate the advice per day with a thumb, the outfit check got a little figure and the copy across the site got more direct.",
   },
   {
     versie: "2.2.0",

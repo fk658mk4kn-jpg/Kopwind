@@ -5,7 +5,7 @@
 
 export const hub = {
   intro:
-    "Kies je plek en je ziet meteen of fietsen, de was, het terras, de barbecue of smeren vandaag slim is. Met het beste moment erbij.",
+    "Kies je plek en de checks vertellen wat er vandaag in zit: fietsen, de was, het terras, de barbecue of smeren. Met het beste moment erbij.",
   faq: [
     {
       v: "Wat is Kan het vandaag?",

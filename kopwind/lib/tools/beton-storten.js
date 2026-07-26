@@ -2,7 +2,7 @@
  * lib/tools/beton-storten.js
  *
  * De betonstortcheck (v3.31.0 "Sirocco"). Beton storten is een
- * weerbeslissing met een harde randvoorwaarde: verse beton mag de eerste
+ * klus met een harde weer-randvoorwaarde: verse beton mag de eerste
  * nacht niet bevriezen (het water in het mengsel zet uit en verzwakt de
  * boel), dus de vorst van de komende nacht telt net zo zwaar als de dag.
  * Daarnaast spoelt een flinke bui vers cement uit het oppervlak, en

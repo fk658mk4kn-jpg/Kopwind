@@ -13,7 +13,7 @@ export const blokken = [
   {
     kop: "Vanaf wanneer kan de jas uit?",
     tekst:
-      "Vuistregel: boven de 18 graden gevoelstemperatuur en droog kan het zonder jas; tussen 15 en 18 hangt het af van wind, zon en hoe lang je buiten bent. Onder de 15 graden gevoel is een jas voor de meesten gewoon prettig. De check toont het gevoel per dagdeel, dus je ziet meteen of de ochtendjas vanmiddag in je tas kan.",
+      "Vuistregel: boven de 18 graden gevoelstemperatuur en droog kan het zonder jas; tussen 15 en 18 hangt het af van wind, zon en hoe lang je buiten bent. Onder de 15 graden gevoel is een jas voor de meesten gewoon prettig. De check toont het gevoel per dagdeel, zo weet je of de ochtendjas vanmiddag in je tas kan.",
   },
   {
     kop: "Regen verandert de vraag",
@@ -33,8 +33,8 @@ export const faq = [
     a: "Op een droge, windstille dag met zon: vaak niet, zeker als je beweegt. Met wind of bewolking voelt 16 al snel als 12 tot 13 en is een licht jack prettig. Kijk in de check naar het gevoel per dagdeel; dat getal beantwoordt de vraag beter dan de thermometer.",
   },
   {
-    v: "Waarom voelt het kouder dan de weerapp zegt?",
-    a: "Weerapps tonen de gemeten temperatuur op anderhalve meter boven een grasveld, uit de wind. Jij staat in de wind, soms in de motregen. Gevoelstemperatuur corrigeert daarvoor en zit daarom veel dichter bij wat je huid meemaakt.",
+    v: "Waarom voelt het kouder dan de gemeten temperatuur?",
+    a: "Een weerstation meet op anderhalve meter boven een grasveld, uit de wind. Jij staat in de wind, soms in de motregen. Gevoelstemperatuur corrigeert daarvoor en zit daarom veel dichter bij wat je huid meemaakt.",
   },
   {
     v: "Jas mee of jas aan naar werk?",

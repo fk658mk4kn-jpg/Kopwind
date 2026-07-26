@@ -3,7 +3,7 @@
 export const seo = {
   title: "Wanneer gaat het regenen vandaag?",
   description:
-    "Zie wanneer de regen begint, wanneer het weer droog wordt en of er binnen een uur buien vallen op jouw locatie. Op de minuut nauwkeurig.",
+    "Zie wanneer de regen begint, wanneer het weer droog wordt en of er binnen een uur buien vallen bij jou in de buurt. Op de minuut nauwkeurig.",
   h1: "Wanneer gaat het regenen vandaag?",
   intro:
     "Niet alleen of het regent is belangrijk, maar vooral wanneer. Deze check laat zien wanneer de eerstvolgende bui valt, wanneer het weer droog wordt en welke uren het veiligst zijn. Voor Nederland gebruiken we 15-minuten neerslagdata, dus je ziet echt of je die boodschap nog droog haalt.",
@@ -28,7 +28,7 @@ export const blokken = [
 ];
 
 export const faq = [
-  { v: "Regent het binnen een uur?", a: "De check zet dit bovenaan als directe ja of nee, gebaseerd op de neerslag per kwartier voor het komende uur op jouw locatie." },
+  { v: "Regent het binnen een uur?", a: "De check zet dit bovenaan als eerste antwoord, gebaseerd op de neerslag per kwartier voor het komende uur bij jou in de buurt." },
   { v: "Hoe laat begint de regen?", a: "Je ziet het eerstvolgende regenmoment als tijdstip. Valt er nu al regen, dan toont de check wanneer het naar verwachting weer droog wordt." },
   { v: "Wanneer wordt het weer droog?", a: "Als het regent, zoekt de check het eerstvolgende blok van minstens een uur droog en toont dat als starttijd." },
   { v: "Zijn dit losse buien of langdurige regen?", a: "De samenvatting per dagdeel (ochtend, middag, avond) laat zien of het gaat om verspreide buien of aaneengesloten neerslag." },

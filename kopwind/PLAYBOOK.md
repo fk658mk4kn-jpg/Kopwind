@@ -618,3 +618,25 @@ was de eerste die hem na alle v3.23-v3.24-infrastructuur liep):
    gladheidscheck leverden tot v3.26.0 100-minus-risico en toonden
    daardoor in juli "Zeker krabben"; tests/winter-scores.test.js
    bewaakt de richting sindsdien.
+
+## Originaliteit en concurrentie-afstand (sinds v3.34.0)
+
+Aanleiding: een auteursrechtklacht via Google (juli 2026) van een concurrerende
+weerbeslissite. De regels hieronder voorkomen herhaling, bij elke nieuwe tekst.
+
+- **Schrijf nooit vanaf een concurrentpagina.** Nieuwe teksten beginnen bij de
+  eigen motor: het venster of beste blok, de factoren die het oordeel bepalen,
+  de instelbaarheid (omslagpunt), de vijfschaal en de statusregel. Wie de eigen
+  mechaniek beschrijft, klinkt vanzelf als deze site.
+- **Verboden frames** staan afdwingbaar in tests/originaliteit.test.js: het
+  ja-of-nee-frame als marketingclaim, weerapp-vergelijkingen, "je ziet
+  meteen/direct", "op jouw locatie", "kort antwoord", "geen weerbericht",
+  "weerbeslissing" en verwanten. De test strippt comments; de merknaam van de
+  klager is ook in comments verboden. Wordt de test rood, herformuleer dan in
+  eigen stem in plaats van de lijst te versoepelen.
+- **Eigen stem in het kort**: concreet getal plus reden ("windkracht 4 drukt
+  het gevoel drie tot vier graden"), het beste blok benoemen, eerlijk over
+  onzekerheid, nooit een claim over het antwoordformat als verkoopargument.
+- **Zoekwoorden blijven staan.** H1-vragen en title-keywords zijn generieke
+  zoekopdrachten en geen eigendom van wie dan ook; alleen de formulering
+  eromheen moet aantoonbaar eigen zijn.

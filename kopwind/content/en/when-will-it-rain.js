@@ -3,7 +3,7 @@
 export const seo = {
   title: "When will it rain today?",
   description:
-    "See when the rain starts, when it turns dry again and whether showers fall within an hour at your location. Accurate to the minute.",
+    "See when the rain starts, when it turns dry again and whether showers fall within the hour near you. Accurate to the minute.",
   h1: "When will it rain today?",
   intro:
     "Not just whether it rains matters, but mainly when. This check shows when the next shower falls, when it turns dry again and which hours are safest. For the Netherlands we use 15-minute rain data, so you really see whether you'll make that errand dry.",
@@ -16,7 +16,7 @@ export const blokken = [
 ];
 
 export const faq = [
-  { v: "Will it rain within an hour?", a: "The check puts this at the top as a direct yes or no, based on the rain per quarter hour for the coming hour at your location." },
+  { v: "Will it rain within an hour?", a: "The check puts this at the top as the first answer, based on the rain per quarter hour for the coming hour near you." },
   { v: "What time does the rain start?", a: "You see the next rain moment as a time. If it's already raining, the check shows when it's expected to turn dry again." },
   { v: "When will it turn dry again?", a: "If it's raining, the check finds the next block of at least an hour dry and shows that as a start time." },
   { v: "Are these scattered showers or prolonged rain?", a: "The summary per part of the day shows whether it's scattered showers or continuous rain." },
