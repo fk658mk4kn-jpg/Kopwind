@@ -141,7 +141,7 @@ const BASIS = {
           "De AOW-leeftijd hoort bij het kalenderjaar waarin je hem bereikt. Iemand die in het jaar van 67 jaar AOW-gerechtigd wordt, krijgt AOW op zijn 67ste verjaardag. Valt de verjaardag in een jaar waarin de grens hoger ligt, dan schuift de AOW-datum mee.",
       },
       {
-        kop: "Na de laatst vastgestelde jaar",
+        kop: "Na het laatst vastgestelde jaar",
         tekst:
           "Voor mensen die de AOW-leeftijd na de laatste vastgestelde jaar bereiken, is de precieze leeftijd nog niet bekend. Hij is minstens 67 jaar en 3 maanden. Elk najaar komt er een jaar bij; de rekenhulp volgt die tabel.",
       },
@@ -442,20 +442,20 @@ const AANVULLING = {
       },
     ],
     faq: [
-      { v: "Wanneer gaat het minimumloon weer omhoog?", a: "Op 1 januari en 1 juli van elk jaar. De nieuwe bedragen worden een paar maanden vooraf bekendgemaakt door de Rijksoverheid." },
+      { v: "Geldt het minimumloon ook voor een bijbaan?", a: "Ja, voor iedere werknemer met een arbeidsovereenkomst, ook bij een bijbaan, vakantiewerk of een paar uur per week. Het bedrag hangt af van je leeftijd." },
       { v: "Wat als mijn werkgever minder betaalt?", a: "Dan heb je recht op het verschil. Je kunt een melding doen bij de Nederlandse Arbeidsinspectie, die werkgevers kan beboeten en controleren." },
     ],
   },
   aow: {
     blokken: [
       {
-        kop: "Hoeveel AOW je krijgt",
+        kop: "Doorwerken na je AOW-leeftijd",
         tekst:
-          "Voor een volledige AOW moet je 50 jaar verzekerd zijn geweest, gerekend vanaf 50 jaar voor je AOW-leeftijd. Elk jaar dat je niet in Nederland woonde of werkte, kost 2 procent van het bedrag. De hoogte hangt verder af van je woonsituatie: alleenstaanden krijgen een hoger bedrag per persoon dan mensen die samenwonen of getrouwd zijn. De actuele bedragen staan bij de SVB.",
+          "Je mag na je AOW-leeftijd gewoon doorwerken, en je AOW wordt daar niet op gekort. Over je loon betaal je dan geen AOW-premie meer, waardoor je van hetzelfde brutoloon netto meer overhoudt. Een werkgever mag je arbeidscontract wel laten eindigen op het moment dat je de AOW-leeftijd bereikt. Wil je blijven, dan kun je daarna een nieuw contract afspreken, met eigen regels voor bijvoorbeeld loondoorbetaling bij ziekte.",
       },
     ],
     faq: [
-      { v: "Moet ik AOW aanvragen?", a: "De SVB stuurt ongeveer een half jaar voor je AOW-leeftijd een brief. Daarna vraag je de AOW aan via Mijn SVB." },
+      { v: "Krijg ik AOW als ik in het buitenland woon?", a: "Ja, de AOW wordt ook uitbetaald als je in het buitenland woont. De hoogte hangt af van het aantal jaren dat je in Nederland verzekerd was." },
       { v: "Kan ik eerder met pensioen dan mijn AOW-leeftijd?", a: "Je aanvullende pensioen kun je vaak eerder laten ingaan, de AOW niet. De periode tot je AOW-datum moet je dan zelf overbruggen." },
     ],
   },
@@ -488,9 +488,9 @@ const AANVULLING = {
   schrikkeljaar: {
     blokken: [
       {
-        kop: "Jarig op 29 februari",
+        kop: "Twee weekdagen opschuiven",
         tekst:
-          "Wie op 29 februari is geboren, heeft maar eens in de vier jaar een echte verjaardag. In de andere jaren kiezen de meeste mensen voor 28 februari of 1 maart. Voor officiële zaken, zoals het moment waarop je 18 wordt, geldt wat de instantie in kwestie hanteert; vraag het bij twijfel na. De kans om op een schrikkeldag geboren te worden is ongeveer één op 1.461.",
+          "Een schrikkeljaar heeft 366 dagen: 52 weken en twee dagen. Een datum na 29 februari schuift in een schrikkeljaar daarom twee weekdagen op ten opzichte van het jaar ervoor, in plaats van één. Valt Koningsdag in 2027 op een dinsdag, dan valt hij in 2028 op een donderdag. Datums in januari en februari schuiven pas het jaar na het schrikkeljaar twee dagen op. De kans om op 29 februari geboren te worden is ongeveer één op 1.461.",
       },
     ],
     faq: [

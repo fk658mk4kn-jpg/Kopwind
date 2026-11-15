@@ -1,4 +1,6 @@
 import Link from "next/link";
+import TekstMetLinks from "@/components/TekstMetLinks";
+import { platteTekst } from "@/lib/inlineLinks";
 import { HUB_NAAM, HUB_CLAIM } from "@/lib/brand";
 import { hub } from "@/content/hub";
 import { kies, LOCALE } from "@/lib/i18n/locale";
@@ -29,7 +31,7 @@ export default function HubPagina() {
     mainEntity: hub.faq.map((f) => ({
       "@type": "Question",
       name: f.v,
-      acceptedAnswer: { "@type": "Answer", text: f.a },
+      acceptedAnswer: { "@type": "Answer", text: platteTekst(f.a) },
     })),
   };
   const siteJsonLd = {
@@ -59,7 +61,7 @@ export default function HubPagina() {
         {hub.faq.map((f) => (
           <details key={f.v} className="faq-item">
             <summary><h3>{f.v}</h3></summary>
-            <p>{f.a}</p>
+            <p><TekstMetLinks tekst={f.a} /></p>
           </details>
         ))}
       </section>

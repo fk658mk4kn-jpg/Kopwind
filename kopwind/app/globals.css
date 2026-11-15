@@ -2798,3 +2798,143 @@ details.geavanceerd summary {
 .maan-kop { font-size: 16px; margin: 14px 0 4px; }
 .jaar-balk { height: 10px; border-radius: 6px; background: var(--lucht); border: 1px solid var(--lijn); margin: 12px auto 0; max-width: 360px; overflow: hidden; }
 .jaar-balk > div { height: 100%; background: var(--accent); }
+
+/* ================================================================== */
+/* v3.40.1 "Sirocco": uitlijning en menu (audit 15 november 2026)     */
+/* ================================================================== */
+
+/* Kop: op mobiel bleef de menuknop alleen op een tweede regel staan,
+   omdat logo plus drie knoppen van 44px net niet pasten. */
+.kop .merk { min-width: 0; }
+.kop .merk-naam { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+@media (max-width: 640px) {
+  .kop { flex-wrap: nowrap; gap: 6px; padding: 10px 12px; }
+  .kop .merk { gap: 8px; }
+  .kop .merk-naam { font-size: 18px; }
+  .kop .iconknop.kop-icoon { width: 42px; height: 42px; }
+}
+@media (max-width: 360px) {
+  .kop .merk-naam { font-size: 16px; }
+  .kop .iconknop.kop-icoon { width: 38px; height: 38px; }
+}
+
+/* Menu: "Snel naar" als duidelijke tegels, thema's met een pijltje. */
+.menusnel { display: grid; gap: 6px; }
+.menusnel-link {
+  display: flex; flex-direction: column; gap: 1px;
+  padding: 10px 12px; border: 1px solid var(--lijn); border-radius: var(--radius-s);
+  background: var(--wolk); color: var(--inkt); text-decoration: none;
+}
+.menusnel-link:hover { border-color: var(--accent-diep); background: var(--accent-zacht); }
+.menusnel-label { font-weight: 700; font-size: 15px; }
+.menusnel-sub { font-size: 13px; color: var(--inkt-zacht); }
+.menuthema { border-bottom: 1px solid var(--lijn); }
+.menuthema:last-child { border-bottom: 0; }
+.menuthema-kop {
+  display: flex; align-items: center; gap: 10px;
+  padding: 11px 8px; cursor: pointer; list-style: none;
+  font-weight: 600; font-size: 15px; color: var(--inkt);
+}
+.menuthema-kop::-webkit-details-marker { display: none; }
+.menuthema-naam { flex: 1; }
+.menuthema-teller { font-size: 12px; color: var(--inkt-zacht); font-variant-numeric: tabular-nums; }
+.menuthema-pijl {
+  width: 8px; height: 8px; flex: none;
+  border-right: 2px solid var(--inkt-zacht); border-bottom: 2px solid var(--inkt-zacht);
+  transform: rotate(45deg) translateY(-2px); transition: transform 0.15s ease;
+}
+.menuthema[open] .menuthema-pijl { transform: rotate(-135deg) translateY(-2px); }
+.menuthema-inhoud { padding: 0 0 8px 8px; }
+.menulink-alle { color: var(--inkt-zacht); font-size: 14px; }
+
+/* Breedte: de tekst onder de tool was smaller (860px) dan de panelen,
+   waardoor scheidingslijnen en vragen rechts korter eindigden. Nu
+   spannen alle secties dezelfde breedte; alleen lopende tekst houdt een
+   leesbare regellengte. */
+.seotekst { max-width: none; }
+.seotekst p, .seotekst li, .faq-item p, .seotekst .faq-item > div { max-width: 74ch; }
+
+/* Deelknop: overal dezelfde volle knop, niet op desktop een klein
+   label links en op mobiel een balk. */
+.deelknop { display: flex; width: 100%; justify-content: center; padding: 11px 16px; min-height: 44px; }
+
+/* Rekenhulpen: labels links boven het veld, velden even breed en hoog,
+   keuzelijsten in dezelfde stijl als invoervelden. */
+.reken-velden {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  justify-content: stretch;
+  text-align: left;
+  margin-bottom: 14px;
+}
+.aftel-calc-veld {
+  display: flex; flex-direction: column; align-items: stretch; gap: 5px;
+  text-align: left; font-size: 13px; font-weight: 600;
+}
+.aftel-calc > .aftel-calc-veld { max-width: 320px; margin: 0 auto 14px; }
+.aftel-calc input,
+.aftel-calc select,
+.aftel-plek select {
+  width: 100%;
+  min-height: 42px;
+  font: inherit;
+  font-size: 16px;
+  padding: 8px 12px;
+  border: 1px solid var(--lijn-sterk);
+  border-radius: 10px;
+  background-color: var(--kaart);
+  color: var(--inkt);
+  box-sizing: border-box;
+}
+.aftel-calc select,
+.aftel-plek select {
+  -webkit-appearance: none;
+  appearance: none;
+  padding-right: 34px;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--inkt-zacht) 50%),
+    linear-gradient(135deg, var(--inkt-zacht) 50%, transparent 50%);
+  background-position: calc(100% - 18px) 50%, calc(100% - 13px) 50%;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+}
+.aftel-calc input:focus, .aftel-calc select:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+.aftel-calc .reken-vink { justify-content: flex-start; }
+
+/* Tabellen: op mobiel compacter, eerste kolom niet in stukjes. */
+.aftel-tabel { width: 100%; }
+.reken-tabel td:first-child, .reken-tabel th:first-child { white-space: nowrap; }
+@media (max-width: 640px) {
+  .reken-tabel { font-size: 14px; }
+  .reken-tabel th, .reken-tabel td { padding: 7px 5px; }
+  .reken-tabel td:first-child, .reken-tabel th:first-child { white-space: normal; }
+  .reken-tabel.smal-eerste td:first-child { white-space: nowrap; }
+}
+
+/* Stadpagina's: de lange lijst checks klapt in. */
+.stadlinks-meer { margin: 6px 0 4px; }
+.stadlinks-meer > summary {
+  cursor: pointer; list-style: none; display: inline-flex; align-items: center; gap: 8px;
+  font-weight: 600; font-size: 14px; color: var(--inkt); padding: 6px 0;
+}
+.stadlinks-meer > summary::-webkit-details-marker { display: none; }
+.stadlinks-meer > summary::after {
+  content: ""; width: 7px; height: 7px;
+  border-right: 2px solid currentColor; border-bottom: 2px solid currentColor;
+  transform: rotate(45deg) translateY(-2px); transition: transform 0.15s ease;
+}
+.stadlinks-meer[open] > summary::after { transform: rotate(-135deg) translateY(-2px); }
+
+/* Homepage: acht themategels in twee volle rijen. */
+@media (min-width: 720px) {
+  .categoriegrid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+/* Themapagina's: het grote achtergrondicoon liep op mobiel door de tekst. */
+@media (max-width: 640px) {
+  .storefront-achtergrond-icoon { display: none; }
+}
+@media (min-width: 641px) {
+  .storefront-achtergrond-icoon { opacity: 0.05; right: -140px; top: 14vh; }
+}

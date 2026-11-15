@@ -5,6 +5,12 @@
 
 export const VERSIES = [
   {
+    versie: "3.40.1",
+    codenaam: "Sirocco",
+    datum: "2026-11-15",
+    zin: "Tidier menu: topics now show an arrow when they expand, and the menu button sits next to the other buttons on phones. Layout and alignment fixes across the site.",
+  },
+  {
     versie: "3.40.0",
     codenaam: "Sirocco",
     datum: "2026-11-15",

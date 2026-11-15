@@ -6,6 +6,12 @@
 
 export const VERSIES = [
   {
+    versie: "3.40.1",
+    codenaam: "Sirocco",
+    datum: "2026-11-15",
+    zin: "Opruimronde. Het menu is opnieuw ingedeeld, met de handige antwoorden en het aftellen bovenaan en een pijltje bij elk thema dat openklapt. Op mobiel staat de menuknop weer naast de andere knoppen. Op de stadpagina's staan echte links in plaats van losse code, en de lange lijst checks klapt in. Rekenhulpen, tabellen en de deelknop zijn overal gelijk uitgelijnd.",
+  },
+  {
     versie: "3.40.0",
     codenaam: "Sirocco",
     datum: "2026-11-15",

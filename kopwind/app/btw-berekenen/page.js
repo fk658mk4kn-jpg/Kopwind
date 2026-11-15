@@ -19,7 +19,7 @@ export default function BtwPagina() {
       <BtwRekenaar />
       <section className="paneel reken-blok">
         <h2>Btw-tarieven in Nederland</h2>
-        <table className="reken-tabel">
+        <table className="reken-tabel smal-eerste">
           <thead>
             <tr>
               <th>Tarief</th>
@@ -29,7 +29,7 @@ export default function BtwPagina() {
           <tbody>
             {BTW_TARIEVEN.map((t) => (
               <tr key={t.pct}>
-                <td>{t.pct} procent</td>
+                <td>{t.pct}%</td>
                 <td>{t.voorbeelden}</td>
               </tr>
             ))}

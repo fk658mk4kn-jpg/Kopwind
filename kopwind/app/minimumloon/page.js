@@ -28,7 +28,7 @@ export default function MinimumloonPagina() {
       <MinimumloonRekenaar />
       <section className="paneel reken-blok">
         <h2>Minimumloon per leeftijd</h2>
-        <table className="reken-tabel">
+        <table className="reken-tabel smal-eerste">
           <thead>
             <tr>
               <th>Leeftijd</th>
@@ -40,7 +40,7 @@ export default function MinimumloonPagina() {
           <tbody>
             {MINIMUMLOON.perUur.map((r) => (
               <tr key={r.leeftijd}>
-                <td>{r.leeftijd}</td>
+                <td>{r.leeftijd.replace(" jaar en ouder", "+ jaar")}</td>
                 <td className="rechts">{fmt(r.bedrag)}</td>
                 <td className="rechts">{fmt(maandloon(r.bedrag, 36))}</td>
                 <td className="rechts">{fmt(maandloon(r.bedrag, 40))}</td>

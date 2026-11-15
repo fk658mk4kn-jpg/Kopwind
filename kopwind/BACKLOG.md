@@ -41,6 +41,17 @@ Pagina's); bevestigt dat het dunne-pagina-patroon, dan aanzetten.
 - Lijsten (steden en checks) staan in lib/seo/indexering.js en zijn
   aan te passen zonder iets anders te raken.
 
+## Na de visuele audit (v3.40.1)
+
+- **Visuele check als vaste stap**: het audit-script (overloop en
+  scriptfouten over alle pagina's van het eerste niveau plus steekproef
+  steden) bij elke run draaien, niet alleen de builds.
+- **Populaire kaarten op de homepage** tonen "Even naar de lucht
+  kijken..." tot de weerdata binnen is; een skelet in dezelfde hoogte
+  oogt rustiger.
+- **Menu op mobiel** is een paneel rechts dat niet tot de onderrand
+  loopt; overwegen om het als volledige onderlade te tonen.
+
 ## Gidspagina's (v3.40.0): data bijhouden
 
 - **Eigen risico 2028** toevoegen in lib/geld.js zodra bekend

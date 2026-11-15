@@ -3121,3 +3121,34 @@ in de test. De reiskostenregel van 46 weken vervangen door de
 **Verificatie**: 279 tests groen, check:imports OK, NL- en EN-build
 groen, em-dash nul, tien routes 200 met de verwachte title, nieuwe
 pagina's in de sitemap, acht pagina's in Playwright zonder paginafouten.
+
+
+## Run 21 (2026-11-15, v3.40.1 "Sirocco"): visuele audit
+
+**Melding eigenaar**: Handige antwoorden niet te vinden, de knop Meer in
+het menu werkt niet, uitlijning klopt niet bij antwoorden en stadpagina's.
+
+**Oorzaken**: het menu werd binnen de sticky kop getekend; die kop heeft
+z-index 100 en maakt daarmee een eigen stapellaag, waardoor het menu
+(z-index 2000) toch onder de cookiebalk (1200) viel. Handige antwoorden
+stond helemaal onderaan, achter die balk. "Meer" was een kopje in
+dezelfde stijl als de inklapbare thema's. De menuknop viel op mobiel naar
+een tweede regel (logo plus 3 x 44px past niet in 330px). Stadpagina's
+renderden FAQ-antwoorden als platte tekst, dus de [label](tool:id)
+notatie stond letterlijk op de pagina en in de JSON-LD. De dubbele
+vragen kwamen uit de aanvulling van Run 19.
+
+**Werkwijze**: eerst audit zonder wijzigingen, bevindingen en plan
+voorgelegd, na akkoord gebouwd. Controle met een Playwright-script over
+215 pagina's (alle pagina's op het eerste niveau, een steekproef van
+stadpagina's en routes) op horizontale overloop en scriptfouten, en
+screenshots op 390 en 1280 pixels. Breedtes per sectie gemeten in de DOM.
+
+**Let op bij lokaal testen**: pkill -f "next start" stopt de server niet
+(het proces heet next-server). Een oude server tegen een nieuwe build
+geeft 400-fouten op scriptbestanden en lijkt op een hydratiefout.
+
+**Verificatie**: 281 tests groen, check:imports OK, NL- en EN-build
+groen, 215 pagina's zonder overloop of scriptfouten, nul stadpagina's met
+ruwe linknotatie, alle hoofdsecties even breed (144 tot 1136 pixels bij
+1280).

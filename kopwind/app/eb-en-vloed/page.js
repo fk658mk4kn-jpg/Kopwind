@@ -36,7 +36,7 @@ export default function GetijPagina() {
       </section>
       <section className="paneel reken-blok">
         <h2>Springtij en doodtij de komende weken</h2>
-        <table className="reken-tabel">
+        <table className="reken-tabel smal-eerste">
           <thead>
             <tr>
               <th>Rond</th>
@@ -47,7 +47,7 @@ export default function GetijPagina() {
           <tbody>
             {perioden.map((p) => (
               <tr key={p.tijdstip}>
-                <td>{datumTekst(vandaag(p.tijdstip), { metDag: true, metJaar: false })}</td>
+                <td>{datumTekst(vandaag(p.tijdstip), { metDag: true, metJaar: false }).replace(/^(\w{2})\w*/, "$1")}</td>
                 <td>{p.soort === "springtij" ? "Springtij" : "Doodtij"}</td>
                 <td>{p.maan}</td>
               </tr>

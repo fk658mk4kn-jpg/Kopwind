@@ -24,7 +24,7 @@ export default function AowPagina() {
         <table className="reken-tabel">
           <thead>
             <tr>
-              <th>Jaar waarin je hem bereikt</th>
+              <th>Jaar</th>
               <th>AOW-leeftijd</th>
             </tr>
           </thead>

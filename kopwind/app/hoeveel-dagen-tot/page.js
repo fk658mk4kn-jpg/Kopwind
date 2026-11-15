@@ -1,4 +1,6 @@
 import Link from "next/link";
+import TekstMetLinks from "@/components/TekstMetLinks";
+import { platteTekst } from "@/lib/inlineLinks";
 import { notFound } from "next/navigation";
 import Broodkruimel from "@/components/Broodkruimel";
 import DatumCalculator from "@/components/aftellen/DatumCalculator";
@@ -43,7 +45,7 @@ export default function AftelHub() {
     mainEntity: AFTEL_HUB.faq.map((f) => ({
       "@type": "Question",
       name: f.v,
-      acceptedAnswer: { "@type": "Answer", text: f.a },
+      acceptedAnswer: { "@type": "Answer", text: platteTekst(f.a) },
     })),
   };
   return (
@@ -95,7 +97,7 @@ export default function AftelHub() {
             <summary>
               <h3>{f.v}</h3>
             </summary>
-            <p>{f.a}</p>
+            <p><TekstMetLinks tekst={f.a} /></p>
           </details>
         ))}
       </section>

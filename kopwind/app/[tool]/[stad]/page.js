@@ -1,7 +1,9 @@
 import { notFound } from "next/navigation";
 import Icoon from "@/components/Icoon";
 import Link from "next/link";
-import { TOOLS, vindTool } from "@/lib/tools";
+import { TOOLS, vindTool, POPULAIRE_TOOL_IDS } from "@/lib/tools";
+import TekstMetLinks from "@/components/TekstMetLinks";
+import { platteTekst } from "@/lib/inlineLinks";
 import { inhoudVoorTool } from "@/content";
 import { STEDEN, vindStad } from "@/lib/steden/nl";
 import { stadTekst, buurSteden } from "@/lib/steden/teksten";
@@ -64,6 +66,17 @@ export default function StadPagina({ params }) {
   const [basis, context] = stadTekst(tool.id, stad);
   const buren = buurSteden(stad, 4);
   const andereTools = TOOLS.filter((x) => x.slug !== tool.slug);
+  // v3.40.1: eerst acht checks die het dichtst bij deze liggen (zelfde
+  // thema, dan de populairste), de rest inklapbaar. Alle links blijven in
+  // de HTML staan voor de interne linkstructuur.
+  const uitgelicht = [
+    ...andereTools.filter((x) => x.categorieId === tool.categorieId),
+    ...POPULAIRE_TOOL_IDS.map((id) => andereTools.find((x) => x.id === id)).filter(Boolean),
+    ...andereTools,
+  ]
+    .filter((x, i, lijst) => lijst.findIndex((y) => y.slug === x.slug) === i)
+    .slice(0, 8);
+  const overigeTools = andereTools.filter((x) => !uitgelicht.some((u) => u.slug === x.slug));
   const centrum = { naam: `${stad.naam}, centrum`, lat: stad.lat, lon: stad.lon };
 
   const appJsonLd = {
@@ -82,7 +95,7 @@ export default function StadPagina({ params }) {
     mainEntity: inhoud.faq.slice(0, 3).map((f) => ({
       "@type": "Question",
       name: f.v,
-      acceptedAnswer: { "@type": "Answer", text: f.a },
+      acceptedAnswer: { "@type": "Answer", text: platteTekst(f.a) },
     })),
   };
 
@@ -131,18 +144,34 @@ export default function StadPagina({ params }) {
               {b.naam}
             </Link>
           ))}
-          {andereTools.map((x) => (
+        </div>
+
+        <h2>Meer checks in {stad.naam}</h2>
+        <div className="stadlinks">
+          {uitgelicht.map((x) => (
             <Link key={x.slug} href={`/${x.slug}/${stad.slug}`}>
               {x.korteVraag.replace("?", "")} in {stad.naam}?
             </Link>
           ))}
         </div>
+        {overigeTools.length > 0 && (
+          <details className="stadlinks-meer">
+            <summary>Nog {overigeTools.length} checks in {stad.naam}</summary>
+            <div className="stadlinks">
+              {overigeTools.map((x) => (
+                <Link key={x.slug} href={`/${x.slug}/${stad.slug}`}>
+                  {x.korteVraag.replace("?", "")} in {stad.naam}?
+                </Link>
+              ))}
+            </div>
+          </details>
+        )}
 
         <h2>Veelgestelde vragen</h2>
         {inhoud.faq.slice(0, 3).map((f) => (
           <div key={f.v} className="faq-item">
             <h3>{f.v}</h3>
-            <p>{f.a}</p>
+            <p><TekstMetLinks tekst={f.a} /></p>
           </div>
         ))}
       </section>
