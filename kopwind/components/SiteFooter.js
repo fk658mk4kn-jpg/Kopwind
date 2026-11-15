@@ -5,6 +5,9 @@ import { UITLEG } from "@/content/uitleg";
 import { HUB_NAAM } from "@/lib/brand";
 import { S } from "@/lib/strings";
 import { PAD } from "@/lib/i18n/paden";
+import { IS_EN } from "@/lib/i18n/locale";
+import { AFTEL_HUB_PAD } from "@/lib/aftellen";
+import { ANTWOORDEN_HUB_PAD } from "@/lib/rekenhulpen";
 
 /**
  * Voet van elke pagina (Zephyr item 5): de checks, de uitleg en het
@@ -38,6 +41,16 @@ export default function SiteFooter() {
           <Link href={PAD.alleChecks} className="voet-alle">
             {S.hub.alleChecksTitel}
           </Link>
+          {!IS_EN && (
+            <Link href={AFTEL_HUB_PAD} className="voet-alle">
+              Aftellen naar elke datum
+            </Link>
+          )}
+          {!IS_EN && (
+            <Link href={ANTWOORDEN_HUB_PAD} className="voet-alle">
+              Handige antwoorden
+            </Link>
+          )}
         </div>
         <div>
           <h2>{S.voet.uitleg}</h2>

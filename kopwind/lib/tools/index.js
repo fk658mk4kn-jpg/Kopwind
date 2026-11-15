@@ -87,6 +87,7 @@ import { speeltuin } from "./speeltuin.js";
 import { bestratingLeggen } from "./bestrating-leggen.js";
 import { dekbedLuchten } from "./dekbed-luchten.js";
 import { buitenkraanAftappen } from "./buitenkraan-aftappen.js";
+import { sneeuw } from "./sneeuw.js";
 import { VARIANTEN, maakPseudoTool } from "../varianten.js";
 
 export const TOOLS = [
@@ -156,6 +157,7 @@ export const TOOLS = [
   sneeuwpret,
   strooien,
   buitenkraanAftappen,
+  sneeuw,
 ];
 
 export function vindTool(slug) {

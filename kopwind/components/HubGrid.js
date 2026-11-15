@@ -28,14 +28,17 @@ const POPULAIR = [
     .map((s) => ({ naam: s.naam, lat: s.lat, lon: s.lon })),
 ];
 
-export default function HubGrid() {
+export default function HubGrid({ populair = POPULAIRE_TOOL_IDS }) {
+  // v3.36.0: de server geeft de seizoenslijst mee (lib/seizoen.js); de
+  // stemmen herschikken daarbinnen, zoals voorheen.
+  const basis = populair;
   // Een bron voor stad plus dagverdicten: dezelfde hook als alle-checks,
   // met de vereniging van alle weerVelden (zo heeft ook de
   // hooikoortskaart hier zijn pollenvelden; v3.13.0).
   const { stad, kiesStad, dagen, laden, fout } = useDagVerdicts();
   const [lokaleFout, setLokaleFout] = useState(null);
   const [recent, setRecent] = useState([]);
-  const [populaireIds, setPopulaireIds] = useState(POPULAIRE_TOOL_IDS);
+  const [populaireIds, setPopulaireIds] = useState(basis);
 
   // De drie meest recent gebruikte checks van deze gebruiker (lokaal
   // bijgehouden door RecentTracker op de toolpagina's).
@@ -61,10 +64,10 @@ export default function HubGrid() {
       .then((r) => (r.ok ? r.json() : Promise.reject()))
       .then((data) => {
         if (!actief || !Array.isArray(data.volgorde)) return;
-        const gestemd = data.volgorde.map((v) => v.tool).filter((id) => POPULAIRE_TOOL_IDS.includes(id));
+        const gestemd = data.volgorde.map((v) => v.tool).filter((id) => basis.includes(id));
         // Gestemde tools voorop in stemvolgorde, de rest van de
         // handmatige lijst erachter in de oorspronkelijke volgorde.
-        const rest = POPULAIRE_TOOL_IDS.filter((id) => !gestemd.includes(id));
+        const rest = basis.filter((id) => !gestemd.includes(id));
         const nieuw = [...gestemd, ...rest];
         if (nieuw.length) setPopulaireIds(nieuw);
       })

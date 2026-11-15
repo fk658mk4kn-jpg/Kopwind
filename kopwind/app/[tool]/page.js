@@ -23,6 +23,9 @@ import TekstMetLinks from "@/components/TekstMetLinks";
 import AdviesBlok from "@/components/AdviesBlok";
 import { platteTekst } from "@/lib/inlineLinks";
 import { stadAnker } from "@/lib/steden/stadTemplates";
+import { IS_EN } from "@/lib/i18n/locale";
+import { alleAftelSlugs, vindAfteller, aftelMeta } from "@/lib/aftellen";
+import AftelPagina from "@/components/aftellen/AftelPagina";
 
 /**
  * Dynamische toolpagina uit het register (§6): de tool bovenaan, de
@@ -30,16 +33,30 @@ import { stadAnker } from "@/lib/steden/stadTemplates";
  */
 
 export const dynamicParams = false;
-export const revalidate = 86400;
+// v3.35.0: van 24 uur naar een uur, want de aftelpagina's dragen de
+// telling van vandaag in de server-HTML en in de title.
+export const revalidate = 3600;
 
 export function generateStaticParams() {
   return [
     ...alleToolSlugs().map((slug) => ({ tool: slug })),
     ...CATEGORIEEN.map((c) => ({ tool: c.slug })),
+    // Aftellers (v3.35.0) zijn alleen Nederlands; op de EN-site geen pagina.
+    ...(IS_EN ? [] : alleAftelSlugs().map((slug) => ({ tool: slug }))),
   ];
 }
 
 export function generateMetadata({ params }) {
+  const afteller = IS_EN ? null : vindAfteller(params.tool);
+  if (afteller) {
+    const meta = aftelMeta(afteller);
+    return {
+      title: meta.title,
+      description: meta.description,
+      alternates: { canonical: `/${afteller.slug}` },
+      openGraph: { type: "website", title: meta.title, description: meta.description, url: `/${afteller.slug}` },
+    };
+  }
   const categorie = vindCategorie(params.tool);
   if (categorie) {
     const titel =
@@ -70,6 +87,9 @@ export function generateMetadata({ params }) {
 }
 
 export default function ToolPagina({ params }) {
+  const afteller = IS_EN ? null : vindAfteller(params.tool);
+  if (afteller) return <AftelPagina afteller={afteller} />;
+
   const categorie = vindCategorie(params.tool);
   if (categorie) return <Storefront categorie={categorie} />;
 

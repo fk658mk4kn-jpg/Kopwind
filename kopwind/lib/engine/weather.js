@@ -26,6 +26,8 @@ export const WEER_VELDEN = [
   "surface_pressure", // vischeck (v3.29.0)
   "snowfall", // sneeuwpret + strooien (v3.30.0)
   "snow_depth", // sneeuwpret (v3.30.0)
+  "weather_code", // onweerspagina (v3.38.0): 95, 96 en 99 zijn onweer
+  "cape", // onweerspagina (v3.38.0): energie voor buien in J/kg
 ];
 
 export const STANDAARD_VELDEN = [

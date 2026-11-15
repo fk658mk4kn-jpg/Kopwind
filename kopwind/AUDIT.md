@@ -179,6 +179,14 @@ de verificatie.
 
 ---
 
+## 4b. Stadpagina's terugsnoeien (optioneel, sinds v3.36.0)
+
+- `STAD_INDEX_BEPERKT=1` = alleen 10 steden maal 10 checks indexeerbaar,
+  de rest noindex en uit de sitemap. Zie SEO-DIAGNOSE.md. Weglaten = alles
+  blijft zoals het was.
+
+---
+
 ## 5. Engelse site onder /en
 
 Tweede Vercel-project op dezelfde repo:

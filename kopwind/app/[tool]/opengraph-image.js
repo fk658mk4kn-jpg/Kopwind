@@ -3,6 +3,7 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { HUB_NAAM, WINDSTRIP_DEMO } from "@/lib/brand";
 import { vindTool } from "@/lib/tools";
+import { vindAfteller, vraagVan } from "@/lib/aftellen";
 import { kleurDivergerend } from "@/lib/engine/kleuren";
 
 /**
@@ -16,7 +17,8 @@ export const contentType = "image/png";
 
 export default async function Image({ params }) {
   const tool = vindTool(params.tool);
-  const vraag = tool?.korteVraag ?? HUB_NAAM;
+  const afteller = tool ? null : vindAfteller(params.tool);
+  const vraag = tool?.korteVraag ?? (afteller ? vraagVan(afteller) : HUB_NAAM);
   const font = await readFile(
     path.join(process.cwd(), "assets", "og", "BricolageGrotesque-700.woff")
   );

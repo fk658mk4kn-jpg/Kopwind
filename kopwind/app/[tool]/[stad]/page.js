@@ -16,6 +16,7 @@ import { kies } from "@/lib/i18n/locale";
 import StemPeiling from "@/components/StemPeiling";
 import AdSlot from "@/components/AdSlot";
 import ServerAntwoord from "@/components/ServerAntwoord";
+import { stadIndexeerbaar, NOINDEX } from "@/lib/seo/indexering";
 
 /**
  * Programmatische stadpagina (§9): de live tool bovenaan, vooraf ingesteld
@@ -48,6 +49,7 @@ export function generateMetadata({ params }) {
     title: t.title,
     description: t.description,
     alternates: { canonical: `/${tool.slug}/${stad.slug}` },
+    ...(stadIndexeerbaar(tool.id, stad.slug) ? {} : { robots: NOINDEX }),
     openGraph: { type: "website", title: t.title, description: t.description, url: `/${tool.slug}/${stad.slug}` },
   };
 }

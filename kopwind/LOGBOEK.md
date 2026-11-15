@@ -2924,3 +2924,200 @@ eigenaar nul, beide builds groen.
 herindexering gebeurt niet vanzelf door de herschrijving. Opties staan in
 de backlog. GSC monitoren op nieuwe meldingen; de Lumen-melding nalezen
 zodra die online staat.
+
+## Run 15 (2026-11-15, v3.35.0 "Bise"): aftellers en SEO-diagnose
+
+**Aanleiding**: verkeer rond twaalf bezoekers per dag na een aantal maanden.
+Opdracht: hoeveel-dagen-tot-tellers als eigen pagina's (kaal en met
+weerhoek, breed: feestdagen, seizoenen, tot wanneer het gaat regenen), een
+SEO-diagnose, en WORKFLOW.md. Werkwijze vooraf afgestemd (begrip en vragen
+teruggelegd, akkoord ontvangen). De eerst aanwezige zip bleek v3.7.1; de
+eigenaar leverde daarna de juiste v3.34.0 aan.
+
+**Gebouwd**: lib/aftellen (datums, register, vakanties, neerslag),
+content/aftellen.js, components/aftellen (AftelPagina, AftelTeller,
+WeerVooruitblik, PlekKiezer, ZonKlok, DroogKlok, DatumCalculator,
+AftelStrook), app/hoeveel-dagen-tot, aansluiting in de [tool]-route (de
+aftellers zijn root-slugs, net als checks en categorieen), menu, footer,
+homepage, sitemap en OG. Revalidatie root-route en homepage naar een uur.
+
+**Bronnen**: schoolvakanties uit Staatscourant 2024, 19237, en voor
+2027-2028 dubbel gecheckt tegen government.nl. Rijksoverheid.nl zelf was
+vanuit de werkruimte niet bereikbaar. Zon en seizoenen gecontroleerd tegen
+bekende tijden voor De Bilt (21 december 08:46/16:30, 21 juni
+05:19/22:04; winterzonnewende 2026 om 20:50 UTC).
+
+**Feitencheck teksten**: Vaderdag kan nooit met Pinksteren samenvallen
+(uiterlijk 13 juni tegen vroegst 15 juni), aangepast. Koninginnedag-
+historie en een provincie-indeling van de vakantieregio's weggelaten omdat
+die niet zeker waren; de pagina verwijst voor de regio naar de schoolgids.
+
+**SEO-diagnose**: 2.250 URL's in de sitemap, waarvan 2.065 tool maal stad
+met 91 procent tekstoverlap (gemeten op de gebouwde HTML). Voorstel tot
+terugsnoeien naar honderd indexeerbare stadpagina's ligt bij de eigenaar.
+Gefixt: lastmod in de sitemap is nu de echte bijgewerkt-datum.
+
+**Verificatie**: 231 tests groen (achttien nieuwe), check:imports OK,
+em-dash nul, naam nul, beide builds groen. Visueel gecontroleerd op 390
+pixels breed (kerst, zomervakantie, zonsondergang, hub, weekend); de
+weervooruitblik en de droogklok konden in de werkruimte geen Open-Meteo
+bereiken en vallen dan netjes weg, zoals bedoeld.
+
+**Open**: Search Console-export van de eigenaar voor het besluit over de
+stadpagina's.
+
+
+## Run 16 (2026-11-15, v3.36.0 "Chergui"): vier optimalisaties
+
+**Opdracht**: alle vier voorstellen bouwen (stadschakelaar, sneeuwcheck en
+witte kerst, widget, seizoenshomepage). Search Console nog niet
+aangeleverd, dus de schakelaar standaard uit. Widget met merklink akkoord.
+
+**Gebouwd**: lib/seo/indexering.js (schakelaar), lib/tools/sneeuw.js plus
+content/gaat-het-sneeuwen.js en alle registraties, de aftelpagina
+witte-kerst met sneeuw in de weervooruitblik, app/api/aftel,
+public/widget.js en components/aftellen/WidgetCode.js, lib/seizoen.js en
+de HubGrid-prop.
+
+**Verificatie**: build met STAD_INDEX_BEPERKT=1: sitemap 217 URL's (100
+stadpagina's, 0 routes), robots-meta noindex,follow op
+/muggen/amsterdam en de route Amsterdam-Zaanstad, index,follow op
+/terrasweer/amsterdam. Normale build: sitemap 2.287 URL's, niets
+veranderd. Widget getest vanaf een pagina op een andere poort: beide
+tellers (kerst en zomervakantie met regio) renderen, CORS werkt. Homepage
+toont in november de herfstlijst met storm en regen-timing.
+Registertest ving een afwijkende kleur (de categorie-kleur winter is
+leidend), gefixt. 241 tests groen, beide builds groen.
+
+**Eerlijke kanttekening widget**: Google noemt keyword-rijke of verborgen
+links in widgets expliciet als linkspam. Daarom een zichtbare link met
+alleen de merknaam als anker. Het blijft een bonus, geen linkstrategie.
+
+
+## Run 17 (2026-11-15, v3.37.0 "Föhn"): volume-pagina's
+
+**Opdracht**: een stuk of tien pagina's, niet alleen weer, gericht op
+zoekvolume. Gekozen: zeven kalender- en rekenpagina's (weeknummer,
+feestdagen, schoolvakanties, werkdagen, dagen tussen datums, verjaardag,
+leeftijd) en drie luchtpagina's (volle maan, zonsopkomst, noorderlicht),
+plus vier goedkope tellers (Sint-Maarten, Dierendag, IJsheiligen,
+Perseiden). Bewust niet: onweer (wel weer), stroomprijs (bron
+onbevestigd), weeralarmen (KNMI wint dat, en zou kunnen lijken op een
+officiele waarschuwing).
+
+**Bronnen**: NOAA-melding SCN 26-21 over het nieuwe formaat van de
+Kp-bestanden (per eind maart 2026: van een kopregel met waarden naar
+objecten met sleutels, getallen niet meer als tekst). De bestanden zelf
+en de voorbeeldmap stonden niet op de allowlist van de werkruimte; de
+parser is daarom tolerant gebouwd en op beide vormen getest. Maanfasen
+naar Meeus, gecontroleerd tegen twee bekende tijden.
+
+**Verificatie**: 253 tests groen, check:imports OK, em-dash nul, naam nul.
+NL-build: alle nieuwe routes statisch met de stand van vandaag in title
+en HTML (week 46, volle maan 24 november, IJsheiligen 2027). EN-build:
+alle nieuwe pagina's 404 en niet in de sitemap. Visueel gecontroleerd op
+390 pixels (week, feestdagen, volle maan, zonsopkomst, leeftijd met een
+ingevulde datum, dagen tussen datums), geen paginafouten.
+
+
+## Run 18 (2026-11-15, v3.38.0 "Tramontana"): gidspagina's
+
+**Opdracht**: verder bouwen, ook pagina's waarvan het antwoord nog niet
+live gegeven kan worden (ontbrekende API), zodat ze geindexeerd raken; wel
+contentrijk. Eerlijke kanttekening vooraf aan de eigenaar: een pagina die
+een vraag belooft maar niet beantwoordt, werkt tegen je. Daarom geeft elke
+pagina een echt antwoord uit kennis en berekening, met een eerlijke regel
+over wat later live wordt.
+
+**Gekozen**: stroomprijs, vakantiegeld, belastingaangifte, ramadan, eb en
+vloed, zeewatertemperatuur (zonder live bron) en hittegolf, onweer, dagen
+langer, feestdag vandaag (live of berekend).
+
+**Bronnen**: onderneming.nl (vakantiegeld minimaal 8 procent, minstens een
+keer per jaar, meestal mei of juni), The National (ramadan 2027 verwacht 8
+februari, Suikerfeest 9 of 10 maart), Weerplaza (hittegolf: vijf dagen 25
+graden of meer in De Bilt, waarvan drie 30 of meer), Belastingdienst
+(uitstel voor 1 mei tot 1 september), ANWB (stroom goedkoopst 9 tot 17
+uur en in het weekend), KNMI (Noordzee warmst in augustus, opwarming
+ongeveer 0,4 graad per tien jaar). Geen bruikbare bron voor ramadan 2028.
+
+**Kwaliteit**: nieuwe test eist minstens vier blokken, vijf FAQ en 400
+woorden tekst per gids; acht van de tien zaten er eerst onder en kregen
+inhoudelijke blokken. Daglengteclaims nagerekend en gecorrigeerd
+(Groningen-Maastricht 25 minuten in plaats van "een paar"). De
+originaliteitstest ving "Twijfel je of", herschreven.
+
+**Verificatie**: 260 tests groen, check:imports OK, beide builds groen,
+em-dash nul. Server-HTML 650 tot 1.000 woorden per gids. Visueel
+gecontroleerd (dagen langer, ramadan, vakantiegeld, hub, onweer), geen
+paginafouten. Onweer en hittegolf konden in de werkruimte geen weerdata
+ophalen en tonen dan een nette melding.
+
+
+## Run 19 (2026-11-15, v3.39.0 "Harmattan"): geld, kalender en uitjes
+
+**Opdracht**: bouw weer verder. Zelfde lijn als Run 18: pagina's op
+zoekvolume, niet per se weer, contentrijk.
+
+**Gekozen**: betaaldata (toeslagen, kinderbijslag), minimumloon,
+AOW-leeftijd, salarisdag, uren berekenen, schrikkeljaar, dag van het
+jaar, verduisteringen, Keukenhof. Afgevallen: AOW-betaaldata (geen
+officiele bron leesbaar vanuit de werkruimte, vervangen door de
+AOW-leeftijd).
+
+**Bronnen**: Belastingdienst, betaaldatums toeslagen (20 november en 21
+december 2026, meer is niet gepubliceerd); Rijksoverheid, bedragen
+minimumloon 2027 (21+ 15,29 euro per uur, jeugdlonen per leeftijd);
+Rijksoverheid, AOW-leeftijd (67 jaar in 2026 en 2027, 67 jaar en 3
+maanden in 2028 tot en met 2032); Nederland Wereldwijd over de SVB
+(kinderbijslag per kwartaal achteraf); zonsverduistering.nl (komende
+gedeeltelijke zonsverduisteringen); hemel.waarnemen.com
+(maansverduisteringen, tijden voor Utrecht); keukenhof.nl (seizoen 18
+maart tot en met 9 mei 2027).
+
+**Kwaliteit**: nieuwe test eist vijf blokken, vijf FAQ en 400 woorden;
+negen van de tien gidsen zaten eronder en kregen een extra verdieping
+(wijzigingen doorgeven, kindgebonden budget, cao en oproepkrachten,
+hoogte AOW, loonstrook, pauzeregels, jarig op 29 februari, juliaanse
+datum, bereikbaarheid). Een onzekere juridische claim over 29 februari
+geschrapt. Dagnummers (dag 100, dag 183) nagerekend.
+
+**Verificatie**: 269 tests groen, check:imports OK, NL- en EN-build
+groen, em-dash nul, alle tien routes 200 met de verwachte title,
+AOW-rekenhulp en dagnummerpagina visueel gecontroleerd.
+
+
+## Run 20 (2026-11-15, v3.40.0 "Sirocco"): rekenhulpen en jaarwisseling
+
+**Opdracht**: ga door, bouw verder. Zelfde lijn: volume, contentrijk.
+
+**Gekozen**: procenten, btw, datum plus dagen, Romeinse cijfers (pure
+rekenhulpen met evergreen zoekvolume), zorgverzekering overstappen en
+eigen risico (piek nu, november en december), kilometervergoeding,
+vakantiedagen, belastingteruggave (piek in het voorjaar) en vuurwerk
+(piek eind december). Afgevallen: Black Friday, de klok en zonsondergang
+(bestaan al als afteller).
+
+**Bronnen**: Zorgwijzer, 30 september 2026 (eigen risico definitief van
+385 naar 400 euro in 2027; kabinet rekent met gemiddeld 2.029 euro
+basispremie). Eerdere berichten over uitstel van de verhoging waren
+achterhaald. Rijksoverheid (opzeggen tot en met 31 december, nieuwe
+polis tot 1 februari met terugwerkende kracht). Rendement (onbelaste
+kilometervergoeding 0,25 euro sinds 1 januari 2026, structureel, ook
+2027 volgens het Belastingplan 2027). Ondernemersplein (Wet veilige
+jaarwisseling per 1 augustus 2026, verbod geldt voor het eerst bij de
+jaarwisseling 2026 op 2027, F1 blijft toegestaan). Rendement en AAFF
+(btw logies 21 procent per 2026), PwC (btw-verhoging sport en cultuur
+geschrapt). Belastingdienst (aangifte voor 1 april geeft bericht voor 1
+juli, daarna streven binnen drie maanden). Ondernemersplein over
+vakantierecht.
+
+**Kwaliteit**: een uitspraak dat Bevrijdingsdag eens in de vijf jaar
+meetelt, gecontroleerd tegen vrijeDagen() in de code. Rekenvoorbeelden
+in de teksten (btw van 100 euro, 214 reisdagen, dag plus 100) nagerekend
+in de test. De reiskostenregel van 46 weken vervangen door de
+214-dagenregel van de Belastingdienst.
+
+**Verificatie**: 279 tests groen, check:imports OK, NL- en EN-build
+groen, em-dash nul, tien routes 200 met de verwachte title, nieuwe
+pagina's in de sitemap, acht pagina's in Playwright zonder paginafouten.

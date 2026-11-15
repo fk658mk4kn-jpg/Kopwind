@@ -10,7 +10,7 @@ import Icoon from "./Icoon";
  * hebben. Web Share op mobiel, kopieer-naar-klembord als fallback op
  * desktop, met een korte bevestiging.
  */
-export default function DeelKnop() {
+export default function DeelKnop({ label } = {}) {
   const [gedeeld, setGedeeld] = useState(false);
 
   const deel = async () => {
@@ -30,9 +30,9 @@ export default function DeelKnop() {
   };
 
   return (
-    <button className="deelknop" onClick={deel} aria-label={S.stem.delen}>
+    <button className="deelknop" onClick={deel} aria-label={label ?? S.stem.delen}>
       <Icoon naam="deel" maat={16} />
-      <span>{gedeeld ? S.stem.gekopieerd : S.stem.delen}</span>
+      <span>{gedeeld ? S.stem.gekopieerd : label ?? S.stem.delen}</span>
     </button>
   );
 }

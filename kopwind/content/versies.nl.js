@@ -6,6 +6,42 @@
 
 export const VERSIES = [
   {
+    versie: "3.40.0",
+    codenaam: "Sirocco",
+    datum: "2026-11-15",
+    zin: "Tien nieuwe handige antwoorden. Rekenhulpen voor procenten, btw, een datum plus of min dagen, Romeinse cijfers, vakantiedagen en je kilometervergoeding. Plus: tot wanneer je van zorgverzekering kunt wisselen, het eigen risico van 2027, wanneer je belastingteruggave komt en wat er met oud en nieuw nog mag nu het vuurwerkverbod geldt.",
+  },
+  {
+    versie: "3.39.0",
+    codenaam: "Harmattan",
+    datum: "2026-11-15",
+    zin: "Tien nieuwe handige antwoorden over geld, kalender en uitjes. Wanneer de toeslag en de kinderbijslag binnenkomen, het minimumloon van 2027 met jeugdlonen en een rekenhulp, je AOW-datum, op welke dag je salaris komt, uren tussen twee tijden in decimalen, of het een schrikkeljaar is, welke dag van het jaar het is, de volgende zons- en maansverduisteringen en wanneer de Keukenhof opengaat.",
+  },
+  {
+    versie: "3.38.0",
+    codenaam: "Tramontana",
+    datum: "2026-11-15",
+    zin: "Tien nieuwe handige antwoorden, op een eigen overzichtspagina. Wanneer stroom het goedkoopst is, wanneer je vakantiegeld krijgt (met rekenhulp), tot wanneer je belastingaangifte kunt doen, wanneer het ramadan is met de iftartijden per dag, eb en vloed met springtij en doodtij, de zeewatertemperatuur per maand, of er een hittegolf komt, of het gaat onweren, wanneer de dagen weer langer worden en of het vandaag een feestdag is.",
+  },
+  {
+    versie: "3.37.0",
+    codenaam: "Föhn",
+    datum: "2026-11-15",
+    zin: "Niet alles draait om het weer. Nieuw: het weeknummer van vandaag met alle weken van het jaar, de feestdagen en schoolvakanties op een rij, werkdagen per maand, rekenhulpen voor dagen tussen twee datums, je leeftijd en de dagen tot je verjaardag, de volle maan met de maanfase van vandaag, de zonsopkomst en de kans op noorderlicht per nacht. Plus nieuwe tellers voor Sint-Maarten, Dierendag, de IJsheiligen en de Perseiden.",
+  },
+  {
+    versie: "3.36.0",
+    codenaam: "Chergui",
+    datum: "2026-11-15",
+    zin: "Klaar voor de winter. Nieuw: de sneeuwcheck, die per uur zegt wanneer de eerste vlokken vallen en hoeveel centimeter erbij komt, en een pagina die aftelt naar kerst met de vraag of het een witte kerst wordt. De homepage zet nu de checks voorop die bij het seizoen passen, en elke aftelpagina heeft een teller die je op je eigen site of blog kunt zetten.",
+  },
+  {
+    versie: "3.35.0",
+    codenaam: "Bise",
+    datum: "2026-11-15",
+    zin: "Nieuw: aftellen. Een eigen pagina voor 31 tellers, van kerst, oud en nieuw en sinterklaas tot de schoolvakanties per regio, de seizoenen, de klokwissels, de langste en kortste dag, het weekend, de zonsondergang en de volgende bui. Elke teller toont de dagen, weken en werkdagen, een klok die op de seconde aftelt, de datum in de komende jaren en waar het past het weer voor de dag zelf. Op de verzamelpagina tel je af naar elke datum die je kiest.",
+  },
+  {
     versie: "3.34.0",
     codenaam: "Libeccio",
     datum: "2026-07-26",

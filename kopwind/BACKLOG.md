@@ -32,6 +32,90 @@ Alle teksten herschreven in v3.34.0; originaliteit-test bewaakt herhaling.
 - **Bij een directe juridische brief** (niet via Google): een uur
   IE-jurist inschakelen voordat er ook maar iets wordt beantwoord.
 
+## SEO: stadpagina's terugbrengen (schakelaar gebouwd in v3.36.0, staat UIT)
+
+Zie SEO-DIAGNOSE.md. De schakelaar bestaat (STAD_INDEX_BEPERKT=1 in
+Vercel, dan redeployen). Eerst Search Console bekijken (Indexering >
+Pagina's); bevestigt dat het dunne-pagina-patroon, dan aanzetten.
+- Na zes tot acht weken de indexeringsgraad vergelijken.
+- Lijsten (steden en checks) staan in lib/seo/indexering.js en zijn
+  aan te passen zonder iets anders te raken.
+
+## Gidspagina's (v3.40.0): data bijhouden
+
+- **Eigen risico 2028** toevoegen in lib/geld.js zodra bekend
+  (Prinsjesdag 2027); de test wordt rood in januari als het ontbreekt.
+- **Kilometervergoeding 2028** idem, en 2027 bevestigen als het
+  Belastingplan 2027 is aangenomen.
+- **Vuurwerk**: na de jaarwisseling nalopen of de regels zijn bijgesteld
+  (ontheffingen, handhaving) en de tekst bijwerken.
+- **Btw-tarieven**: bij Prinsjesdag checken op wijzigingen per 1 januari.
+- **Seizoenspieken benutten**: zorgverzekering en eigen risico nu
+  indienen in Search Console; belastingteruggave in februari; vuurwerk
+  begin december.
+
+## Gidspagina's (v3.39.0): data bijhouden
+
+- **Toeslagdata 2027** toevoegen in lib/geld.js (TOESLAG_DATA) zodra de
+  Belastingdienst ze publiceert; de test wordt rood als de lijst op is.
+- **AOW-betaaldata**: geen leesbare officiele bron gevonden. Kan een
+  eigen pagina worden als de SVB-lijst bereikbaar is.
+- **AOW-leeftijd 2033** toevoegen zodra die in het najaar wordt
+  vastgesteld (AOW_LEEFTIJD en AOW_LAATST_VASTGESTELD).
+- **Minimumloon 1 juli 2027** bijwerken zodra de bedragen bekend zijn.
+- **Keukenhof 2028** toevoegen na het seizoen 2027 (lib/evenementen.js).
+- **Verduisteringslijst** verlengen na 2030 (lib/eclipsen.js).
+- **Meten**: na zes weken in Search Console kijken welke van de ruim
+  vijftig nieuwe pagina's vertoningen krijgen, en daar verder op bouwen.
+
+## Gidspagina's (v3.38.0): live koppelingen die nog ontbreken
+
+- **Stroomprijs per uur** op /wanneer-is-stroom-het-goedkoopst: bron
+  kiezen (EnergyZero of ENTSO-E, voorwaarden checken) en de uurgrafiek
+  bovenaan zetten.
+- **Hoogwatertijden** op /eb-en-vloed: Rijkswaterstaat Waterinfo per
+  kustplaats; springtij staat al.
+- **Actuele zeewatertemperatuur** op /zeewatertemperatuur: Open-Meteo
+  marine of Rijkswaterstaat-metingen.
+- **Ramadan 2028** toevoegen in lib/ramadan.js zodra een betrouwbare
+  astronomische verwachting is gepubliceerd. De test wordt begin februari
+  2027 rood als herinnering.
+- **Onweerscheck als volwaardige check** (met instellingen en meldingen),
+  zodra blijkt dat de pagina verkeer trekt.
+
+## Volume-pagina's (v3.37.0, gebouwd)
+
+- **Noorderlicht controleren na deploy**: de Kp-bron was vanuit de
+  werkruimte niet bereikbaar. Na de eerste deploy /kan-ik-het-noorderlicht-zien
+  en /api/noorderlicht openen; staat er de foutmelding, dan het
+  NOAA-formaat checken (de parser leest het oude en het nieuwe formaat).
+- **Volgende kandidaten op volume**: onweer (voor het voorjaar),
+  stroomprijs per uur (bron eerst controleren), zeewatertemperatuur en eb
+  en vloed (zomer), maansverduisteringen.
+- **Meten**: na zes weken in Search Console vergelijken welke van de
+  nieuwe pagina's vertoningen krijgen; wat wint, krijgt meer content.
+
+## Winter (v3.36.0)
+
+- **Engelse content voor de sneeuwcheck** (will-it-snow): staat in de
+  EN-sitemap maar geeft 404, net als eerdere NL-only checks.
+- **Widget promoten**: de widget levert pas links op als iemand hem
+  plaatst. Kansen: ouderforums rond de zomervakantie, schoolnieuwsbrieven,
+  kerstblogs. Geen keyword-ankers of verborgen links toevoegen.
+
+## Aftellers (v3.35.0, gebouwd)
+
+- **Vakantiedata bijwerken** zodra het schooljaar 2028-2029 is vastgesteld
+  (lib/aftellen/vakanties.js). De test wordt een jaar vooraf rood.
+- **Mogelijke uitbreidingen** als de eerste tellers vertoningen krijgen:
+  Sint-Maarten, Dierendag, Ramadan en Suikerfeest (vergt een betrouwbare
+  bron voor de datum), examens en de eerste schooldag, grote
+  sporttoernooien.
+- **Distributie** (past bij het faceless model): rond kerst, oud en nieuw
+  en de zomervakantie een korte post of video met de teller als link.
+- **Gemiddeld weer per dag** (klimaatnormalen) voor dagen buiten het
+  verwachtingsbereik. Eerst een betrouwbare, vrij bruikbare bron vinden.
+
 ## Nieuwe tools (hoofdlijn: hier komt het verkeer vandaan)
 
 De vragenlijst onderaan is de voorraad. Per vraag blijft de afweging:

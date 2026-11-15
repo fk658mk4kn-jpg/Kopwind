@@ -237,6 +237,11 @@ export const STAD_TEMPLATES_RUW = {
       description: `Moet ik mijn planten vannacht beschermen in ${s}? De nacht beoordeeld op vorst, inclusief stralingsvorst. Gratis.`,
       h1: `Planten beschermen in ${s} vannacht?`,
     }),
+    "sneeuw": (s) => ({
+      title: `Gaat het sneeuwen in ${s}? Per uur, met centimeters`,
+      description: `Gaat het vandaag sneeuwen in ${s}? De check noemt het uur van de eerste vlokken en de verwachte centimeters. Gratis.`,
+      h1: `Gaat het vandaag sneeuwen in ${s}?`,
+    }),
     "sneeuwpret": (s) => ({
       title: `Sneeuwpret in ${s}: kan er gesleed worden?`,
       description: `Is er vandaag sneeuwpret in ${s}? De check kijkt naar het sneeuwdek en of het blijft liggen. Gratis.`,
@@ -534,6 +539,11 @@ export const STAD_TEMPLATES_RUW = {
       description: `Should I protect my plants in ${s} tonight? The night judged for frost, including radiation frost. Free.`,
       h1: `Protecting plants in ${s} tonight?`,
     }),
+    "sneeuw": (s) => ({
+      title: `Will it snow in ${s}? Per hour, in centimetres`,
+      description: `Will it snow today in ${s}? The check names the hour of the first flakes and the expected centimetres. Free.`,
+      h1: `Will it snow today in ${s}?`,
+    }),
     "sneeuwpret": (s) => ({
       title: `Snow play in ${s}: can we go sledding?`,
       description: `Snow fun in ${s} today? The check looks at the snow layer and whether it stays. Free.`,
@@ -696,6 +706,7 @@ export const ANKER_TERM_RUW = {
     "hout-behandelen": "Beitsweer",
     "terras-reinigen": "Reinigweer",
     "planten-beschermen": "Vorstcheck planten",
+    "sneeuw": "Sneeuwverwachting",
     "sneeuwpret": "Sneeuwpret",
     "strooien": "Strooicheck",
     "beton-storten": "Betoncheck",
@@ -761,6 +772,7 @@ export const ANKER_TERM_RUW = {
     "hout-behandelen": "Staining weather",
     "terras-reinigen": "Cleaning weather",
     "planten-beschermen": "Plant frost check",
+    "sneeuw": "Snow forecast",
     "sneeuwpret": "Snow play",
     "strooien": "Gritting check",
     "beton-storten": "Concrete check",

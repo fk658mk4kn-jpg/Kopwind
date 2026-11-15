@@ -7,6 +7,9 @@ import { POPULAIRE_TOOL_IDS } from "@/lib/tools";
 import { S } from "@/lib/strings";
 import { PAD } from "@/lib/i18n/paden";
 import Icoon from "./Icoon";
+import { IS_EN } from "@/lib/i18n/locale";
+import { AFTEL_HUB_PAD } from "@/lib/aftellen";
+import { ANTWOORDEN_HUB_PAD } from "@/lib/rekenhulpen";
 
 /**
  * Het uitklapmenu (v3.3.0 "Meltemi"): de tekstlinks verhuisden uit de
@@ -73,6 +76,16 @@ export default function MenuPaneel({ open, onClose }) {
           <Link href={PAD.alleChecks} className="menulink" onClick={onClose}>
             {S.menu.alle}
           </Link>
+          {!IS_EN && (
+            <Link href={AFTEL_HUB_PAD} className="menulink" onClick={onClose}>
+              Aftellen en kalender
+            </Link>
+          )}
+          {!IS_EN && (
+            <Link href={ANTWOORDEN_HUB_PAD} className="menulink" onClick={onClose}>
+              Handige antwoorden
+            </Link>
+          )}
           <Link href={PAD.uitleg} className="menulink" onClick={onClose}>
             {S.voet.uitleg}
           </Link>

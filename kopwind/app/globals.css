@@ -2707,3 +2707,94 @@ details.geavanceerd summary {
   .cookiebalk-knoppen { flex: 1 1 100%; }
   .cookiebalk-knoppen button { flex: 1; }
 }
+
+/* ------------------------------------------------------------------ */
+/* Aftellers (v3.35.0 "Bise")                                          */
+/* ------------------------------------------------------------------ */
+.aftel-hoofd { text-align: center; margin-bottom: 16px; }
+.aftel-label { margin: 4px 0 0; color: var(--inkt-zacht); font-size: 15px; }
+.aftel-groot {
+  font-family: var(--font-display);
+  font-size: clamp(56px, 16vw, 96px);
+  font-weight: 700;
+  line-height: 1;
+  margin: 6px 0 2px;
+  color: var(--inkt);
+  font-variant-numeric: tabular-nums;
+}
+.aftel-groot.klein { font-size: clamp(34px, 9vw, 52px); }
+.aftel-sub { margin: 4px 0; color: var(--inkt-zacht); }
+.aftel-datum { margin: 8px 0 14px; font-weight: 600; }
+.aftel-klok { display: flex; justify-content: center; gap: 8px; margin: 10px 0 6px; flex-wrap: wrap; }
+.aftel-klok-wacht { min-height: 64px; }
+.aftel-klok-kop { margin: 8px 0 0; color: var(--inkt-zacht); font-size: 14px; }
+.aftel-blok {
+  display: flex; flex-direction: column; align-items: center;
+  min-width: 64px; padding: 8px 6px;
+  background: var(--lucht); border: 1px solid var(--lijn); border-radius: 10px;
+}
+.aftel-blok-getal { font-family: var(--font-display); font-size: 26px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.aftel-blok-label { font-size: 12px; color: var(--inkt-zacht); }
+.aftel-klaar { font-weight: 700; font-size: 20px; margin: 10px 0; }
+.aftel-feiten { list-style: none; padding: 0; margin: 12px 0 0; display: grid; gap: 4px; }
+.aftel-feiten li { color: var(--inkt); }
+.aftel-voetnoot { font-size: 13px; color: var(--inkt-zacht); margin: 10px 0 0; }
+.aftel-regios { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin-bottom: 16px; }
+.aftel-regios .aftel-voetnoot { grid-column: 1 / -1; }
+.aftel-regio { text-align: center; }
+.aftel-daglicht, .aftel-weer { margin-bottom: 16px; }
+.aftel-weer-sub { margin: -6px 0 10px; font-size: 13px; color: var(--inkt-zacht); }
+.aftel-weer-rij { display: grid; gap: 8px; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); }
+.aftel-weer-dag {
+  display: flex; flex-direction: column; gap: 2px; font-size: 14px;
+  padding: 10px; border: 1px solid var(--lijn); border-radius: 10px; background: var(--lucht);
+}
+.aftel-weer-type { font-weight: 600; }
+.aftel-weer-door { margin: 12px 0 0; font-size: 14px; }
+.aftel-plek { display: flex; gap: 8px; align-items: flex-end; justify-content: center; flex-wrap: wrap; margin-bottom: 8px; }
+.aftel-plek label { display: flex; flex-direction: column; align-items: flex-start; font-size: 13px; color: var(--inkt-zacht); }
+.aftel-plek select, .aftel-calc input {
+  font: inherit; padding: 6px 10px; border: 1px solid var(--lijn-sterk); border-radius: 8px; background: var(--wolk); color: var(--inkt);
+}
+.aftel-plek-melding { flex-basis: 100%; margin: 4px 0 0; font-size: 13px; color: var(--inkt-zacht); }
+.aftel-tabel { border-collapse: collapse; margin: 4px 0 8px; }
+.aftel-tabel th, .aftel-tabel td { padding: 4px 16px 4px 0; text-align: left; border-bottom: 1px solid var(--lijn); }
+.aftel-verwant { margin: 20px 0; }
+.aftel-verwant h2, .aftel-strook h2, .aftel-groep h2 { font-size: 18px; margin: 0 0 10px; }
+.aftel-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.aftel-chips .chip { text-decoration: none; color: var(--inkt); padding: 5px 12px; }
+.aftel-strook { margin: 20px 0; }
+.aftel-calc { text-align: center; margin-bottom: 20px; min-height: 120px; }
+.aftel-calc-veld { display: inline-flex; flex-direction: column; gap: 4px; font-size: 14px; color: var(--inkt-zacht); }
+.aftel-groep { margin: 20px 0; }
+.aftel-lijst { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+.aftel-lijst a {
+  display: flex; justify-content: space-between; gap: 8px; padding: 10px 12px;
+  border: 1px solid var(--lijn); border-radius: 10px; background: var(--kaart);
+  text-decoration: none; color: var(--inkt);
+}
+.aftel-lijst a:hover { border-color: var(--accent); }
+.aftel-lijst-stand { color: var(--inkt-zacht); font-size: 14px; white-space: nowrap; }
+.aftel-widget { margin: 0 0 16px; }
+.aftel-widget summary { cursor: pointer; font-weight: 600; }
+.aftel-widget-code {
+  white-space: pre-wrap; word-break: break-all; font-size: 12px;
+  background: var(--lucht); border: 1px solid var(--lijn); border-radius: 8px; padding: 10px; margin: 8px 0 10px;
+}
+.reken-velden { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.reken-vink { display: inline-flex; gap: 6px; align-items: center; margin-top: 10px; font-size: 14px; color: var(--inkt-zacht); }
+.reken-tabel { border-collapse: collapse; width: 100%; margin: 4px 0 6px; font-size: 15px; }
+.reken-tabel th, .reken-tabel td { padding: 6px 8px; text-align: left; border-bottom: 1px solid var(--lijn); vertical-align: top; }
+.reken-tabel thead th { font-size: 13px; color: var(--inkt-zacht); font-weight: 600; }
+.reken-tabel tr.nu { background: var(--lucht); font-weight: 600; }
+.reken-tabel .rechts { text-align: right; font-variant-numeric: tabular-nums; }
+.reken-blok { margin-bottom: 18px; overflow-x: auto; }
+.reken-blok h2 { font-size: 20px; margin: 0 0 8px; }
+.reken-noot { font-size: 13px; color: var(--inkt-zacht); margin: 6px 0 0; }
+.reken-maandkop { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
+.maan-rij { display: flex; gap: 18px; align-items: center; flex-wrap: wrap; }
+.maan-schijf { width: 72px; height: 72px; border-radius: 50%; background: #2B3440; position: relative; overflow: hidden; flex: none; }
+.maan-licht { position: absolute; inset: 0; border-radius: 50%; background: #F2EBD3; }
+.maan-kop { font-size: 16px; margin: 14px 0 4px; }
+.jaar-balk { height: 10px; border-radius: 6px; background: var(--lucht); border: 1px solid var(--lijn); margin: 12px auto 0; max-width: 360px; overflow: hidden; }
+.jaar-balk > div { height: 100%; background: var(--accent); }

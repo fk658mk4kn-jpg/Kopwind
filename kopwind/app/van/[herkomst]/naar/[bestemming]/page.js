@@ -7,6 +7,7 @@ import { vindTool } from "@/lib/tools";
 import FietsTool from "@/components/tools/FietsTool";
 import Broodkruimel from "@/components/Broodkruimel";
 import AdSlot from "@/components/AdSlot";
+import { routeIndexeerbaar, NOINDEX } from "@/lib/seo/indexering";
 import { IS_EN } from "@/lib/i18n/locale";
 
 /**
@@ -40,6 +41,7 @@ export function generateMetadata({ params }) {
     title: { absolute: title },
     description,
     alternates: { canonical: `/van/${van.slug}/naar/${naar.slug}` },
+    ...(routeIndexeerbaar() ? {} : { robots: NOINDEX }),
     openGraph: { type: "website", title, description, url: `/van/${van.slug}/naar/${naar.slug}` },
   };
 }

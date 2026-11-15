@@ -5,6 +5,12 @@ import { kies, LOCALE } from "@/lib/i18n/locale";
 import { PAD } from "@/lib/i18n/paden";
 import HubGrid from "@/components/HubGrid";
 import CategorieBalk from "@/components/CategorieBalk";
+import AftelStrook from "@/components/aftellen/AftelStrook";
+import { populairVoorSeizoen } from "@/lib/seizoen";
+import { IS_EN } from "@/lib/i18n/locale";
+
+// v3.35.0: elk uur verversen, want de aftelstrook draagt de telling van vandaag.
+export const revalidate = 3600;
 
 export const metadata = {
   alternates: { canonical: "/" },
@@ -43,7 +49,10 @@ export default function HubPagina() {
 
       <CategorieBalk />
 
-      <HubGrid />
+      {/* Seizoenslijst alleen NL: de nieuwste winterchecks hebben nog geen EN-pagina. */}
+      <HubGrid {...(IS_EN ? {} : { populair: populairVoorSeizoen() })} />
+
+      {!IS_EN && <AftelStrook />}
 
       <section className="seotekst compact">
         <h2>{kies({ nl: "Veelgestelde vragen", en: "Frequently asked questions" })}</h2>

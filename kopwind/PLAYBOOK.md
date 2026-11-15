@@ -640,3 +640,64 @@ weerbeslissite. De regels hieronder voorkomen herhaling, bij elke nieuwe tekst.
 - **Zoekwoorden blijven staan.** H1-vragen en title-keywords zijn generieke
   zoekopdrachten en geen eigendom van wie dan ook; alleen de formulering
   eromheen moet aantoonbaar eigen zijn.
+
+## Aftellers (sinds v3.35.0)
+
+- Een teller is een entry in `lib/aftellen/index.js` (id, slug, naam,
+  titel, groep, soort, momenten of vakantie, weer, tool, verwant) plus een
+  tekstblok in `content/aftellen.js` (intro, minstens twee blokken, minstens
+  drie FAQ). De test `tests/aftellen.test.js` dwingt beide af.
+- Slugs volgen de zoekvraag: `hoeveel-dagen-tot-<naam>`, of de vraagvorm
+  als die de zoekvraag is (`wanneer-gaat-de-klok-vooruit`).
+- Rekenen altijd in Nederlandse wandkloktijd via `lib/aftellen/datums.js`,
+  nooit met losse datums uit `new Date()`, want de server draait in UTC.
+- Teksten noemen geen jaartallen of aantallen die volgend jaar verouderen:
+  de pagina rekent die zelf uit.
+- Weer alleen waar het iets toevoegt (`weer: true`); de vooruitblik
+  verschijnt pas binnen zeven dagen.
+- Alleen Nederlands tot de eigenaar anders beslist.
+
+
+## Indexering, seizoen en widget (sinds v3.36.0)
+
+- Stadpagina's en routes geven hun robots-meta via
+  `lib/seo/indexering.js`; nieuwe programmatische paginasoorten volgen
+  hetzelfde patroon en tellen mee in de sitemap-filter.
+- De homepage-grid krijgt zijn lijst van `lib/seizoen.js`. Een nieuwe
+  check die in een seizoen thuishoort, kan daar in de lijst; een test
+  checkt dat elk id bestaat en elke lijst zes lang is.
+- De widget heeft alleen een merklink als anker. Nooit een zoekwoord als
+  ankertekst, nooit een verborgen link.
+
+
+## Kalender- en rekenpagina's (sinds v3.37.0)
+
+- Een rekenpagina is een eigen route `app/<slug>/page.js` plus een entry
+  in `lib/rekenhulpen.js` en een tekstblok in `content/rekenhulpen.js`
+  (h1, intro, minstens twee blokken, minstens drie FAQ). De test checkt
+  route, tekst en slugbotsingen.
+- Gebruik `components/reken/RekenPagina.js` als schil; de eigen inhoud
+  komt als children.
+- Zet de getallen van vandaag in de server-HTML en de title (revalidate
+  een uur), niet alleen in een client-component.
+- Persoonlijke invoer (geboortedatum) blijft in de browser: geen opslag,
+  geen API-call, en dat staat in de intro.
+- Externe databronnen: server-side ophalen met een korte time-out en een
+  nette tekst als de bron weg is. Parsers tolerant bouwen en testen met
+  vaste voorbeelddata.
+
+
+## Gidspagina's zonder live bron (sinds v3.38.0)
+
+- Een pagina zonder live data geeft toch een echt antwoord: vuistregels,
+  een tabel, een berekening uit wat wel bekend is (datum, zon, maan). Geen
+  lege kaart met "binnenkort".
+- Zeg in een regel wat later live wordt en waar je het exacte getal nu
+  vindt. Noem de bron, imiteer haar niet.
+- Minimaal vijf gidsblokken, vijf FAQ en 400 woorden tekst; de test
+  dwingt dit af voor de gidsen in tests/v338.test.js.
+- Getallen uit de eigen tekst narekenen met de rekenkernen of nalopen
+  tegen een bron; twijfel betekent een bandbreedte of weglaten.
+- Tijdgebonden data (betaaldata, seizoenen, verduisteringen) staan in een
+  lib-bestand met een test die rood wordt voordat de lijst opraakt. Zonder
+  nieuwe data toont de pagina de regel in plaats van een lege teller.

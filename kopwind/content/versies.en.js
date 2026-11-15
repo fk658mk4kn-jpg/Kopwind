@@ -5,6 +5,42 @@
 
 export const VERSIES = [
   {
+    versie: "3.40.0",
+    codenaam: "Sirocco",
+    datum: "2026-11-15",
+    zin: "Behind the scenes: new guide pages on the Dutch site. Nothing changes on the English site in this release.",
+  },
+  {
+    versie: "3.39.0",
+    codenaam: "Harmattan",
+    datum: "2026-11-15",
+    zin: "Behind the scenes: new guide pages on the Dutch site. Nothing changes on the English site in this release.",
+  },
+  {
+    versie: "3.38.0",
+    codenaam: "Tramontana",
+    datum: "2026-11-15",
+    zin: "Behind the scenes: new guide pages on the Dutch site. Nothing changes on the English site in this release.",
+  },
+  {
+    versie: "3.37.0",
+    codenaam: "Föhn",
+    datum: "2026-11-15",
+    zin: "Behind the scenes: calendar pages and calculators on the Dutch site. Nothing changes on the English site in this release.",
+  },
+  {
+    versie: "3.36.0",
+    codenaam: "Chergui",
+    datum: "2026-11-15",
+    zin: "Behind the scenes: a snow check and winter updates on the Dutch site. Nothing visible changes on the English site in this release.",
+  },
+  {
+    versie: "3.35.0",
+    codenaam: "Bise",
+    datum: "2026-11-15",
+    zin: "Behind the scenes on the Dutch site: a new set of countdown pages. Nothing changes on the English site in this release.",
+  },
+  {
     versie: "3.34.0",
     codenaam: "Libeccio",
     datum: "2026-07-26",

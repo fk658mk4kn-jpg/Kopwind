@@ -70,6 +70,7 @@ import * as speeltuinNl from "./speeltuin.js";
 import * as bestratingLeggenNl from "./bestrating-leggen.js";
 import * as dekbedLuchtenNl from "./dekbed-luchten.js";
 import * as buitenkraanAftappenNl from "./buitenkraan-aftappen.js";
+import * as sneeuwNl from "./gaat-het-sneeuwen.js";
 
 import * as bikeToWork from "./en/bike-to-work.js";
 import * as dryLaundryOutside from "./en/dry-laundry-outside.js";
@@ -179,6 +180,7 @@ const PER_SLUG =
         "bestrating-leggen": bestratingLeggenNl,
         "dekbed-luchten": dekbedLuchtenNl,
         "buitenkraan-aftappen": buitenkraanAftappenNl,
+        "gaat-het-sneeuwen": sneeuwNl,
         "was-buiten-drogen": wasBuitenDrogen,
         "wat-trek-ik-aan": watTrekIkAan,
         "terrasweer": terras,
